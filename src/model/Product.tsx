@@ -1,0 +1,25 @@
+import { UserRole } from "./Party";
+
+export type Product = {
+  activationDateTime?: Date;
+  description: string;
+  id: string;
+  logo?: string;
+  logoBgColor?: string;
+  title: string;
+  urlBO: string;
+  urlPublic?: string;
+  tag?: string;
+  userRole?: UserRole;
+  authorized?: boolean;
+  status: "ACTIVE" | "INACTIVE" | "PENDING";
+};
+
+export type ProductsMap = { [id: string]: Product };
+
+export const buildProductsMap = (products: Array<Product>): ProductsMap =>
+  products.reduce((acc, p) => {
+    // eslint-disable-next-line functional/immutable-data
+    acc[p.id] = p;
+    return acc;
+  }, {} as ProductsMap);
