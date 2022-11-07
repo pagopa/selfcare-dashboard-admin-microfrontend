@@ -3,30 +3,27 @@ import {
   LoadingOverlay,
   UnloadEventHandler,
   UserNotifyHandle,
-} from "@pagopa/selfcare-common-frontend";
-import { useTranslation } from "react-i18next";
-import { useParams, Route, Switch, useHistory } from "react-router";
-import { isEmpty } from "lodash";
-import withLogin from "@pagopa/selfcare-common-frontend/decorators/withLogin";
-import { Box, Grid, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Fragment } from "react";
-import { CONFIG } from "@pagopa/selfcare-common-frontend/config/env";
-import { buildProductsMap, Product } from "../../model/Product";
-import {
-  productRoles2ProductRolesList,
-  ProductsRolesMap,
-} from "../../model/ProductRole";
-import { createStore } from "../../redux/store";
+} from '@pagopa/selfcare-common-frontend';
+import { useTranslation } from 'react-i18next';
+import { useParams, Route, Switch, useHistory } from 'react-router';
+import { isEmpty } from 'lodash';
+import withLogin from '@pagopa/selfcare-common-frontend/decorators/withLogin';
+import { Box, Grid, useTheme } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
+import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
+import { buildProductsMap, Product } from '../../model/Product';
+import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
+import { createStore } from '../../redux/store';
 import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
   DashboardPageProps,
-} from "../dashboard-routes-utils";
-import { mockedParties } from "./data/party";
-import { mockedPartyProducts } from "./data/product";
-import { mockedProductRoles } from "./data/product";
-import Layout from "./Layout";
+} from '../dashboard-routes-utils';
+import { mockedParties } from './data/party';
+import { mockedPartyProducts } from './data/product';
+import { mockedProductRoles } from './data/product';
+import Layout from './Layout';
 
 type UrlParams = {
   partyId: string;
@@ -47,7 +44,7 @@ type RouteConfig = {
 
 const reduceRouteConfig = (key: string, routes: RoutesObject): any =>
   Object.entries(routes).map(([innerkey, route]) =>
-    innerkey === "SUBPATH_DEFAULT"
+    innerkey === 'SUBPATH_DEFAULT'
       ? undefined
       : route.subRoutes && !isEmpty(route.subRoutes)
       ? reduceRouteConfig(`${key}${innerkey}.`, route.subRoutes)
@@ -58,9 +55,7 @@ const App = ({
   AppRouting,
   store,
 }: {
-  AppRouting: (
-    props: DashboardMicrofrontendPageProps
-  ) => Array<React.ReactNode>;
+  AppRouting: (props: DashboardMicrofrontendPageProps) => Array<React.ReactNode>;
   store: ReturnType<typeof createStore>;
 }) => {
   const { partyId } = useParams<UrlParams>();
@@ -70,12 +65,11 @@ const App = ({
 
   const party = mockedParties.find((p) => p.partyId === partyId);
   const products = party ? mockedPartyProducts : undefined;
-  const activeProducts = products
-    ? products.filter((p) => p.status === "ACTIVE")
-    : undefined;
+  const activeProducts = products ? products.filter((p) => p.status === 'ACTIVE') : undefined;
   const productsMap = products ? buildProductsMap(products) : undefined;
   const productsRolesMap = party
     ? products?.reduce((acc: ProductsRolesMap, p: Product) => {
+        // eslint-disable-next-line functional/immutable-data
         acc[p.id] = productRoles2ProductRolesList(
           mockedProductRoles.map((r) => ({ ...r, productId: p.id }))
         );
@@ -83,18 +77,17 @@ const App = ({
       }, {} as ProductsRolesMap)
     : undefined;
 
-  const availableParties = mockedParties.map((p) => p.partyId).join(", ");
-  const availableProducts = mockedPartyProducts.map((p) => p.id).join(", ");
+  const availableParties = mockedParties.map((p) => p.partyId).join(', ');
+  const availableProducts = mockedPartyProducts.map((p) => p.id).join(', ');
 
   const availableRoutesBody = Object.keys(
     Array.from(
-      JSON.stringify((window as any).appRoutes).match(
-        /"path":"[^"]+/g
-      ) as Array<string>,
+      JSON.stringify((window as any).appRoutes).match(/"path":"[^"]+/g) as Array<string>,
       (m) => m.substring(8)
     )
-      .filter((url) => !url.endsWith("/*"))
+      .filter((url) => !url.endsWith('/*'))
       .reduce((acc, u) => {
+        // eslint-disable-next-line functional/immutable-data
         acc[u] = u;
         return acc;
       }, {} as any)
@@ -108,9 +101,9 @@ const App = ({
   ));
 
   const availableRoutesSideBar = Array.from(
-    JSON.stringify(
-      reduceRouteConfig("", (window as any).appRoutes as RoutesObject)
-    ).matchAll(/"([^"]+)":"([^"]+)"/g) as unknown as Array<any>,
+    JSON.stringify(reduceRouteConfig('', (window as any).appRoutes as RoutesObject)).matchAll(
+      /"([^"]+)":"([^"]+)"/g
+    ) as unknown as Array<any>,
     (match) => (
       <Fragment key={match[1]}>
         <Link key={match[1]} title={match[1]} to={match[2]}>
@@ -133,68 +126,57 @@ const App = ({
       (props: any) =>
         <WrappedComponent productsRolesMap={productsRolesMap} {...props} />,
 
-    withSelectedProductRoles:
-      (WrappedComponent: React.ComponentType<any>) => (props: any) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { productId } = useParams<UrlParams>();
-        const productRolesList = productId
-          ? productsRolesMap?.[productId]
-          : undefined;
-        return (
-          <WrappedComponent productRolesList={productRolesList} {...props} />
-        );
-      },
+    withSelectedProductRoles: (WrappedComponent: React.ComponentType<any>) => (props: any) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { productId } = useParams<UrlParams>();
+      const productRolesList = productId ? productsRolesMap?.[productId] : undefined;
+      return <WrappedComponent productRolesList={productRolesList} {...props} />;
+    },
 
-    withSelectedProduct:
-      (WrappedComponent: React.ComponentType<any>) => (props: any) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { productId } = useParams<UrlParams>();
-        const selectedProduct = productId
-          ? mockedPartyProducts.find((p) => p.id === productId)
-          : undefined;
-        return selectedProduct ? (
-          <WrappedComponent selectedProduct={selectedProduct} {...props} />
-        ) : (
-          <>
-            Product not available! Use one of: <br />
-            {availableProducts}
-          </>
-        );
-      },
+    withSelectedProduct: (WrappedComponent: React.ComponentType<any>) => (props: any) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { productId } = useParams<UrlParams>();
+      const selectedProduct = productId
+        ? mockedPartyProducts.find((p) => p.id === productId)
+        : undefined;
+      return selectedProduct ? (
+        <WrappedComponent selectedProduct={selectedProduct} {...props} />
+      ) : (
+        <>
+          Product not available! Use one of: <br />
+          {availableProducts}
+        </>
+      );
+    },
   };
 
-  return party &&
-    products &&
-    activeProducts &&
-    productsMap &&
-    productsRolesMap ? (
+  return party && products && activeProducts && productsMap && productsRolesMap ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />
         <UserNotifyHandle />
         <UnloadEventHandler />
         <Grid container item pl={{ xs: 4, md: 5, lg: 10 }} xs={12}>
-          <Grid item xs={2} sx={{ overflow: "auto" }}>
-            <Box sx={{ backgroundColor: "background.default" }}>SIDEMENU</Box>
+          <Grid item xs={2} sx={{ overflow: 'auto' }}>
+            <Box sx={{ backgroundColor: 'background.default' }}>SIDEMENU</Box>
             <br />
-            <Box sx={{ backgroundColor: "background.default" }}>
+            <Box sx={{ backgroundColor: 'background.default' }}>
               <strong>available mocked parties:</strong> <br />
               {availableParties}
             </Box>
             <br />
-            <Box sx={{ backgroundColor: "background.default" }}>
-              <strong>available mocked products:</strong> <br />{" "}
-              {availableProducts}
+            <Box sx={{ backgroundColor: 'background.default' }}>
+              <strong>available mocked products:</strong> <br /> {availableProducts}
             </Box>
             <br />
-            <Box sx={{ backgroundColor: "background.default" }}>
+            <Box sx={{ backgroundColor: 'background.default' }}>
               <strong>available routes:</strong> <br /> {availableRoutesSideBar}
             </Box>
           </Grid>
           <Grid
             item
             xs={10}
-            sx={{ backgroundColor: "#F5F6F7" }}
+            sx={{ backgroundColor: '#F5F6F7' }}
             display="flex"
             justifyContent="center"
             pb={16}

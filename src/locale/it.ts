@@ -32,13 +32,30 @@ export default {
         title: 'Indica il Legale Rappresentante',
         description:
           'Inserisci i dati del Legale Rappresentante. <1 />La persona che indicherai sarà firmataria del contratto per {{productTitle}}.',
+        managerInfoSummary: {
+          name: 'Nome',
+          surname: 'Cognome',
+          taxCode: 'Codice fiscale',
+          mailPEC: 'Email istituzionale',
+        },
       },
       delegatesInfoSummarySection: {
         step: 'Step 3',
         title: 'Indica l’Amministratore',
         description:
           'Inserisci i dati dell’Amministratore o di un suo delegato. <1 /> La persona che indicherai sarà responsabile della gestione di {{productTitle}}.',
+        delegatesInfoSummary: {
+          name: 'Nome',
+          surname: 'Cognome',
+          taxCode: 'Codice fiscale',
+          mailPEC: 'Email istituzionale',
+        },
       },
+    },
+    actions: {
+      backButton: 'Indietro',
+      declineButton: 'Rifiuta',
+      approveButton: 'Conferma',
     },
   },
 };

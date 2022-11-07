@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import "@pagopa/selfcare-common-frontend/index.css";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { Provider } from "react-redux";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { theme } from "@pagopa/mui-italia";
-import { CONFIG } from "@pagopa/selfcare-common-frontend/config/env";
-import { resolvePathVariables } from "@pagopa/selfcare-common-frontend/utils/routes-utils";
-import { store } from "../../redux/store";
-import { MOCK_USER } from "../../utils/constants";
-import { ENV } from "../../utils/env";
-import reportWebVitals from "../../reportWebVitals";
-import App from "./App";
-import "../../locale";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import '@pagopa/selfcare-common-frontend/index.css';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { theme } from '@pagopa/mui-italia';
+import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/utils/routes-utils';
+import { store } from '../../redux/store';
+import { MOCK_USER } from '../../utils/constants';
+import { ENV } from '../../utils/env';
+import reportWebVitals from '../../reportWebVitals';
+import App from './App';
+import '../../locale';
 
 // eslint-disable-next-line functional/immutable-data
 CONFIG.MOCKS.MOCK_USER = MOCK_USER;
@@ -31,13 +31,13 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
-            <Route path={ENV.ROUTES.ADMIN} exact={false}>
+            <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>
             <Route path="*">
               <Redirect
-                to={resolvePathVariables(ENV.ROUTES.ADMIN, {
-                  userId: "1",
+                to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
+                  partyId: 'onboarded',
                 })}
               />
             </Route>
@@ -46,7 +46,7 @@ ReactDOM.render(
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
