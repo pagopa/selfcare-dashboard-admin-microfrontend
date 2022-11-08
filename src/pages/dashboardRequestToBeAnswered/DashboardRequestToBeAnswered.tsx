@@ -10,9 +10,8 @@ import {
   Button,
 } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import { NavigationBar } from '@pagopa/selfcare-common-frontend';
 import TitleBox from '@pagopa/selfcare-common-frontend/components/TitleBox';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
@@ -22,35 +21,10 @@ const CustomAlert = styled(Alert)({
 
 export default function DashboardRequestToBeAnswered() {
   const { t } = useTranslation();
-
   return (
-    <Grid container ml={32} sx={{ width: '920px' }}>
+    <Grid container ml={75} sx={{ width: '920px' }}>
       <Grid item xs={12}>
-        <Grid mt={5}>
-          <NavigationBar
-            paths={[
-              {
-                description: t('requestToBeAnsweredPage.navigationBar.parties'),
-              },
-              {
-                description: 'selectedParty', // TODO SelectedParty
-              },
-              {
-                description: t('requestToBeAnsweredPage.navigationBar.toValidateData'),
-              },
-            ]}
-            showBackComponent={true}
-            goBack={() => history.back()} // TODO Set the correct one
-          />
-        </Grid>
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={3}
-          sx={{ display: 'flex' }}
-        >
+        <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
           <Grid item>
             <Typography variant="h4"> {t('requestToBeAnsweredPage.title')} </Typography>
           </Grid>
@@ -82,33 +56,14 @@ export default function DashboardRequestToBeAnswered() {
         <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
           <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
             <Grid container sx={{ marginY: 4, marginX: 4 }}>
-              <Typography variant="subtitle2" sx={{ fontSize: '14px' }}>
-                {t('requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.step')}
-              </Typography>
               <Grid item xs={12}>
                 <TitleBox
                   title={t(
                     'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.title'
                   )}
-                  subTitle={
-                    (
-                      <Trans
-                        i18nKey={
-                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.description'
-                        }
-                      >
-                        Conferma, modifica o inserisci i dati dell’ente, assicurandoti che siano
-                        corretti. Verranno usati anche per richiedere <br />
-                        l’adesione ad altri prodotti e in caso di fatturazione.,
-                      </Trans>
-                    ) as unknown as string
-                  }
                   variantTitle={'h6'}
-                  variantSubTitle={'body1'}
-                  subTitleFontSize={'14px'}
-                  mtTitle={2}
-                  mbTitle={1}
-                  mbSubTitle={2}
+                  mtTitle={1}
+                  mbTitle={5}
                 />
                 <Divider />
               </Grid>
@@ -124,7 +79,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'businessNameData'} {/* TODO businessName */}
                       </Typography>
                     </Grid>
@@ -140,8 +95,24 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'registeredOfficeData'} {/* TODO registeredOffice */}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* zipCode */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.zipCode'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'zipCodeData'} {/* TODO zipCode */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -156,7 +127,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'mailPECData'} {/* TODO mailPEC */}
                       </Typography>
                     </Grid>
@@ -172,7 +143,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'taxCodeData'} {/* TODO taxCodeData */}
                       </Typography>
                     </Grid>
@@ -188,24 +159,24 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'vatNumberData'} {/* TODO vatNumber */}
                       </Typography>
                     </Grid>
                   </Grid>
 
-                  {/* recipientCode */}
+                  {/* isGroupPIVA */}
                   <Grid container item alignItems={'center'}>
                     <Grid item xs={3}>
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
-                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.recipientCode'
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA'
                         )}
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
-                        {'recipientCodeData'} {/* TODO recipientCode */}
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'isGroupPIVAData'} {/* TODO isGroupPIVA */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -220,7 +191,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'commercialRegisterNumberData'} {/* TODO commercialRegisterNumber */}
                       </Typography>
                     </Grid>
@@ -236,7 +207,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'registrationInRegisterData'} {/* TODO registrationInRegister */}
                       </Typography>
                     </Grid>
@@ -252,8 +223,8 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
-                        {'registerNumberData'} {/* registerNumber */}
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'registerNumberData'} {/* TODO registerNumber */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -268,8 +239,86 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
-                        {'abiCodeData'} {/* abiCode */}
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'abiCodeData'} {/* TODO abiCode */}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* recipientCode */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.recipientCode'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'recipientCodeData'} {/* TODO recipientCode */}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: 'fontWeightMedium',
+                      marginTop: 4,
+                      marginBottom: 2,
+                    }}
+                    ml={1}
+                  >
+                    {t(
+                      'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.title'
+                    )}
+                  </Typography>
+
+                  {/* protectionOfficerAddress */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.address'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'protectionOfficerAddressData'} {/* TODO protectionOfficerAddress */}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* protectionOfficerMailPEC */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mailPEC'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'protectionOfficerMailPEC'} {/* TODO protectionOfficerMailPECData */}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* protectionOfficerMail */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'requestToBeAnsweredPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mail'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {'protectionOfficerMailData'} {/* TODO protectionOfficerMail */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -279,32 +328,14 @@ export default function DashboardRequestToBeAnswered() {
           </Paper>
           <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
             <Grid container sx={{ marginY: 4, marginX: 4 }}>
-              <Typography variant="subtitle2" sx={{ fontSize: '14px' }}>
-                {t('requestToBeAnsweredPage.summaryStepSection.managerInfoSummarySection.step')}
-              </Typography>
               <Grid item xs={12}>
                 <TitleBox
                   title={t(
                     'requestToBeAnsweredPage.summaryStepSection.managerInfoSummarySection.title'
                   )}
-                  subTitle={
-                    (
-                      <Trans
-                        i18nKey={
-                          'requestToBeAnsweredPage.summaryStepSection.managerInfoSummarySection.description'
-                        }
-                      >
-                        Inserisci i dati del Legale Rappresentante. <br />
-                        La persona che indicherai sarà firmataria del contratto per [productTitle].
-                      </Trans>
-                    ) as unknown as string
-                  }
                   variantTitle={'h6'}
-                  variantSubTitle={'body1'}
-                  subTitleFontSize={'14px'}
-                  mtTitle={2}
-                  mbTitle={1}
-                  mbSubTitle={2}
+                  mtTitle={1}
+                  mbTitle={5}
                 />
                 <Divider />
               </Grid>
@@ -320,7 +351,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'nameData'} {/* TODO name */}
                       </Typography>
                     </Grid>
@@ -336,7 +367,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'surnameData'} {/* TODO surname */}
                       </Typography>
                     </Grid>
@@ -352,7 +383,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'taxCodeData'} {/* TODO taxCode */}
                       </Typography>
                     </Grid>
@@ -368,7 +399,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'mailPECData'} {/* TODO mailPEC */}
                       </Typography>
                     </Grid>
@@ -379,37 +410,22 @@ export default function DashboardRequestToBeAnswered() {
           </Paper>
           <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
             <Grid container sx={{ marginY: 4, marginX: 4 }}>
-              <Typography variant="subtitle2" sx={{ fontSize: '14px' }}>
-                {t('requestToBeAnsweredPage.summaryStepSection.delegatesInfoSummarySection.step')}
-              </Typography>
               <Grid item xs={12}>
                 <TitleBox
                   title={t(
                     'requestToBeAnsweredPage.summaryStepSection.delegatesInfoSummarySection.title'
                   )}
-                  subTitle={
-                    (
-                      <Trans
-                        i18nKey={
-                          'requestToBeAnsweredPage.summaryStepSection.delegatesInfoSummarySection.description'
-                        }
-                      >
-                        Inserisci i dati dell’Amministratore o di un suo delegato. <br />
-                        La persona che indicherai sarà responsabile della gestione di
-                        [productTitle].
-                      </Trans>
-                    ) as unknown as string
-                  }
                   variantTitle={'h6'}
-                  variantSubTitle={'body1'}
-                  subTitleFontSize={'14px'}
-                  mtTitle={2}
-                  mbTitle={1}
-                  mbSubTitle={2}
+                  mtTitle={1}
+                  mbTitle={5}
                 />
                 <Divider />
               </Grid>
               <Grid item xs={12} mt={4}>
+                {/* TODO Add logic for show if present other delegates (using transcoded 
+                "requestToBeAnsweredPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.secondAdmin"
+                OR
+                "requestToBeAnsweredPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.thirdAdmin" */}
                 <Grid container spacing={1}>
                   {/* name */}
                   <Grid container item alignItems={'center'}>
@@ -421,7 +437,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'nameData'} {/* TODO name */}
                       </Typography>
                     </Grid>
@@ -437,7 +453,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'surnameData'} {/* TODO surname */}
                       </Typography>
                     </Grid>
@@ -453,7 +469,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'taxCodeData'} {/* TODO taxCode */}
                       </Typography>
                     </Grid>
@@ -469,7 +485,7 @@ export default function DashboardRequestToBeAnswered() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
-                      <Typography sx={{ fontWeight: 'fontWeightMedium' }}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {'mailPECData'} {/* TODO mailPEC */}
                       </Typography>
                     </Grid>
@@ -479,14 +495,8 @@ export default function DashboardRequestToBeAnswered() {
             </Grid>
           </Paper>
         </Stack>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" my={5}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" py={6} mb={6}>
           <Stack>
-            <Button variant="outlined" onClick={() => history.back()}>
-              {/* TODO Check if correct and if not add correct back actions else remove this TODO */}
-              {t('requestToBeAnsweredPage.actions.backButton')}
-            </Button>
-          </Stack>
-          <Stack display="inline-block">
             <Button
               variant="outlined"
               color="error"
@@ -496,6 +506,8 @@ export default function DashboardRequestToBeAnswered() {
               {/* TODO Add call for decline request */}
               {t('requestToBeAnsweredPage.actions.declineButton')}
             </Button>
+          </Stack>
+          <Stack>
             <Button variant="contained" sx={{ marginLeft: 3 }} onClick={() => ''}>
               {/* TODO Add call for approve request */}
               {t('requestToBeAnsweredPage.actions.approveButton')}
