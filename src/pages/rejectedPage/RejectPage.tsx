@@ -15,7 +15,7 @@ export default function RejectPage() {
         </Grid>
         <Grid item xs={18} display="flex" justifyContent="center" mt={1}>
           <Typography variant="body1" align="center">
-            <Trans i18nKey="rejectPage.descritpion">
+            <Trans i18nKey="rejectPage.description">
               L’adesione di <strong>{{ nomeEnte: 'Nome Ente' }}</strong> è stata rifiutata.
               Invieremo
               <br />
