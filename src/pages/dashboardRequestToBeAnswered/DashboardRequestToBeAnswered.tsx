@@ -11,7 +11,10 @@ import {
 } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import TitleBox from '@pagopa/selfcare-common-frontend/components/TitleBox';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ConfirmPage from '../confirmPage/ConfirmPage';
+import RejectPage from '../rejectedPage/RejectPage';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
@@ -21,8 +24,15 @@ const CustomAlert = styled(Alert)({
 
 export default function DashboardRequestToBeAnswered() {
   const { t } = useTranslation();
-  return (
-    <Grid container ml={75} sx={{ width: '920px' }}>
+  const [showRejectPage, setShowRejectPage] = useState<boolean>();
+  const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
+
+  return showRejectPage ? (
+    <RejectPage />
+  ) : showConfirmPage ? (
+    <ConfirmPage />
+  ) : (
+    <Grid container ml={32} sx={{ width: '920px' }}>
       <Grid item xs={12}>
         <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
           <Grid item>
@@ -501,14 +511,18 @@ export default function DashboardRequestToBeAnswered() {
               variant="outlined"
               color="error"
               style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
-              onClick={() => ''}
+              onClick={() => setShowRejectPage(true)}
             >
               {/* TODO Add call for decline request */}
               {t('requestToBeAnsweredPage.actions.declineButton')}
             </Button>
           </Stack>
           <Stack>
-            <Button variant="contained" sx={{ marginLeft: 3 }} onClick={() => ''}>
+            <Button
+              variant="contained"
+              sx={{ marginLeft: 3 }}
+              onClick={() => setShowConfirmPage(true)}
+            >
               {/* TODO Add call for approve request */}
               {t('requestToBeAnsweredPage.actions.approveButton')}
             </Button>
