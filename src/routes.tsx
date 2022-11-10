@@ -1,7 +1,7 @@
 import { Redirect, useParams } from 'react-router';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/utils/routes-utils';
 import { ENV } from './utils/env';
-import DashboardRequest from './pages/dashboardRequestToBeAnswered/DashboardRequest';
+import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
 
