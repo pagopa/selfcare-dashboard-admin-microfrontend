@@ -27,6 +27,33 @@ export default function DashboardRequestToBeAnswered() {
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
 
+  // TODO: to remove when api will be ready
+  const toValidateState = true;
+
+  const stateCondtition = (state: any, isChipLabelState: boolean, isBgColorChipState: boolean) => {
+    if (isChipLabelState) {
+      switch (state) {
+        case 'approved':
+          return t('requestToBeAnsweredPage.approvedDataChip');
+        case 'rejected':
+          return t('requestToBeAnsweredPage.rejectedDataChip');
+        default:
+          return t('requestToBeAnsweredPage.validationDataChip');
+      }
+    }
+    if (isBgColorChipState) {
+      switch (state) {
+        case 'approved':
+          return 'success.light';
+        case 'rejected':
+          return 'error.light';
+        default:
+          return 'warning.main';
+      }
+    }
+    return undefined;
+  };
+
   return showRejectPage ? (
     <RejectPage />
   ) : showConfirmPage ? (
@@ -40,29 +67,34 @@ export default function DashboardRequestToBeAnswered() {
           </Grid>
           <Grid item>
             <Chip
-              sx={{ backgroundColor: 'warning.main', height: '30px' }}
-              label={t('requestToBeAnsweredPage.validationDataChip')}
+              sx={{
+                backgroundColor: stateCondtition('toValidate', false, true),
+                height: '30px',
+              }}
+              label={stateCondtition('toValidate', true, false)}
             />
           </Grid>
         </Grid>
-        <Grid item xs={12} width="100%" mt={5}>
-          <CustomAlert
-            severity="warning"
-            sx={{
-              fontSize: 'fontSize',
-              backgroundColor: 'background.paper',
-              height: '80px',
-              alignItems: 'center',
-              color: 'colorTextPrimary',
-              borderLeft: 'solid',
-              borderLeftColor: 'warning.main',
-              borderLeftWidth: '4px',
-              width: '100%',
-            }}
-          >
-            {t('requestToBeAnsweredPage.checkPartyInfoAlert')}
-          </CustomAlert>
-        </Grid>
+        {toValidateState && (
+          <Grid item xs={12} width="100%" mt={5}>
+            <CustomAlert
+              severity="warning"
+              sx={{
+                fontSize: 'fontSize',
+                backgroundColor: 'background.paper',
+                height: '80px',
+                alignItems: 'center',
+                color: 'colorTextPrimary',
+                borderLeft: 'solid',
+                borderLeftColor: 'warning.main',
+                borderLeftWidth: '4px',
+                width: '100%',
+              }}
+            >
+              {t('requestToBeAnsweredPage.checkPartyInfoAlert')}
+            </CustomAlert>
+          </Grid>
+        )}
         <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
           <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
             <Grid container sx={{ marginY: 4, marginX: 4 }}>
@@ -517,16 +549,18 @@ export default function DashboardRequestToBeAnswered() {
               {t('requestToBeAnsweredPage.actions.declineButton')}
             </Button>
           </Stack>
-          <Stack>
-            <Button
-              variant="contained"
-              sx={{ marginLeft: 3 }}
-              onClick={() => setShowConfirmPage(true)}
-            >
-              {/* TODO Add call for approve request */}
-              {t('requestToBeAnsweredPage.actions.approveButton')}
-            </Button>
-          </Stack>
+          {toValidateState && (
+            <Stack>
+              <Button
+                variant="contained"
+                sx={{ marginLeft: 3 }}
+                onClick={() => setShowConfirmPage(true)}
+              >
+                {/* TODO Add call for approve request */}
+                {t('requestToBeAnsweredPage.actions.approveButton')}
+              </Button>
+            </Stack>
+          )}
         </Stack>
       </Grid>
     </Grid>

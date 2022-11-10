@@ -2,6 +2,8 @@ export default {
   requestToBeAnsweredPage: {
     title: 'Richiesta di adesione',
     validationDataChip: 'Da validare',
+    approvedDataChip: 'Approvata',
+    rejectedDataChip:'Rifiutata',
     checkPartyInfoAlert:
       'Controlla le informazioni inserite dall’ente e approva o rifiuta la richiesta.',
     summaryStepSection: {
