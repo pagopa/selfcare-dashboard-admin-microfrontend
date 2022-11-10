@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
-import DashboardRequestActions from './DashboardRequestActions';
-import DashboardRequestFields from './DashboardRequestFields';
+import DashboardRequestActions from './components/DashboardRequestActions';
+import DashboardRequestFields from './components/DashboardRequestFields';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
