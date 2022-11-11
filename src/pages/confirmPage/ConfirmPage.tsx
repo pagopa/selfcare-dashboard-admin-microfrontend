@@ -2,9 +2,10 @@ import { Button, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { IllusCompleted } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
+import { OnboardingDataDto } from '../../services/dashboardRequestService';
 import { ENV } from '../../utils/env';
 
-export default function ConfirmPage() {
+export default function ConfirmPage(data: OnboardingDataDto) {
   const { t } = useTranslation();
   return (
     <Box display={'flex'} alignItems="center">
@@ -16,8 +17,8 @@ export default function ConfirmPage() {
         <Grid item xs={18} display="flex" justifyContent="center" mt={1}>
           <Typography variant="body1" align="center">
             <Trans i18nKey="confirmPage.description">
-              L’adesione di <strong>{{ nomeEnte: 'Nome Ente' }}</strong> è stata approvata.
-              Invieremo
+              L’adesione di <strong>{{ nomeEnte: data.billingData.businessName }}</strong> è stata
+              approvata. Invieremo
               <br />
               all’indirizzo PEC indicato un’email con le istruzioni per
               <br />

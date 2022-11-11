@@ -1,6 +1,7 @@
 import { Chip, Grid, Typography, Alert, styled } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { formData, OnboardingDataDto } from '../../services/dashboardRequestService';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
@@ -16,16 +17,24 @@ export default function DashboardRequestToBeAnswered() {
   const { t } = useTranslation();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
+  const [data, setData] = useState<OnboardingDataDto>();
 
+  useEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
+    const getTaxCode = window.location.search.split('/').pop();
+    const pspBillingData = formData.find((data) => data.billingData.taxCode === getTaxCode);
+
+    setData(pspBillingData);
+  }, []);
   // TODO: to remove when api will be ready
-  const toValidateState = true;
+  const toValidateState = data?.status === 'PENDING';
 
   const stateCondtition = (state: any, isChipLabelState: boolean, isBgColorChipState: boolean) => {
     if (isChipLabelState) {
       switch (state) {
-        case 'approved':
+        case 'APPROVED':
           return t('requestToBeAnsweredPage.approvedDataChip');
-        case 'rejected':
+        case 'REJECT':
           return t('requestToBeAnsweredPage.rejectedDataChip');
         default:
           return t('requestToBeAnsweredPage.validationDataChip');
@@ -33,9 +42,9 @@ export default function DashboardRequestToBeAnswered() {
     }
     if (isBgColorChipState) {
       switch (state) {
-        case 'approved':
+        case 'APPROVED':
           return 'success.light';
-        case 'rejected':
+        case 'REJECTED':
           return 'error.light';
         default:
           return 'warning.main';
@@ -45,9 +54,9 @@ export default function DashboardRequestToBeAnswered() {
   };
 
   return showRejectPage ? (
-    <RejectPage />
+    <RejectPage data={data} />
   ) : showConfirmPage ? (
-    <ConfirmPage />
+    <ConfirmPage data={data} />
   ) : (
     <Grid container ml={32} sx={{ width: '920px' }}>
       <Grid item xs={12}>
@@ -58,10 +67,10 @@ export default function DashboardRequestToBeAnswered() {
           <Grid item>
             <Chip
               sx={{
-                backgroundColor: stateCondtition('toValidate', false, true),
+                backgroundColor: stateCondtition(data?.status, false, true),
                 height: '30px',
               }}
-              label={stateCondtition('toValidate', true, false)}
+              label={stateCondtition(data?.status, true, false)}
             />
           </Grid>
         </Grid>
