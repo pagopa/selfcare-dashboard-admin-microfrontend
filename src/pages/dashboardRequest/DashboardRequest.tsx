@@ -1,7 +1,6 @@
 import { Chip, Grid, Typography, Alert, styled } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formData, OnboardingDataDto } from '../../services/dashboardRequestService';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
@@ -17,17 +16,9 @@ export default function DashboardRequestToBeAnswered() {
   const { t } = useTranslation();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
-  const [data, setData] = useState<OnboardingDataDto>();
 
-  useEffect(() => {
-    // eslint-disable-next-line functional/immutable-data
-    const getTaxCode = window.location.search.split('/').pop();
-    const pspBillingData = formData.find((data) => data.billingData.taxCode === getTaxCode);
-
-    setData(pspBillingData);
-  }, []);
   // TODO: to remove when api will be ready
-  const toValidateState = data?.status === 'PENDING';
+  const toValidateState = true;
 
   const stateCondtition = (state: any, isChipLabelState: boolean, isBgColorChipState: boolean) => {
     if (isChipLabelState) {
@@ -54,9 +45,9 @@ export default function DashboardRequestToBeAnswered() {
   };
 
   return showRejectPage ? (
-    <RejectPage data={data} />
+    <RejectPage />
   ) : showConfirmPage ? (
-    <ConfirmPage data={data} />
+    <ConfirmPage />
   ) : (
     <Grid container ml={32} sx={{ width: '920px' }}>
       <Grid item xs={12}>
@@ -67,10 +58,10 @@ export default function DashboardRequestToBeAnswered() {
           <Grid item>
             <Chip
               sx={{
-                backgroundColor: stateCondtition(data?.status, false, true),
+                backgroundColor: stateCondtition('APPROVED', false, true),
                 height: '30px',
               }}
-              label={stateCondtition(data?.status, true, false)}
+              label={stateCondtition('APPROVED', true, false)}
             />
           </Grid>
         </Grid>

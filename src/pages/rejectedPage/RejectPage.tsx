@@ -2,10 +2,9 @@ import { Button, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { IllusCompleted } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
-import { OnboardingDataDto } from '../../services/dashboardRequestService';
 import { ENV } from '../../utils/env';
 
-export default function RejectPage(data: OnboardingDataDto) {
+export default function RejectPage() {
   const { t } = useTranslation();
   return (
     <Box display={'flex'} alignItems="center">
@@ -17,8 +16,7 @@ export default function RejectPage(data: OnboardingDataDto) {
         <Grid item xs={18} display="flex" justifyContent="center" mt={1}>
           <Typography variant="body1" align="center">
             <Trans i18nKey="rejectPage.description">
-              L’adesione di <strong>{data.billingData.businessName}</strong> è stata rifiutata.
-              Invieremo
+              L’adesione di {{ ente: 'nome ente' }} è stata rifiutata. Invieremo
               <br />
               all’indirizzo PEC indicato un’email con le istruzioni per <br />
               ripetere l’adesione.
