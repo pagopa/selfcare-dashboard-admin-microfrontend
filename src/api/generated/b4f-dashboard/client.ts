@@ -33,6 +33,10 @@ import {
   getInstitutionUsersUsingGETDefaultDecoder,
   GetInstitutionUserUsingGETT,
   getInstitutionUserUsingGETDefaultDecoder,
+  RetrieveOnboardingRequestUsingGETT,
+  retrieveOnboardingRequestUsingGETDefaultDecoder,
+  RetrieveProductBackofficeUsingGETT,
+  retrieveProductBackofficeUsingGETDefaultDecoder,
   GetProductRolesUsingGETT,
   getProductRolesUsingGETDefaultDecoder,
   DeleteRelationshipByIdUsingDELETET,
@@ -88,6 +92,8 @@ export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
   TypeofApiCall<AddUserProductRolesUsingPUTT> &
   TypeofApiCall<GetInstitutionUsersUsingGETT> &
   TypeofApiCall<GetInstitutionUserUsingGETT> &
+  TypeofApiCall<RetrieveOnboardingRequestUsingGETT> &
+  TypeofApiCall<RetrieveProductBackofficeUsingGETT> &
   TypeofApiCall<GetProductRolesUsingGETT> &
   TypeofApiCall<DeleteRelationshipByIdUsingDELETET> &
   TypeofApiCall<ActivateRelationshipUsingPOSTT> &
@@ -117,6 +123,8 @@ export type ParamKeys = keyof (TypeofApiParams<GetInstitutionsUsingGETT> &
   TypeofApiParams<AddUserProductRolesUsingPUTT> &
   TypeofApiParams<GetInstitutionUsersUsingGETT> &
   TypeofApiParams<GetInstitutionUserUsingGETT> &
+  TypeofApiParams<RetrieveOnboardingRequestUsingGETT> &
+  TypeofApiParams<RetrieveProductBackofficeUsingGETT> &
   TypeofApiParams<GetProductRolesUsingGETT> &
   TypeofApiParams<DeleteRelationshipByIdUsingDELETET> &
   TypeofApiParams<ActivateRelationshipUsingPOSTT> &
@@ -168,6 +176,8 @@ export type WithDefaultsT<
   | AddUserProductRolesUsingPUTT
   | GetInstitutionUsersUsingGETT
   | GetInstitutionUserUsingGETT
+  | RetrieveOnboardingRequestUsingGETT
+  | RetrieveProductBackofficeUsingGETT
   | GetProductRolesUsingGETT
   | DeleteRelationshipByIdUsingDELETET
   | ActivateRelationshipUsingPOSTT
@@ -228,6 +238,14 @@ export type Client<
 
       readonly getInstitutionUserUsingGET: TypeofApiCall<
         GetInstitutionUserUsingGETT
+      >;
+
+      readonly retrieveOnboardingRequestUsingGET: TypeofApiCall<
+        RetrieveOnboardingRequestUsingGETT
+      >;
+
+      readonly retrieveProductBackofficeUsingGET: TypeofApiCall<
+        RetrieveProductBackofficeUsingGETT
       >;
 
       readonly getProductRolesUsingGET: TypeofApiCall<GetProductRolesUsingGETT>;
@@ -353,6 +371,20 @@ export type Client<
         ReplaceRequestParams<
           GetInstitutionUserUsingGETT,
           Omit<RequestParams<GetInstitutionUserUsingGETT>, K>
+        >
+      >;
+
+      readonly retrieveOnboardingRequestUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          RetrieveOnboardingRequestUsingGETT,
+          Omit<RequestParams<RetrieveOnboardingRequestUsingGETT>, K>
+        >
+      >;
+
+      readonly retrieveProductBackofficeUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          RetrieveProductBackofficeUsingGETT,
+          Omit<RequestParams<RetrieveProductBackofficeUsingGETT>, K>
         >
       >;
 
@@ -746,6 +778,53 @@ export function createClient<K extends ParamKeys>({
     options
   );
 
+  const retrieveOnboardingRequestUsingGETT: ReplaceRequestParams<
+    RetrieveOnboardingRequestUsingGETT,
+    RequestParams<RetrieveOnboardingRequestUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: retrieveOnboardingRequestUsingGETDefaultDecoder(),
+    url: ({ ["tokenId"]: tokenId }) =>
+      `${basePath}/onboarding-requests/${tokenId}`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const retrieveOnboardingRequestUsingGET: TypeofApiCall<RetrieveOnboardingRequestUsingGETT> = createFetchRequestForApi(
+    retrieveOnboardingRequestUsingGETT,
+    options
+  );
+
+  const retrieveProductBackofficeUsingGETT: ReplaceRequestParams<
+    RetrieveProductBackofficeUsingGETT,
+    RequestParams<RetrieveProductBackofficeUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: retrieveProductBackofficeUsingGETDefaultDecoder(),
+    url: ({ ["productId"]: productId }) =>
+      `${basePath}/products/${productId}/back-office`,
+
+    query: ({
+      ["institutionId"]: institutionId,
+      ["environment"]: environment
+    }) =>
+      withoutUndefinedValues({
+        ["institutionId"]: institutionId,
+        ["environment"]: environment
+      })
+  };
+  const retrieveProductBackofficeUsingGET: TypeofApiCall<RetrieveProductBackofficeUsingGETT> = createFetchRequestForApi(
+    retrieveProductBackofficeUsingGETT,
+    options
+  );
+
   const getProductRolesUsingGETT: ReplaceRequestParams<
     GetProductRolesUsingGETT,
     RequestParams<GetProductRolesUsingGETT>
@@ -848,10 +927,15 @@ export function createClient<K extends ParamKeys>({
     response_decoder: exchangeUsingGETDefaultDecoder(),
     url: ({}) => `${basePath}/token/exchange`,
 
-    query: ({ ["institutionId"]: institutionId, ["productId"]: productId }) =>
+    query: ({
+      ["institutionId"]: institutionId,
+      ["productId"]: productId,
+      ["environment"]: environment
+    }) =>
       withoutUndefinedValues({
         ["institutionId"]: institutionId,
-        ["productId"]: productId
+        ["productId"]: productId,
+        ["environment"]: environment
       })
   };
   const exchangeUsingGET: TypeofApiCall<ExchangeUsingGETT> = createFetchRequestForApi(
@@ -1210,6 +1294,12 @@ export function createClient<K extends ParamKeys>({
     ),
     getInstitutionUserUsingGET: (withDefaults || identity)(
       getInstitutionUserUsingGET
+    ),
+    retrieveOnboardingRequestUsingGET: (withDefaults || identity)(
+      retrieveOnboardingRequestUsingGET
+    ),
+    retrieveProductBackofficeUsingGET: (withDefaults || identity)(
+      retrieveProductBackofficeUsingGET
     ),
     getProductRolesUsingGET: (withDefaults || identity)(
       getProductRolesUsingGET
