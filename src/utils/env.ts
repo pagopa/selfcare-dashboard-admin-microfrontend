@@ -11,8 +11,8 @@ export const ENV = {
 
   // TODO ROUTES
   ROUTES: {
-    ADMIN: `${PUBLIC_URL_INNER}/admin`, // TODO ADD THE CORRECT ONE
-    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/:partyId`, // TODO ADD THE CORRECT ONE
+    ADMIN: `${PUBLIC_URL_INNER}/admind/onboarding`,
+    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admind/onboarding/:partyId`, // TODO ADD THE CORRECT ONE
   },
 
   URL_FE: {
