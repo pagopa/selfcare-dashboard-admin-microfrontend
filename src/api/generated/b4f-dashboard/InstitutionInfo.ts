@@ -4,7 +4,10 @@
  */
 /* eslint-disable  */
 
+import { DpoData } from "./DpoData";
+import { PspData } from "./PspData";
 import * as t from "io-ts";
+import { EmailString } from "@pagopa/ts-commons/lib/strings";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
 export enum InstitutionTypeEnum {
@@ -20,41 +23,39 @@ export enum InstitutionTypeEnum {
 }
 
 // required attributes
-const InstitutionResourceR = t.interface({
+const InstitutionInfoR = t.interface({
   address: t.string,
-
-  externalId: t.string,
 
   fiscalCode: t.string,
 
   id: t.string,
 
-  mailAddress: t.string,
+  mailAddress: EmailString,
 
   name: t.string,
 
-  origin: t.string,
+  recipientCode: t.string,
 
-  originId: t.string,
+  vatNumber: t.string,
 
-  status: t.string,
-
-  userRole: t.string
+  zipCode: t.string
 });
 
 // optional attributes
-const InstitutionResourceO = t.partial({
-  category: t.string,
+const InstitutionInfoO = t.partial({
+  dpoData: DpoData,
 
   institutionType: enumType<InstitutionTypeEnum>(
     InstitutionTypeEnum,
     "institutionType"
-  )
+  ),
+
+  pspData: PspData
 });
 
-export const InstitutionResource = t.intersection(
-  [InstitutionResourceR, InstitutionResourceO],
-  "InstitutionResource"
+export const InstitutionInfo = t.intersection(
+  [InstitutionInfoR, InstitutionInfoO],
+  "InstitutionInfo"
 );
 
-export type InstitutionResource = t.TypeOf<typeof InstitutionResource>;
+export type InstitutionInfo = t.TypeOf<typeof InstitutionInfo>;

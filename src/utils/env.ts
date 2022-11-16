@@ -9,10 +9,9 @@ export const ENV = {
   ENV: env.get('REACT_APP_ENV').required().asString(),
   PUBLIC_URL: PUBLIC_URL_INNER,
 
-  // TODO ROUTES
   ROUTES: {
-    ADMIN: `${PUBLIC_URL_INNER}/admind/onboarding`,
-    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admind/onboarding/:partyId`, // TODO ADD THE CORRECT ONE
+    ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
+    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
   },
 
   URL_FE: {
@@ -32,6 +31,7 @@ export const ENV = {
   },
 
   PARTY_GROUPS_PAGE_SIZE: env.get('REACT_APP_PARTY_GROUPS_PAGE_SIZE').required().asInt(),
+
   PARTY_PRODUCT_GROUPS_PAGE_SIZE: env
     .get('REACT_APP_PARTY_PRODUCT_GROUPS_PAGE_SIZE')
     .required()

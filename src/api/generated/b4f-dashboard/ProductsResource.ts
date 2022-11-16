@@ -4,6 +4,7 @@
  */
 /* eslint-disable  */
 
+import { BackOfficeConfigurationsResource } from "./BackOfficeConfigurationsResource";
 import { SubProductResource } from "./SubProductResource";
 import * as t from "io-ts";
 import { enumType } from "@pagopa/ts-commons/lib/types";
@@ -40,6 +41,11 @@ const ProductsResourceR = t.interface({
 // optional attributes
 const ProductsResourceO = t.partial({
   activatedAt: UTCISODateFromString,
+
+  backOfficeEnvironmentConfigurations: t.readonlyArray(
+    BackOfficeConfigurationsResource,
+    "array of BackOfficeConfigurationsResource"
+  ),
 
   children: t.readonlyArray(SubProductResource, "array of SubProductResource"),
 

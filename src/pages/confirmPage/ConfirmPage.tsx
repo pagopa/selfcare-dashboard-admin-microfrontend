@@ -16,8 +16,7 @@ export default function ConfirmPage() {
         <Grid item xs={18} display="flex" justifyContent="center" mt={1}>
           <Typography variant="body1" align="center">
             <Trans i18nKey="confirmPage.description">
-              L’adesione di <strong>{{ nomeEnte: 'Nome Ente' }}</strong> è stata approvata.
-              Invieremo
+              L’adesione di {{ ente: 'ente' }} è stata approvata. Invieremo
               <br />
               all’indirizzo PEC indicato un’email con le istruzioni per
               <br />
