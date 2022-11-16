@@ -31,6 +31,7 @@ export const ENV = {
   },
 
   PARTY_GROUPS_PAGE_SIZE: env.get('REACT_APP_PARTY_GROUPS_PAGE_SIZE').required().asInt(),
+
   PARTY_PRODUCT_GROUPS_PAGE_SIZE: env
     .get('REACT_APP_PARTY_PRODUCT_GROUPS_PAGE_SIZE')
     .required()
