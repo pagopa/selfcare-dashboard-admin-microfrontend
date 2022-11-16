@@ -1,11 +1,9 @@
-
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/utils/storage';
 import { buildFetchApi, extractResponse } from '@pagopa/selfcare-common-frontend/utils/api-utils';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/redux/slices/appStateSlice';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/b4f-dashboard/client';
-
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
   (wrappedOperation) => (params: any) => {
@@ -37,11 +35,10 @@ const onRedirectToLogin = () =>
   );
 
 export const DashboardApi = {
-  fetchOnboardingResource: async (
-    tokenId: string,
-  ): Promise<OnboardingRequestResource> => {
-    const result = await apiClient.retrieveOnboardingRequestUsingGET({tokenId});
+  fetchOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+    const result = await apiClient.retrieveOnboardingRequestUsingGET({
+      tokenId,
+    });
     return extractResponse(result, 200, onRedirectToLogin);
   },
-
 };

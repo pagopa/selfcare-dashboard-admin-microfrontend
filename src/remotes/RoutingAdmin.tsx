@@ -11,7 +11,8 @@ const RoutingAdmin = ({
   store,
   i18n,
   theme,
-  party,
+  onboardingRequests,
+  onboardingRequest,
   products,
   activeProducts,
   productsMap,
@@ -21,9 +22,10 @@ const RoutingAdmin = ({
   <RemotePage store={store} history={history} i18n={i18n} theme={theme} CONFIG={CONFIG}>
     <Switch>
       {buildRoutes(
-        party,
         products,
         activeProducts,
+        onboardingRequests,
+        onboardingRequest,
         productsMap,
         decorators,
         DASHBOARD_ADMIN_ROUTES.DASHBOARD_ADMIN.subRoutes

@@ -9,10 +9,9 @@ export const ENV = {
   ENV: env.get('REACT_APP_ENV').required().asString(),
   PUBLIC_URL: PUBLIC_URL_INNER,
 
-  // TODO ROUTES
   ROUTES: {
-    ADMIN: `${PUBLIC_URL_INNER}/admin`, // TODO ADD THE CORRECT ONE
-    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/:partyId`, // TODO ADD THE CORRECT ONE
+    ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
+    ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
   },
 
   URL_FE: {

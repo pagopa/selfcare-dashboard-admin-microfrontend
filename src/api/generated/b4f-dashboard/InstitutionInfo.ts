@@ -36,7 +36,9 @@ const InstitutionInfoR = t.interface({
 
   recipientCode: t.string,
 
-  vatNumber: t.string
+  vatNumber: t.string,
+
+  zipCode: t.string
 });
 
 // optional attributes

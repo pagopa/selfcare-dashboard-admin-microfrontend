@@ -1,4 +1,6 @@
-const IS_DEVELOP = process.env.NODE_ENV === "development";
+const IS_DEVELOP = process.env.NODE_ENV === 'development';
 
 export const MOCK_USER = IS_DEVELOP;
 export const LOG_REDUX_ACTIONS = IS_DEVELOP;
+
+export const LOADING_RETRIEVE_ONBOARDING_REQUEST = 'RETRIEVE_ONBOARDING_REQUEST';

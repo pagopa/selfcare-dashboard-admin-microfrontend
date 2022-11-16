@@ -37,8 +37,8 @@ export const DASHBOARD_ADMIN_ROUTES = {
         exact: true,
         component: DashboardRequest,
       },
-      DASHBOARD_ONBOARDING_TO_BE_ANSWERED: {
-        path: `${ENV.ROUTES.ADMIN}/:partyId`,
+      DASHBOARD_ONBOARDING_REQUESTS: {
+        path: `${ENV.ROUTES.ADMIN}/:tokenId`,
         exact: true,
         component: DashboardRequest,
       },

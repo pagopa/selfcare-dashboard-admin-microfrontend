@@ -20,12 +20,13 @@ import {
   DashboardMicrofrontendPageProps,
   DashboardPageProps,
 } from '../dashboard-routes-utils';
-import { mockedParties } from './data/party';
+import { mockedOnboardingRequests } from '../../services/__mocks__/dashboardRequestService';
 import { mockedPartyProducts } from './data/product';
 import { mockedProductRoles } from './data/product';
 import Layout from './Layout';
 
 type UrlParams = {
+  tokenId: string;
   partyId: string;
   productId: string;
 };
@@ -57,17 +58,19 @@ const App = ({
 }: {
   AppRouting: (props: DashboardMicrofrontendPageProps) => Array<React.ReactNode>;
   store: ReturnType<typeof createStore>;
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
-  const { partyId } = useParams<UrlParams>();
+  const { tokenId } = useParams<UrlParams>();
   const history = useHistory();
   const theme = useTheme();
   const { i18n } = useTranslation();
 
-  const party = mockedParties.find((p) => p.partyId === partyId);
-  const products = party ? mockedPartyProducts : undefined;
+  const onboardingRequests = mockedOnboardingRequests ?? undefined;
+  const onboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
+  const products = onboardingRequest ? mockedPartyProducts : undefined;
   const activeProducts = products ? products.filter((p) => p.status === 'ACTIVE') : undefined;
   const productsMap = products ? buildProductsMap(products) : undefined;
-  const productsRolesMap = party
+  const productsRolesMap = onboardingRequest
     ? products?.reduce((acc: ProductsRolesMap, p: Product) => {
         // eslint-disable-next-line functional/immutable-data
         acc[p.id] = productRoles2ProductRolesList(
@@ -77,7 +80,7 @@ const App = ({
       }, {} as ProductsRolesMap)
     : undefined;
 
-  const availableParties = mockedParties.map((p) => p.partyId).join(', ');
+  const availableTokenIds = mockedOnboardingRequests.map((r) => r.tokenId).join(', ');
   const availableProducts = mockedPartyProducts.map((p) => p.id).join(', ');
 
   const availableRoutesBody = Object.keys(
@@ -150,7 +153,7 @@ const App = ({
     },
   };
 
-  return party && products && activeProducts && productsMap && productsRolesMap ? (
+  return onboardingRequest && products && activeProducts && productsMap && productsRolesMap ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />
@@ -161,8 +164,8 @@ const App = ({
             <Box sx={{ backgroundColor: 'background.default' }}>SIDEMENU</Box>
             <br />
             <Box sx={{ backgroundColor: 'background.default' }}>
-              <strong>available mocked parties:</strong> <br />
-              {availableParties}
+              <strong>available mocked tokenIds:</strong> <br />
+              {availableTokenIds}
             </Box>
             <br />
             <Box sx={{ backgroundColor: 'background.default' }}>
@@ -187,7 +190,8 @@ const App = ({
                 store,
                 theme,
                 i18n,
-                party,
+                onboardingRequests,
+                onboardingRequest,
                 products,
                 activeProducts,
                 productsMap,
@@ -208,8 +212,8 @@ const App = ({
     </ErrorBoundary>
   ) : (
     <>
-      Party not available! Use one of: <br />
-      {availableParties}
+      Token not available! Use one of: <br />
+      {availableTokenIds}
     </>
   );
 };

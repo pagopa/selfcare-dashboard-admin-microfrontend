@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "description": "Self Care Dashboard API documentation",
-    "title": "@project.parent.artifactId@",
-    "version": "@project.version@"
+    "title": "selc-dashboard",
+    "version": "0.0.1-SNAPSHOT"
   },
   "host": "localhost:80",
   "basePath": "%7BbasePath%7D",
@@ -2173,6 +2173,10 @@
         "vatNumber": {
           "description": "Institution's VAT number",
           "type": "string"
+        },
+        "zipCode": {
+          "description": "Institution's zipCode",
+          "type": "string"
         }
       },
       "required": [
@@ -2182,7 +2186,8 @@
         "mailAddress",
         "name",
         "recipientCode",
-        "vatNumber"
+        "vatNumber",
+        "zipCode"
       ],
       "title": "InstitutionInfo",
       "type": "object"
@@ -2408,6 +2413,14 @@
         },
         "status": {
           "description": "Onboarding request's status",
+          "enum": [
+            "ACTIVE",
+            "DELETED",
+            "PENDING",
+            "REJECTED",
+            "SUSPENDED",
+            "TOBEVALIDATED"
+          ],
           "type": "string"
         }
       },
@@ -3101,9 +3114,13 @@
     "UserInfo": {
       "properties": {
         "email": {
-          "description": "User's personal email",
+          "description": "User's institutional email",
           "example": "email@example.com",
           "format": "email",
+          "type": "string"
+        },
+        "fiscalCode": {
+          "description": "User's fiscal code",
           "type": "string"
         },
         "id": {
@@ -3122,6 +3139,7 @@
       },
       "required": [
         "email",
+        "fiscalCode",
         "id",
         "name",
         "surname"

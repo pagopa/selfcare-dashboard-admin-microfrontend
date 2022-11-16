@@ -37,7 +37,7 @@ ReactDOM.render(
             <Route path="*">
               <Redirect
                 to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
-                  partyId: 'onboarded',
+                  tokenId: 'tokenId01',
                 })}
               />
             </Route>

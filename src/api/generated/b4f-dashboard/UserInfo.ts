@@ -11,6 +11,8 @@ import { EmailString } from "@pagopa/ts-commons/lib/strings";
 const UserInfoR = t.interface({
   email: EmailString,
 
+  fiscalCode: t.string,
+
   id: t.string,
 
   name: t.string,

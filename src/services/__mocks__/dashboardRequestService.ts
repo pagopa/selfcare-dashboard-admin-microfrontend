@@ -1,5 +1,170 @@
+import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 
-export const fetchOnboardingPspResource = (
-    _tokenId: string,
-): Promise<any> => new Promise<void >((resolve) => resolve());
-;
+export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
+  // Use case of request with TOBEVALIDATED status
+  {
+    tokenId: 'tokenId01',
+    status: 'TOBEVALIDATED',
+    institutionInfo: {
+      id: 'institutionId1',
+      name: 'Agenzia per le Erogazioni in Agricoltura - AGEA',
+      address: 'Via Palestro, 81',
+      zipCode: '00185',
+      mailAddress: 'agenzia.erogazioni.agricoltura@PeCEmAiL.com', // use case for toLowerCase email
+      fiscalCode: '97181460581',
+      vatNumber: '11122233345',
+      pspData: {
+        vatNumberGroup: true,
+        businessRegisterNumber: '11111111111',
+        legalRegisterName: 'DummySubscribe01',
+        legalRegisterNumber: '40',
+        abiCode: '11223',
+      },
+      recipientCode: 'DummyRecipientCode01',
+      dpoData: {
+        address: 'Via Autonomia, 5',
+        pec: 'dpo01@pecdpo.com',
+        email: 'dpo01@dpo.com',
+      },
+      institutionType: 'PSP',
+    },
+    manager: {
+      id: 'Manager01',
+      name: 'Manager01',
+      surname: 'Manager01',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager01@manager.com',
+    },
+    admins: [
+      {
+        id: '1',
+        name: 'Fabio',
+        surname: 'Diaz',
+        fiscalCode: 'MNGMGR11D22B345K',
+        email: 'fabio@comunedi.it',
+      },
+    ],
+  },
+
+  // Use case of request with ACTIVE status
+  {
+    tokenId: 'tokenId02',
+    status: 'ACTIVE',
+    institutionInfo: {
+      id: 'institutionId2',
+      name: 'Comune di Milano',
+      address: 'Via Lombardia, 59',
+      zipCode: '45321',
+      mailAddress: 'comune.milano@pecemail.com',
+      fiscalCode: '76765454321',
+      vatNumber: '22233344456',
+      pspData: {
+        vatNumberGroup: true,
+        businessRegisterNumber: '22222222222',
+        legalRegisterName: 'DummySubscribe02',
+        legalRegisterNumber: '41',
+        abiCode: '22334',
+      },
+      recipientCode: 'DummyRecipientCode02',
+      dpoData: {
+        address: 'Via Lombardia, 5',
+        pec: 'dpo02@pecdpo.com',
+        email: 'dpo02@dpo.com',
+      },
+      institutionType: 'PSP',
+    },
+    manager: {
+      id: 'Manager02',
+      name: 'Manager02',
+      surname: 'Manager02',
+      fiscalCode: 'MNGMGR22D22B345K',
+      email: 'manager02@manager.com',
+    },
+    admins: [
+      // Use case with 3 admins
+      {
+        id: '2',
+        name: 'Admin01',
+        surname: 'Admin01',
+        fiscalCode: '11111111111',
+        email: 'admin01@comunedi.it',
+      },
+      {
+        id: '3',
+        name: 'Admin02',
+        surname: 'Admin02',
+        fiscalCode: '22222222222',
+        email: 'admin02@comunedi.it',
+      },
+      {
+        id: '4',
+        name: 'Admin03',
+        surname: 'Admin03',
+        fiscalCode: '33333333333',
+        email: 'AdMiN03@comunedi.it', // Use case for test the lowercase of email
+      },
+    ],
+  },
+
+  // Use case of request with REJECTED status
+  {
+    tokenId: 'tokenId03',
+    status: 'REJECTED',
+    institutionInfo: {
+      id: 'institutionId3',
+      name: 'Comune di Roma',
+      address: 'Via Totti, 44',
+      zipCode: '44235',
+      mailAddress: 'comune.roma@pecemail.com',
+      fiscalCode: '87695432678',
+      vatNumber: '93945678123',
+      pspData: {
+        vatNumberGroup: true,
+        businessRegisterNumber: '33333333333',
+        legalRegisterName: 'DummySubscribe03',
+        legalRegisterNumber: '45',
+        abiCode: '77665',
+      },
+      recipientCode: 'DummyRecipientCode03',
+      dpoData: {
+        address: 'Via Autonomia, 546',
+        pec: 'dpo03@pecdpo.com',
+        email: 'dpo03@dpo.com',
+      },
+      institutionType: 'PSP',
+    },
+    manager: {
+      id: 'Manager03',
+      name: 'Manager03',
+      surname: 'Manager03',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager03@manager.com',
+    },
+    admins: [
+      // Use case with 2 admins
+      {
+        id: '7',
+        name: 'Admin07',
+        surname: 'Admin07',
+        fiscalCode: '77777777777',
+        email: 'admin07@comunedi.it',
+      },
+      {
+        id: '8',
+        name: 'Admin08',
+        surname: 'Admin08',
+        fiscalCode: '88888888888',
+        email: 'admin08@comunedi.it',
+      },
+    ],
+  },
+];
+
+export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+  const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
+  if (selectedOnboardingRequest) {
+    return new Promise((resolve) => resolve(selectedOnboardingRequest));
+  } else {
+    throw new Error('Onboarding request not found!');
+  }
+};

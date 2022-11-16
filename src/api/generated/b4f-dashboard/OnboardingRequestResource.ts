@@ -7,6 +7,21 @@
 import { UserInfo } from "./UserInfo";
 import { InstitutionInfo } from "./InstitutionInfo";
 import * as t from "io-ts";
+import { enumType } from "@pagopa/ts-commons/lib/types";
+
+export enum StatusEnum {
+  "ACTIVE" = "ACTIVE",
+
+  "DELETED" = "DELETED",
+
+  "PENDING" = "PENDING",
+
+  "REJECTED" = "REJECTED",
+
+  "SUSPENDED" = "SUSPENDED",
+
+  "TOBEVALIDATED" = "TOBEVALIDATED"
+}
 
 // required attributes
 const OnboardingRequestResourceR = t.interface({
@@ -16,7 +31,7 @@ const OnboardingRequestResourceR = t.interface({
 
   manager: UserInfo,
 
-  status: t.string
+  status: enumType<StatusEnum>(StatusEnum, "status")
 });
 
 // optional attributes

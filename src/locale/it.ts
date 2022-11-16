@@ -1,9 +1,9 @@
 export default {
-  requestToBeAnsweredPage: {
+  onboardingRequestPage: {
     title: 'Richiesta di adesione',
     validationDataChip: 'Da validare',
     approvedDataChip: 'Approvata',
-    rejectedDataChip:'Rifiutata',
+    rejectedDataChip: 'Rifiutata',
     checkPartyInfoAlert:
       'Controlla le informazioni inserite dall’ente e approva o rifiuta la richiesta.',
     summaryStepSection: {
@@ -16,7 +16,11 @@ export default {
           mailPEC: 'Indirizzo PEC',
           taxCode: 'Codice fiscale',
           vatNumber: 'Partita IVA',
-          isGroupPIVA: 'La partita IVA è di gruppo',
+          isGroupPIVA: {
+            title: 'La partita IVA è di gruppo',
+            yes: 'Si',
+            no: 'No',
+          },
           commercialRegisterNumber: 'n. Iscrizione al Registro delle Imprese',
           registrationInRegister: 'Iscrizione all’Albo',
           registerNumber: 'Al numero',
@@ -46,24 +50,24 @@ export default {
           surname: 'Cognome',
           taxCode: 'Codice fiscale',
           mailPEC: 'Email istituzionale',
-          secondAdmin: 'Amministratore #2',
-          thirdAdmin: 'Amministratore #3',
+          moreOfOneAdmin: 'Amministratore #',
         },
       },
     },
     actions: {
       declineButton: 'Rifiuta',
       approveButton: 'Conferma',
+      closeButton: 'Chiudi',
     },
   },
   confirmPage: {
     title: 'Adesione approvata',
-    description:`L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> completare l'adesione.`,
-    backLabel:'Torma alla Home'
+    description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> completare l'adesione.`,
+    backLabel: 'Torma alla Home',
   },
   rejectPage: {
     title: 'Adesione rifiutata',
     description: `L’adesione di <1>{{ente}}</1> è stata rifiutata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> ripetere l'adesione.`,
-    backLabel:'Torna alla home'
-  }
+    backLabel: 'Torna alla home',
+  },
 };

@@ -6,18 +6,18 @@ import { Dispatch, SetStateAction } from 'react';
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
-  toValidateState: boolean;
+  isPendingRequest: boolean;
 };
 
 export default function DashboardRequestActions({
   setShowRejectPage,
   setShowConfirmPage,
-  toValidateState,
+  isPendingRequest,
 }: Props) {
   const { t } = useTranslation();
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center" py={6} mb={6}>
-      {toValidateState ? (
+      {isPendingRequest ? (
         <>
           <Stack>
             <Button
@@ -27,7 +27,7 @@ export default function DashboardRequestActions({
               onClick={() => setShowRejectPage(true)}
             >
               {/* TODO Add call for decline request */}
-              {t('requestToBeAnsweredPage.actions.declineButton')}
+              {t('onboardingRequestPage.actions.declineButton')}
             </Button>
           </Stack>
 
@@ -38,7 +38,7 @@ export default function DashboardRequestActions({
               onClick={() => setShowConfirmPage(true)}
             >
               {/* TODO Add call for approve request */}
-              {t('requestToBeAnsweredPage.actions.approveButton')}
+              {t('onboardingRequestPage.actions.approveButton')}
             </Button>
           </Stack>
         </>
@@ -50,7 +50,7 @@ export default function DashboardRequestActions({
             onClick={() => window.location.assign('https://www.pagopa.it/it/')}
           >
             {/* TODO Add call for approve request */}
-            Chiudi
+            {t('onboardingRequestPage.actions.closeButton')}
           </Button>
         </Stack>
       )}
