@@ -10,16 +10,16 @@ export default function ConfirmPage() {
       item
       container
       xs={12}
-      my={13}
+      mt={13}
       justifyContent="center"
       flexDirection="column"
       alignItems="center"
     >
       <IllusCompleted size={60} />
-      <Grid mt={3}>
+      <Grid item mt={3}>
         <Typography variant="h4">{t('confirmPage.title')}</Typography>
       </Grid>
-      <Grid mt={1}>
+      <Grid item mt={1}>
         <Typography variant="body1" textAlign="center">
           <Trans i18nKey="confirmPage.description">
             L’adesione di {{ ente: 'ente' }} è stata approvata. Invieremo
