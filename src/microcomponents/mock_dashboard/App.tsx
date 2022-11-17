@@ -103,20 +103,6 @@ const App = ({
     </Fragment>
   ));
 
-  const availableRoutesSideBar = Array.from(
-    JSON.stringify(reduceRouteConfig('', (window as any).appRoutes as RoutesObject)).matchAll(
-      /"([^"]+)":"([^"]+)"/g
-    ) as unknown as Array<any>,
-    (match) => (
-      <Fragment key={match[1]}>
-        <Link key={match[1]} title={match[1]} to={match[2]}>
-          {match[1]}
-        </Link>
-        <br />
-      </Fragment>
-    )
-  );
-
   const decorators: DashboardDecoratorsType = {
     withProductRolesMap:
       (
@@ -159,31 +145,9 @@ const App = ({
         <LoadingOverlay />
         <UserNotifyHandle />
         <UnloadEventHandler />
-        <Grid container item pl={{ xs: 4, md: 5, lg: 10 }} xs={12}>
-          <Grid item xs={2} sx={{ overflow: 'auto' }}>
-            <Box sx={{ backgroundColor: 'background.default' }}>SIDEMENU</Box>
-            <br />
-            <Box sx={{ backgroundColor: 'background.default' }}>
-              <strong>available mocked tokenIds:</strong> <br />
-              {availableTokenIds}
-            </Box>
-            <br />
-            <Box sx={{ backgroundColor: 'background.default' }}>
-              <strong>available mocked products:</strong> <br /> {availableProducts}
-            </Box>
-            <br />
-            <Box sx={{ backgroundColor: 'background.default' }}>
-              <strong>available routes:</strong> <br /> {availableRoutesSideBar}
-            </Box>
-          </Grid>
-          <Grid
-            item
-            xs={10}
-            sx={{ backgroundColor: '#F5F6F7' }}
-            display="flex"
-            justifyContent="center"
-            pb={16}
-          >
+
+        <Grid container item justifyContent="center" xs={12}>
+          <Grid item xs={12} display="flex" pb={16}>
             <Switch>
               {AppRouting({
                 history,

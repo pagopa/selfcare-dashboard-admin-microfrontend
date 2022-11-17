@@ -84,48 +84,50 @@ export default function DashboardRequest() {
   ) : showConfirmPage ? (
     <ConfirmPage />
   ) : (
-    <Grid container ml={32} sx={{ width: '920px' }}>
-      <Grid item xs={12}>
-        <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
-          <Grid item>
-            <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
+    <Grid container xs={12} justifyContent="center">
+      <Grid container sx={{ width: '920px' }}>
+        <Grid item xs={12}>
+          <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
+            <Grid item>
+              <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
+            </Grid>
+            <Grid item>
+              <Chip
+                sx={{
+                  backgroundColor: requestState(onboardingRequestData?.status, false, true),
+                  height: '30px',
+                }}
+                label={requestState(onboardingRequestData?.status, true, false)}
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <Chip
-              sx={{
-                backgroundColor: requestState(onboardingRequestData?.status, false, true),
-                height: '30px',
-              }}
-              label={requestState(onboardingRequestData?.status, true, false)}
-            />
-          </Grid>
+          {onboardingRequestData?.status === 'TOBEVALIDATED' && (
+            <Grid item xs={12} width="100%" mt={5}>
+              <CustomAlert
+                severity="warning"
+                sx={{
+                  fontSize: 'fontSize',
+                  backgroundColor: 'background.paper',
+                  height: '80px',
+                  alignItems: 'center',
+                  color: 'colorTextPrimary',
+                  borderLeft: 'solid',
+                  borderLeftColor: 'warning.main',
+                  borderLeftWidth: '4px',
+                  width: '100%',
+                }}
+              >
+                {t('onboardingRequestPage.checkPartyInfoAlert')}
+              </CustomAlert>
+            </Grid>
+          )}
+          <DashboardRequestFields onboardingRequestData={onboardingRequestData} />
+          <DashboardRequestActions
+            setShowRejectPage={setShowRejectPage}
+            setShowConfirmPage={setShowConfirmPage}
+            isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
+          />
         </Grid>
-        {onboardingRequestData?.status === 'PENDING' && (
-          <Grid item xs={12} width="100%" mt={5}>
-            <CustomAlert
-              severity="warning"
-              sx={{
-                fontSize: 'fontSize',
-                backgroundColor: 'background.paper',
-                height: '80px',
-                alignItems: 'center',
-                color: 'colorTextPrimary',
-                borderLeft: 'solid',
-                borderLeftColor: 'warning.main',
-                borderLeftWidth: '4px',
-                width: '100%',
-              }}
-            >
-              {t('onboardingRequestPage.checkPartyInfoAlert')}
-            </CustomAlert>
-          </Grid>
-        )}
-        <DashboardRequestFields onboardingRequestData={onboardingRequestData} />
-        <DashboardRequestActions
-          setShowRejectPage={setShowRejectPage}
-          setShowConfirmPage={setShowConfirmPage}
-          isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
-        />
       </Grid>
     </Grid>
   );
