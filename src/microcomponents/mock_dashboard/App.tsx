@@ -58,14 +58,11 @@ const App = ({
 }: {
   AppRouting: (props: DashboardMicrofrontendPageProps) => Array<React.ReactNode>;
   store: ReturnType<typeof createStore>;
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { tokenId } = useParams<UrlParams>();
   const history = useHistory();
   const theme = useTheme();
   const { i18n } = useTranslation();
-
-  console.log('retrieved tokenId from mocked App', tokenId);
 
   const onboardingRequests = mockedOnboardingRequests;
   const onboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
