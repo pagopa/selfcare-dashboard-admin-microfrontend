@@ -12,7 +12,7 @@ import { Box, Grid, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
-import { buildProductsMap, Product } from '../../model/Product';
+import { Product } from '../../model/Product';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
 import { createStore } from '../../redux/store';
 import {
@@ -65,11 +65,11 @@ const App = ({
   const theme = useTheme();
   const { i18n } = useTranslation();
 
-  const onboardingRequests = mockedOnboardingRequests ?? undefined;
+  console.log('retrieved tokenId from mocked App', tokenId);
+
+  const onboardingRequests = mockedOnboardingRequests;
   const onboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
   const products = onboardingRequest ? mockedPartyProducts : undefined;
-  const activeProducts = products ? products.filter((p) => p.status === 'ACTIVE') : undefined;
-  const productsMap = products ? buildProductsMap(products) : undefined;
   const productsRolesMap = onboardingRequest
     ? products?.reduce((acc: ProductsRolesMap, p: Product) => {
         // eslint-disable-next-line functional/immutable-data
@@ -139,7 +139,7 @@ const App = ({
     },
   };
 
-  return onboardingRequest && products && activeProducts && productsMap && productsRolesMap ? (
+  return tokenId && onboardingRequest && onboardingRequests ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />
@@ -156,9 +156,6 @@ const App = ({
                 i18n,
                 onboardingRequests,
                 onboardingRequest,
-                products,
-                activeProducts,
-                productsMap,
                 decorators,
                 CONFIG,
               })}

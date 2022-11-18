@@ -6,15 +6,11 @@ import { Theme } from '@mui/material';
 import { useMemo } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
 import { RouteConfig, RoutesObject } from '../routes';
-import { Product, ProductsMap } from '../model/Product';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 
 export type DashboardPageProps = {
   onboardingRequests: Array<OnboardingRequestResource>;
   onboardingRequest: OnboardingRequestResource;
-  products: Array<Product>;
-  activeProducts: Array<Product>;
-  productsMap: ProductsMap;
 };
 
 export type DashboardMicrofrontendPageProps = DashboardPageProps & {
@@ -51,11 +47,8 @@ const reduceDecorators = (
   );
 
 export const buildRoutes = (
-  products: Array<Product>,
-  activeProducts: Array<Product>,
   onboardingRequests: Array<OnboardingRequestResource>,
   onboardingRequest: OnboardingRequestResource,
-  productsMap: ProductsMap,
   decorators: DashboardDecoratorsType,
   rs: RoutesObject
 ) =>
@@ -73,24 +66,13 @@ export const buildRoutes = (
       <Route path={path} exact={exact} key={i}>
         {WrappedComponent && (
           <WrappedComponent
-            products={products}
-            activeProducts={activeProducts}
-            productsMap={productsMap}
             onboardingRequests={onboardingRequests}
             onboardingRequest={onboardingRequest}
           />
         )}
         {subRoutes && (
           <Switch>
-            {buildRoutes(
-              products,
-              activeProducts,
-              onboardingRequests,
-              onboardingRequest,
-              productsMap,
-              decorators,
-              subRoutes
-            )}
+            {buildRoutes(onboardingRequests, onboardingRequest, decorators, subRoutes)}
           </Switch>
         )}
       </Route>
