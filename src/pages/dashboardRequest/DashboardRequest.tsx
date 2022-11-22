@@ -80,9 +80,9 @@ export default function DashboardRequest() {
   };
 
   return showRejectPage ? (
-    <RejectPage />
+    <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
-    <ConfirmPage />
+    <ConfirmPage onboardingRequestData={onboardingRequestData} />
   ) : (
     <Grid container xs={12} justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
