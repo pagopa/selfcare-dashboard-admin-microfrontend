@@ -11,15 +11,7 @@ type Props = {
 export default function ConfirmPage({ onboardingRequestData }: Props) {
   const { t } = useTranslation();
   return (
-    <Grid
-      item
-      container
-      xs={12}
-      mt={13}
-      justifyContent="center"
-      flexDirection="column"
-      alignItems="center"
-    >
+    <Grid item container xs={12} justifyContent="center" flexDirection="column" alignItems="center">
       <Stack mt={13} alignItems="center">
         <IllusCompleted size={60} />
         <Box mt={3}>

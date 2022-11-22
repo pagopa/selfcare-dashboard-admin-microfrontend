@@ -10,16 +10,8 @@ type Props = {
 export default function RejectPage({ onboardingRequestData }: Props) {
   const { t } = useTranslation();
   return (
-    <Grid
-      item
-      container
-      xs={12}
-      mt={13}
-      justifyContent="center"
-      flexDirection="column"
-      alignItems="center"
-    >
-      <Stack mt={13} alignItems="center">
+    <Grid item container xs={12} justifyContent="center" flexDirection="column" alignItems="center">
+      <Stack alignItems="center">
         <IllusCompleted size={60} />
         <Box mt={3}>
           <Typography variant="h4">{t('rejectPage.title')}</Typography>
