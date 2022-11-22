@@ -18,7 +18,6 @@ import { createStore } from '../../redux/store';
 import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
-  DashboardPageProps,
 } from '../dashboard-routes-utils';
 import { mockedOnboardingRequests } from '../../services/__mocks__/dashboardRequestService';
 import { mockedPartyProducts } from './data/product';
@@ -103,11 +102,9 @@ const App = ({
   const decorators: DashboardDecoratorsType = {
     withProductRolesMap:
       (
-        WrappedComponent: React.ComponentType<
-          {
-            decorators: DashboardDecoratorsType;
-          } & DashboardPageProps
-        >
+        WrappedComponent: React.ComponentType<{
+          decorators: DashboardDecoratorsType;
+        }>
       ) =>
       (props: any) =>
         <WrappedComponent productsRolesMap={productsRolesMap} {...props} />,
@@ -151,8 +148,6 @@ const App = ({
                 store,
                 theme,
                 i18n,
-                onboardingRequests,
-                onboardingRequest,
                 decorators,
                 CONFIG,
               })}
