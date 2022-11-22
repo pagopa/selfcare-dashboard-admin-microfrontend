@@ -62,12 +62,12 @@ export default {
   },
   confirmPage: {
     title: 'Adesione approvata',
-    description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> completare l'adesione.`,
+    description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare l'adesione.`,
     backLabel: 'Torma alla Home',
   },
   rejectPage: {
     title: 'Adesione rifiutata',
-    description: `L’adesione di <1>{{ente}}</1> è stata rifiutata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> ripetere l'adesione.`,
+    description: `L’adesione di <1>{{ente}}</1> non è andata a buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le istruzioni per completare l'adesione.`,
     backLabel: 'Torna alla home',
   },
 };
