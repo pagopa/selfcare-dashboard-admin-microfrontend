@@ -1,9 +1,13 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { IllusCompleted } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
+import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { ENV } from '../../utils/env';
 
-export default function RejectPage() {
+type Props = {
+  onboardingRequestData?: OnboardingRequestResource;
+};
+export default function RejectPage({ onboardingRequestData }: Props) {
   const { t } = useTranslation();
   return (
     <Grid
@@ -19,19 +23,18 @@ export default function RejectPage() {
       <Grid item mt={3}>
         <Typography variant="h4">{t('rejectPage.title')}</Typography>
       </Grid>
-      <Grid item mt={1}>
+      <Grid item xs={4} display="flex" alignItems={'center'}>
         <Typography variant="body1" textAlign="center">
           <Trans i18nKey="rejectPage.description">
-            L’adesione di {{ ente: 'nome ente' }} è stata rifiutata. Invieremo
-            <br />
-            all’indirizzo PEC indicato un’email con le istruzioni per <br />
-            ripetere l’adesione.
+            L’adesione di {{ ente: onboardingRequestData?.institutionInfo.name }} non è andata a
+            buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le
+            istruzioni per completare l’adesione.
           </Trans>
         </Typography>
       </Grid>
       <Button
         variant="contained"
-        sx={{ alignSelf: 'center', mt: 4 }}
+        sx={{ alignSelf: 'center' }}
         onClick={() => window.location.assign(ENV.URL_FE.LANDING)}
       >
         {t('rejectPage.backLabel')}
