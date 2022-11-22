@@ -6,14 +6,8 @@ import { Theme } from '@mui/material';
 import { useMemo } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
 import { RouteConfig, RoutesObject } from '../routes';
-import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 
-export type DashboardPageProps = {
-  onboardingRequests: Array<OnboardingRequestResource>;
-  onboardingRequest: OnboardingRequestResource;
-};
-
-export type DashboardMicrofrontendPageProps = DashboardPageProps & {
+export type DashboardMicrofrontendPageProps = {
   decorators: DashboardDecoratorsType;
 } & DashboardMicrocomponentsProps;
 
@@ -46,12 +40,7 @@ const reduceDecorators = (
     (WrappedComponent: React.ComponentType<any>) => WrappedComponent
   );
 
-export const buildRoutes = (
-  onboardingRequests: Array<OnboardingRequestResource>,
-  onboardingRequest: OnboardingRequestResource,
-  decorators: DashboardDecoratorsType,
-  rs: RoutesObject
-) =>
+export const buildRoutes = (decorators: DashboardDecoratorsType, rs: RoutesObject) =>
   Object.values(rs).map((route, i) => {
     const { path, exact, component: Component, subRoutes } = route;
     const decoratorResult = useMemo(
@@ -64,17 +53,8 @@ export const buildRoutes = (
     );
     return (
       <Route path={path} exact={exact} key={i}>
-        {WrappedComponent && (
-          <WrappedComponent
-            onboardingRequests={onboardingRequests}
-            onboardingRequest={onboardingRequest}
-          />
-        )}
-        {subRoutes && (
-          <Switch>
-            {buildRoutes(onboardingRequests, onboardingRequest, decorators, subRoutes)}
-          </Switch>
-        )}
+        {WrappedComponent && <WrappedComponent />}
+        {subRoutes && <Switch>{buildRoutes(decorators, subRoutes)}</Switch>}
       </Route>
     );
   });
