@@ -267,7 +267,7 @@ export default function DashboardRequestFields({ onboardingRequestData }: Props)
                 </Grid>
                 <Grid item xs={9} display="flex" alignItems={'center'}>
                   <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.dpoData.email.toLocaleLowerCase()}
+                    {onboardingRequestData?.institutionInfo.dpoData.pec.toLocaleLowerCase()}
                   </Typography>
                 </Grid>
               </Grid>
@@ -283,7 +283,7 @@ export default function DashboardRequestFields({ onboardingRequestData }: Props)
                 </Grid>
                 <Grid item xs={9} display="flex" alignItems={'center'}>
                   <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.dpoData.pec.toLocaleLowerCase()}
+                    {onboardingRequestData?.institutionInfo.dpoData.email.toLocaleLowerCase()}
                   </Typography>
                 </Grid>
               </Grid>
