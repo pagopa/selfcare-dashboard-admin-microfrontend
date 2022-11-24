@@ -63,7 +63,7 @@ export default {
   confirmPage: {
     title: 'Adesione approvata',
     description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare l'adesione.`,
-    backLabel: 'Torma alla Home',
+    backLabel: 'Torna alla home',
   },
   rejectPage: {
     title: 'Adesione rifiutata',
