@@ -2,19 +2,44 @@ import { Button, Stack } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
+import { useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend';
+import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
+import { rejectOnboardingPspRequest } from '../../../services/dashboardRequestService';
 
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
   isPendingRequest: boolean;
+  retrieveTokenIdFromUrl?: string;
 };
 
 export default function DashboardRequestActions({
   setShowRejectPage,
   setShowConfirmPage,
   isPendingRequest,
+  retrieveTokenIdFromUrl,
 }: Props) {
+  const addError = useErrorDispatcher();
+  const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
+
   const { t } = useTranslation();
+  const rejectOnboarding = () => {
+    setLoadingRetrieveOnboardingRequest(true);
+    if (retrieveTokenIdFromUrl) {
+      rejectOnboardingPspRequest(retrieveTokenIdFromUrl)
+        .then(() => setShowRejectPage(true))
+        .catch((reason: any) => {
+          addError({
+            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not found`,
+            blocking: false,
+            techDescription: reason,
+            toNotify: false,
+            error: new Error('INVALID_TOKEN_ID'),
+          });
+        })
+        .finally(() => setLoadingRetrieveOnboardingRequest(false));
+    }
+  };
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center" py={6} mb={6}>
       {isPendingRequest ? (
@@ -24,7 +49,7 @@ export default function DashboardRequestActions({
               variant="outlined"
               color="error"
               style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
-              onClick={() => setShowRejectPage(true)}
+              onClick={rejectOnboarding}
             >
               {/* TODO Add call for decline request */}
               {t('onboardingRequestPage.actions.declineButton')}
