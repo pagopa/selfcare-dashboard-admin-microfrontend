@@ -1386,6 +1386,270 @@ export const getInstitutionUserUsingGETDefaultDecoder = () =>
   getInstitutionUserUsingGETDecoder();
 
 /****************************************************************
+ * approveOnboardingRequestUsingPOST
+ */
+
+// Request type definition
+export type ApproveOnboardingRequestUsingPOSTT = r.IPostApiRequestType<
+  { readonly bearerAuth: string; readonly tokenId: string },
+  "Content-Type" | "Authorization",
+  never,
+  | r.IResponseType<200, undefined, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const approveOnboardingRequestUsingPOSTDefaultResponses = {
+  200: t.undefined,
+  400: Problem,
+  401: Problem,
+  500: Problem
+};
+
+export type ApproveOnboardingRequestUsingPOSTResponsesT<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  500: t.Type<A3, C3>;
+};
+
+export function approveOnboardingRequestUsingPOSTDecoder<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        ApproveOnboardingRequestUsingPOSTResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<500, A3, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((approveOnboardingRequestUsingPOSTDefaultResponses as unknown) as ApproveOnboardingRequestUsingPOSTResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A3, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const approveOnboardingRequestUsingPOSTDefaultDecoder = () =>
+  approveOnboardingRequestUsingPOSTDecoder();
+
+/****************************************************************
+ * rejectOnboardingRequestUsingDELETE
+ */
+
+// Request type definition
+export type RejectOnboardingRequestUsingDELETET = r.IDeleteApiRequestType<
+  { readonly bearerAuth: string; readonly tokenId: string },
+  "Authorization",
+  never,
+  | r.IResponseType<200, undefined, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const rejectOnboardingRequestUsingDELETEDefaultResponses = {
+  200: t.undefined,
+  400: Problem,
+  401: Problem,
+  500: Problem
+};
+
+export type RejectOnboardingRequestUsingDELETEResponsesT<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  500: t.Type<A3, C3>;
+};
+
+export function rejectOnboardingRequestUsingDELETEDecoder<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        RejectOnboardingRequestUsingDELETEResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<500, A3, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((rejectOnboardingRequestUsingDELETEDefaultResponses as unknown) as RejectOnboardingRequestUsingDELETEResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A3, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const rejectOnboardingRequestUsingDELETEDefaultDecoder = () =>
+  rejectOnboardingRequestUsingDELETEDecoder();
+
+/****************************************************************
  * retrieveOnboardingRequestUsingGET
  */
 

@@ -7,7 +7,7 @@
 import * as t from "io-ts";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
-export enum StatusEnum {
+export enum ProductOnBoardingStatusEnum {
   "ACTIVE" = "ACTIVE",
 
   "INACTIVE" = "INACTIVE",
@@ -15,9 +15,24 @@ export enum StatusEnum {
   "PENDING" = "PENDING"
 }
 
+export enum StatusEnum {
+  "ACTIVE" = "ACTIVE",
+
+  "INACTIVE" = "INACTIVE",
+
+  "PHASE_OUT" = "PHASE_OUT",
+
+  "TESTING" = "TESTING"
+}
+
 // required attributes
 const SubProductResourceR = t.interface({
   id: t.string,
+
+  productOnBoardingStatus: enumType<ProductOnBoardingStatusEnum>(
+    ProductOnBoardingStatusEnum,
+    "productOnBoardingStatus"
+  ),
 
   status: enumType<StatusEnum>(StatusEnum, "status"),
 

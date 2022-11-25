@@ -123,6 +123,7 @@ export default function DashboardRequest() {
           )}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} />
           <DashboardRequestActions
+            retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}

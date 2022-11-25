@@ -11,12 +11,22 @@ import { enumType } from "@pagopa/ts-commons/lib/types";
 import { UTCISODateFromString } from "@pagopa/ts-commons/lib/dates";
 import { PatternString } from "@pagopa/ts-commons/lib/strings";
 
-export enum StatusEnum {
+export enum ProductOnBoardingStatusEnum {
   "ACTIVE" = "ACTIVE",
 
   "INACTIVE" = "INACTIVE",
 
   "PENDING" = "PENDING"
+}
+
+export enum StatusEnum {
+  "ACTIVE" = "ACTIVE",
+
+  "INACTIVE" = "INACTIVE",
+
+  "PHASE_OUT" = "PHASE_OUT",
+
+  "TESTING" = "TESTING"
 }
 
 // required attributes
@@ -30,6 +40,11 @@ const ProductsResourceR = t.interface({
   imageUrl: t.string,
 
   logo: t.string,
+
+  productOnBoardingStatus: enumType<ProductOnBoardingStatusEnum>(
+    ProductOnBoardingStatusEnum,
+    "productOnBoardingStatus"
+  ),
 
   status: enumType<StatusEnum>(StatusEnum, "status"),
 

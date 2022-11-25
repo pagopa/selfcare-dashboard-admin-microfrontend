@@ -7,8 +7,8 @@
 import { DpoData } from "./DpoData";
 import { PspData } from "./PspData";
 import * as t from "io-ts";
-import { EmailString } from "@pagopa/ts-commons/lib/strings";
 import { enumType } from "@pagopa/ts-commons/lib/types";
+import { EmailString } from "@pagopa/ts-commons/lib/strings";
 
 export enum InstitutionTypeEnum {
   "GSP" = "GSP",
@@ -30,6 +30,11 @@ const InstitutionInfoR = t.interface({
 
   id: t.string,
 
+  institutionType: enumType<InstitutionTypeEnum>(
+    InstitutionTypeEnum,
+    "institutionType"
+  ),
+
   mailAddress: EmailString,
 
   name: t.string,
@@ -44,11 +49,6 @@ const InstitutionInfoR = t.interface({
 // optional attributes
 const InstitutionInfoO = t.partial({
   dpoData: DpoData,
-
-  institutionType: enumType<InstitutionTypeEnum>(
-    InstitutionTypeEnum,
-    "institutionType"
-  ),
 
   pspData: PspData
 });
