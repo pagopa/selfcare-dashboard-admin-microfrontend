@@ -19,8 +19,9 @@ export default function RejectPage({ onboardingRequestData }: Props) {
         <Grid item xs={5} display="flex" alignItems={'center'} mt={2}>
           <Typography variant="body1" textAlign="center">
             <Trans i18nKey="rejectPage.description">
-              L’adesione di {{ ente: onboardingRequestData?.institutionInfo.name }} non è andata a
-              buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le
+              L’adesione di
+              <strong>{{ ente: onboardingRequestData?.institutionInfo.name }} </strong>non è andata
+              a buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le
               istruzioni per completare l’adesione.
             </Trans>
           </Typography>
