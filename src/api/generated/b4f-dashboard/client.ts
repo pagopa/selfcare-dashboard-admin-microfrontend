@@ -33,6 +33,10 @@ import {
   getInstitutionUsersUsingGETDefaultDecoder,
   GetInstitutionUserUsingGETT,
   getInstitutionUserUsingGETDefaultDecoder,
+  ApproveOnboardingRequestUsingPOSTT,
+  approveOnboardingRequestUsingPOSTDefaultDecoder,
+  RejectOnboardingRequestUsingDELETET,
+  rejectOnboardingRequestUsingDELETEDefaultDecoder,
   RetrieveOnboardingRequestUsingGETT,
   retrieveOnboardingRequestUsingGETDefaultDecoder,
   RetrieveProductBackofficeUsingGETT,
@@ -92,6 +96,8 @@ export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
   TypeofApiCall<AddUserProductRolesUsingPUTT> &
   TypeofApiCall<GetInstitutionUsersUsingGETT> &
   TypeofApiCall<GetInstitutionUserUsingGETT> &
+  TypeofApiCall<ApproveOnboardingRequestUsingPOSTT> &
+  TypeofApiCall<RejectOnboardingRequestUsingDELETET> &
   TypeofApiCall<RetrieveOnboardingRequestUsingGETT> &
   TypeofApiCall<RetrieveProductBackofficeUsingGETT> &
   TypeofApiCall<GetProductRolesUsingGETT> &
@@ -123,6 +129,8 @@ export type ParamKeys = keyof (TypeofApiParams<GetInstitutionsUsingGETT> &
   TypeofApiParams<AddUserProductRolesUsingPUTT> &
   TypeofApiParams<GetInstitutionUsersUsingGETT> &
   TypeofApiParams<GetInstitutionUserUsingGETT> &
+  TypeofApiParams<ApproveOnboardingRequestUsingPOSTT> &
+  TypeofApiParams<RejectOnboardingRequestUsingDELETET> &
   TypeofApiParams<RetrieveOnboardingRequestUsingGETT> &
   TypeofApiParams<RetrieveProductBackofficeUsingGETT> &
   TypeofApiParams<GetProductRolesUsingGETT> &
@@ -176,6 +184,8 @@ export type WithDefaultsT<
   | AddUserProductRolesUsingPUTT
   | GetInstitutionUsersUsingGETT
   | GetInstitutionUserUsingGETT
+  | ApproveOnboardingRequestUsingPOSTT
+  | RejectOnboardingRequestUsingDELETET
   | RetrieveOnboardingRequestUsingGETT
   | RetrieveProductBackofficeUsingGETT
   | GetProductRolesUsingGETT
@@ -238,6 +248,14 @@ export type Client<
 
       readonly getInstitutionUserUsingGET: TypeofApiCall<
         GetInstitutionUserUsingGETT
+      >;
+
+      readonly approveOnboardingRequestUsingPOST: TypeofApiCall<
+        ApproveOnboardingRequestUsingPOSTT
+      >;
+
+      readonly rejectOnboardingRequestUsingDELETE: TypeofApiCall<
+        RejectOnboardingRequestUsingDELETET
       >;
 
       readonly retrieveOnboardingRequestUsingGET: TypeofApiCall<
@@ -371,6 +389,20 @@ export type Client<
         ReplaceRequestParams<
           GetInstitutionUserUsingGETT,
           Omit<RequestParams<GetInstitutionUserUsingGETT>, K>
+        >
+      >;
+
+      readonly approveOnboardingRequestUsingPOST: TypeofApiCall<
+        ReplaceRequestParams<
+          ApproveOnboardingRequestUsingPOSTT,
+          Omit<RequestParams<ApproveOnboardingRequestUsingPOSTT>, K>
+        >
+      >;
+
+      readonly rejectOnboardingRequestUsingDELETE: TypeofApiCall<
+        ReplaceRequestParams<
+          RejectOnboardingRequestUsingDELETET,
+          Omit<RequestParams<RejectOnboardingRequestUsingDELETET>, K>
         >
       >;
 
@@ -775,6 +807,52 @@ export function createClient<K extends ParamKeys>({
   };
   const getInstitutionUserUsingGET: TypeofApiCall<GetInstitutionUserUsingGETT> = createFetchRequestForApi(
     getInstitutionUserUsingGETT,
+    options
+  );
+
+  const approveOnboardingRequestUsingPOSTT: ReplaceRequestParams<
+    ApproveOnboardingRequestUsingPOSTT,
+    RequestParams<ApproveOnboardingRequestUsingPOSTT>
+  > = {
+    method: "post",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: approveOnboardingRequestUsingPOSTDefaultDecoder(),
+    url: ({ ["tokenId"]: tokenId }) =>
+      `${basePath}/onboarding-requests/approve/${tokenId}`,
+
+    body: () => "{}",
+
+    query: () => withoutUndefinedValues({})
+  };
+  const approveOnboardingRequestUsingPOST: TypeofApiCall<ApproveOnboardingRequestUsingPOSTT> = createFetchRequestForApi(
+    approveOnboardingRequestUsingPOSTT,
+    options
+  );
+
+  const rejectOnboardingRequestUsingDELETET: ReplaceRequestParams<
+    RejectOnboardingRequestUsingDELETET,
+    RequestParams<RejectOnboardingRequestUsingDELETET>
+  > = {
+    method: "delete",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: rejectOnboardingRequestUsingDELETEDefaultDecoder(),
+    url: ({ ["tokenId"]: tokenId }) =>
+      `${basePath}/onboarding-requests/reject/${tokenId}`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const rejectOnboardingRequestUsingDELETE: TypeofApiCall<RejectOnboardingRequestUsingDELETET> = createFetchRequestForApi(
+    rejectOnboardingRequestUsingDELETET,
     options
   );
 
@@ -1294,6 +1372,12 @@ export function createClient<K extends ParamKeys>({
     ),
     getInstitutionUserUsingGET: (withDefaults || identity)(
       getInstitutionUserUsingGET
+    ),
+    approveOnboardingRequestUsingPOST: (withDefaults || identity)(
+      approveOnboardingRequestUsingPOST
+    ),
+    rejectOnboardingRequestUsingDELETE: (withDefaults || identity)(
+      rejectOnboardingRequestUsingDELETE
     ),
     retrieveOnboardingRequestUsingGET: (withDefaults || identity)(
       retrieveOnboardingRequestUsingGET
