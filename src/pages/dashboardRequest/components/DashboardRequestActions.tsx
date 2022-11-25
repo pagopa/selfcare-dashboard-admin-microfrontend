@@ -30,7 +30,25 @@ export default function DashboardRequestActions({
         .then(() => setShowRejectPage(true))
         .catch((reason: any) => {
           addError({
-            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not found`,
+            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not rejected`,
+            blocking: false,
+            techDescription: reason,
+            toNotify: false,
+            error: new Error('INVALID_TOKEN_ID'),
+          });
+        })
+        .finally(() => setLoadingRetrieveOnboardingRequest(false));
+    }
+  };
+
+  const approveOnboarding = () => {
+    setLoadingRetrieveOnboardingRequest(true);
+    if (retrieveTokenIdFromUrl) {
+      rejectOnboardingPspRequest(retrieveTokenIdFromUrl)
+        .then(() => setShowConfirmPage(true))
+        .catch((reason: any) => {
+          addError({
+            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not approved`,
             blocking: false,
             techDescription: reason,
             toNotify: false,
@@ -51,18 +69,12 @@ export default function DashboardRequestActions({
               style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
               onClick={rejectOnboarding}
             >
-              {/* TODO Add call for decline request */}
               {t('onboardingRequestPage.actions.declineButton')}
             </Button>
           </Stack>
 
           <Stack>
-            <Button
-              variant="contained"
-              sx={{ marginLeft: 3 }}
-              onClick={() => setShowConfirmPage(true)}
-            >
-              {/* TODO Add call for approve request */}
+            <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
               {t('onboardingRequestPage.actions.approveButton')}
             </Button>
           </Stack>
@@ -74,7 +86,6 @@ export default function DashboardRequestActions({
             sx={{ marginLeft: 3 }}
             onClick={() => window.location.assign('https://www.pagopa.it/it/')}
           >
-            {/* TODO Add call for approve request */}
             {t('onboardingRequestPage.actions.closeButton')}
           </Button>
         </Stack>
