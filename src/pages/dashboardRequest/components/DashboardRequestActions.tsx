@@ -4,7 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import { useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
-import { rejectOnboardingPspRequest } from '../../../services/dashboardRequestService';
+import {
+  approveOnboardingPspRequest,
+  rejectOnboardingPspRequest,
+} from '../../../services/dashboardRequestService';
 
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
@@ -44,7 +47,7 @@ export default function DashboardRequestActions({
   const approveOnboarding = () => {
     setLoadingRetrieveOnboardingRequest(true);
     if (retrieveTokenIdFromUrl) {
-      rejectOnboardingPspRequest(retrieveTokenIdFromUrl)
+      approveOnboardingPspRequest(retrieveTokenIdFromUrl)
         .then(() => setShowConfirmPage(true))
         .catch((reason: any) => {
           addError({
