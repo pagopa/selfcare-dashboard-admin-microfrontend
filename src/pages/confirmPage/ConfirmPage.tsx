@@ -20,7 +20,8 @@ export default function ConfirmPage({ onboardingRequestData }: Props) {
         <Grid item xs={5} display="flex" alignItems={'center'} mt={2}>
           <Typography variant="body1" textAlign="center">
             <Trans i18nKey="confirmPage.description">
-              L’adesione di {{ ente: onboardingRequestData?.institutionInfo.name }} è stata
+              L’adesione di
+              <strong> {{ ente: onboardingRequestData?.institutionInfo.name }} </strong>è stata
               approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per
               completare l’adesione.
             </Trans>
