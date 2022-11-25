@@ -565,6 +565,7 @@
         "tags": [
           "institutions"
         ],
+        "deprecated": true,
         "description": "Service to get all the users related to a specific institution",
         "operationId": "getInstitutionUsersUsingGET",
         "summary": "getInstitutionUsers"
@@ -637,6 +638,112 @@
         "description": "Service to get the users with the given user id related to a specific institution ",
         "operationId": "getInstitutionUserUsingGET",
         "summary": "getInstitutionUser"
+      }
+    },
+    "/onboarding-requests/approve/{tokenId}": {
+      "post": {
+        "produces": [
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Onboarding request's unique identifier",
+            "format": "uuid",
+            "in": "path",
+            "name": "tokenId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "onboarding"
+        ],
+        "description": "Service to approve a specific onboarding request",
+        "operationId": "approveOnboardingRequestUsingPOST",
+        "summary": "approveOnboardingRequest"
+      }
+    },
+    "/onboarding-requests/reject/{tokenId}": {
+      "delete": {
+        "produces": [
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Onboarding request's unique identifier",
+            "format": "uuid",
+            "in": "path",
+            "name": "tokenId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "onboarding"
+        ],
+        "description": "Service to reject a specific onboarding request",
+        "operationId": "rejectOnboardingRequestUsingDELETE",
+        "summary": "rejectOnboardingRequest"
       }
     },
     "/onboarding-requests/{tokenId}": {
@@ -2183,6 +2290,7 @@
         "address",
         "fiscalCode",
         "id",
+        "institutionType",
         "mailAddress",
         "name",
         "recipientCode",
@@ -2248,6 +2356,10 @@
         "userRole": {
           "description": "Logged user's role",
           "type": "string"
+        },
+        "zipCode": {
+          "description": "Institution's zipCode",
+          "type": "string"
         }
       },
       "required": [
@@ -2260,7 +2372,8 @@
         "origin",
         "originId",
         "status",
-        "userRole"
+        "userRole",
+        "zipCode"
       ],
       "title": "InstitutionResource",
       "type": "object"
@@ -2756,12 +2869,22 @@
           "pattern": "^#[0-9A-F]{6}$",
           "type": "string"
         },
+        "productOnBoardingStatus": {
+          "description": "Product's onBoarding status",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "PENDING"
+          ],
+          "type": "string"
+        },
         "status": {
           "description": "Product's status",
           "enum": [
             "ACTIVE",
             "INACTIVE",
-            "PENDING"
+            "PHASE_OUT",
+            "TESTING"
           ],
           "type": "string"
         },
@@ -2788,6 +2911,7 @@
         "id",
         "imageUrl",
         "logo",
+        "productOnBoardingStatus",
         "status",
         "title",
         "urlBO"
@@ -2848,12 +2972,22 @@
           "description": "Product's unique identifier",
           "type": "string"
         },
+        "productOnBoardingStatus": {
+          "description": "Product's onBoarding status",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "PENDING"
+          ],
+          "type": "string"
+        },
         "status": {
           "description": "Product's status",
           "enum": [
             "ACTIVE",
             "INACTIVE",
-            "PENDING"
+            "PHASE_OUT",
+            "TESTING"
           ],
           "type": "string"
         },
@@ -2864,6 +2998,7 @@
       },
       "required": [
         "id",
+        "productOnBoardingStatus",
         "status",
         "title"
       ],

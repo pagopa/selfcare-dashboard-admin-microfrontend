@@ -39,7 +39,9 @@ const InstitutionResourceR = t.interface({
 
   status: t.string,
 
-  userRole: t.string
+  userRole: t.string,
+
+  zipCode: t.string
 });
 
 // optional attributes
