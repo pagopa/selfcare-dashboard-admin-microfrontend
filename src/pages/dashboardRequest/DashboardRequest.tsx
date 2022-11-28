@@ -20,14 +20,12 @@ const CustomAlert = styled(Alert)({
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function DashboardRequest() {
   const { t } = useTranslation();
-  // const addError = useErrorDispatcher();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
-  // const [confrimPAge, setConfirmPage] // TODO: insert Pending Page
 
   // eslint-disable-next-line functional/immutable-data
   const retrieveTokenIdFromUrl = window.location.pathname.split('/').pop();
@@ -45,13 +43,6 @@ export default function DashboardRequest() {
         setOnboardingRequestData(r);
       })
       .catch(() => {
-        // addError({
-        //   id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not found`,
-        //   blocking: false,
-        //   techDescription: reason,
-        //   toNotify: false,
-        //   error: new Error('INVALID_TOKEN_ID'),
-        // });
         setError(true);
       })
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
