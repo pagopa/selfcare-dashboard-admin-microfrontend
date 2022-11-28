@@ -60,6 +60,11 @@ export default {
       closeButton: 'Chiudi',
     },
   },
+  jwtNotValid: {
+    title: 'Richiesta di adesione non più <1 /> valida',
+    subtitle: 'Questa richiesta è stata accolta, annullata o è scaduta.',
+    backActionLabel: 'Torna alla home',
+  },
   confirmPage: {
     title: 'Adesione approvata',
     description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare l'adesione.`,
