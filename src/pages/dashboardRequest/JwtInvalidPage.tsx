@@ -10,7 +10,7 @@ export default function JwtInvalidPage() {
       container
       direction="column"
       key="0"
-      style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}
+      style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}
     >
       <Grid container item justifyContent="center" mb={2}>
         <IllusError size={60} />
