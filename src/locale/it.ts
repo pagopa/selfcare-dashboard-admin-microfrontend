@@ -44,7 +44,7 @@ export default {
         },
       },
       delegatesInfoSummarySection: {
-        title: 'Dati Amministratore',
+        title: `Dati dell’Amministratore`,
         delegatesInfoSummary: {
           name: 'Nome',
           surname: 'Cognome',
@@ -59,6 +59,11 @@ export default {
       approveButton: 'Conferma',
       closeButton: 'Chiudi',
     },
+  },
+  jwtNotValid: {
+    title: 'Richiesta di adesione non più <1 /> valida',
+    subtitle: 'Questa richiesta è stata accolta, annullata o è scaduta.',
+    backActionLabel: 'Torna alla home',
   },
   confirmPage: {
     title: 'Adesione approvata',
