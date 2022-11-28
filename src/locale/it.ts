@@ -44,7 +44,7 @@ export default {
         },
       },
       delegatesInfoSummarySection: {
-        title: 'Dati Amministratore',
+        title: `Dati dell’Amministratore`,
         delegatesInfoSummary: {
           name: 'Nome',
           surname: 'Cognome',
