@@ -12,7 +12,7 @@ export default function ConfirmPage({ onboardingRequestData }: Props) {
   const { t } = useTranslation();
   return (
     <Grid item container xs={12} justifyContent="center" flexDirection="column" alignItems="center">
-      <Stack mt={13} alignItems="center">
+      <Stack alignItems="center">
         <IllusCompleted size={60} />
         <Box mt={3}>
           <Typography variant="h4">{t('confirmPage.title')}</Typography>
