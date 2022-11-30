@@ -27,13 +27,15 @@ export default function ConfirmPage({ onboardingRequestData }: Props) {
             </Trans>
           </Typography>
         </Grid>
-        <Button
-          variant="contained"
-          sx={{ alignSelf: 'center', mt: 4 }}
-          onClick={() => window.location.assign(ENV.URL_FE.LANDING)}
-        >
-          {t('confirmPage.backLabel')}
-        </Button>
+        <Grid item>
+          <Button
+            variant="contained"
+            sx={{ alignSelf: 'center', mt: 4 }}
+            onClick={() => window.location.assign(ENV.URL_FE.LANDING)}
+          >
+            {t('confirmPage.backLabel')}
+          </Button>
+        </Grid>
       </Stack>
     </Grid>
   );
