@@ -26,13 +26,15 @@ export default function RejectPage({ onboardingRequestData }: Props) {
             </Trans>
           </Typography>
         </Grid>
-        <Button
-          variant="contained"
-          sx={{ alignSelf: 'center', mt: 4 }}
-          onClick={() => window.location.assign(ENV.URL_FE.LANDING)}
-        >
-          {t('rejectPage.backLabel')}
-        </Button>
+        <Grid item>
+          <Button
+            variant="contained"
+            sx={{ alignSelf: 'center', mt: 4 }}
+            onClick={() => window.location.assign(ENV.URL_FE.LANDING)}
+          >
+            {t('rejectPage.backLabel')}
+          </Button>
+        </Grid>
       </Stack>
     </Grid>
   );
