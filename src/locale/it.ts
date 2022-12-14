@@ -44,7 +44,7 @@ export default {
         },
       },
       delegatesInfoSummarySection: {
-        title: 'Dati Amministratore',
+        title: `Dati dell’Amministratore`,
         delegatesInfoSummary: {
           name: 'Nome',
           surname: 'Cognome',
@@ -60,14 +60,19 @@ export default {
       closeButton: 'Chiudi',
     },
   },
+  jwtNotValid: {
+    title: 'Richiesta di adesione non più <1 /> valida',
+    subtitle: 'Questa richiesta è stata accolta, annullata o è scaduta.',
+    backActionLabel: 'Torna alla home',
+  },
   confirmPage: {
     title: 'Adesione approvata',
-    description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> completare l'adesione.`,
-    backLabel: 'Torma alla Home',
+    description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare l'adesione.`,
+    backLabel: 'Torna alla home',
   },
   rejectPage: {
     title: 'Adesione rifiutata',
-    description: `L’adesione di <1>{{ente}}</1> è stata rifiutata. Invieremo <3 /> all’indirizzo PEC indicato un’email con le istruzioni per <5 /> ripetere l'adesione.`,
+    description: `L’adesione di <1>{{ente}}</1> non è andata a buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le istruzioni per completare l'adesione.`,
     backLabel: 'Torna alla home',
   },
 };

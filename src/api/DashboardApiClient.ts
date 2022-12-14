@@ -41,4 +41,18 @@ export const DashboardApi = {
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
+
+  rejectOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+    const result = await apiClient.rejectOnboardingRequestUsingDELETE({
+      tokenId,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  approveOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+    const result = await apiClient.approveOnboardingRequestUsingPOST({
+      tokenId,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
 };

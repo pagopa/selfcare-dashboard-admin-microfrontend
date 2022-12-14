@@ -1,5 +1,5 @@
 import { Chip, Grid, Typography, Alert, styled } from '@mui/material';
-import { useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend';
+import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
@@ -9,6 +9,7 @@ import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
+import RetrieveTokenErrorPage from './JwtInvalidPage';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
@@ -19,12 +20,12 @@ const CustomAlert = styled(Alert)({
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function DashboardRequest() {
   const { t } = useTranslation();
-  const addError = useErrorDispatcher();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
+  const [error, setError] = useState<boolean>(false);
 
   // eslint-disable-next-line functional/immutable-data
   const retrieveTokenIdFromUrl = window.location.pathname.split('/').pop();
@@ -38,15 +39,11 @@ export default function DashboardRequest() {
   const onboardingPspRequestData = (retrieveTokenIdFromUrl: string) => {
     setLoadingRetrieveOnboardingRequest(true);
     fetchOnboardingPspRequest(retrieveTokenIdFromUrl)
-      .then((r) => setOnboardingRequestData(r))
-      .catch((reason) => {
-        addError({
-          id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not found`,
-          blocking: false,
-          techDescription: reason,
-          toNotify: false,
-          error: new Error('INVALID_TOKEN_ID'),
-        });
+      .then((r) => {
+        setOnboardingRequestData(r);
+      })
+      .catch(() => {
+        setError(true);
       })
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
   };
@@ -59,6 +56,7 @@ export default function DashboardRequest() {
     if (isChipLabelState) {
       switch (requestStatus) {
         case 'ACTIVE':
+        case 'PENDING':
           return t('onboardingRequestPage.approvedDataChip');
         case 'REJECTED':
           return t('onboardingRequestPage.rejectedDataChip');
@@ -69,6 +67,7 @@ export default function DashboardRequest() {
     if (isBgColorChipState) {
       switch (requestStatus) {
         case 'ACTIVE':
+        case 'PENDING':
           return 'success.light';
         case 'REJECTED':
           return 'error.light';
@@ -80,9 +79,11 @@ export default function DashboardRequest() {
   };
 
   return showRejectPage ? (
-    <RejectPage />
+    <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
-    <ConfirmPage />
+    <ConfirmPage onboardingRequestData={onboardingRequestData} />
+  ) : error ? (
+    <RetrieveTokenErrorPage />
   ) : (
     <Grid container xs={12} justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
@@ -123,6 +124,7 @@ export default function DashboardRequest() {
           )}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} />
           <DashboardRequestActions
+            retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
