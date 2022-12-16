@@ -6,9 +6,10 @@ import { OnboardingRequestResource } from '../../../model/OnboardingRequestResou
 
 type Props = {
   onboardingRequestData: OnboardingRequestResource | undefined;
+  isPSP: boolean;
 };
 
-export default function DashboardRequestFields({ onboardingRequestData }: Props) {
+export default function DashboardRequestFields({ onboardingRequestData, isPSP }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -124,91 +125,92 @@ export default function DashboardRequestFields({ onboardingRequestData }: Props)
                 </Grid>
               </Grid>
 
-              {/* isGroupPIVA */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.title'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.pspData.vatNumberGroup
-                      ? t(
-                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.yes'
-                        )
-                      : t(
-                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.no'
+              {/* fields visible only for PSP */}
+              {isPSP && (
+                <>
+                  {/* isGroupPIVA */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.title'
                         )}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* commercialRegisterNumber */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.commercialRegisterNumber'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.pspData.businessRegisterNumber}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* registrationInRegister */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registrationInRegister'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.pspData.legalRegisterName}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* registerNumber */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registerNumber'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.pspData.legalRegisterNumber}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* abiCode */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.abiCode'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.pspData.abiCode}
-                  </Typography>
-                </Grid>
-              </Grid>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.pspData.vatNumberGroup
+                          ? t(
+                              'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.yes'
+                            )
+                          : t(
+                              'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.no'
+                            )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {/* commercialRegisterNumber */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.commercialRegisterNumber'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.pspData.businessRegisterNumber}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {/* registrationInRegister */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registrationInRegister'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.pspData.legalRegisterName}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {/* registerNumber */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registerNumber'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.pspData.legalRegisterNumber}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {/* abiCode */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.abiCode'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.pspData.abiCode}
+                      </Typography>
+                    </Grid>
+                  </Grid>{' '}
+                </>
+              )}
 
               {/* recipientCode */}
               <Grid container item alignItems={'center'}>
@@ -226,67 +228,72 @@ export default function DashboardRequestFields({ onboardingRequestData }: Props)
                 </Grid>
               </Grid>
 
-              <Typography
-                variant="body1"
-                sx={{
-                  fontWeight: 'fontWeightMedium',
-                  marginTop: 4,
-                  marginBottom: 2,
-                }}
-                ml={1}
-              >
-                {t(
-                  'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.title'
-                )}
-              </Typography>
-
-              {/* protectionOfficerAddress */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
+              {/* fields visible only for PSP */}
+              {isPSP && (
+                <>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: 'fontWeightMedium',
+                      marginTop: 4,
+                      marginBottom: 2,
+                    }}
+                    ml={1}
+                  >
                     {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.address'
+                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.title'
                     )}
                   </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.dpoData.address}
-                  </Typography>
-                </Grid>
-              </Grid>
 
-              {/* protectionOfficerMailPEC */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mailPEC'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.dpoData.pec.toLocaleLowerCase()}
-                  </Typography>
-                </Grid>
-              </Grid>
+                  {/* protectionOfficerAddress */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.address'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.dpoData.address}
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
-              {/* protectionOfficerMail */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mail'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.dpoData.email.toLocaleLowerCase()}
-                  </Typography>
-                </Grid>
-              </Grid>
+                  {/* protectionOfficerMailPEC */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mailPEC'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.dpoData.pec.toLocaleLowerCase()}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* protectionOfficerMail */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3}>
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mail'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {onboardingRequestData?.institutionInfo.dpoData.email.toLocaleLowerCase()}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Grid>
         </Grid>
