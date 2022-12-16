@@ -30,6 +30,8 @@ export default function DashboardRequest() {
   // eslint-disable-next-line functional/immutable-data
   const retrieveTokenIdFromUrl = window.location.pathname.split('/').pop();
 
+  const isPSP = onboardingRequestData?.institutionInfo.institutionType === 'PSP';
+
   useEffect(() => {
     if (retrieveTokenIdFromUrl) {
       onboardingPspRequestData(retrieveTokenIdFromUrl);
@@ -122,7 +124,7 @@ export default function DashboardRequest() {
               </CustomAlert>
             </Grid>
           )}
-          <DashboardRequestFields onboardingRequestData={onboardingRequestData} />
+          <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             setShowRejectPage={setShowRejectPage}

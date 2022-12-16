@@ -158,6 +158,59 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
       },
     ],
   },
+
+  // Use case for institutionType !== PSP
+  {
+    tokenId: 'tokenId04',
+    status: 'REJECTED',
+    institutionInfo: {
+      id: 'institutionId3',
+      name: 'Comune di Roma',
+      address: 'Via Totti, 44',
+      zipCode: '44235',
+      mailAddress: 'comune.roma@pecemail.com',
+      fiscalCode: '87695432678',
+      vatNumber: '93945678123',
+      pspData: {
+        vatNumberGroup: true,
+        businessRegisterNumber: '33333333333',
+        legalRegisterName: 'DummySubscribe03',
+        legalRegisterNumber: '45',
+        abiCode: '77665',
+      },
+      recipientCode: 'DummyRecipientCode03',
+      dpoData: {
+        address: 'Via Autonomia, 546',
+        pec: 'dpo03@pecdpo.com',
+        email: 'dpo03@dpo.com',
+      },
+      institutionType: 'GSP',
+    },
+    manager: {
+      id: 'Manager03',
+      name: 'Manager03',
+      surname: 'Manager03',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager03@manager.com',
+    },
+    admins: [
+      // Use case with 2 admins
+      {
+        id: '7',
+        name: 'Admin07',
+        surname: 'Admin07',
+        fiscalCode: '77777777777',
+        email: 'admin07@comunedi.it',
+      },
+      {
+        id: '8',
+        name: 'Admin08',
+        surname: 'Admin08',
+        fiscalCode: '88888888888',
+        email: 'admin08@comunedi.it',
+      },
+    ],
+  },
 ];
 
 export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
