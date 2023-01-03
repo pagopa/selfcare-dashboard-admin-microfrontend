@@ -87,7 +87,7 @@ export default function DashboardRequest() {
   ) : error ? (
     <RetrieveTokenErrorPage />
   ) : (
-    <Grid container xs={12} justifyContent="center">
+    <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
         <Grid item xs={12}>
           <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
