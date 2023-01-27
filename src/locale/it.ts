@@ -56,7 +56,7 @@ export default {
     },
     actions: {
       declineButton: 'Rifiuta',
-      approveButton: 'Conferma',
+      approveButton: 'Approva',
       closeButton: 'Chiudi',
     },
   },
