@@ -4,6 +4,7 @@
  */
 /* eslint-disable  */
 
+import { GeographicTaxonomyResource } from "./GeographicTaxonomyResource";
 import * as t from "io-ts";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
@@ -26,6 +27,11 @@ const InstitutionResourceR = t.interface({
   externalId: t.string,
 
   fiscalCode: t.string,
+
+  geographicTaxonomies: t.readonlyArray(
+    GeographicTaxonomyResource,
+    "array of GeographicTaxonomyResource"
+  ),
 
   id: t.string,
 
@@ -51,7 +57,9 @@ const InstitutionResourceO = t.partial({
   institutionType: enumType<InstitutionTypeEnum>(
     InstitutionTypeEnum,
     "institutionType"
-  )
+  ),
+
+  recipientCode: t.string
 });
 
 export const InstitutionResource = t.intersection(
