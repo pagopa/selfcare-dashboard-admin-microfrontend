@@ -181,6 +181,145 @@
         } ]
       }
     },
+    "/institutions/{institutionId}/geographicTaxonomy" : {
+      "get" : {
+        "tags" : [ "institutions" ],
+        "summary" : "getInstitutionGeographicTaxonomy",
+        "description" : "The service retrieve the institution's geographic taxonomy",
+        "operationId" : "getInstitutionGeographicTaxonomyUsingGET",
+        "parameters" : [ {
+          "name" : "institutionId",
+          "in" : "path",
+          "description" : "Institution's unique internal identifier",
+          "required" : true,
+          "style" : "simple",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/GeographicTaxonomyResource"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ "global" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "institutions" ],
+        "summary" : "updateInstitutionGeographicTaxonomy",
+        "description" : "Service to update the geographic taxonomy of an onboarded institution",
+        "operationId" : "updateInstitutionGeographicTaxonomyUsingPUT",
+        "parameters" : [ {
+          "name" : "institutionId",
+          "in" : "path",
+          "description" : "Institution's unique internal identifier",
+          "required" : true,
+          "style" : "simple",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GeographicTaxonomyListDto"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ "global" ]
+        } ]
+      }
+    },
     "/institutions/{institutionId}/logo" : {
       "put" : {
         "tags" : [ "institutions" ],
@@ -2537,6 +2676,50 @@
           }
         }
       },
+      "GeographicTaxonomyDto" : {
+        "title" : "GeographicTaxonomyDto",
+        "required" : [ "code", "desc" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Institution's geographic taxonomy ISTAT code"
+          },
+          "desc" : {
+            "type" : "string",
+            "description" : "Institution's geographic taxonomy extended name"
+          }
+        }
+      },
+      "GeographicTaxonomyListDto" : {
+        "title" : "GeographicTaxonomyListDto",
+        "required" : [ "geographicTaxonomyDtoList" ],
+        "type" : "object",
+        "properties" : {
+          "geographicTaxonomyDtoList" : {
+            "type" : "array",
+            "description" : "List of institution's geographic taxonomies  ",
+            "items" : {
+              "$ref" : "#/components/schemas/GeographicTaxonomyDto"
+            }
+          }
+        }
+      },
+      "GeographicTaxonomyResource" : {
+        "title" : "GeographicTaxonomyResource",
+        "required" : [ "code", "desc" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Institution's geographic taxonomy ISTAT code"
+          },
+          "desc" : {
+            "type" : "string",
+            "description" : "Institution's geographic taxonomy extended name"
+          }
+        }
+      },
       "IdentityTokenResource" : {
         "title" : "IdentityTokenResource",
         "required" : [ "token" ],
@@ -2604,7 +2787,7 @@
       },
       "InstitutionResource" : {
         "title" : "InstitutionResource",
-        "required" : [ "address", "externalId", "fiscalCode", "id", "mailAddress", "name", "origin", "originId", "status", "userRole", "zipCode" ],
+        "required" : [ "address", "externalId", "fiscalCode", "geographicTaxonomies", "id", "mailAddress", "name", "origin", "originId", "status", "userRole", "zipCode" ],
         "type" : "object",
         "properties" : {
           "address" : {
@@ -2622,6 +2805,13 @@
           "fiscalCode" : {
             "type" : "string",
             "description" : "Fiscal code corresponding to the institution"
+          },
+          "geographicTaxonomies" : {
+            "type" : "array",
+            "description" : "Institution's geographic taxonomy",
+            "items" : {
+              "$ref" : "#/components/schemas/GeographicTaxonomyResource"
+            }
           },
           "id" : {
             "type" : "string",
@@ -2647,6 +2837,10 @@
           "originId" : {
             "type" : "string",
             "description" : "Institution's identifier related to origin"
+          },
+          "recipientCode" : {
+            "type" : "string",
+            "description" : "Billing recipient code"
           },
           "status" : {
             "type" : "string",
@@ -2767,7 +2961,7 @@
       },
       "OnboardingRequestResource" : {
         "title" : "OnboardingRequestResource",
-        "required" : [ "admins", "institutionInfo", "manager", "status" ],
+        "required" : [ "institutionInfo", "manager", "status" ],
         "type" : "object",
         "properties" : {
           "admins" : {

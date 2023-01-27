@@ -25,8 +25,6 @@ export enum StatusEnum {
 
 // required attributes
 const OnboardingRequestResourceR = t.interface({
-  admins: t.readonlyArray(UserInfo, "array of UserInfo"),
-
   institutionInfo: InstitutionInfo,
 
   manager: UserInfo,
@@ -35,7 +33,9 @@ const OnboardingRequestResourceR = t.interface({
 });
 
 // optional attributes
-const OnboardingRequestResourceO = t.partial({});
+const OnboardingRequestResourceO = t.partial({
+  admins: t.readonlyArray(UserInfo, "array of UserInfo")
+});
 
 export const OnboardingRequestResource = t.intersection(
   [OnboardingRequestResourceR, OnboardingRequestResourceO],
