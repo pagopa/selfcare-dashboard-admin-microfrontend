@@ -19,6 +19,10 @@ import {
   getInstitutionsUsingGETDefaultDecoder,
   GetInstitutionUsingGETT,
   getInstitutionUsingGETDefaultDecoder,
+  GetInstitutionGeographicTaxonomyUsingGETT,
+  getInstitutionGeographicTaxonomyUsingGETDefaultDecoder,
+  UpdateInstitutionGeographicTaxonomyUsingPUTT,
+  updateInstitutionGeographicTaxonomyUsingPUTDefaultDecoder,
   SaveInstitutionLogoUsingPUTT,
   saveInstitutionLogoUsingPUTDefaultDecoder,
   GetInstitutionProductsUsingGETT,
@@ -89,6 +93,8 @@ type __UNDEFINED_KEY = "_____";
 
 export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
   TypeofApiCall<GetInstitutionUsingGETT> &
+  TypeofApiCall<GetInstitutionGeographicTaxonomyUsingGETT> &
+  TypeofApiCall<UpdateInstitutionGeographicTaxonomyUsingPUTT> &
   TypeofApiCall<SaveInstitutionLogoUsingPUTT> &
   TypeofApiCall<GetInstitutionProductsUsingGETT> &
   TypeofApiCall<GetInstitutionProductUsersUsingGETT> &
@@ -122,6 +128,8 @@ export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
 
 export type ParamKeys = keyof (TypeofApiParams<GetInstitutionsUsingGETT> &
   TypeofApiParams<GetInstitutionUsingGETT> &
+  TypeofApiParams<GetInstitutionGeographicTaxonomyUsingGETT> &
+  TypeofApiParams<UpdateInstitutionGeographicTaxonomyUsingPUTT> &
   TypeofApiParams<SaveInstitutionLogoUsingPUTT> &
   TypeofApiParams<GetInstitutionProductsUsingGETT> &
   TypeofApiParams<GetInstitutionProductUsersUsingGETT> &
@@ -177,6 +185,8 @@ export type WithDefaultsT<
 > = OmitApiCallParams<
   | GetInstitutionsUsingGETT
   | GetInstitutionUsingGETT
+  | GetInstitutionGeographicTaxonomyUsingGETT
+  | UpdateInstitutionGeographicTaxonomyUsingPUTT
   | SaveInstitutionLogoUsingPUTT
   | GetInstitutionProductsUsingGETT
   | GetInstitutionProductUsersUsingGETT
@@ -221,6 +231,14 @@ export type Client<
       readonly getInstitutionsUsingGET: TypeofApiCall<GetInstitutionsUsingGETT>;
 
       readonly getInstitutionUsingGET: TypeofApiCall<GetInstitutionUsingGETT>;
+
+      readonly getInstitutionGeographicTaxonomyUsingGET: TypeofApiCall<
+        GetInstitutionGeographicTaxonomyUsingGETT
+      >;
+
+      readonly updateInstitutionGeographicTaxonomyUsingPUT: TypeofApiCall<
+        UpdateInstitutionGeographicTaxonomyUsingPUTT
+      >;
 
       readonly saveInstitutionLogoUsingPUT: TypeofApiCall<
         SaveInstitutionLogoUsingPUTT
@@ -340,6 +358,20 @@ export type Client<
         ReplaceRequestParams<
           GetInstitutionUsingGETT,
           Omit<RequestParams<GetInstitutionUsingGETT>, K>
+        >
+      >;
+
+      readonly getInstitutionGeographicTaxonomyUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetInstitutionGeographicTaxonomyUsingGETT,
+          Omit<RequestParams<GetInstitutionGeographicTaxonomyUsingGETT>, K>
+        >
+      >;
+
+      readonly updateInstitutionGeographicTaxonomyUsingPUT: TypeofApiCall<
+        ReplaceRequestParams<
+          UpdateInstitutionGeographicTaxonomyUsingPUTT,
+          Omit<RequestParams<UpdateInstitutionGeographicTaxonomyUsingPUTT>, K>
         >
       >;
 
@@ -631,6 +663,50 @@ export function createClient<K extends ParamKeys>({
   };
   const getInstitutionUsingGET: TypeofApiCall<GetInstitutionUsingGETT> = createFetchRequestForApi(
     getInstitutionUsingGETT,
+    options
+  );
+
+  const getInstitutionGeographicTaxonomyUsingGETT: ReplaceRequestParams<
+    GetInstitutionGeographicTaxonomyUsingGETT,
+    RequestParams<GetInstitutionGeographicTaxonomyUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getInstitutionGeographicTaxonomyUsingGETDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/institutions/${institutionId}/geographicTaxonomy`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const getInstitutionGeographicTaxonomyUsingGET: TypeofApiCall<GetInstitutionGeographicTaxonomyUsingGETT> = createFetchRequestForApi(
+    getInstitutionGeographicTaxonomyUsingGETT,
+    options
+  );
+
+  const updateInstitutionGeographicTaxonomyUsingPUTT: ReplaceRequestParams<
+    UpdateInstitutionGeographicTaxonomyUsingPUTT,
+    RequestParams<UpdateInstitutionGeographicTaxonomyUsingPUTT>
+  > = {
+    method: "put",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: updateInstitutionGeographicTaxonomyUsingPUTDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/institutions/${institutionId}/geographicTaxonomy`,
+
+    body: ({ ["body"]: body }) => JSON.stringify(body),
+
+    query: () => withoutUndefinedValues({})
+  };
+  const updateInstitutionGeographicTaxonomyUsingPUT: TypeofApiCall<UpdateInstitutionGeographicTaxonomyUsingPUTT> = createFetchRequestForApi(
+    updateInstitutionGeographicTaxonomyUsingPUTT,
     options
   );
 
@@ -1352,6 +1428,12 @@ export function createClient<K extends ParamKeys>({
       getInstitutionsUsingGET
     ),
     getInstitutionUsingGET: (withDefaults || identity)(getInstitutionUsingGET),
+    getInstitutionGeographicTaxonomyUsingGET: (withDefaults || identity)(
+      getInstitutionGeographicTaxonomyUsingGET
+    ),
+    updateInstitutionGeographicTaxonomyUsingPUT: (withDefaults || identity)(
+      updateInstitutionGeographicTaxonomyUsingPUT
+    ),
     saveInstitutionLogoUsingPUT: (withDefaults || identity)(
       saveInstitutionLogoUsingPUT
     ),
