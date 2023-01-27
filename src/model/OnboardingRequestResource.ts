@@ -1,6 +1,6 @@
 export type OnboardingRequestResource = {
   tokenId: string;
-  admins: Array<UserInfo>;
+  admins?: Array<UserInfo>;
   institutionInfo: InstitutionInfo;
   manager: UserInfo;
   status: 'ACTIVE' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
