@@ -13,6 +13,10 @@ import { Problem } from "./Problem";
 
 import { InstitutionResource } from "./InstitutionResource";
 
+import { GeographicTaxonomyResourceArray } from "./GeographicTaxonomyResourceArray";
+
+import { GeographicTaxonomyListDto } from "./GeographicTaxonomyListDto";
+
 import { ProductsResourceArray } from "./ProductsResourceArray";
 
 import { ProductUserResourceArray } from "./ProductUserResourceArray";
@@ -351,6 +355,298 @@ export function getInstitutionUsingGETDecoder<
 // Decodes the success response with the type defined in the specs
 export const getInstitutionUsingGETDefaultDecoder = () =>
   getInstitutionUsingGETDecoder();
+
+/****************************************************************
+ * getInstitutionGeographicTaxonomyUsingGET
+ */
+
+// Request type definition
+export type GetInstitutionGeographicTaxonomyUsingGETT = r.IGetApiRequestType<
+  { readonly bearerAuth: string; readonly institutionId: string },
+  "Authorization",
+  never,
+  | r.IResponseType<200, GeographicTaxonomyResourceArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getInstitutionGeographicTaxonomyUsingGETDefaultResponses = {
+  200: GeographicTaxonomyResourceArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetInstitutionGeographicTaxonomyUsingGETResponsesT<
+  A0 = GeographicTaxonomyResourceArray,
+  C0 = GeographicTaxonomyResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getInstitutionGeographicTaxonomyUsingGETDecoder<
+  A0 = GeographicTaxonomyResourceArray,
+  C0 = GeographicTaxonomyResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetInstitutionGeographicTaxonomyUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getInstitutionGeographicTaxonomyUsingGETDefaultResponses as unknown) as GetInstitutionGeographicTaxonomyUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getInstitutionGeographicTaxonomyUsingGETDefaultDecoder = () =>
+  getInstitutionGeographicTaxonomyUsingGETDecoder();
+
+/****************************************************************
+ * updateInstitutionGeographicTaxonomyUsingPUT
+ */
+
+// Request type definition
+export type UpdateInstitutionGeographicTaxonomyUsingPUTT = r.IPutApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly institutionId: string;
+    readonly body?: GeographicTaxonomyListDto;
+  },
+  "Content-Type" | "Authorization",
+  never,
+  | r.IResponseType<200, undefined, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const updateInstitutionGeographicTaxonomyUsingPUTDefaultResponses = {
+  200: t.undefined,
+  400: Problem,
+  401: Problem,
+  500: Problem
+};
+
+export type UpdateInstitutionGeographicTaxonomyUsingPUTResponsesT<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  500: t.Type<A3, C3>;
+};
+
+export function updateInstitutionGeographicTaxonomyUsingPUTDecoder<
+  A0 = undefined,
+  C0 = undefined,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        UpdateInstitutionGeographicTaxonomyUsingPUTResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<500, A3, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((updateInstitutionGeographicTaxonomyUsingPUTDefaultResponses as unknown) as UpdateInstitutionGeographicTaxonomyUsingPUTResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A3, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const updateInstitutionGeographicTaxonomyUsingPUTDefaultDecoder = () =>
+  updateInstitutionGeographicTaxonomyUsingPUTDecoder();
 
 /****************************************************************
  * saveInstitutionLogoUsingPUT
