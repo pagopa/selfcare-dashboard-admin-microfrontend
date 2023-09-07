@@ -8,17 +8,17 @@ import { CertifiedFieldResourceOfstring } from "./CertifiedFieldResourceOfstring
 import * as t from "io-ts";
 
 // required attributes
-const UserResourceR = t.interface({
-  fiscalCode: t.string,
-
-  id: t.string
-});
+const UserResourceR = t.interface({});
 
 // optional attributes
 const UserResourceO = t.partial({
   email: CertifiedFieldResourceOfstring,
 
   familyName: CertifiedFieldResourceOfstring,
+
+  fiscalCode: t.string,
+
+  id: t.string,
 
   name: CertifiedFieldResourceOfstring
 });

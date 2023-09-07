@@ -25,7 +25,10 @@ export enum SelcRoleEnum {
 }
 
 // required attributes
-const ProductRoleMappingsResourceR = t.interface({
+const ProductRoleMappingsResourceR = t.interface({});
+
+// optional attributes
+const ProductRoleMappingsResourceO = t.partial({
   multiroleAllowed: t.boolean,
 
   partyRole: enumType<PartyRoleEnum>(PartyRoleEnum, "partyRole"),
@@ -37,9 +40,6 @@ const ProductRoleMappingsResourceR = t.interface({
 
   selcRole: enumType<SelcRoleEnum>(SelcRoleEnum, "selcRole")
 });
-
-// optional attributes
-const ProductRoleMappingsResourceO = t.partial({});
 
 export const ProductRoleMappingsResource = t.intersection(
   [ProductRoleMappingsResourceR, ProductRoleMappingsResourceO],

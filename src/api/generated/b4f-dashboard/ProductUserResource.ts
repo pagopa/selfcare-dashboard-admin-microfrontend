@@ -6,7 +6,6 @@
 
 import { ProductInfoResource } from "./ProductInfoResource";
 import * as t from "io-ts";
-import { EmailString } from "@pagopa/ts-commons/lib/strings";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
 export enum RoleEnum {
@@ -16,8 +15,11 @@ export enum RoleEnum {
 }
 
 // required attributes
-const ProductUserResourceR = t.interface({
-  email: EmailString,
+const ProductUserResourceR = t.interface({});
+
+// optional attributes
+const ProductUserResourceO = t.partial({
+  email: t.string,
 
   id: t.string,
 
@@ -31,9 +33,6 @@ const ProductUserResourceR = t.interface({
 
   surname: t.string
 });
-
-// optional attributes
-const ProductUserResourceO = t.partial({});
 
 export const ProductUserResource = t.intersection(
   [ProductUserResourceR, ProductUserResourceO],

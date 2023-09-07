@@ -7,14 +7,14 @@
 import * as t from "io-ts";
 
 // required attributes
-const CertifiedFieldResourceOfstringR = t.interface({
+const CertifiedFieldResourceOfstringR = t.interface({});
+
+// optional attributes
+const CertifiedFieldResourceOfstringO = t.partial({
   certified: t.boolean,
 
   value: t.string
 });
-
-// optional attributes
-const CertifiedFieldResourceOfstringO = t.partial({});
 
 export const CertifiedFieldResourceOfstring = t.intersection(
   [CertifiedFieldResourceOfstringR, CertifiedFieldResourceOfstringO],

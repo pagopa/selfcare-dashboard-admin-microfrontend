@@ -5,11 +5,10 @@
 /* eslint-disable  */
 
 import * as t from "io-ts";
-import { EmailString } from "@pagopa/ts-commons/lib/strings";
 
 // required attributes
 const UserInfoR = t.interface({
-  email: EmailString,
+  email: t.string,
 
   fiscalCode: t.string,
 

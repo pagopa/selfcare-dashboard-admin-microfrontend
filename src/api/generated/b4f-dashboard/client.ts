@@ -15,16 +15,26 @@ import {
 import { identity } from "fp-ts/lib/function";
 
 import {
+  CreateDelegationUsingPOSTT,
+  createDelegationUsingPOSTDefaultDecoder,
   GetInstitutionsUsingGETT,
   getInstitutionsUsingGETDefaultDecoder,
+  GetProductstreeUsingGETT,
+  getProductstreeUsingGETDefaultDecoder,
   GetInstitutionUsingGETT,
   getInstitutionUsingGETDefaultDecoder,
+  UpdateInstitutionDescriptionUsingPUTT,
+  updateInstitutionDescriptionUsingPUTDefaultDecoder,
   GetInstitutionGeographicTaxonomyUsingGETT,
   getInstitutionGeographicTaxonomyUsingGETDefaultDecoder,
   UpdateInstitutionGeographicTaxonomyUsingPUTT,
   updateInstitutionGeographicTaxonomyUsingPUTDefaultDecoder,
+  GetDelegationsUsingToUsingGETT,
+  getDelegationsUsingToUsingGETDefaultDecoder,
   SaveInstitutionLogoUsingPUTT,
   saveInstitutionLogoUsingPUTDefaultDecoder,
+  GetDelegationsUsingFromUsingGETT,
+  getDelegationsUsingFromUsingGETDefaultDecoder,
   GetInstitutionProductsUsingGETT,
   getInstitutionProductsUsingGETDefaultDecoder,
   GetInstitutionProductUsersUsingGETT,
@@ -43,8 +53,12 @@ import {
   rejectOnboardingRequestUsingDELETEDefaultDecoder,
   RetrieveOnboardingRequestUsingGETT,
   retrieveOnboardingRequestUsingGETDefaultDecoder,
+  GetPnPGInstitutionProductsUsingGETT,
+  getPnPGInstitutionProductsUsingGETDefaultDecoder,
   RetrieveProductBackofficeUsingGETT,
   retrieveProductBackofficeUsingGETDefaultDecoder,
+  GetProductBrokersUsingGETT,
+  getProductBrokersUsingGETDefaultDecoder,
   GetProductRolesUsingGETT,
   getProductRolesUsingGETDefaultDecoder,
   DeleteRelationshipByIdUsingDELETET,
@@ -53,6 +67,8 @@ import {
   activateRelationshipUsingPOSTDefaultDecoder,
   SuspendRelationshipUsingPOSTT,
   suspendRelationshipUsingPOSTDefaultDecoder,
+  SendSupportRequestUsingPOSTT,
+  sendSupportRequestUsingPOSTDefaultDecoder,
   ExchangeUsingGETT,
   exchangeUsingGETDefaultDecoder,
   GetUserGroupsUsingGETT,
@@ -91,11 +107,16 @@ import {
 // We use this as a placeholder for type parameters indicating "no key"
 type __UNDEFINED_KEY = "_____";
 
-export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
+export type ApiOperation = TypeofApiCall<CreateDelegationUsingPOSTT> &
+  TypeofApiCall<GetInstitutionsUsingGETT> &
+  TypeofApiCall<GetProductstreeUsingGETT> &
   TypeofApiCall<GetInstitutionUsingGETT> &
+  TypeofApiCall<UpdateInstitutionDescriptionUsingPUTT> &
   TypeofApiCall<GetInstitutionGeographicTaxonomyUsingGETT> &
   TypeofApiCall<UpdateInstitutionGeographicTaxonomyUsingPUTT> &
+  TypeofApiCall<GetDelegationsUsingToUsingGETT> &
   TypeofApiCall<SaveInstitutionLogoUsingPUTT> &
+  TypeofApiCall<GetDelegationsUsingFromUsingGETT> &
   TypeofApiCall<GetInstitutionProductsUsingGETT> &
   TypeofApiCall<GetInstitutionProductUsersUsingGETT> &
   TypeofApiCall<CreateInstitutionProductUserUsingPOSTT> &
@@ -105,11 +126,14 @@ export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
   TypeofApiCall<ApproveOnboardingRequestUsingPOSTT> &
   TypeofApiCall<RejectOnboardingRequestUsingDELETET> &
   TypeofApiCall<RetrieveOnboardingRequestUsingGETT> &
+  TypeofApiCall<GetPnPGInstitutionProductsUsingGETT> &
   TypeofApiCall<RetrieveProductBackofficeUsingGETT> &
+  TypeofApiCall<GetProductBrokersUsingGETT> &
   TypeofApiCall<GetProductRolesUsingGETT> &
   TypeofApiCall<DeleteRelationshipByIdUsingDELETET> &
   TypeofApiCall<ActivateRelationshipUsingPOSTT> &
   TypeofApiCall<SuspendRelationshipUsingPOSTT> &
+  TypeofApiCall<SendSupportRequestUsingPOSTT> &
   TypeofApiCall<ExchangeUsingGETT> &
   TypeofApiCall<GetUserGroupsUsingGETT> &
   TypeofApiCall<CreateUserGroupUsingPOSTT> &
@@ -126,11 +150,16 @@ export type ApiOperation = TypeofApiCall<GetInstitutionsUsingGETT> &
   TypeofApiCall<GetUserByInternalIdUsingGETT> &
   TypeofApiCall<UpdateUserUsingPUTT>;
 
-export type ParamKeys = keyof (TypeofApiParams<GetInstitutionsUsingGETT> &
+export type ParamKeys = keyof (TypeofApiParams<CreateDelegationUsingPOSTT> &
+  TypeofApiParams<GetInstitutionsUsingGETT> &
+  TypeofApiParams<GetProductstreeUsingGETT> &
   TypeofApiParams<GetInstitutionUsingGETT> &
+  TypeofApiParams<UpdateInstitutionDescriptionUsingPUTT> &
   TypeofApiParams<GetInstitutionGeographicTaxonomyUsingGETT> &
   TypeofApiParams<UpdateInstitutionGeographicTaxonomyUsingPUTT> &
+  TypeofApiParams<GetDelegationsUsingToUsingGETT> &
   TypeofApiParams<SaveInstitutionLogoUsingPUTT> &
+  TypeofApiParams<GetDelegationsUsingFromUsingGETT> &
   TypeofApiParams<GetInstitutionProductsUsingGETT> &
   TypeofApiParams<GetInstitutionProductUsersUsingGETT> &
   TypeofApiParams<CreateInstitutionProductUserUsingPOSTT> &
@@ -140,11 +169,14 @@ export type ParamKeys = keyof (TypeofApiParams<GetInstitutionsUsingGETT> &
   TypeofApiParams<ApproveOnboardingRequestUsingPOSTT> &
   TypeofApiParams<RejectOnboardingRequestUsingDELETET> &
   TypeofApiParams<RetrieveOnboardingRequestUsingGETT> &
+  TypeofApiParams<GetPnPGInstitutionProductsUsingGETT> &
   TypeofApiParams<RetrieveProductBackofficeUsingGETT> &
+  TypeofApiParams<GetProductBrokersUsingGETT> &
   TypeofApiParams<GetProductRolesUsingGETT> &
   TypeofApiParams<DeleteRelationshipByIdUsingDELETET> &
   TypeofApiParams<ActivateRelationshipUsingPOSTT> &
   TypeofApiParams<SuspendRelationshipUsingPOSTT> &
+  TypeofApiParams<SendSupportRequestUsingPOSTT> &
   TypeofApiParams<ExchangeUsingGETT> &
   TypeofApiParams<GetUserGroupsUsingGETT> &
   TypeofApiParams<CreateUserGroupUsingPOSTT> &
@@ -183,11 +215,16 @@ export type OmitApiCallParams<
 export type WithDefaultsT<
   K extends ParamKeys | __UNDEFINED_KEY = __UNDEFINED_KEY
 > = OmitApiCallParams<
+  | CreateDelegationUsingPOSTT
   | GetInstitutionsUsingGETT
+  | GetProductstreeUsingGETT
   | GetInstitutionUsingGETT
+  | UpdateInstitutionDescriptionUsingPUTT
   | GetInstitutionGeographicTaxonomyUsingGETT
   | UpdateInstitutionGeographicTaxonomyUsingPUTT
+  | GetDelegationsUsingToUsingGETT
   | SaveInstitutionLogoUsingPUTT
+  | GetDelegationsUsingFromUsingGETT
   | GetInstitutionProductsUsingGETT
   | GetInstitutionProductUsersUsingGETT
   | CreateInstitutionProductUserUsingPOSTT
@@ -197,11 +234,14 @@ export type WithDefaultsT<
   | ApproveOnboardingRequestUsingPOSTT
   | RejectOnboardingRequestUsingDELETET
   | RetrieveOnboardingRequestUsingGETT
+  | GetPnPGInstitutionProductsUsingGETT
   | RetrieveProductBackofficeUsingGETT
+  | GetProductBrokersUsingGETT
   | GetProductRolesUsingGETT
   | DeleteRelationshipByIdUsingDELETET
   | ActivateRelationshipUsingPOSTT
   | SuspendRelationshipUsingPOSTT
+  | SendSupportRequestUsingPOSTT
   | ExchangeUsingGETT
   | GetUserGroupsUsingGETT
   | CreateUserGroupUsingPOSTT
@@ -228,9 +268,19 @@ export type Client<
   K extends ParamKeys | __UNDEFINED_KEY = __UNDEFINED_KEY
 > = K extends __UNDEFINED_KEY
   ? {
+      readonly createDelegationUsingPOST: TypeofApiCall<
+        CreateDelegationUsingPOSTT
+      >;
+
       readonly getInstitutionsUsingGET: TypeofApiCall<GetInstitutionsUsingGETT>;
 
+      readonly getProductstreeUsingGET: TypeofApiCall<GetProductstreeUsingGETT>;
+
       readonly getInstitutionUsingGET: TypeofApiCall<GetInstitutionUsingGETT>;
+
+      readonly updateInstitutionDescriptionUsingPUT: TypeofApiCall<
+        UpdateInstitutionDescriptionUsingPUTT
+      >;
 
       readonly getInstitutionGeographicTaxonomyUsingGET: TypeofApiCall<
         GetInstitutionGeographicTaxonomyUsingGETT
@@ -240,8 +290,16 @@ export type Client<
         UpdateInstitutionGeographicTaxonomyUsingPUTT
       >;
 
+      readonly getDelegationsUsingToUsingGET: TypeofApiCall<
+        GetDelegationsUsingToUsingGETT
+      >;
+
       readonly saveInstitutionLogoUsingPUT: TypeofApiCall<
         SaveInstitutionLogoUsingPUTT
+      >;
+
+      readonly getDelegationsUsingFromUsingGET: TypeofApiCall<
+        GetDelegationsUsingFromUsingGETT
       >;
 
       readonly getInstitutionProductsUsingGET: TypeofApiCall<
@@ -280,8 +338,16 @@ export type Client<
         RetrieveOnboardingRequestUsingGETT
       >;
 
+      readonly getPnPGInstitutionProductsUsingGET: TypeofApiCall<
+        GetPnPGInstitutionProductsUsingGETT
+      >;
+
       readonly retrieveProductBackofficeUsingGET: TypeofApiCall<
         RetrieveProductBackofficeUsingGETT
+      >;
+
+      readonly getProductBrokersUsingGET: TypeofApiCall<
+        GetProductBrokersUsingGETT
       >;
 
       readonly getProductRolesUsingGET: TypeofApiCall<GetProductRolesUsingGETT>;
@@ -296,6 +362,10 @@ export type Client<
 
       readonly suspendRelationshipUsingPOST: TypeofApiCall<
         SuspendRelationshipUsingPOSTT
+      >;
+
+      readonly sendSupportRequestUsingPOST: TypeofApiCall<
+        SendSupportRequestUsingPOSTT
       >;
 
       readonly exchangeUsingGET: TypeofApiCall<ExchangeUsingGETT>;
@@ -347,6 +417,13 @@ export type Client<
       readonly updateUserUsingPUT: TypeofApiCall<UpdateUserUsingPUTT>;
     }
   : {
+      readonly createDelegationUsingPOST: TypeofApiCall<
+        ReplaceRequestParams<
+          CreateDelegationUsingPOSTT,
+          Omit<RequestParams<CreateDelegationUsingPOSTT>, K>
+        >
+      >;
+
       readonly getInstitutionsUsingGET: TypeofApiCall<
         ReplaceRequestParams<
           GetInstitutionsUsingGETT,
@@ -354,10 +431,24 @@ export type Client<
         >
       >;
 
+      readonly getProductstreeUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetProductstreeUsingGETT,
+          Omit<RequestParams<GetProductstreeUsingGETT>, K>
+        >
+      >;
+
       readonly getInstitutionUsingGET: TypeofApiCall<
         ReplaceRequestParams<
           GetInstitutionUsingGETT,
           Omit<RequestParams<GetInstitutionUsingGETT>, K>
+        >
+      >;
+
+      readonly updateInstitutionDescriptionUsingPUT: TypeofApiCall<
+        ReplaceRequestParams<
+          UpdateInstitutionDescriptionUsingPUTT,
+          Omit<RequestParams<UpdateInstitutionDescriptionUsingPUTT>, K>
         >
       >;
 
@@ -375,10 +466,24 @@ export type Client<
         >
       >;
 
+      readonly getDelegationsUsingToUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetDelegationsUsingToUsingGETT,
+          Omit<RequestParams<GetDelegationsUsingToUsingGETT>, K>
+        >
+      >;
+
       readonly saveInstitutionLogoUsingPUT: TypeofApiCall<
         ReplaceRequestParams<
           SaveInstitutionLogoUsingPUTT,
           Omit<RequestParams<SaveInstitutionLogoUsingPUTT>, K>
+        >
+      >;
+
+      readonly getDelegationsUsingFromUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetDelegationsUsingFromUsingGETT,
+          Omit<RequestParams<GetDelegationsUsingFromUsingGETT>, K>
         >
       >;
 
@@ -445,10 +550,24 @@ export type Client<
         >
       >;
 
+      readonly getPnPGInstitutionProductsUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetPnPGInstitutionProductsUsingGETT,
+          Omit<RequestParams<GetPnPGInstitutionProductsUsingGETT>, K>
+        >
+      >;
+
       readonly retrieveProductBackofficeUsingGET: TypeofApiCall<
         ReplaceRequestParams<
           RetrieveProductBackofficeUsingGETT,
           Omit<RequestParams<RetrieveProductBackofficeUsingGETT>, K>
+        >
+      >;
+
+      readonly getProductBrokersUsingGET: TypeofApiCall<
+        ReplaceRequestParams<
+          GetProductBrokersUsingGETT,
+          Omit<RequestParams<GetProductBrokersUsingGETT>, K>
         >
       >;
 
@@ -477,6 +596,13 @@ export type Client<
         ReplaceRequestParams<
           SuspendRelationshipUsingPOSTT,
           Omit<RequestParams<SuspendRelationshipUsingPOSTT>, K>
+        >
+      >;
+
+      readonly sendSupportRequestUsingPOST: TypeofApiCall<
+        ReplaceRequestParams<
+          SendSupportRequestUsingPOSTT,
+          Omit<RequestParams<SendSupportRequestUsingPOSTT>, K>
         >
       >;
 
@@ -627,6 +753,29 @@ export function createClient<K extends ParamKeys>({
     fetchApi
   };
 
+  const createDelegationUsingPOSTT: ReplaceRequestParams<
+    CreateDelegationUsingPOSTT,
+    RequestParams<CreateDelegationUsingPOSTT>
+  > = {
+    method: "post",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: createDelegationUsingPOSTDefaultDecoder(),
+    url: ({}) => `${basePath}/delegations`,
+
+    body: ({ ["body"]: body }) => JSON.stringify(body),
+
+    query: () => withoutUndefinedValues({})
+  };
+  const createDelegationUsingPOST: TypeofApiCall<CreateDelegationUsingPOSTT> = createFetchRequestForApi(
+    createDelegationUsingPOSTT,
+    options
+  );
+
   const getInstitutionsUsingGETT: ReplaceRequestParams<
     GetInstitutionsUsingGETT,
     RequestParams<GetInstitutionsUsingGETT>
@@ -639,10 +788,42 @@ export function createClient<K extends ParamKeys>({
     response_decoder: getInstitutionsUsingGETDefaultDecoder(),
     url: ({}) => `${basePath}/institutions`,
 
-    query: () => withoutUndefinedValues({})
+    query: ({
+      ["authenticated"]: authenticated,
+      ["authorities[0].authority"]: authorities0Authority,
+      ["credentials"]: credentials,
+      ["details"]: details,
+      ["principal"]: principal
+    }) =>
+      withoutUndefinedValues({
+        ["authenticated"]: authenticated,
+        ["authorities[0].authority"]: authorities0Authority,
+        ["credentials"]: credentials,
+        ["details"]: details,
+        ["principal"]: principal
+      })
   };
   const getInstitutionsUsingGET: TypeofApiCall<GetInstitutionsUsingGETT> = createFetchRequestForApi(
     getInstitutionsUsingGETT,
+    options
+  );
+
+  const getProductstreeUsingGETT: ReplaceRequestParams<
+    GetProductstreeUsingGETT,
+    RequestParams<GetProductstreeUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getProductstreeUsingGETDefaultDecoder(),
+    url: ({}) => `${basePath}/institutions/products`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const getProductstreeUsingGET: TypeofApiCall<GetProductstreeUsingGETT> = createFetchRequestForApi(
+    getProductstreeUsingGETT,
     options
   );
 
@@ -663,6 +844,30 @@ export function createClient<K extends ParamKeys>({
   };
   const getInstitutionUsingGET: TypeofApiCall<GetInstitutionUsingGETT> = createFetchRequestForApi(
     getInstitutionUsingGETT,
+    options
+  );
+
+  const updateInstitutionDescriptionUsingPUTT: ReplaceRequestParams<
+    UpdateInstitutionDescriptionUsingPUTT,
+    RequestParams<UpdateInstitutionDescriptionUsingPUTT>
+  > = {
+    method: "put",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: updateInstitutionDescriptionUsingPUTDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/institutions/${institutionId}`,
+
+    body: ({ ["body"]: body }) => JSON.stringify(body),
+
+    query: () => withoutUndefinedValues({})
+  };
+  const updateInstitutionDescriptionUsingPUT: TypeofApiCall<UpdateInstitutionDescriptionUsingPUTT> = createFetchRequestForApi(
+    updateInstitutionDescriptionUsingPUTT,
     options
   );
 
@@ -710,6 +915,27 @@ export function createClient<K extends ParamKeys>({
     options
   );
 
+  const getDelegationsUsingToUsingGETT: ReplaceRequestParams<
+    GetDelegationsUsingToUsingGETT,
+    RequestParams<GetDelegationsUsingToUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getDelegationsUsingToUsingGETDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/institutions/${institutionId}/institutions`,
+
+    query: ({ ["productId"]: productId }) =>
+      withoutUndefinedValues({ ["productId"]: productId })
+  };
+  const getDelegationsUsingToUsingGET: TypeofApiCall<GetDelegationsUsingToUsingGETT> = createFetchRequestForApi(
+    getDelegationsUsingToUsingGETT,
+    options
+  );
+
   const saveInstitutionLogoUsingPUTT: ReplaceRequestParams<
     SaveInstitutionLogoUsingPUTT,
     RequestParams<SaveInstitutionLogoUsingPUTT>
@@ -741,6 +967,27 @@ export function createClient<K extends ParamKeys>({
   };
   const saveInstitutionLogoUsingPUT: TypeofApiCall<SaveInstitutionLogoUsingPUTT> = createFetchRequestForApi(
     saveInstitutionLogoUsingPUTT,
+    options
+  );
+
+  const getDelegationsUsingFromUsingGETT: ReplaceRequestParams<
+    GetDelegationsUsingFromUsingGETT,
+    RequestParams<GetDelegationsUsingFromUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getDelegationsUsingFromUsingGETDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/institutions/${institutionId}/partners`,
+
+    query: ({ ["productId"]: productId }) =>
+      withoutUndefinedValues({ ["productId"]: productId })
+  };
+  const getDelegationsUsingFromUsingGET: TypeofApiCall<GetDelegationsUsingFromUsingGETT> = createFetchRequestForApi(
+    getDelegationsUsingFromUsingGETT,
     options
   );
 
@@ -952,6 +1199,26 @@ export function createClient<K extends ParamKeys>({
     options
   );
 
+  const getPnPGInstitutionProductsUsingGETT: ReplaceRequestParams<
+    GetPnPGInstitutionProductsUsingGETT,
+    RequestParams<GetPnPGInstitutionProductsUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getPnPGInstitutionProductsUsingGETDefaultDecoder(),
+    url: ({ ["institutionId"]: institutionId }) =>
+      `${basePath}/pnPGInstitutions/${institutionId}/products`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const getPnPGInstitutionProductsUsingGET: TypeofApiCall<GetPnPGInstitutionProductsUsingGETT> = createFetchRequestForApi(
+    getPnPGInstitutionProductsUsingGETT,
+    options
+  );
+
   const retrieveProductBackofficeUsingGETT: ReplaceRequestParams<
     RetrieveProductBackofficeUsingGETT,
     RequestParams<RetrieveProductBackofficeUsingGETT>
@@ -976,6 +1243,26 @@ export function createClient<K extends ParamKeys>({
   };
   const retrieveProductBackofficeUsingGET: TypeofApiCall<RetrieveProductBackofficeUsingGETT> = createFetchRequestForApi(
     retrieveProductBackofficeUsingGETT,
+    options
+  );
+
+  const getProductBrokersUsingGETT: ReplaceRequestParams<
+    GetProductBrokersUsingGETT,
+    RequestParams<GetProductBrokersUsingGETT>
+  > = {
+    method: "get",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth
+    }),
+    response_decoder: getProductBrokersUsingGETDefaultDecoder(),
+    url: ({ ["productId"]: productId, ["institutionType"]: institutionType }) =>
+      `${basePath}/products/${productId}/brokers/${institutionType}`,
+
+    query: () => withoutUndefinedValues({})
+  };
+  const getProductBrokersUsingGET: TypeofApiCall<GetProductBrokersUsingGETT> = createFetchRequestForApi(
+    getProductBrokersUsingGETT,
     options
   );
 
@@ -1066,6 +1353,42 @@ export function createClient<K extends ParamKeys>({
   };
   const suspendRelationshipUsingPOST: TypeofApiCall<SuspendRelationshipUsingPOSTT> = createFetchRequestForApi(
     suspendRelationshipUsingPOSTT,
+    options
+  );
+
+  const sendSupportRequestUsingPOSTT: ReplaceRequestParams<
+    SendSupportRequestUsingPOSTT,
+    RequestParams<SendSupportRequestUsingPOSTT>
+  > = {
+    method: "post",
+
+    headers: ({ ["bearerAuth"]: bearerAuth }: { bearerAuth: string }) => ({
+      Authorization: bearerAuth,
+
+      "Content-Type": "application/json"
+    }),
+    response_decoder: sendSupportRequestUsingPOSTDefaultDecoder(),
+    url: ({}) => `${basePath}/support`,
+
+    body: ({ ["body"]: body }) => JSON.stringify(body),
+
+    query: ({
+      ["authenticated"]: authenticated,
+      ["authorities[0].authority"]: authorities0Authority,
+      ["credentials"]: credentials,
+      ["details"]: details,
+      ["principal"]: principal
+    }) =>
+      withoutUndefinedValues({
+        ["authenticated"]: authenticated,
+        ["authorities[0].authority"]: authorities0Authority,
+        ["credentials"]: credentials,
+        ["details"]: details,
+        ["principal"]: principal
+      })
+  };
+  const sendSupportRequestUsingPOST: TypeofApiCall<SendSupportRequestUsingPOSTT> = createFetchRequestForApi(
+    sendSupportRequestUsingPOSTT,
     options
   );
 
@@ -1424,18 +1747,33 @@ export function createClient<K extends ParamKeys>({
   );
 
   return {
+    createDelegationUsingPOST: (withDefaults || identity)(
+      createDelegationUsingPOST
+    ),
     getInstitutionsUsingGET: (withDefaults || identity)(
       getInstitutionsUsingGET
     ),
+    getProductstreeUsingGET: (withDefaults || identity)(
+      getProductstreeUsingGET
+    ),
     getInstitutionUsingGET: (withDefaults || identity)(getInstitutionUsingGET),
+    updateInstitutionDescriptionUsingPUT: (withDefaults || identity)(
+      updateInstitutionDescriptionUsingPUT
+    ),
     getInstitutionGeographicTaxonomyUsingGET: (withDefaults || identity)(
       getInstitutionGeographicTaxonomyUsingGET
     ),
     updateInstitutionGeographicTaxonomyUsingPUT: (withDefaults || identity)(
       updateInstitutionGeographicTaxonomyUsingPUT
     ),
+    getDelegationsUsingToUsingGET: (withDefaults || identity)(
+      getDelegationsUsingToUsingGET
+    ),
     saveInstitutionLogoUsingPUT: (withDefaults || identity)(
       saveInstitutionLogoUsingPUT
+    ),
+    getDelegationsUsingFromUsingGET: (withDefaults || identity)(
+      getDelegationsUsingFromUsingGET
     ),
     getInstitutionProductsUsingGET: (withDefaults || identity)(
       getInstitutionProductsUsingGET
@@ -1464,8 +1802,14 @@ export function createClient<K extends ParamKeys>({
     retrieveOnboardingRequestUsingGET: (withDefaults || identity)(
       retrieveOnboardingRequestUsingGET
     ),
+    getPnPGInstitutionProductsUsingGET: (withDefaults || identity)(
+      getPnPGInstitutionProductsUsingGET
+    ),
     retrieveProductBackofficeUsingGET: (withDefaults || identity)(
       retrieveProductBackofficeUsingGET
+    ),
+    getProductBrokersUsingGET: (withDefaults || identity)(
+      getProductBrokersUsingGET
     ),
     getProductRolesUsingGET: (withDefaults || identity)(
       getProductRolesUsingGET
@@ -1478,6 +1822,9 @@ export function createClient<K extends ParamKeys>({
     ),
     suspendRelationshipUsingPOST: (withDefaults || identity)(
       suspendRelationshipUsingPOST
+    ),
+    sendSupportRequestUsingPOST: (withDefaults || identity)(
+      sendSupportRequestUsingPOST
     ),
     exchangeUsingGET: (withDefaults || identity)(exchangeUsingGET),
     getUserGroupsUsingGET: (withDefaults || identity)(getUserGroupsUsingGET),

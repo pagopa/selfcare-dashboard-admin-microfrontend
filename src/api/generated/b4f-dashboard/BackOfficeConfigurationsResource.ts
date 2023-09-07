@@ -7,14 +7,14 @@
 import * as t from "io-ts";
 
 // required attributes
-const BackOfficeConfigurationsResourceR = t.interface({
+const BackOfficeConfigurationsResourceR = t.interface({});
+
+// optional attributes
+const BackOfficeConfigurationsResourceO = t.partial({
   environment: t.string,
 
   url: t.string
 });
-
-// optional attributes
-const BackOfficeConfigurationsResourceO = t.partial({});
 
 export const BackOfficeConfigurationsResource = t.intersection(
   [BackOfficeConfigurationsResourceR, BackOfficeConfigurationsResourceO],

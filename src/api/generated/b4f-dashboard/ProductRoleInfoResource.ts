@@ -14,7 +14,10 @@ export enum SelcRoleEnum {
 }
 
 // required attributes
-const ProductRoleInfoResourceR = t.interface({
+const ProductRoleInfoResourceR = t.interface({});
+
+// optional attributes
+const ProductRoleInfoResourceO = t.partial({
   relationshipId: t.string,
 
   role: t.string,
@@ -23,9 +26,6 @@ const ProductRoleInfoResourceR = t.interface({
 
   status: t.string
 });
-
-// optional attributes
-const ProductRoleInfoResourceO = t.partial({});
 
 export const ProductRoleInfoResource = t.intersection(
   [ProductRoleInfoResourceR, ProductRoleInfoResourceO],

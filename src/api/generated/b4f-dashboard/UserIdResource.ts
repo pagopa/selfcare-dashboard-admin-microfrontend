@@ -7,12 +7,12 @@
 import * as t from "io-ts";
 
 // required attributes
-const UserIdResourceR = t.interface({
-  id: t.string
-});
+const UserIdResourceR = t.interface({});
 
 // optional attributes
-const UserIdResourceO = t.partial({});
+const UserIdResourceO = t.partial({
+  id: t.string
+});
 
 export const UserIdResource = t.intersection(
   [UserIdResourceR, UserIdResourceO],

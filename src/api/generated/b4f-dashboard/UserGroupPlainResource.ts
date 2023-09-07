@@ -5,17 +5,26 @@
 /* eslint-disable  */
 
 import * as t from "io-ts";
-import { enumType } from "@pagopa/ts-commons/lib/types";
 import { UTCISODateFromString } from "@pagopa/ts-commons/lib/dates";
+import { enumType } from "@pagopa/ts-commons/lib/types";
 
 export enum StatusEnum {
   "ACTIVE" = "ACTIVE",
+
+  "DELETED" = "DELETED",
 
   "SUSPENDED" = "SUSPENDED"
 }
 
 // required attributes
-const UserGroupPlainResourceR = t.interface({
+const UserGroupPlainResourceR = t.interface({});
+
+// optional attributes
+const UserGroupPlainResourceO = t.partial({
+  createdAt: UTCISODateFromString,
+
+  createdBy: t.string,
+
   description: t.string,
 
   id: t.string,
@@ -24,22 +33,15 @@ const UserGroupPlainResourceR = t.interface({
 
   membersCount: t.Integer,
 
+  modifiedAt: UTCISODateFromString,
+
+  modifiedBy: t.string,
+
   name: t.string,
 
   productId: t.string,
 
   status: enumType<StatusEnum>(StatusEnum, "status")
-});
-
-// optional attributes
-const UserGroupPlainResourceO = t.partial({
-  createdAt: UTCISODateFromString,
-
-  createdBy: t.string,
-
-  modifiedAt: UTCISODateFromString,
-
-  modifiedBy: t.string
 });
 
 export const UserGroupPlainResource = t.intersection(

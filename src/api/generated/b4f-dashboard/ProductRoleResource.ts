@@ -7,16 +7,16 @@
 import * as t from "io-ts";
 
 // required attributes
-const ProductRoleResourceR = t.interface({
+const ProductRoleResourceR = t.interface({});
+
+// optional attributes
+const ProductRoleResourceO = t.partial({
   code: t.string,
 
   description: t.string,
 
   label: t.string
 });
-
-// optional attributes
-const ProductRoleResourceO = t.partial({});
 
 export const ProductRoleResource = t.intersection(
   [ProductRoleResourceR, ProductRoleResourceO],

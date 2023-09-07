@@ -8,17 +8,17 @@ import { ProductRoleInfoResource } from "./ProductRoleInfoResource";
 import * as t from "io-ts";
 
 // required attributes
-const ProductInfoResourceR = t.interface({
+const ProductInfoResourceR = t.interface({});
+
+// optional attributes
+const ProductInfoResourceO = t.partial({
   id: t.string,
 
   roleInfos: t.readonlyArray(
     ProductRoleInfoResource,
     "array of ProductRoleInfoResource"
-  )
-});
+  ),
 
-// optional attributes
-const ProductInfoResourceO = t.partial({
   title: t.string
 });
 

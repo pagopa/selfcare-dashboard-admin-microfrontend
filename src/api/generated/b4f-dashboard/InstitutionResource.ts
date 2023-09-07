@@ -5,6 +5,8 @@
 /* eslint-disable  */
 
 import { GeographicTaxonomyResource } from "./GeographicTaxonomyResource";
+import { OnboardedProductResource } from "./OnboardedProductResource";
+import { SupportContactResource } from "./SupportContactResource";
 import * as t from "io-ts";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
@@ -12,6 +14,8 @@ export enum InstitutionTypeEnum {
   "GSP" = "GSP",
 
   "PA" = "PA",
+
+  "PG" = "PG",
 
   "PSP" = "PSP",
 
@@ -21,8 +25,15 @@ export enum InstitutionTypeEnum {
 }
 
 // required attributes
-const InstitutionResourceR = t.interface({
+const InstitutionResourceR = t.interface({});
+
+// optional attributes
+const InstitutionResourceO = t.partial({
   address: t.string,
+
+  aooParentCode: t.string,
+
+  category: t.string,
 
   externalId: t.string,
 
@@ -35,6 +46,11 @@ const InstitutionResourceR = t.interface({
 
   id: t.string,
 
+  institutionType: enumType<InstitutionTypeEnum>(
+    InstitutionTypeEnum,
+    "institutionType"
+  ),
+
   mailAddress: t.string,
 
   name: t.string,
@@ -43,23 +59,26 @@ const InstitutionResourceR = t.interface({
 
   originId: t.string,
 
-  status: t.string,
+  parentDescription: t.string,
 
-  userRole: t.string,
-
-  zipCode: t.string
-});
-
-// optional attributes
-const InstitutionResourceO = t.partial({
-  category: t.string,
-
-  institutionType: enumType<InstitutionTypeEnum>(
-    InstitutionTypeEnum,
-    "institutionType"
+  products: t.readonlyArray(
+    OnboardedProductResource,
+    "array of OnboardedProductResource"
   ),
 
-  recipientCode: t.string
+  recipientCode: t.string,
+
+  subunitCode: t.string,
+
+  subunitType: t.string,
+
+  supportContact: SupportContactResource,
+
+  vatNumber: t.string,
+
+  vatNumberGroup: t.boolean,
+
+  zipCode: t.string
 });
 
 export const InstitutionResource = t.intersection(

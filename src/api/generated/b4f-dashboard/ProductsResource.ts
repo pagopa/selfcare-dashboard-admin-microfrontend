@@ -7,17 +7,8 @@
 import { BackOfficeConfigurationsResource } from "./BackOfficeConfigurationsResource";
 import { SubProductResource } from "./SubProductResource";
 import * as t from "io-ts";
-import { enumType } from "@pagopa/ts-commons/lib/types";
 import { UTCISODateFromString } from "@pagopa/ts-commons/lib/dates";
-import { PatternString } from "@pagopa/ts-commons/lib/strings";
-
-export enum ProductOnBoardingStatusEnum {
-  "ACTIVE" = "ACTIVE",
-
-  "INACTIVE" = "INACTIVE",
-
-  "PENDING" = "PENDING"
-}
+import { enumType } from "@pagopa/ts-commons/lib/types";
 
 export enum StatusEnum {
   "ACTIVE" = "ACTIVE",
@@ -30,28 +21,7 @@ export enum StatusEnum {
 }
 
 // required attributes
-const ProductsResourceR = t.interface({
-  authorized: t.boolean,
-
-  description: t.string,
-
-  id: t.string,
-
-  imageUrl: t.string,
-
-  logo: t.string,
-
-  productOnBoardingStatus: enumType<ProductOnBoardingStatusEnum>(
-    ProductOnBoardingStatusEnum,
-    "productOnBoardingStatus"
-  ),
-
-  status: enumType<StatusEnum>(StatusEnum, "status"),
-
-  title: t.string,
-
-  urlBO: t.string
-});
+const ProductsResourceR = t.interface({});
 
 // optional attributes
 const ProductsResourceO = t.partial({
@@ -64,11 +34,25 @@ const ProductsResourceO = t.partial({
 
   children: t.readonlyArray(SubProductResource, "array of SubProductResource"),
 
-  logoBgColor: PatternString("^#[0-9A-F]{6}$"),
+  delegable: t.boolean,
 
-  urlPublic: t.string,
+  description: t.string,
 
-  userRole: t.string
+  id: t.string,
+
+  imageUrl: t.string,
+
+  logo: t.string,
+
+  logoBgColor: t.string,
+
+  status: enumType<StatusEnum>(StatusEnum, "status"),
+
+  title: t.string,
+
+  urlBO: t.string,
+
+  urlPublic: t.string
 });
 
 export const ProductsResource = t.intersection(

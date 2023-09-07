@@ -7,17 +7,27 @@ import * as t from "io-ts";
 
 import * as r from "@pagopa/ts-commons/lib/requests";
 
-import { InstitutionResourceArray } from "./InstitutionResourceArray";
+import { DelegationRequestDto } from "./DelegationRequestDto";
+
+import { DelegationIdResource } from "./DelegationIdResource";
 
 import { Problem } from "./Problem";
 
+import { InstitutionBaseResourceArray } from "./InstitutionBaseResourceArray";
+
+import { ProductsResourceArray } from "./ProductsResourceArray";
+
 import { InstitutionResource } from "./InstitutionResource";
+
+import { UpdateInstitutionDto } from "./UpdateInstitutionDto";
+
+import { Institution } from "./Institution";
 
 import { GeographicTaxonomyResourceArray } from "./GeographicTaxonomyResourceArray";
 
 import { GeographicTaxonomyListDto } from "./GeographicTaxonomyListDto";
 
-import { ProductsResourceArray } from "./ProductsResourceArray";
+import { DelegationResourceArray } from "./DelegationResourceArray";
 
 import { ProductUserResourceArray } from "./ProductUserResourceArray";
 
@@ -33,7 +43,15 @@ import { InstitutionUserDetailsResource } from "./InstitutionUserDetailsResource
 
 import { OnboardingRequestResource } from "./OnboardingRequestResource";
 
+import { PartyProductArray } from "./PartyProductArray";
+
+import { BrokerResourceArray } from "./BrokerResourceArray";
+
 import { ProductRoleMappingsResourceArray } from "./ProductRoleMappingsResourceArray";
+
+import { SupportRequestDto } from "./SupportRequestDto";
+
+import { SupportResponse } from "./SupportResponse";
 
 import { IdentityTokenResource } from "./IdentityTokenResource";
 
@@ -56,15 +74,178 @@ import { UserResource } from "./UserResource";
 import { UpdateUserDto } from "./UpdateUserDto";
 
 /****************************************************************
+ * createDelegationUsingPOST
+ */
+
+// Request type definition
+export type CreateDelegationUsingPOSTT = r.IPostApiRequestType<
+  { readonly bearerAuth: string; readonly body?: DelegationRequestDto },
+  "Content-Type" | "Authorization",
+  never,
+  | r.IResponseType<201, DelegationIdResource, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<409, undefined, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const createDelegationUsingPOSTDefaultResponses = {
+  201: DelegationIdResource,
+  400: Problem,
+  401: Problem,
+  409: t.undefined,
+  500: Problem
+};
+
+export type CreateDelegationUsingPOSTResponsesT<
+  A0 = DelegationIdResource,
+  C0 = DelegationIdResource,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = undefined,
+  C3 = undefined,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  201: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  409: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function createDelegationUsingPOSTDecoder<
+  A0 = DelegationIdResource,
+  C0 = DelegationIdResource,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = undefined,
+  C3 = undefined,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        CreateDelegationUsingPOSTResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<201, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<409, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((createDelegationUsingPOSTDefaultResponses as unknown) as CreateDelegationUsingPOSTResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 201: overrideTypes } : overrideTypes)
+  };
+
+  const d201 = (type[201].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 201, never>(201, undefined)
+    : r.ioResponseDecoder<
+        201,
+        typeof type[201]["_A"],
+        typeof type[201]["_O"],
+        never
+      >(201, type[201])) as r.ResponseDecoder<r.IResponseType<201, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d409 = (type[409].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 409, never>(409, undefined)
+    : r.ioResponseDecoder<
+        409,
+        typeof type[409]["_A"],
+        typeof type[409]["_O"],
+        never
+      >(409, type[409])) as r.ResponseDecoder<r.IResponseType<409, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d201, d400), d401),
+      d409
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const createDelegationUsingPOSTDefaultDecoder = () =>
+  createDelegationUsingPOSTDecoder();
+
+/****************************************************************
  * getInstitutionsUsingGET
  */
 
 // Request type definition
 export type GetInstitutionsUsingGETT = r.IGetApiRequestType<
-  { readonly bearerAuth: string },
+  {
+    readonly bearerAuth: string;
+    readonly authenticated?: boolean;
+    readonly "authorities[0].authority"?: string;
+    readonly credentials?: object;
+    readonly details?: object;
+    readonly principal?: object;
+  },
   "Authorization",
   never,
-  | r.IResponseType<200, InstitutionResourceArray, never>
+  | r.IResponseType<200, InstitutionBaseResourceArray, never>
   | r.IResponseType<400, Problem, never>
   | r.IResponseType<401, Problem, never>
   | r.IResponseType<404, Problem, never>
@@ -72,7 +253,7 @@ export type GetInstitutionsUsingGETT = r.IGetApiRequestType<
 >;
 
 export const getInstitutionsUsingGETDefaultResponses = {
-  200: InstitutionResourceArray,
+  200: InstitutionBaseResourceArray,
   400: Problem,
   401: Problem,
   404: Problem,
@@ -80,8 +261,8 @@ export const getInstitutionsUsingGETDefaultResponses = {
 };
 
 export type GetInstitutionsUsingGETResponsesT<
-  A0 = InstitutionResourceArray,
-  C0 = InstitutionResourceArray,
+  A0 = InstitutionBaseResourceArray,
+  C0 = InstitutionBaseResourceArray,
   A1 = Problem,
   C1 = Problem,
   A2 = Problem,
@@ -99,8 +280,8 @@ export type GetInstitutionsUsingGETResponsesT<
 };
 
 export function getInstitutionsUsingGETDecoder<
-  A0 = InstitutionResourceArray,
-  C0 = InstitutionResourceArray,
+  A0 = InstitutionBaseResourceArray,
+  C0 = InstitutionBaseResourceArray,
   A1 = Problem,
   C1 = Problem,
   A2 = Problem,
@@ -210,6 +391,162 @@ export function getInstitutionsUsingGETDecoder<
 // Decodes the success response with the type defined in the specs
 export const getInstitutionsUsingGETDefaultDecoder = () =>
   getInstitutionsUsingGETDecoder();
+
+/****************************************************************
+ * getProductstreeUsingGET
+ */
+
+// Request type definition
+export type GetProductstreeUsingGETT = r.IGetApiRequestType<
+  { readonly bearerAuth: string },
+  "Authorization",
+  never,
+  | r.IResponseType<200, ProductsResourceArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getProductstreeUsingGETDefaultResponses = {
+  200: ProductsResourceArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetProductstreeUsingGETResponsesT<
+  A0 = ProductsResourceArray,
+  C0 = ProductsResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getProductstreeUsingGETDecoder<
+  A0 = ProductsResourceArray,
+  C0 = ProductsResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetProductstreeUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getProductstreeUsingGETDefaultResponses as unknown) as GetProductstreeUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getProductstreeUsingGETDefaultDecoder = () =>
+  getProductstreeUsingGETDecoder();
 
 /****************************************************************
  * getInstitutionUsingGET
@@ -355,6 +692,142 @@ export function getInstitutionUsingGETDecoder<
 // Decodes the success response with the type defined in the specs
 export const getInstitutionUsingGETDefaultDecoder = () =>
   getInstitutionUsingGETDecoder();
+
+/****************************************************************
+ * updateInstitutionDescriptionUsingPUT
+ */
+
+// Request type definition
+export type UpdateInstitutionDescriptionUsingPUTT = r.IPutApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly institutionId: string;
+    readonly body?: UpdateInstitutionDto;
+  },
+  "Content-Type" | "Authorization",
+  never,
+  | r.IResponseType<200, Institution, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const updateInstitutionDescriptionUsingPUTDefaultResponses = {
+  200: Institution,
+  400: Problem,
+  401: Problem,
+  500: Problem
+};
+
+export type UpdateInstitutionDescriptionUsingPUTResponsesT<
+  A0 = Institution,
+  C0 = Institution,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  500: t.Type<A3, C3>;
+};
+
+export function updateInstitutionDescriptionUsingPUTDecoder<
+  A0 = Institution,
+  C0 = Institution,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        UpdateInstitutionDescriptionUsingPUTResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<500, A3, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((updateInstitutionDescriptionUsingPUTDefaultResponses as unknown) as UpdateInstitutionDescriptionUsingPUTResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A3, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const updateInstitutionDescriptionUsingPUTDefaultDecoder = () =>
+  updateInstitutionDescriptionUsingPUTDecoder();
 
 /****************************************************************
  * getInstitutionGeographicTaxonomyUsingGET
@@ -649,6 +1122,166 @@ export const updateInstitutionGeographicTaxonomyUsingPUTDefaultDecoder = () =>
   updateInstitutionGeographicTaxonomyUsingPUTDecoder();
 
 /****************************************************************
+ * getDelegationsUsingToUsingGET
+ */
+
+// Request type definition
+export type GetDelegationsUsingToUsingGETT = r.IGetApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly institutionId: string;
+    readonly productId?: string;
+  },
+  "Authorization",
+  never,
+  | r.IResponseType<200, DelegationResourceArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getDelegationsUsingToUsingGETDefaultResponses = {
+  200: DelegationResourceArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetDelegationsUsingToUsingGETResponsesT<
+  A0 = DelegationResourceArray,
+  C0 = DelegationResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getDelegationsUsingToUsingGETDecoder<
+  A0 = DelegationResourceArray,
+  C0 = DelegationResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetDelegationsUsingToUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getDelegationsUsingToUsingGETDefaultResponses as unknown) as GetDelegationsUsingToUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getDelegationsUsingToUsingGETDefaultDecoder = () =>
+  getDelegationsUsingToUsingGETDecoder();
+
+/****************************************************************
  * saveInstitutionLogoUsingPUT
  */
 
@@ -774,6 +1407,166 @@ export function saveInstitutionLogoUsingPUTDecoder<
 // Decodes the success response with the type defined in the specs
 export const saveInstitutionLogoUsingPUTDefaultDecoder = () =>
   saveInstitutionLogoUsingPUTDecoder();
+
+/****************************************************************
+ * getDelegationsUsingFromUsingGET
+ */
+
+// Request type definition
+export type GetDelegationsUsingFromUsingGETT = r.IGetApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly institutionId: string;
+    readonly productId?: string;
+  },
+  "Authorization",
+  never,
+  | r.IResponseType<200, DelegationResourceArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getDelegationsUsingFromUsingGETDefaultResponses = {
+  200: DelegationResourceArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetDelegationsUsingFromUsingGETResponsesT<
+  A0 = DelegationResourceArray,
+  C0 = DelegationResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getDelegationsUsingFromUsingGETDecoder<
+  A0 = DelegationResourceArray,
+  C0 = DelegationResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetDelegationsUsingFromUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getDelegationsUsingFromUsingGETDefaultResponses as unknown) as GetDelegationsUsingFromUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getDelegationsUsingFromUsingGETDefaultDecoder = () =>
+  getDelegationsUsingFromUsingGETDecoder();
 
 /****************************************************************
  * getInstitutionProductsUsingGET
@@ -2102,6 +2895,162 @@ export const retrieveOnboardingRequestUsingGETDefaultDecoder = () =>
   retrieveOnboardingRequestUsingGETDecoder();
 
 /****************************************************************
+ * getPnPGInstitutionProductsUsingGET
+ */
+
+// Request type definition
+export type GetPnPGInstitutionProductsUsingGETT = r.IGetApiRequestType<
+  { readonly bearerAuth: string; readonly institutionId: string },
+  "Authorization",
+  never,
+  | r.IResponseType<200, PartyProductArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getPnPGInstitutionProductsUsingGETDefaultResponses = {
+  200: PartyProductArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetPnPGInstitutionProductsUsingGETResponsesT<
+  A0 = PartyProductArray,
+  C0 = PartyProductArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getPnPGInstitutionProductsUsingGETDecoder<
+  A0 = PartyProductArray,
+  C0 = PartyProductArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetPnPGInstitutionProductsUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getPnPGInstitutionProductsUsingGETDefaultResponses as unknown) as GetPnPGInstitutionProductsUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getPnPGInstitutionProductsUsingGETDefaultDecoder = () =>
+  getPnPGInstitutionProductsUsingGETDecoder();
+
+/****************************************************************
  * retrieveProductBackofficeUsingGET
  */
 
@@ -2261,6 +3210,166 @@ export function retrieveProductBackofficeUsingGETDecoder<
 // Decodes the success response with the type defined in the specs
 export const retrieveProductBackofficeUsingGETDefaultDecoder = () =>
   retrieveProductBackofficeUsingGETDecoder();
+
+/****************************************************************
+ * getProductBrokersUsingGET
+ */
+
+// Request type definition
+export type GetProductBrokersUsingGETT = r.IGetApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly productId: string;
+    readonly institutionType: string;
+  },
+  "Authorization",
+  never,
+  | r.IResponseType<200, BrokerResourceArray, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<404, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const getProductBrokersUsingGETDefaultResponses = {
+  200: BrokerResourceArray,
+  400: Problem,
+  401: Problem,
+  404: Problem,
+  500: Problem
+};
+
+export type GetProductBrokersUsingGETResponsesT<
+  A0 = BrokerResourceArray,
+  C0 = BrokerResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  404: t.Type<A3, C3>;
+  500: t.Type<A4, C4>;
+};
+
+export function getProductBrokersUsingGETDecoder<
+  A0 = BrokerResourceArray,
+  C0 = BrokerResourceArray,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem,
+  A4 = Problem,
+  C4 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        GetProductBrokersUsingGETResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4
+        >
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<404, A3, never>
+  | r.IResponseType<500, A4, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((getProductBrokersUsingGETDefaultResponses as unknown) as GetProductBrokersUsingGETResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3,
+      A4,
+      C4
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d404 = (type[404].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
+    : r.ioResponseDecoder<
+        404,
+        typeof type[404]["_A"],
+        typeof type[404]["_O"],
+        never
+      >(404, type[404])) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A4, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(
+      r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+      d404
+    ),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const getProductBrokersUsingGETDefaultDecoder = () =>
+  getProductBrokersUsingGETDecoder();
 
 /****************************************************************
  * getProductRolesUsingGET
@@ -2795,6 +3904,137 @@ export function suspendRelationshipUsingPOSTDecoder<
 // Decodes the success response with the type defined in the specs
 export const suspendRelationshipUsingPOSTDefaultDecoder = () =>
   suspendRelationshipUsingPOSTDecoder();
+
+/****************************************************************
+ * sendSupportRequestUsingPOST
+ */
+
+// Request type definition
+export type SendSupportRequestUsingPOSTT = r.IPostApiRequestType<
+  {
+    readonly bearerAuth: string;
+    readonly authenticated?: boolean;
+    readonly "authorities[0].authority"?: string;
+    readonly credentials?: object;
+    readonly details?: object;
+    readonly principal?: object;
+    readonly body?: SupportRequestDto;
+  },
+  "Content-Type" | "Authorization",
+  never,
+  | r.IResponseType<200, SupportResponse, never>
+  | r.IResponseType<400, Problem, never>
+  | r.IResponseType<401, Problem, never>
+  | r.IResponseType<500, Problem, never>
+>;
+
+export const sendSupportRequestUsingPOSTDefaultResponses = {
+  200: SupportResponse,
+  400: Problem,
+  401: Problem,
+  500: Problem
+};
+
+export type SendSupportRequestUsingPOSTResponsesT<
+  A0 = SupportResponse,
+  C0 = SupportResponse,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+> = {
+  200: t.Type<A0, C0>;
+  400: t.Type<A1, C1>;
+  401: t.Type<A2, C2>;
+  500: t.Type<A3, C3>;
+};
+
+export function sendSupportRequestUsingPOSTDecoder<
+  A0 = SupportResponse,
+  C0 = SupportResponse,
+  A1 = Problem,
+  C1 = Problem,
+  A2 = Problem,
+  C2 = Problem,
+  A3 = Problem,
+  C3 = Problem
+>(
+  overrideTypes:
+    | Partial<
+        SendSupportRequestUsingPOSTResponsesT<A0, C0, A1, C1, A2, C2, A3, C3>
+      >
+    | t.Type<A0, C0>
+    | undefined = {}
+): r.ResponseDecoder<
+  | r.IResponseType<200, A0, never>
+  | r.IResponseType<400, A1, never>
+  | r.IResponseType<401, A2, never>
+  | r.IResponseType<500, A3, never>
+> {
+  const isDecoder = (d: any): d is t.Type<A0, C0> =>
+    typeof d["_A"] !== "undefined";
+
+  const type = {
+    ...((sendSupportRequestUsingPOSTDefaultResponses as unknown) as SendSupportRequestUsingPOSTResponsesT<
+      A0,
+      C0,
+      A1,
+      C1,
+      A2,
+      C2,
+      A3,
+      C3
+    >),
+    ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes)
+  };
+
+  const d200 = (type[200].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 200, never>(200, undefined)
+    : r.ioResponseDecoder<
+        200,
+        typeof type[200]["_A"],
+        typeof type[200]["_O"],
+        never
+      >(200, type[200])) as r.ResponseDecoder<r.IResponseType<200, A0, never>>;
+
+  const d400 = (type[400].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 400, never>(400, undefined)
+    : r.ioResponseDecoder<
+        400,
+        typeof type[400]["_A"],
+        typeof type[400]["_O"],
+        never
+      >(400, type[400])) as r.ResponseDecoder<r.IResponseType<400, A1, never>>;
+
+  const d401 = (type[401].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 401, never>(401, undefined)
+    : r.ioResponseDecoder<
+        401,
+        typeof type[401]["_A"],
+        typeof type[401]["_O"],
+        never
+      >(401, type[401])) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
+
+  const d500 = (type[500].name === "undefined"
+    ? r.constantResponseDecoder<undefined, 500, never>(500, undefined)
+    : r.ioResponseDecoder<
+        500,
+        typeof type[500]["_A"],
+        typeof type[500]["_O"],
+        never
+      >(500, type[500])) as r.ResponseDecoder<r.IResponseType<500, A3, never>>;
+
+  return r.composeResponseDecoders(
+    r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+    d500
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+export const sendSupportRequestUsingPOSTDefaultDecoder = () =>
+  sendSupportRequestUsingPOSTDecoder();
 
 /****************************************************************
  * exchangeUsingGET

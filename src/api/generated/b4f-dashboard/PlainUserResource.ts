@@ -7,16 +7,16 @@
 import * as t from "io-ts";
 
 // required attributes
-const PlainUserResourceR = t.interface({
+const PlainUserResourceR = t.interface({});
+
+// optional attributes
+const PlainUserResourceO = t.partial({
   id: t.string,
 
   name: t.string,
 
   surname: t.string
 });
-
-// optional attributes
-const PlainUserResourceO = t.partial({});
 
 export const PlainUserResource = t.intersection(
   [PlainUserResourceR, PlainUserResourceO],

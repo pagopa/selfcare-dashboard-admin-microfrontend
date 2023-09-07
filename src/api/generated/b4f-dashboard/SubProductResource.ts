@@ -7,14 +7,6 @@
 import * as t from "io-ts";
 import { enumType } from "@pagopa/ts-commons/lib/types";
 
-export enum ProductOnBoardingStatusEnum {
-  "ACTIVE" = "ACTIVE",
-
-  "INACTIVE" = "INACTIVE",
-
-  "PENDING" = "PENDING"
-}
-
 export enum StatusEnum {
   "ACTIVE" = "ACTIVE",
 
@@ -26,21 +18,28 @@ export enum StatusEnum {
 }
 
 // required attributes
-const SubProductResourceR = t.interface({
+const SubProductResourceR = t.interface({});
+
+// optional attributes
+const SubProductResourceO = t.partial({
+  delegable: t.boolean,
+
+  description: t.string,
+
   id: t.string,
 
-  productOnBoardingStatus: enumType<ProductOnBoardingStatusEnum>(
-    ProductOnBoardingStatusEnum,
-    "productOnBoardingStatus"
-  ),
+  imageUrl: t.string,
+
+  logo: t.string,
+
+  logoBgColor: t.string,
 
   status: enumType<StatusEnum>(StatusEnum, "status"),
 
-  title: t.string
-});
+  title: t.string,
 
-// optional attributes
-const SubProductResourceO = t.partial({});
+  urlPublic: t.string
+});
 
 export const SubProductResource = t.intersection(
   [SubProductResourceR, SubProductResourceO],

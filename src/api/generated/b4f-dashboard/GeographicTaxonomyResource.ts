@@ -7,14 +7,14 @@
 import * as t from "io-ts";
 
 // required attributes
-const GeographicTaxonomyResourceR = t.interface({
+const GeographicTaxonomyResourceR = t.interface({});
+
+// optional attributes
+const GeographicTaxonomyResourceO = t.partial({
   code: t.string,
 
   desc: t.string
 });
-
-// optional attributes
-const GeographicTaxonomyResourceO = t.partial({});
 
 export const GeographicTaxonomyResource = t.intersection(
   [GeographicTaxonomyResourceR, GeographicTaxonomyResourceO],
