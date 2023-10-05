@@ -71,7 +71,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
         pec: 'dpo02@pecdpo.com',
         email: 'dpo02@dpo.com',
       },
-      institutionType: 'PSP',
+      institutionType: 'PT',
     },
     manager: {
       id: 'Manager02',
@@ -208,6 +208,50 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
         surname: 'Admin08',
         fiscalCode: '88888888888',
         email: 'admin08@comunedi.it',
+      },
+    ],
+  },
+  // Use case for pspData.vatNumberGroup === false
+  {
+    tokenId: 'tokenId01',
+    status: 'TOBEVALIDATED',
+    institutionInfo: {
+      id: 'institutionId1',
+      name: 'Agenzia per le Erogazioni in Agricoltura - AGEA',
+      address: 'Via Palestro, 81',
+      zipCode: '00185',
+      mailAddress: 'agenzia.erogazioni.agricoltura@PeCEmAiL.com', // use case for toLowerCase email
+      fiscalCode: '97181460581',
+      vatNumber: '11122233345',
+      pspData: {
+        vatNumberGroup: false,
+        businessRegisterNumber: '11111111111',
+        legalRegisterName: 'DummySubscribe01',
+        legalRegisterNumber: '40',
+        abiCode: '11223',
+      },
+      recipientCode: 'DummyRecipientCode01',
+      dpoData: {
+        address: 'Via Autonomia, 5',
+        pec: 'dpo01@pecdpo.com',
+        email: 'dpo01@dpo.com',
+      },
+      institutionType: 'PSP',
+    },
+    manager: {
+      id: 'Manager01',
+      name: 'Manager01',
+      surname: 'Manager01',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager01@manager.com',
+    },
+    admins: [
+      {
+        id: '1',
+        name: 'Fabio',
+        surname: 'Diaz',
+        fiscalCode: 'MNGMGR11D22B345K',
+        email: 'fabio@comunedi.it',
       },
     ],
   },
