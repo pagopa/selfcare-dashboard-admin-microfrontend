@@ -12,6 +12,8 @@ type Props = {
 export default function DashboardRequestFields({ onboardingRequestData, isPSP }: Props) {
   const { t } = useTranslation();
 
+  const isPT = onboardingRequestData?.institutionInfo.institutionType === 'PT';
+
   return (
     <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
       <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
@@ -298,86 +300,91 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           </Grid>
         </Grid>
       </Paper>
-      <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
-        <Grid container sx={{ marginY: 4, marginX: 4 }}>
-          <Grid item xs={12}>
-            <TitleBox
-              title={t('onboardingRequestPage.summaryStepSection.managerInfoSummarySection.title')}
-              variantTitle={'h6'}
-              mtTitle={1}
-              mbTitle={5}
-            />
-            <Divider />
-          </Grid>
-          <Grid item xs={12} mt={4}>
-            <Grid container spacing={2}>
-              {/* name */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.name'
-                    )}
-                  </Typography>
+      {!isPT && (
+        <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
+          <Grid container sx={{ marginY: 4, marginX: 4 }}>
+            <Grid item xs={12}>
+              <TitleBox
+                title={t(
+                  'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.title'
+                )}
+                variantTitle={'h6'}
+                mtTitle={1}
+                mbTitle={5}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} mt={4}>
+              <Grid container spacing={2}>
+                {/* name */}
+                <Grid container item alignItems={'center'}>
+                  <Grid item xs={3}>
+                    <Typography sx={{ fontSize: 'fontSize' }}>
+                      {t(
+                        'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.name'
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                      {onboardingRequestData?.manager.name}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.manager.name}
-                  </Typography>
-                </Grid>
-              </Grid>
 
-              {/* surname */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.surname'
-                    )}
-                  </Typography>
+                {/* surname */}
+                <Grid container item alignItems={'center'}>
+                  <Grid item xs={3}>
+                    <Typography sx={{ fontSize: 'fontSize' }}>
+                      {t(
+                        'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.surname'
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                      {onboardingRequestData?.manager.surname}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.manager.surname}
-                  </Typography>
-                </Grid>
-              </Grid>
 
-              {/* taxCode */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.taxCode'
-                    )}
-                  </Typography>
+                {/* taxCode */}
+                <Grid container item alignItems={'center'}>
+                  <Grid item xs={3}>
+                    <Typography sx={{ fontSize: 'fontSize' }}>
+                      {t(
+                        'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.taxCode'
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                      {onboardingRequestData?.manager.fiscalCode}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.manager.fiscalCode}
-                  </Typography>
-                </Grid>
-              </Grid>
 
-              {/* mailPEC */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.mailPEC'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.manager.email.toLocaleLowerCase()}
-                  </Typography>
+                {/* mailPEC */}
+                <Grid container item alignItems={'center'}>
+                  <Grid item xs={3}>
+                    <Typography sx={{ fontSize: 'fontSize' }}>
+                      {t(
+                        'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.mailPEC'
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                      {onboardingRequestData?.manager.email.toLocaleLowerCase()}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      )}
+
       {onboardingRequestData?.admins && onboardingRequestData?.admins?.length > 0 && (
         <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
           <Grid container sx={{ marginY: 4, marginX: 4 }}>

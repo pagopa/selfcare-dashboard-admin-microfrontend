@@ -16,7 +16,6 @@ export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRe
   }
 };
 
-
 export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
@@ -31,7 +30,9 @@ export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingR
   }
 };
 
-export const approveOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+export const approveOnboardingPspRequest = (
+  tokenId: string
+): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
@@ -44,4 +45,3 @@ export const approveOnboardingPspRequest = (tokenId: string): Promise<Onboarding
     return DashboardApi.approveOnboardingPspRequest(tokenId);
   }
 };
-
