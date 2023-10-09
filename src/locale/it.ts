@@ -1,7 +1,7 @@
 export default {
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
-    validationDataChip: 'Da validare',
+    validationDataChip: 'In attesa',
     approvedDataChip: 'Approvata',
     rejectedDataChip: 'Rifiutata',
     checkPartyInfoAlert:
