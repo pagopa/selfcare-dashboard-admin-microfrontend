@@ -9,7 +9,7 @@ export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRe
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
     } else {
-      throw new Error('Onboarding request not found!');
+      return Promise.reject('Onboarding request not found!');
     }
   } else {
     return DashboardApi.fetchOnboardingPspRequest(tokenId);
@@ -23,7 +23,7 @@ export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingR
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
     } else {
-      throw new Error('Onboarding request not found!');
+      return Promise.reject('Onboarding request not found!');
     }
   } else {
     return DashboardApi.rejectOnboardingPspRequest(tokenId);
@@ -39,7 +39,7 @@ export const approveOnboardingPspRequest = (
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
     } else {
-      throw new Error('Onboarding request not found!');
+      return Promise.reject('Onboarding request not found!');
     }
   } else {
     return DashboardApi.approveOnboardingPspRequest(tokenId);

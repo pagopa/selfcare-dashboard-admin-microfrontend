@@ -213,8 +213,52 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
   },
   // Use case for pspData.vatNumberGroup === false
   {
-    tokenId: 'tokenId01',
+    tokenId: 'tokenId05',
     status: 'TOBEVALIDATED',
+    institutionInfo: {
+      id: 'institutionId1',
+      name: 'Agenzia per le Erogazioni in Agricoltura - AGEA',
+      address: 'Via Palestro, 81',
+      zipCode: '00185',
+      mailAddress: 'agenzia.erogazioni.agricoltura@PeCEmAiL.com', // use case for toLowerCase email
+      fiscalCode: '97181460581',
+      vatNumber: '11122233345',
+      pspData: {
+        vatNumberGroup: false,
+        businessRegisterNumber: '11111111111',
+        legalRegisterName: 'DummySubscribe01',
+        legalRegisterNumber: '40',
+        abiCode: '11223',
+      },
+      recipientCode: 'DummyRecipientCode01',
+      dpoData: {
+        address: 'Via Autonomia, 5',
+        pec: 'dpo01@pecdpo.com',
+        email: 'dpo01@dpo.com',
+      },
+      institutionType: 'PSP',
+    },
+    manager: {
+      id: 'Manager01',
+      name: 'Manager01',
+      surname: 'Manager01',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager01@manager.com',
+    },
+    admins: [
+      {
+        id: '1',
+        name: 'Fabio',
+        surname: 'Diaz',
+        fiscalCode: 'MNGMGR11D22B345K',
+        email: 'fabio@comunedi.it',
+      },
+    ],
+  },
+  // Use case for PENDING
+  {
+    tokenId: 'tokenId06',
+    status: 'PENDING',
     institutionInfo: {
       id: 'institutionId1',
       name: 'Agenzia per le Erogazioni in Agricoltura - AGEA',
@@ -262,6 +306,6 @@ export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRe
   if (selectedOnboardingRequest) {
     return new Promise((resolve) => resolve(selectedOnboardingRequest));
   } else {
-    throw new Error('Onboarding request not found!');
+    return Promise.reject('Onboarding request not found!');
   }
 };
