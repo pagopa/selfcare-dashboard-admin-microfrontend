@@ -300,7 +300,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           </Grid>
         </Grid>
       </Paper>
-      {!isTechPartner && (
+      {!isTechPartner && onboardingRequestData?.manager && (
         <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
           <Grid container sx={{ marginY: 4, marginX: 4 }}>
             <Grid item xs={12}>
@@ -327,7 +327,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.name}
+                      {onboardingRequestData.manager.name}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -343,7 +343,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.surname}
+                      {onboardingRequestData.manager.surname}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -359,7 +359,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.fiscalCode}
+                      {onboardingRequestData.manager.fiscalCode}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -375,7 +375,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.email.toLocaleLowerCase()}
+                      {onboardingRequestData.manager.email.toLocaleLowerCase()}
                     </Typography>
                   </Grid>
                 </Grid>
