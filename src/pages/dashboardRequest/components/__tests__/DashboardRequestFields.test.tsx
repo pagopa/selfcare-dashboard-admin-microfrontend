@@ -25,7 +25,7 @@ test('should render component with PSP and group vatNumberGroup should not be vi
   expect(screen.getByText('No')).toBeInTheDocument();
 });
 
-test('should render component with PT and legal rapresentation section should not be visible', async () => {
+test('should render component with PT with empty manager object and legal rapresentation section should not be visible', async () => {
   render(
     <DashboardRequestFields onboardingRequestData={mockedOnboardingRequests[1]} isPSP={false} />
   );
