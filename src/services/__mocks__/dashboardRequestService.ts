@@ -73,13 +73,6 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
       },
       institutionType: 'PT',
     },
-    manager: {
-      id: 'Manager02',
-      name: 'Manager02',
-      surname: 'Manager02',
-      fiscalCode: 'MNGMGR22D22B345K',
-      email: 'manager02@manager.com',
-    },
     admins: [
       // Use case with 3 admins
       {
