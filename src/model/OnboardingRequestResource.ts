@@ -24,7 +24,7 @@ type InstitutionInfo = {
   mailAddress: string;
   name: string;
   pspData: PspData;
-  recipientCode: string;
+  recipientCode?: string;
   vatNumber: string;
 };
 
