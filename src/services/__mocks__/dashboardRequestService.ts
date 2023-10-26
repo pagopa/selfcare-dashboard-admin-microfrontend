@@ -58,27 +58,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
       mailAddress: 'comune.milano@pecemail.com',
       fiscalCode: '76765454321',
       vatNumber: '22233344456',
-      pspData: {
-        vatNumberGroup: true,
-        businessRegisterNumber: '22222222222',
-        legalRegisterName: 'DummySubscribe02',
-        legalRegisterNumber: '41',
-        abiCode: '22334',
-      },
-      recipientCode: 'DummyRecipientCode02',
-      dpoData: {
-        address: 'Via Lombardia, 5',
-        pec: 'dpo02@pecdpo.com',
-        email: 'dpo02@dpo.com',
-      },
       institutionType: 'PT',
-    },
-    manager: {
-      id: 'Manager02',
-      name: 'Manager02',
-      surname: 'Manager02',
-      fiscalCode: 'MNGMGR22D22B345K',
-      email: 'manager02@manager.com',
     },
     admins: [
       // Use case with 3 admins
