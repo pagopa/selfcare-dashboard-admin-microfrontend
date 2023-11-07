@@ -2,7 +2,7 @@ export type OnboardingRequestResource = {
   tokenId: string;
   admins?: Array<UserInfo>;
   institutionInfo: InstitutionInfo;
-  manager: UserInfo;
+  manager?: UserInfo;
   status: 'ACTIVE' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
 };
 
@@ -16,15 +16,15 @@ type UserInfo = {
 
 type InstitutionInfo = {
   address: string;
-  dpoData: DpoData;
+  dpoData?: DpoData;
   fiscalCode: string;
   id: string;
   institutionType: string;
   zipCode: string;
   mailAddress: string;
   name: string;
-  pspData: PspData;
-  recipientCode: string;
+  pspData?: PspData;
+  recipientCode?: string;
   vatNumber: string;
 };
 

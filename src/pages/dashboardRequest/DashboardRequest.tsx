@@ -58,8 +58,9 @@ export default function DashboardRequest() {
     if (isChipLabelState) {
       switch (requestStatus) {
         case 'ACTIVE':
-        case 'PENDING':
           return t('onboardingRequestPage.approvedDataChip');
+        case 'PENDING':
+          return t('onboardingRequestPage.validationDataChip');
         case 'REJECTED':
           return t('onboardingRequestPage.rejectedDataChip');
         default:
@@ -69,8 +70,9 @@ export default function DashboardRequest() {
     if (isBgColorChipState) {
       switch (requestStatus) {
         case 'ACTIVE':
-        case 'PENDING':
           return 'success.light';
+        case 'PENDING':
+          return 'warning.main';
         case 'REJECTED':
           return 'error.light';
         default:

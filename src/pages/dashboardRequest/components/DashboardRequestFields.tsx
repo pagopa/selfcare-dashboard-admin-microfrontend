@@ -12,7 +12,7 @@ type Props = {
 export default function DashboardRequestFields({ onboardingRequestData, isPSP }: Props) {
   const { t } = useTranslation();
 
-  const isPT = onboardingRequestData?.institutionInfo.institutionType === 'PT';
+  const isTechPartner = onboardingRequestData?.institutionInfo.institutionType === 'PT';
 
   return (
     <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
@@ -213,23 +213,23 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>{' '}
                 </>
               )}
-
               {/* recipientCode */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.recipientCode'
-                    )}
-                  </Typography>
+              {!isTechPartner && (
+                <Grid container item alignItems={'center'}>
+                  <Grid item xs={3}>
+                    <Typography sx={{ fontSize: 'fontSize' }}>
+                      {t(
+                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.recipientCode'
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                      {onboardingRequestData?.institutionInfo.recipientCode}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.recipientCode}
-                  </Typography>
-                </Grid>
-              </Grid>
-
+              )}
               {/* fields visible only for PSP */}
               {isPSP && (
                 <>
@@ -300,7 +300,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           </Grid>
         </Grid>
       </Paper>
-      {!isPT && (
+      {!isTechPartner && onboardingRequestData?.manager && (
         <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
           <Grid container sx={{ marginY: 4, marginX: 4 }}>
             <Grid item xs={12}>
@@ -327,7 +327,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.name}
+                      {onboardingRequestData.manager.name}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -343,7 +343,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.surname}
+                      {onboardingRequestData.manager.surname}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -359,7 +359,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.fiscalCode}
+                      {onboardingRequestData.manager.fiscalCode}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -375,7 +375,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   </Grid>
                   <Grid item xs={9} display="flex" alignItems={'center'}>
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.manager.email.toLocaleLowerCase()}
+                      {onboardingRequestData.manager.email.toLocaleLowerCase()}
                     </Typography>
                   </Grid>
                 </Grid>
