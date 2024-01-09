@@ -21,12 +21,13 @@ export default function ConfirmPage({ onboardingRequestData }: Props) {
           <Typography variant="body1" textAlign="center">
             <Trans
               i18nKey="confirmPage.description"
-              value={{ ente: onboardingRequestData?.institutionInfo.name }}
+              values={{ ente: onboardingRequestData?.institutionInfo.name }}
+              components={{ 1: <strong /> }}
             >
-              L’adesione di
-              <strong> {onboardingRequestData?.institutionInfo.name} </strong>è stata approvata.
+              {`L’adesione di
+              <1>{{ente}}</1>è stata approvata.
               Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare
-              l’adesione.
+              l’adesione.`}
             </Trans>
           </Typography>
         </Grid>
