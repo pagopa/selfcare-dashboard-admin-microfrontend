@@ -10,6 +10,18 @@ export default {
       billingDataInfoSummarySection: {
         title: 'Dati dell’ente',
         billingDataInfoSummary: {
+          institutionType: {
+            title: 'Tipologia amministrazione',
+            descriptions: {
+              gsp: 'Gestore di Servizi Pubblici',
+              pt: 'Partner Tecnologico',
+              scp: 'Società a Controllo Pubblico',
+              psp: 'Prestatori Servizi di Pagamento',
+              sa: 'Gestore privato di piattaforma e-procurement',
+              as: 'Società di assicurazione',
+              pg: 'Azienda',
+            },
+          },
           businessName: 'Ragione sociale',
           registeredOffice: 'Sede legale',
           zipCode: 'CAP',
@@ -31,6 +43,27 @@ export default {
             address: 'Indirizzo',
             mailPEC: 'Indirizzo PEC',
             mail: 'Indirizzo email',
+          },
+        },
+      },
+      additionalInfoSummarySection: {
+        title: 'Informazioni aggiuntive',
+        additionalInfoSummary: {
+          establishedByRegulatoryProvision:
+            'L’ente è una società costituita ex legge da un provvedimento normativo',
+          establishedByRegulatoryProvisionNote: 'Nota',
+          belongRegulatedMarket:
+            'L’ente appartiene ad un mercato regolamentato (es. energia, gas, acqua, trasporti, servizi postali ecc…)',
+          belongRegulatedMarketNote: 'Nota',
+          ipa: 'L’ente è censito su IPA',
+          ipaCode: 'Codice IPA',
+          agentOfPublicService: 'L’ente è una società concessionaria di un pubblico servizio',
+          agentOfPublicServiceNote: 'Nota',
+          other: 'Altro',
+          otherNote: 'Nota',
+          possibleChoice: {
+            yes: 'Sì',
+            no: 'No',
           },
         },
       },
