@@ -1,4 +1,4 @@
-import { Divider, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TitleBox } from '@pagopa/selfcare-common-frontend';
 import { theme } from '@pagopa/mui-italia';
@@ -27,15 +27,6 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
         ? 'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.possibleChoice.yes'
         : 'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.possibleChoice.no'
     );
-
-  const truncatedText = {
-    fontSize: 'fontSize',
-    display: 'inline-block',
-    maxWidth: '21ch',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  };
 
   return (
     <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
@@ -362,11 +353,28 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   {/* establishedByRegulatoryProvision */}
                   <Grid container item alignItems={'center'}>
                     <Grid item xs={3} display="flex" alignItems="center">
-                      <Typography sx={truncatedText}>
-                        {t(
+                      <Tooltip
+                        title={t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
                         )}
-                      </Typography>
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '21ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
+                          )}
+                        </Typography>
+                      </Tooltip>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
@@ -403,11 +411,28 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   {/* belongRegulatedMarket */}
                   <Grid container item alignItems={'center'}>
                     <Grid item xs={3} display="flex" alignItems="center">
-                      <Typography sx={truncatedText}>
-                        {t(
+                      <Tooltip
+                        title={t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
                         )}
-                      </Typography>
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '19ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
+                          )}
+                        </Typography>
+                      </Tooltip>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
@@ -479,11 +504,28 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   {/* agentOfPublicService */}
                   <Grid container item alignItems={'center'}>
                     <Grid item xs={3} display="flex" alignItems="center">
-                      <Typography sx={truncatedText}>
-                        {t(
+                      <Tooltip
+                        title={t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
                         )}
-                      </Typography>
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '22ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
+                          )}
+                        </Typography>
+                      </Tooltip>
                     </Grid>
                     <Grid item xs={9} display="flex" alignItems={'center'}>
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>

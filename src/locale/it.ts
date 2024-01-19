@@ -13,10 +13,10 @@ export default {
           institutionType: {
             title: 'Tipologia amministrazione',
             descriptions: {
-              gsp: 'Gestore di Servizi Pubblici',
-              pt: 'Partner Tecnologico',
+              gsp: 'Gestore di Pubblico Servizio',
+              pt: 'Partner tecnologico',
               scp: 'Società a Controllo Pubblico',
-              psp: 'Prestatori Servizi di Pagamento',
+              psp: 'Prestatore Servizi di Pagamento',
               sa: 'Gestore privato di piattaforma e-procurement',
               as: 'Società di assicurazione',
               pg: 'Azienda',
@@ -50,7 +50,7 @@ export default {
         title: 'Informazioni aggiuntive',
         additionalInfoSummary: {
           establishedByRegulatoryProvision:
-            'L’ente è una società costituita ex legge da un provvedimento normativo',
+            'L’ente è una società costituita ex lege da un provvedimento normativo',
           establishedByRegulatoryProvisionNote: 'Nota',
           belongRegulatedMarket:
             'L’ente appartiene ad un mercato regolamentato (es. energia, gas, acqua, trasporti, servizi postali ecc…)',
