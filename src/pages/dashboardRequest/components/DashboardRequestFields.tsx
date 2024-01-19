@@ -1,4 +1,4 @@
-import { Divider, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TitleBox } from '@pagopa/selfcare-common-frontend';
 import { theme } from '@pagopa/mui-italia';
@@ -13,6 +13,20 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
   const { t } = useTranslation();
 
   const isTechPartner = onboardingRequestData?.institutionInfo.institutionType === 'PT';
+
+  const getInstitutionTypeDescription = (institutionType: string) =>
+    ({
+      institutionType: t(
+        `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${institutionType.toLowerCase()}`
+      ),
+    }.institutionType);
+
+  const boolean2response = (value?: boolean) =>
+    t(
+      value
+        ? 'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.possibleChoice.yes'
+        : 'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.possibleChoice.no'
+    );
 
   return (
     <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
@@ -31,6 +45,24 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           </Grid>
           <Grid item xs={12} mt={4}>
             <Grid container spacing={2}>
+              {/* institutionType */}
+              <Grid container item alignItems={'center'}>
+                <Grid item xs={3}>
+                  <Typography sx={{ fontSize: 'fontSize' }}>
+                    {t(
+                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.title'
+                    )}
+                  </Typography>
+                </Grid>
+                <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                    {getInstitutionTypeDescription(
+                      onboardingRequestData?.institutionInfo.institutionType ?? ''
+                    )}
+                  </Typography>
+                </Grid>
+              </Grid>
+
               {/* businessName */}
               <Grid container item alignItems={'center'}>
                 <Grid item xs={3}>
@@ -300,6 +332,274 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           </Grid>
         </Grid>
       </Paper>
+
+      {onboardingRequestData?.institutionInfo.institutionType === 'GSP' &&
+        onboardingRequestData.productId === 'prod-pagopa' && (
+          <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
+            <Grid container sx={{ marginY: 4, marginX: 4 }}>
+              <Grid item xs={12}>
+                <TitleBox
+                  title={t(
+                    'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.title'
+                  )}
+                  variantTitle={'h6'}
+                  mtTitle={1}
+                  mbTitle={5}
+                />
+                <Divider />
+              </Grid>
+              <Grid item xs={12} mt={4}>
+                <Grid container spacing={2}>
+                  {/* establishedByRegulatoryProvision */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3} display="flex" alignItems="center">
+                      <Tooltip
+                        title={t(
+                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
+                        )}
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '21ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
+                          )}
+                        </Typography>
+                      </Tooltip>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {boolean2response(
+                          onboardingRequestData?.institutionInfo.additionalInformations
+                            ?.establishedByRegulatoryProvision
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* establishedByRegulatoryProvisionNote */}
+                  {onboardingRequestData.institutionInfo.additionalInformations
+                    ?.establishedByRegulatoryProvisionNote && (
+                    <Grid container item alignItems={'center'}>
+                      <Grid item xs={3} display="flex" alignItems="center">
+                        <Typography sx={{ fontSize: 'fontSize' }}>
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvisionNote'
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9} display="flex" alignItems={'center'}>
+                        <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                          {
+                            onboardingRequestData?.institutionInfo.additionalInformations
+                              ?.establishedByRegulatoryProvisionNote
+                          }
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  {/* belongRegulatedMarket */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3} display="flex" alignItems="center">
+                      <Tooltip
+                        title={t(
+                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
+                        )}
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '19ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
+                          )}
+                        </Typography>
+                      </Tooltip>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {boolean2response(
+                          onboardingRequestData?.institutionInfo.additionalInformations
+                            ?.belongRegulatedMarket
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {onboardingRequestData.institutionInfo.additionalInformations
+                    ?.regulatedMarketNote && (
+                    <Grid container item alignItems={'center'}>
+                      <Grid item xs={3} display="flex" alignItems="center">
+                        <Typography sx={{ fontSize: 'fontSize' }}>
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarketNote'
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9} display="flex" alignItems={'center'}>
+                        <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                          {
+                            onboardingRequestData?.institutionInfo.additionalInformations
+                              ?.regulatedMarketNote
+                          }
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  {/* ipa */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3} display="flex" alignItems="center">
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipa'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {boolean2response(
+                          onboardingRequestData?.institutionInfo.additionalInformations?.ipa
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* ipaCode */}
+                  {onboardingRequestData.institutionInfo.additionalInformations?.ipaCode && (
+                    <Grid container item alignItems={'center'}>
+                      <Grid item xs={3} display="flex" alignItems="center">
+                        <Typography sx={{ fontSize: 'fontSize' }}>
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipaCode'
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9} display="flex" alignItems={'center'}>
+                        <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                          {onboardingRequestData?.institutionInfo.additionalInformations?.ipaCode}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  {/* agentOfPublicService */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3} display="flex" alignItems="center">
+                      <Tooltip
+                        title={t(
+                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
+                        )}
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 'fontSize',
+                            display: 'inline-block',
+                            maxWidth: '22ch',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
+                          )}
+                        </Typography>
+                      </Tooltip>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {boolean2response(
+                          onboardingRequestData?.institutionInfo.additionalInformations
+                            ?.agentOfPublicService
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* agentOfPublicServiceNote */}
+                  {onboardingRequestData.institutionInfo.additionalInformations
+                    ?.agentOfPublicServiceNote && (
+                    <Grid container item alignItems={'center'}>
+                      <Grid item xs={3} display="flex" alignItems="center">
+                        <Typography sx={{ fontSize: 'fontSize' }}>
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicServiceNote'
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9} display="flex" alignItems={'center'}>
+                        <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                          {
+                            onboardingRequestData?.institutionInfo.additionalInformations
+                              ?.agentOfPublicServiceNote
+                          }
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  {/* other */}
+                  <Grid container item alignItems={'center'}>
+                    <Grid item xs={3} display="flex" alignItems="center">
+                      <Typography sx={{ fontSize: 'fontSize' }}>
+                        {t(
+                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.other'
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                        {boolean2response(
+                          !!onboardingRequestData?.institutionInfo.additionalInformations?.otherNote
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  {/* otherNote */}
+                  {onboardingRequestData.institutionInfo.additionalInformations?.otherNote && (
+                    <Grid container item alignItems={'center'}>
+                      <Grid item xs={3} display="flex" alignItems="center">
+                        <Typography sx={{ fontSize: 'fontSize' }}>
+                          {t(
+                            'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.otherNote'
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9} display="flex" alignItems={'center'}>
+                        <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                          {onboardingRequestData?.institutionInfo.additionalInformations?.otherNote}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
+        )}
+
       {!isTechPartner && onboardingRequestData?.manager && (
         <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
           <Grid container sx={{ marginY: 4, marginX: 4 }}>
