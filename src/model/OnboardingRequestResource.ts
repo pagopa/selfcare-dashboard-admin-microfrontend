@@ -1,4 +1,4 @@
-export type OnboardingRequestResource = {
+export type OnboardingRequestDashboardResource = {
   tokenId: string;
   admins?: Array<UserInfo>;
   institutionInfo: InstitutionInfo;

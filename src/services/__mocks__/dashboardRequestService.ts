@@ -1,6 +1,6 @@
-import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
+import { OnboardingRequestDashboardResource } from '../../model/OnboardingRequestResource';
 
-export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
+export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource> = [
   // Use case of request with TOBEVALIDATED status
   {
     tokenId: 'tokenId01',
@@ -281,7 +281,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
   },
 ];
 
-export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestDashboardResource> => {
   const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
   if (selectedOnboardingRequest) {
     return new Promise((resolve) => resolve(selectedOnboardingRequest));

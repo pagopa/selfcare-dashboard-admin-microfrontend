@@ -1,15 +1,16 @@
-import { Chip, Grid, Typography, Alert, styled } from '@mui/material';
+import { Alert, Chip, Grid, Typography, styled } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
+import { OnboardingRequestResource } from '../../api/generated/onboarding/OnboardingRequestResource';
+import { OnboardingRequestDashboardResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingPspRequest } from '../../services/dashboardRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
+import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
-import RetrieveTokenErrorPage from './JwtInvalidPage';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
@@ -22,7 +23,9 @@ export default function DashboardRequest() {
   const { t } = useTranslation();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
 
-  const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
+  const [onboardingRequestData, setOnboardingRequestData] = useState<
+    OnboardingRequestResource | OnboardingRequestDashboardResource
+  >();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);

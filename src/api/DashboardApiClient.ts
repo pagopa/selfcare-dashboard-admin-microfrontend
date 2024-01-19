@@ -1,7 +1,7 @@
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/utils/storage';
 import { buildFetchApi, extractResponse } from '@pagopa/selfcare-common-frontend/utils/api-utils';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/redux/slices/appStateSlice';
-import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
+import { OnboardingRequestDashboardResource } from '../model/OnboardingRequestResource';
 import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/b4f-dashboard/client';
 
@@ -35,21 +35,27 @@ const onRedirectToLogin = () =>
   );
 
 export const DashboardApi = {
-  fetchOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+  fetchOnboardingPspRequest: async (
+    tokenId: string
+  ): Promise<OnboardingRequestDashboardResource> => {
     const result = await apiClient.retrieveOnboardingRequestUsingGET({
       tokenId,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-  rejectOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+  rejectOnboardingPspRequest: async (
+    tokenId: string
+  ): Promise<OnboardingRequestDashboardResource> => {
     const result = await apiClient.rejectOnboardingRequestUsingDELETE({
       tokenId,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-  approveOnboardingPspRequest: async (tokenId: string): Promise<OnboardingRequestResource> => {
+  approveOnboardingPspRequest: async (
+    tokenId: string
+  ): Promise<OnboardingRequestDashboardResource> => {
     const result = await apiClient.approveOnboardingRequestUsingPOST({
       tokenId,
     });

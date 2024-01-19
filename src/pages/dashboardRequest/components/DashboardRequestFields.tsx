@@ -1,11 +1,12 @@
 import { Divider, Grid, Paper, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { TitleBox } from '@pagopa/selfcare-common-frontend';
 import { theme } from '@pagopa/mui-italia';
-import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
+import { TitleBox } from '@pagopa/selfcare-common-frontend';
+import { useTranslation } from 'react-i18next';
+import { OnboardingRequestResource } from '../../../api/generated/onboarding/OnboardingRequestResource';
+import { OnboardingRequestDashboardResource } from '../../../model/OnboardingRequestResource';
 
 type Props = {
-  onboardingRequestData: OnboardingRequestResource | undefined;
+  onboardingRequestData: OnboardingRequestResource | OnboardingRequestDashboardResource | undefined;
   isPSP: boolean;
 };
 
