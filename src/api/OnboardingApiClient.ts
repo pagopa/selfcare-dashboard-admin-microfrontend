@@ -1,7 +1,6 @@
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/utils/storage';
 import { buildFetchApi, extractResponse } from '@pagopa/selfcare-common-frontend/utils/api-utils';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/redux/slices/appStateSlice';
-// import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/onboarding/client';
 import { OnboardingRequestResource } from './generated/onboarding/OnboardingRequestResource';
@@ -16,7 +15,7 @@ const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
   };
 
 const apiClient = createClient({
-  baseUrl: ENV.URL_API.API_ONBOARDING,
+  baseUrl: ENV.URL_API.API_ONBOARDING_V2,
   basePath: '',
   fetchApi: buildFetchApi(ENV.API_TIMEOUT_MS.DASHBOARD),
   withDefaults: withBearerAndInstitutionId,
