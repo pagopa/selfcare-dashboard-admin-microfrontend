@@ -799,7 +799,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
           <Collapse in={expanded['4']} timeout="auto" unmountOnExit>
             <Divider sx={{ mx: 4 }} />
             {onboardingRequestData?.admins.map((admin, index) => (
-              <Grid container spacing={2} key={index} m={2}>
+              <Grid container spacing={2} key={index} m={2} mb={4}>
                 {onboardingRequestData?.admins &&
                   onboardingRequestData?.admins.length > 1 &&
                   index + 1 !== 1 && (
