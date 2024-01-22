@@ -74,6 +74,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               },
             }}
             value={'1'}
+            data-testid={'arrow-icon-1'}
           >
             {expanded['1'] ? (
               <KeyboardArrowUpIcon color="primary" />
@@ -397,6 +398,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   },
                 }}
                 value={'2'}
+                data-testid={'arrow-icon-2'}
               >
                 {expanded['2'] ? (
                   <KeyboardArrowUpIcon color="primary" />
@@ -681,6 +683,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 },
               }}
               value={'3'}
+              data-testid={'arrow-icon-3'}
             >
               {expanded['3'] ? (
                 <KeyboardArrowUpIcon color="primary" />
@@ -784,6 +787,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 },
               }}
               value={'4'}
+              data-testid={'arrow-icon-4'}
             >
               {expanded['4'] ? (
                 <KeyboardArrowUpIcon color="primary" />
