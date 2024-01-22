@@ -2,8 +2,7 @@ import { Alert, Chip, Grid, Typography, styled } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { OnboardingRequestResource } from '../../api/generated/onboarding/OnboardingRequestResource';
-import { OnboardingRequestDashboardResource } from '../../model/OnboardingRequestResource';
+import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingPspRequest } from '../../services/dashboardRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
@@ -23,9 +22,7 @@ export default function DashboardRequest() {
   const { t } = useTranslation();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
 
-  const [onboardingRequestData, setOnboardingRequestData] = useState<
-    OnboardingRequestResource | OnboardingRequestDashboardResource
-  >();
+  const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);

@@ -2,11 +2,10 @@ import { Divider, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next';
 import { TitleBox } from '@pagopa/selfcare-common-frontend';
 import { theme } from '@pagopa/mui-italia';
-import { OnboardingRequestResource } from '../../../api/generated/onboarding/OnboardingRequestResource';
-import { OnboardingRequestDashboardResource } from '../../../model/OnboardingRequestResource';
+import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
 
 type Props = {
-  onboardingRequestData: OnboardingRequestResource | OnboardingRequestDashboardResource | undefined;
+  onboardingRequestData: OnboardingRequestResource | undefined;
   isPSP: boolean;
 };
 

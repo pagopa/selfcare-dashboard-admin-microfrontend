@@ -1,4 +1,4 @@
-export type OnboardingRequestDashboardResource = {
+export type OnboardingRequestResource = {
   tokenId: string;
   productId: string;
   admins?: Array<UserInfo>;
@@ -55,3 +55,4 @@ type DpoData = {
   email: string;
   pec: string;
 };
+

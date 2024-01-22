@@ -2,8 +2,8 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/utils/storage'
 import { buildFetchApi, extractResponse } from '@pagopa/selfcare-common-frontend/utils/api-utils';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/redux/slices/appStateSlice';
 import { ENV } from '../utils/env';
+import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { createClient, WithDefaultsT } from './generated/onboarding/client';
-import { OnboardingRequestResource } from './generated/onboarding/OnboardingRequestResource';
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
   (wrappedOperation) => (params: any) => {

@@ -1,13 +1,10 @@
 import { DashboardApi } from '../api/DashboardApiClient';
 import { OnboardingApi } from '../api/OnboardingApiClient';
-import { OnboardingRequestResource } from '../api/generated/onboarding/OnboardingRequestResource';
-import { OnboardingRequestDashboardResource } from '../model/OnboardingRequestResource';
+import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { ENV } from '../utils/env';
 import { mockedOnboardingRequests } from './__mocks__/dashboardRequestService';
 
-export const fetchOnboardingPspRequest = (
-  tokenId: string
-): Promise<OnboardingRequestResource | OnboardingRequestDashboardResource> => {
+export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
@@ -25,9 +22,7 @@ export const fetchOnboardingPspRequest = (
   }
 };
 
-export const rejectOnboardingPspRequest = (
-  tokenId: string
-): Promise<OnboardingRequestResource | OnboardingRequestDashboardResource> => {
+export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
@@ -47,7 +42,7 @@ export const rejectOnboardingPspRequest = (
 
 export const approveOnboardingPspRequest = (
   tokenId: string
-): Promise<OnboardingRequestResource | OnboardingRequestDashboardResource> => {
+): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);

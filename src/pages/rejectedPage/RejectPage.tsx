@@ -1,12 +1,11 @@
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { IllusCompleted } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
-import { OnboardingRequestDashboardResource } from '../../model/OnboardingRequestResource';
+import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { ENV } from '../../utils/env';
-import { OnboardingRequestResource } from '../../api/generated/onboarding/OnboardingRequestResource';
 
 type Props = {
-  onboardingRequestData?: OnboardingRequestResource | OnboardingRequestDashboardResource;
+  onboardingRequestData?: OnboardingRequestResource;
 };
 export default function RejectPage({ onboardingRequestData }: Props) {
   const { t } = useTranslation();
