@@ -2882,7 +2882,7 @@
       },
       "InstitutionInfo" : {
         "title" : "InstitutionInfo",
-        "required" : [ "address", "fiscalCode", "id", "institutionType", "mailAddress", "name", "recipientCode", "vatNumber", "zipCode" ],
+        "required" : [ "address", "fiscalCode", "institutionType", "mailAddress", "name", "recipientCode", "vatNumber", "zipCode" ],
         "type" : "object",
         "properties" : {
           "address" : {
