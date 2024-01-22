@@ -1,9 +1,22 @@
 export type OnboardingRequestDashboardResource = {
   tokenId: string;
+  productId: string;
   admins?: Array<UserInfo>;
   institutionInfo: InstitutionInfo;
   manager?: UserInfo;
   status: 'ACTIVE' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
+};
+
+type AdditionalInformations = {
+  agentOfPublicService: boolean;
+  agentOfPublicServiceNote: string;
+  belongRegulatedMarket: boolean;
+  regulatedMarketNote: string;
+  establishedByRegulatoryProvision: boolean;
+  establishedByRegulatoryProvisionNote: string;
+  ipa: boolean;
+  ipaCode: string;
+  otherNote: string;
 };
 
 type UserInfo = {
@@ -26,6 +39,7 @@ type InstitutionInfo = {
   pspData?: PspData;
   recipientCode?: string;
   vatNumber: string;
+  additionalInformations?: AdditionalInformations;
 };
 
 type PspData = {

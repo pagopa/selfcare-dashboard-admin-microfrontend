@@ -4,6 +4,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case of request with TOBEVALIDATED status
   {
     tokenId: 'tokenId01',
+    productId: 'prod-pagopa',
     status: 'TOBEVALIDATED',
     institutionInfo: {
       id: 'institutionId1',
@@ -49,6 +50,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case of request with ACTIVE status
   {
     tokenId: 'tokenId02',
+    productId: 'prod-pagopa',
     status: 'ACTIVE',
     institutionInfo: {
       id: 'institutionId2',
@@ -89,6 +91,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case of request with REJECTED status
   {
     tokenId: 'tokenId03',
+    productId: 'prod-pagopa',
     status: 'REJECTED',
     institutionInfo: {
       id: 'institutionId3',
@@ -142,6 +145,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case for institutionType !== PSP
   {
     tokenId: 'tokenId04',
+    productId: 'prod-pagopa',
     status: 'REJECTED',
     institutionInfo: {
       id: 'institutionId3',
@@ -151,6 +155,17 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
       mailAddress: 'comune.roma@pecemail.com',
       fiscalCode: '87695432678',
       vatNumber: '93945678123',
+      additionalInformations: {
+        agentOfPublicService: true,
+        agentOfPublicServiceNote: 'agentOfPublicServiceNote',
+        belongRegulatedMarket: true,
+        regulatedMarketNote: 'regulatedMarketNote',
+        establishedByRegulatoryProvision: true,
+        establishedByRegulatoryProvisionNote: '',
+        ipa: false,
+        ipaCode: '',
+        otherNote: '',
+      },
       pspData: {
         vatNumberGroup: true,
         businessRegisterNumber: '33333333333',
@@ -194,6 +209,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case for pspData.vatNumberGroup === false
   {
     tokenId: 'tokenId05',
+    productId: 'prod-pagopa',
     status: 'TOBEVALIDATED',
     institutionInfo: {
       id: 'institutionId1',
@@ -238,6 +254,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
   // Use case for PENDING
   {
     tokenId: 'tokenId06',
+    productId: 'prod-pagopa',
     status: 'PENDING',
     institutionInfo: {
       id: 'institutionId1',
@@ -276,6 +293,70 @@ export const mockedOnboardingRequests: Array<OnboardingRequestDashboardResource>
         surname: 'Diaz',
         fiscalCode: 'MNGMGR11D22B345K',
         email: 'fabio@comunedi.it',
+      },
+    ],
+  },
+  // TOBEVALIDATED on prod-pagopa
+  {
+    tokenId: 'tokenId07',
+    productId: 'prod-pagopa',
+    status: 'TOBEVALIDATED',
+    institutionInfo: {
+      id: 'institutionId3',
+      name: 'Comune di Torino',
+      address: 'Via Del Piero, 10',
+      zipCode: '22335',
+      mailAddress: 'comune.torino@pecemail.com',
+      fiscalCode: '87693452678',
+      vatNumber: '93947658123',
+      additionalInformations: {
+        agentOfPublicService: true,
+        agentOfPublicServiceNote: 'agentOfPublicServiceNote',
+        belongRegulatedMarket: true,
+        regulatedMarketNote: 'regulatedMarketNote',
+        establishedByRegulatoryProvision: true,
+        establishedByRegulatoryProvisionNote: 'establishedByRegulatoryProvisionNote',
+        ipa: false,
+        ipaCode: '',
+        otherNote: 'OtherNote',
+      },
+      pspData: {
+        vatNumberGroup: true,
+        businessRegisterNumber: '33333333333',
+        legalRegisterName: 'DummySubscribe03',
+        legalRegisterNumber: '45',
+        abiCode: '77665',
+      },
+      recipientCode: 'DummyRecipientCode03',
+      dpoData: {
+        address: 'Via Autonomia, 546',
+        pec: 'dpo03@pecdpo.com',
+        email: 'dpo03@dpo.com',
+      },
+      institutionType: 'GSP',
+    },
+    manager: {
+      id: 'Manager03',
+      name: 'Manager03',
+      surname: 'Manager03',
+      fiscalCode: 'MNGMGR11D22B345K',
+      email: 'manager03@manager.com',
+    },
+    admins: [
+      // Use case with 2 admins
+      {
+        id: '7',
+        name: 'Admin07',
+        surname: 'Admin07',
+        fiscalCode: '77777777777',
+        email: 'admin07@comunedi.it',
+      },
+      {
+        id: '8',
+        name: 'Admin08',
+        surname: 'Admin08',
+        fiscalCode: '88888888888',
+        email: 'admin08@comunedi.it',
       },
     ],
   },
