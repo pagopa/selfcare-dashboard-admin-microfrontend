@@ -57,7 +57,7 @@ export default {
           belongRegulatedMarketNote: 'Nota',
           ipa: 'L’ente è censito su IPA',
           ipaCode: 'Codice IPA',
-          agentOfPublicService: 'L’ente è una società concessionaria di un pubblico servizio',
+          agentOfPublicService: 'L’ente è una concessionaria di un pubblico servizio',
           agentOfPublicServiceNote: 'Nota',
           other: 'Altro',
           otherNote: 'Nota',
