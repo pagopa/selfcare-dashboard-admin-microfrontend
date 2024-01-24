@@ -10,6 +10,7 @@ export default {
       billingDataInfoSummarySection: {
         title: 'Dati dell’ente',
         billingDataInfoSummary: {
+          product: 'Prodotto',
           institutionType: {
             title: 'Tipologia amministrazione',
             descriptions: {
