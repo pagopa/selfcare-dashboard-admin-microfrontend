@@ -13,6 +13,7 @@ import { theme } from '@pagopa/mui-italia';
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
 
 type Props = {
@@ -86,6 +87,24 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
         <Collapse in={expanded['1']} timeout="auto" unmountOnExit>
           <Divider sx={{ mx: 4 }} />
           <Grid container spacing={2} mt={2} mb={4} mx={2}>
+            {/* productTitle */}
+            <Grid container item alignItems={'center'}>
+              <Grid item xs={3}>
+                <Typography sx={{ fontSize: 'fontSize' }}>
+                  {t(
+                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.product'
+                  )}
+                </Typography>
+              </Grid>
+              {onboardingRequestData?.productId && (
+                <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                    {productId2ProductTitle(onboardingRequestData?.productId)}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+
             {/* institutionType */}
             <Grid container item alignItems={'center'}>
               <Grid item xs={3}>
