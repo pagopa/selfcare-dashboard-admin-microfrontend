@@ -31,7 +31,7 @@ type InstitutionInfo = {
   address: string;
   dpoData?: DpoData;
   fiscalCode: string;
-  id: string;
+  id?: string;
   institutionType: string;
   zipCode: string;
   mailAddress: string;
@@ -55,3 +55,4 @@ type DpoData = {
   email: string;
   pec: string;
 };
+
