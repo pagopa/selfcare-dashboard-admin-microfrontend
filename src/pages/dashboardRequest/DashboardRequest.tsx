@@ -1,4 +1,4 @@
-import { Chip, Grid, Typography, Alert, styled } from '@mui/material';
+import { Alert, Chip, Grid, Typography, styled } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,9 +7,9 @@ import { fetchOnboardingPspRequest } from '../../services/dashboardRequestServic
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
+import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
-import RetrieveTokenErrorPage from './JwtInvalidPage';
 
 const CustomAlert = styled(Alert)({
   '& .MuiAlert-icon': {
