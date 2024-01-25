@@ -18,11 +18,15 @@ export default function RejectPage({ onboardingRequestData }: Props) {
         </Box>
         <Grid item xs={5} display="flex" alignItems={'center'} mt={2}>
           <Typography variant="body1" textAlign="center">
-            <Trans i18nKey="rejectPage.description">
-              L’adesione di
-              <strong>{{ ente: onboardingRequestData?.institutionInfo.name }} </strong>non è andata
-              a buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le
-              istruzioni per completare l’adesione.
+            <Trans
+              i18nKey="rejectPage.description"
+              values={{ ente: onboardingRequestData?.institutionInfo.name }}
+              components={{ 1: <strong /> }}
+            >
+              {`L’adesione di
+              <1>{{ente}}</1>non è andata a buon
+              fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le
+              istruzioni per completare l’adesione.`}
             </Trans>
           </Typography>
         </Grid>

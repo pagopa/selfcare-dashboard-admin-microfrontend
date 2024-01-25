@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { IllusCompleted } from '@pagopa/mui-italia';
-import { useTranslation, Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { ENV } from '../../utils/env';
 
@@ -19,11 +19,15 @@ export default function ConfirmPage({ onboardingRequestData }: Props) {
         </Box>
         <Grid item xs={5} display="flex" alignItems={'center'} mt={2}>
           <Typography variant="body1" textAlign="center">
-            <Trans i18nKey="confirmPage.description">
-              L’adesione di
-              <strong> {{ ente: onboardingRequestData?.institutionInfo.name }} </strong>è stata
-              approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per
-              completare l’adesione.
+            <Trans
+              i18nKey="confirmPage.description"
+              values={{ ente: onboardingRequestData?.institutionInfo.name }}
+              components={{ 1: <strong /> }}
+            >
+              {`L’adesione di
+              <1>{{ente}}</1>è stata approvata.
+              Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare
+              l’adesione.`}
             </Trans>
           </Typography>
         </Grid>

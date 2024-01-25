@@ -249,9 +249,9 @@
     "/institutions/products": {
       "get": {
         "tags": ["institutions"],
-        "summary": "getProductstree",
+        "summary": "getProductsTree",
         "description": "Service to get all the products related to a specific institution",
-        "operationId": "getProductstreeUsingGET",
+        "operationId": "getProductsTreeUsingGET",
         "responses": {
           "200": {
             "description": "OK",
@@ -1850,7 +1850,7 @@
             "style": "simple",
             "schema": {
               "type": "string",
-              "enum": ["GSP", "PA", "PG", "PSP", "PT", "SCP"]
+              "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
             }
           }
         ],
@@ -2178,7 +2178,7 @@
     },
     "/support": {
       "post": {
-        "tags": ["support"],
+        "tags": ["external-v2"],
         "summary": "sendSupportRequest",
         "description": "Service to retrieve Support contact's form",
         "operationId": "sendSupportRequestUsingPOST",
@@ -2332,6 +2332,94 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IdentityTokenResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": ["global"]
+          }
+        ]
+      }
+    },
+    "/token/exchange/fatturazione": {
+      "get": {
+        "tags": ["token"],
+        "summary": "billingToken",
+        "description": "Service to create a 'Billing Token' based on a Self Care session token",
+        "operationId": "billingTokenUsingGET",
+        "parameters": [
+          {
+            "name": "institutionId",
+            "in": "query",
+            "description": "Institution's unique internal identifier",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Back Office environment",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
                 }
               }
             }
@@ -3454,6 +3542,48 @@
   },
   "components": {
     "schemas": {
+      "AdditionalInformations": {
+        "title": "AdditionalInformations",
+        "type": "object",
+        "properties": {
+          "agentOfPublicService": {
+            "type": "boolean"
+          },
+          "agentOfPublicServiceNote": {
+            "type": "string",
+            "description": "agentOfPublicService Note"
+          },
+          "belongRegulatedMarket": {
+            "type": "boolean",
+            "description": "The institution belongs to a regulated market",
+            "example": false
+          },
+          "establishedByRegulatoryProvision": {
+            "type": "boolean",
+            "description": "The institution is a company established by a regulatory provision",
+            "example": false
+          },
+          "establishedByRegulatoryProvisionNote": {
+            "type": "string",
+            "description": "establishedByRegulatoryProvision Note"
+          },
+          "ipa": {
+            "type": "boolean"
+          },
+          "ipaCode": {
+            "type": "string",
+            "description": "IPA code"
+          },
+          "otherNote": {
+            "type": "string",
+            "description": "Other note"
+          },
+          "regulatedMarketNote": {
+            "type": "string",
+            "description": "regulatedMarket Note"
+          }
+        }
+      },
       "Attribute": {
         "title": "Attribute",
         "type": "object",
@@ -3781,6 +3911,9 @@
           "address": {
             "type": "string"
           },
+          "aooParentCode": {
+            "type": "string"
+          },
           "attributes": {
             "type": "array",
             "items": {
@@ -3791,6 +3924,15 @@
             "$ref": "#/components/schemas/Billing"
           },
           "category": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "county": {
             "type": "string"
           },
           "dataProtectionOfficer": {
@@ -3816,7 +3958,7 @@
           },
           "institutionType": {
             "type": "string",
-            "enum": ["GSP", "PA", "PG", "PSP", "PT", "SCP"]
+            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
           },
           "onboarding": {
             "type": "array",
@@ -3832,6 +3974,15 @@
           },
           "paymentServiceProvider": {
             "$ref": "#/components/schemas/PaymentServiceProvider"
+          },
+          "rootParent": {
+            "$ref": "#/components/schemas/RootParentResponse"
+          },
+          "subunitCode": {
+            "type": "string"
+          },
+          "subunitType": {
+            "type": "string"
           },
           "supportContact": {
             "$ref": "#/components/schemas/SupportContact"
@@ -3875,18 +4026,34 @@
         "required": [
           "address",
           "fiscalCode",
-          "id",
           "institutionType",
           "mailAddress",
           "name",
+          "recipientCode",
           "vatNumber",
           "zipCode"
         ],
         "type": "object",
         "properties": {
+          "additionalInformations": {
+            "description": "Institution's additional informations",
+            "$ref": "#/components/schemas/AdditionalInformations"
+          },
           "address": {
             "type": "string",
             "description": "Institution's physical address"
+          },
+          "city": {
+            "type": "string",
+            "description": "Institution's city"
+          },
+          "country": {
+            "type": "string",
+            "description": "Institution's country"
+          },
+          "county": {
+            "type": "string",
+            "description": "Institution's county"
           },
           "dpoData": {
             "description": "Data Protection Officer (DPO) specific data",
@@ -3903,7 +4070,7 @@
           "institutionType": {
             "type": "string",
             "description": "Institution's type",
-            "enum": ["GSP", "PA", "PG", "PSP", "PT", "SCP"]
+            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
           },
           "mailAddress": {
             "type": "string",
@@ -3947,6 +4114,18 @@
             "type": "string",
             "description": "Institution's category"
           },
+          "city": {
+            "type": "string",
+            "description": "Institution's city"
+          },
+          "country": {
+            "type": "string",
+            "description": "Institution's country"
+          },
+          "county": {
+            "type": "string",
+            "description": "Institution's county"
+          },
           "externalId": {
             "type": "string",
             "description": "Institution's unique external identifier"
@@ -3969,7 +4148,7 @@
           "institutionType": {
             "type": "string",
             "description": "Institution's type",
-            "enum": ["GSP", "PA", "PG", "PSP", "PT", "SCP"]
+            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
           },
           "mailAddress": {
             "type": "string",
@@ -4002,6 +4181,10 @@
             "type": "string",
             "description": "Billing recipient code"
           },
+          "status": {
+            "type": "string",
+            "description": "Institution's status"
+          },
           "subunitCode": {
             "type": "string",
             "description": "AOO o UO unique code"
@@ -4013,6 +4196,10 @@
           "supportContact": {
             "description": "'Institution's assistance contacts'",
             "$ref": "#/components/schemas/SupportContactResource"
+          },
+          "userRole": {
+            "type": "string",
+            "description": "Logged user's role"
           },
           "vatNumber": {
             "type": "string",
@@ -4172,7 +4359,7 @@
       },
       "OnboardingRequestResource": {
         "title": "OnboardingRequestResource",
-        "required": ["institutionInfo", "status"],
+        "required": ["institutionInfo", "manager", "status"],
         "type": "object",
         "properties": {
           "admins": {
@@ -4187,8 +4374,12 @@
             "$ref": "#/components/schemas/InstitutionInfo"
           },
           "manager": {
-            "description": "Manager specific data",
+            "description": "Manager specific data. It's required when institutionType is not PT",
             "$ref": "#/components/schemas/UserInfo"
+          },
+          "productId": {
+            "type": "string",
+            "description": "Product's identifier"
           },
           "status": {
             "type": "string",
@@ -4456,6 +4647,11 @@
             "description": "Date the products was activated",
             "format": "date-time"
           },
+          "authorized": {
+            "type": "boolean",
+            "description": "flag indicating whether the logged user has the authorization to manage the product",
+            "example": false
+          },
           "backOfficeEnvironmentConfigurations": {
             "type": "array",
             "description": "Environment-specific configurations for back-office redirection with Token Exchange",
@@ -4472,7 +4668,7 @@
           },
           "delegable": {
             "type": "boolean",
-            "description": "If a product is delegable to a technical partner ",
+            "description": "If a product is delegable to a technical partner",
             "example": false
           },
           "description": {
@@ -4487,6 +4683,11 @@
             "type": "string",
             "description": "Product's depict image"
           },
+          "invoiceable": {
+            "type": "boolean",
+            "description": "If a product is invoiceable",
+            "example": false
+          },
           "logo": {
             "type": "string",
             "description": "Product's logo"
@@ -4494,6 +4695,11 @@
           "logoBgColor": {
             "type": "string",
             "description": "Product logo's background color"
+          },
+          "productOnBoardingStatus": {
+            "type": "string",
+            "description": "Product's onBoarding status",
+            "enum": ["ACTIVE", "INACTIVE", "PENDING"]
           },
           "status": {
             "type": "string",
@@ -4511,6 +4717,10 @@
           "urlPublic": {
             "type": "string",
             "description": "URL that redirects to the public information webpage of the product"
+          },
+          "userRole": {
+            "type": "string",
+            "description": "Logged user's role"
           }
         }
       },
@@ -4548,6 +4758,18 @@
           }
         }
       },
+      "RootParentResponse": {
+        "title": "RootParentResponse",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
       "SearchUserDto": {
         "title": "SearchUserDto",
         "required": ["fiscalCode"],
@@ -4565,7 +4787,7 @@
         "properties": {
           "delegable": {
             "type": "boolean",
-            "description": "If a product is delegable to a technical partner ",
+            "description": "If a product is delegable to a technical partner",
             "example": false
           },
           "description": {
@@ -4580,6 +4802,11 @@
             "type": "string",
             "description": "Product's depict image"
           },
+          "invoiceable": {
+            "type": "boolean",
+            "description": "If a product is invoiceable",
+            "example": false
+          },
           "logo": {
             "type": "string",
             "description": "Product's logo"
@@ -4587,6 +4814,11 @@
           "logoBgColor": {
             "type": "string",
             "description": "Product logo's background color"
+          },
+          "productOnBoardingStatus": {
+            "type": "string",
+            "description": "Product's onBoarding status",
+            "enum": ["ACTIVE", "INACTIVE", "PENDING"]
           },
           "status": {
             "type": "string",
