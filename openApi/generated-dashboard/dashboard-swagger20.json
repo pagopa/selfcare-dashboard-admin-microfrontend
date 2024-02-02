@@ -1428,11 +1428,13 @@
             "description": "Institution Type",
             "enum": [
               "AS",
+              "CON",
               "GSP",
               "PA",
               "PG",
               "PSP",
               "PT",
+              "REC",
               "SA",
               "SCP"
             ],
@@ -2842,6 +2844,8 @@
     "AdditionalInformations": {
       "properties": {
         "agentOfPublicService": {
+          "description": "The institution is an agent of a public service",
+          "example": false,
           "type": "boolean"
         },
         "agentOfPublicServiceNote": {
@@ -2863,6 +2867,8 @@
           "type": "string"
         },
         "ipa": {
+          "description": "The institution is registered on IPA",
+          "example": false,
           "type": "boolean"
         },
         "ipaCode": {
@@ -3289,11 +3295,13 @@
         "institutionType": {
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -3400,11 +3408,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -3438,6 +3448,7 @@
       "required": [
         "address",
         "fiscalCode",
+        "id",
         "institutionType",
         "mailAddress",
         "name",
@@ -3497,11 +3508,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
