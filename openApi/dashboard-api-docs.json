@@ -1850,7 +1850,7 @@
             "style": "simple",
             "schema": {
               "type": "string",
-              "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
+              "enum": ["AS", "CON", "GSP", "PA", "PG", "PSP", "PT", "REC", "SA", "SCP"]
             }
           }
         ],
@@ -3547,7 +3547,9 @@
         "type": "object",
         "properties": {
           "agentOfPublicService": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is an agent of a public service",
+            "example": false
           },
           "agentOfPublicServiceNote": {
             "type": "string",
@@ -3568,7 +3570,9 @@
             "description": "establishedByRegulatoryProvision Note"
           },
           "ipa": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is registered on IPA",
+            "example": false
           },
           "ipaCode": {
             "type": "string",
@@ -3958,7 +3962,7 @@
           },
           "institutionType": {
             "type": "string",
-            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
+            "enum": ["AS", "CON", "GSP", "PA", "PG", "PSP", "PT", "REC", "SA", "SCP"]
           },
           "onboarding": {
             "type": "array",
@@ -4026,6 +4030,7 @@
         "required": [
           "address",
           "fiscalCode",
+          "id",
           "institutionType",
           "mailAddress",
           "name",
@@ -4070,7 +4075,7 @@
           "institutionType": {
             "type": "string",
             "description": "Institution's type",
-            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
+            "enum": ["AS", "CON", "GSP", "PA", "PG", "PSP", "PT", "REC", "SA", "SCP"]
           },
           "mailAddress": {
             "type": "string",
@@ -4148,7 +4153,7 @@
           "institutionType": {
             "type": "string",
             "description": "Institution's type",
-            "enum": ["AS", "GSP", "PA", "PG", "PSP", "PT", "SA", "SCP"]
+            "enum": ["AS", "CON", "GSP", "PA", "PG", "PSP", "PT", "REC", "SA", "SCP"]
           },
           "mailAddress": {
             "type": "string",
