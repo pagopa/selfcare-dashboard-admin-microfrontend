@@ -14,6 +14,7 @@ export default {
           institutionType: {
             title: 'Tipologia amministrazione',
             descriptions: {
+              pa: 'Pubblica amministrazione',
               gsp: 'Gestore di Pubblico Servizio',
               pt: 'Partner tecnologico',
               scp: 'Società a Controllo Pubblico',
