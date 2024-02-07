@@ -1428,11 +1428,13 @@
             "description": "Institution Type",
             "enum": [
               "AS",
+              "CON",
               "GSP",
               "PA",
               "PG",
               "PSP",
               "PT",
+              "REC",
               "SA",
               "SCP"
             ],
@@ -1709,7 +1711,7 @@
           "application/json"
         ],
         "produces": [
-          "application/json",
+          "text/html",
           "application/problem+json"
         ],
         "parameters": [
@@ -1754,9 +1756,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SupportResponse"
-            }
+            "schema":{"$ref":"#/definitions/STRINGWrapper"}
           },
           "400": {
             "description": "Bad Request",
@@ -1785,7 +1785,8 @@
           }
         ],
         "tags": [
-          "external-v2"
+          "external-v2",
+          "support"
         ],
         "description": "Service to retrieve Support contact's form",
         "operationId": "sendSupportRequestUsingPOST",
@@ -2842,6 +2843,8 @@
     "AdditionalInformations": {
       "properties": {
         "agentOfPublicService": {
+          "description": "The institution is an agent of a public service",
+          "example": false,
           "type": "boolean"
         },
         "agentOfPublicServiceNote": {
@@ -2863,6 +2866,8 @@
           "type": "string"
         },
         "ipa": {
+          "description": "The institution is registered on IPA",
+          "example": false,
           "type": "boolean"
         },
         "ipaCode": {
@@ -3289,11 +3294,13 @@
         "institutionType": {
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -3400,11 +3407,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -3438,6 +3447,7 @@
       "required": [
         "address",
         "fiscalCode",
+        "id",
         "institutionType",
         "mailAddress",
         "name",
@@ -3497,11 +3507,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -3775,6 +3787,7 @@
       },
       "required": [
         "institutionInfo",
+        "manager",
         "status"
       ],
       "title": "OnboardingRequestResource",
@@ -4308,8 +4321,16 @@
           "format": "email",
           "type": "string"
         },
+        "institutionId": {
+          "description": "Institution's identifier",
+          "type": "string"
+        },
         "productId": {
           "description": "Product's identifier",
+          "type": "string"
+        },
+        "userId": {
+          "description": "User's identifier",
           "type": "string"
         }
       },
@@ -4317,15 +4338,6 @@
         "email"
       ],
       "title": "SupportRequestDto",
-      "type": "object"
-    },
-    "SupportResponse": {
-      "properties": {
-        "redirectUrl": {
-          "type": "string"
-        }
-      },
-      "title": "SupportResponse",
       "type": "object"
     },
     "UpdateInstitutionDto": {
