@@ -4034,7 +4034,6 @@
           "institutionType",
           "mailAddress",
           "name",
-          "recipientCode",
           "vatNumber",
           "zipCode"
         ],
