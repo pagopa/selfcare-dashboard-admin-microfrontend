@@ -3769,25 +3769,16 @@
           "description": "Manager specific data. It's required when institutionType is not PT"
         },
         "productId": {
-          "description": "Product's identifier",
+          "description": "Product's unique identifier",
           "type": "string"
         },
         "status": {
           "description": "Onboarding request's status",
-          "enum": [
-            "ACTIVE",
-            "DELETED",
-            "PENDING",
-            "REJECTED",
-            "SUSPENDED",
-            "TOBEVALIDATED"
-          ],
           "type": "string"
         }
       },
       "required": [
         "institutionInfo",
-        "manager",
         "status"
       ],
       "title": "OnboardingRequestResource",
