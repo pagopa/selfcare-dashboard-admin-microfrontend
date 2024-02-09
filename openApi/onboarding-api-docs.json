@@ -3212,7 +3212,6 @@
         "required": [
           "address",
           "fiscalCode",
-          "id",
           "institutionType",
           "mailAddress",
           "name",
