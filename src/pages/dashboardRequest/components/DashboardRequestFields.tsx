@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
@@ -25,15 +25,20 @@ type Props = {
 export default function DashboardRequestFields({ onboardingRequestData, isPSP }: Props) {
   const { t } = useTranslation();
 
-  const [expanded, setExpanded] = useState<{ [index: string]: boolean }>({});
+  const [expanded, setExpanded] = useState<{ [index: string]: boolean }>({ ['1']: true });
+  const expandedIndexRef = useRef<string>('1');
 
   const isTechPartner = onboardingRequestData?.institutionInfo.institutionType === 'PT';
 
   const handleExpandClick = (index: string) => {
     setExpanded((prevExpanded) => ({
       ...prevExpanded,
+      [expandedIndexRef.current]: !!prevExpanded[index],
       [index]: !prevExpanded[index],
     }));
+
+    // eslint-disable-next-line functional/immutable-data
+    expandedIndexRef.current = index;
   };
 
   const getInstitutionTypeDescription = (institutionType: string) =>
