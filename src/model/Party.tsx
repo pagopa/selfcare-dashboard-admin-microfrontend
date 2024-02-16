@@ -1,13 +1,10 @@
-import { GeographicTaxonomyResource } from '../api/generated/b4f-dashboard/GeographicTaxonomyResource';
-import { OnboardedProductResource } from '../api/generated/b4f-dashboard/OnboardedProductResource';
-
 export type UserRole = 'ADMIN' | 'LIMITED';
 export type PartyRole = 'DELEGATE' | 'MANAGER' | 'OPERATOR' | 'SUB_DELEGATE';
 export type UserStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED';
 
 export type Party = {
   partyId: string;
-  products: Array<OnboardedProductResource>;
+  products: any;
   externalId?: string;
   originId?: string;
   origin?: string;
@@ -21,7 +18,7 @@ export type Party = {
   typology: string;
   institutionType?: string;
   recipientCode?: string;
-  geographicTaxonomies: Array<GeographicTaxonomyResource>;
+  geographicTaxonomies: any;
   vatNumberGroup?: boolean;
   supportEmail?: string;
   vatNumber?: string;

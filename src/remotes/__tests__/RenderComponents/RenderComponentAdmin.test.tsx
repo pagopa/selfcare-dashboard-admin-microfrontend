@@ -10,7 +10,7 @@ import RoutingAdmin from '../../RoutingAdmin';
 import App from '../../../microcomponents/mock_dashboard/App';
 import React from 'react';
 
-jest.mock('../../../services/dashboardRequestService');
+jest.mock('../../../services/onboardingRequestService');
 jest.mock('@pagopa/selfcare-common-frontend/decorators/withLogin');
 
 // eslint-disable-next-line functional/immutable-data

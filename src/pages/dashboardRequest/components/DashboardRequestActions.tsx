@@ -7,7 +7,7 @@ import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 import {
   approveOnboardingPspRequest,
   rejectOnboardingPspRequest,
-} from '../../../services/dashboardRequestService';
+} from '../../../services/onboardingRequestService';
 
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;

@@ -4,7 +4,7 @@ import '../../locale';
 import { renderComponent } from './RenderComponents/RenderComponentAdmin.test';
 
 jest.mock('@pagopa/selfcare-common-frontend/decorators/withLogin');
-jest.mock('../../services/dashboardRequestService');
+jest.mock('../../services/onboardingRequestService');
 
 jest.setTimeout(100000);
 
