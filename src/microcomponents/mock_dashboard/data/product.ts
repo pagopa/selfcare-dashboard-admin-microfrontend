@@ -1,4 +1,4 @@
-import { StatusEnum } from '../../../api/generated/b4f-dashboard/ProductsResource';
+import { StatusEnum } from '../../../api/generated/onboarding/ProductResource';
 import { Product } from '../../../model/Product';
 import { ProductRole } from '../../../model/ProductRole';
 

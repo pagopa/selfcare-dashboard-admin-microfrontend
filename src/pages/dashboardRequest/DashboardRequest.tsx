@@ -3,7 +3,7 @@ import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
-import { fetchOnboardingPspRequest } from '../../services/dashboardRequestService';
+import { fetchOnboardingPspRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
