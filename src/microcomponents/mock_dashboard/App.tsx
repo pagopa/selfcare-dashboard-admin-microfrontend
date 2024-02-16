@@ -12,7 +12,6 @@ import { Box, Grid, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
-import { Product } from '../../model/Product';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
 import { createStore } from '../../redux/store';
 import {
@@ -20,9 +19,9 @@ import {
   DashboardMicrofrontendPageProps,
 } from '../dashboard-routes-utils';
 import { mockedOnboardingRequests } from '../../services/__mocks__/dashboardRequestService';
-import { mockedPartyProducts } from './data/product';
-import { mockedProductRoles } from './data/product';
+import { Product } from '../../model/Product';
 import Layout from './Layout';
+import { mockedPartyProducts, mockedProductRoles } from './data/product';
 
 type UrlParams = {
   tokenId: string;
