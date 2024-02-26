@@ -1,6 +1,3 @@
-import { StatusEnum } from '../api/generated/b4f-dashboard/ProductsResource';
-import { SubProductResource } from '../api/generated/b4f-dashboard/SubProductResource';
-
 export type Product = {
   activationDateTime?: Date;
   description: string;
@@ -15,9 +12,9 @@ export type Product = {
   urlPublic?: string;
   tag?: string;
   // product status.The intrinsic state of the product. Product status is unrelated to product onboarding status.
-  status: StatusEnum;
+  status: any;
   imageUrl: string;
-  subProducts?: Array<SubProductResource>;
+  subProducts?: any;
   logoBgColor?: string;
   delegable: boolean;
 };

@@ -1336,11 +1336,13 @@
             "description": "Institution's type",
             "enum": [
               "AS",
+              "CON",
               "GSP",
               "PA",
               "PG",
               "PSP",
               "PT",
+              "REC",
               "SA",
               "SCP"
             ],
@@ -1657,6 +1659,79 @@
         "summary": "validate"
       }
     },
+    "/v2/institutions/company/onboarding": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/CompanyOnboardingDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "institutions"
+        ],
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "onboardingUsingPOST_3",
+        "summary": "onboarding"
+      }
+    },
     "/v2/institutions/onboarding": {
       "post": {
         "consumes": [
@@ -1726,7 +1801,7 @@
           "institutions"
         ],
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
-        "operationId": "onboardingUsingPOST_3",
+        "operationId": "onboardingUsingPOST_4",
         "summary": "onboarding"
       }
     },
@@ -1857,6 +1932,56 @@
       }
     },
     "/v2/tokens/{onboardingId}/complete": {
+      "delete": {
+        "produces": [
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Contract's unique identifier",
+            "in": "path",
+            "name": "onboardingId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "tokens"
+        ],
+        "description": "Complete an onboarding request",
+        "operationId": "deleteUsingDELETE_1",
+        "summary": "Complete an onboarding request"
+      },
       "post": {
         "consumes": [
           "multipart/form-data"
@@ -2064,9 +2189,11 @@
     }
   },
   "definitions" : {"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"STRINGWrapper":{"type": "string"},"STRINGArray":{"type": "array", "items": {"type": "string"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},
-    "AdditionalInformationsDto": {
+    "AdditionalInformations": {
       "properties": {
         "agentOfPublicService": {
+          "description": "The institution is an agent of a public service",
+          "example": false,
           "type": "boolean"
         },
         "agentOfPublicServiceNote": {
@@ -2088,6 +2215,54 @@
           "type": "string"
         },
         "ipa": {
+          "description": "The institution is registered on IPA",
+          "example": false,
+          "type": "boolean"
+        },
+        "ipaCode": {
+          "description": "IPA code",
+          "type": "string"
+        },
+        "otherNote": {
+          "description": "Other note",
+          "type": "string"
+        },
+        "regulatedMarketNote": {
+          "description": "regulatedMarket Note",
+          "type": "string"
+        }
+      },
+      "title": "AdditionalInformations",
+      "type": "object"
+    },
+    "AdditionalInformationsDto": {
+      "properties": {
+        "agentOfPublicService": {
+          "description": "The institution is an agent of a public service",
+          "example": false,
+          "type": "boolean"
+        },
+        "agentOfPublicServiceNote": {
+          "description": "agentOfPublicService Note",
+          "type": "string"
+        },
+        "belongRegulatedMarket": {
+          "description": "The institution belongs to a regulated market",
+          "example": false,
+          "type": "boolean"
+        },
+        "establishedByRegulatoryProvision": {
+          "description": "The institution is a company established by a regulatory provision",
+          "example": false,
+          "type": "boolean"
+        },
+        "establishedByRegulatoryProvisionNote": {
+          "description": "establishedByRegulatoryProvision Note",
+          "type": "string"
+        },
+        "ipa": {
+          "description": "The institution is registered on IPA",
+          "example": false,
           "type": "boolean"
         },
         "ipaCode": {
@@ -2322,11 +2497,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2516,11 +2693,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2535,6 +2714,10 @@
     },
     "InstitutionInfo": {
       "properties": {
+        "additionalInformations": {
+          "$ref": "#/definitions/AdditionalInformations",
+          "description": "GSP institution's additional informations"
+        },
         "address": {
           "description": "Institution's physical address",
           "type": "string"
@@ -2567,11 +2750,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2608,7 +2793,6 @@
         "institutionType",
         "mailAddress",
         "name",
-        "recipientCode",
         "vatNumber",
         "zipCode"
       ],
@@ -2708,11 +2892,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2821,11 +3007,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2893,11 +3081,13 @@
           "description": "Institution's type",
           "enum": [
             "AS",
+            "CON",
             "GSP",
             "PA",
             "PG",
             "PSP",
             "PT",
+            "REC",
             "SA",
             "SCP"
           ],
@@ -2981,7 +3171,6 @@
       },
       "required": [
         "institutionInfo",
-        "manager",
         "status"
       ],
       "title": "OnboardingRequestResource",
