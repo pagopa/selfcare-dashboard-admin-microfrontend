@@ -2,6 +2,7 @@ import { Alert, Chip, Grid, Typography, styled } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingPspRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
@@ -32,13 +33,15 @@ export default function DashboardRequest() {
 
   const isPSP = onboardingRequestData?.institutionInfo.institutionType === 'PSP';
 
+  const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
+
   useEffect(() => {
     if (retrieveTokenIdFromUrl) {
-      onboardingPspRequestData(retrieveTokenIdFromUrl);
+      retrieveOnboardingRequest(retrieveTokenIdFromUrl);
     }
   }, [retrieveTokenIdFromUrl]);
 
-  const onboardingPspRequestData = (retrieveTokenIdFromUrl: string) => {
+  const retrieveOnboardingRequest = (retrieveTokenIdFromUrl: string) => {
     setLoadingRetrieveOnboardingRequest(true);
     fetchOnboardingPspRequest(retrieveTokenIdFromUrl)
       .then((r) => {
@@ -129,6 +132,8 @@ export default function DashboardRequest() {
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
+            partyName={onboardingRequestData?.institutionInfo.name}
+            productTitle={productTitle}
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
