@@ -42,9 +42,15 @@ export const OnboardingApi = {
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-  rejectOnboardingRequest: async (onboardingId: string): Promise<OnboardingRequestResource> => {
+  rejectOnboardingRequest: async (
+    onboardingId: string,
+    reason: string
+  ): Promise<OnboardingRequestResource> => {
     const result = await apiClient.rejectOnboardingUsingPOST({
       onboardingId,
+      body: {
+        reason,
+      },
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },

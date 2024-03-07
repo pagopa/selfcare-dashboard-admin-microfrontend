@@ -90,7 +90,18 @@ export default {
       },
     },
     actions: {
-      declineButton: 'Rifiuta',
+      decline: {
+        button: 'Rifiuta',
+        modal: {
+          title: 'Stai rifiutando una richiesta di adesione',
+          message:
+            'Spiega all’ente <1>{{partyName}}</1> perché hai respinto la richiesta di adesione per il prodotto <3>{{productTitle}}</3>. Fai in modo che la motivazione sia chiara e facile da capire, così da comunicare efficacemente la causa del rifiuto.',
+          reason: 'Scrivi il motivo del rifiuto',
+          maxCharactersAllowed: 'Max 500 caratteri',
+          back: 'Indietro',
+          confirm: 'Rifiuta',
+        },
+      },
       approveButton: 'Approva',
       closeButton: 'Chiudi',
     },

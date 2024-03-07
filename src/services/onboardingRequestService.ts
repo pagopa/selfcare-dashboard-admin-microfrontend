@@ -16,7 +16,10 @@ export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRe
   }
 };
 
-export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+export const rejectOnboardingRequest = (
+  tokenId: string,
+  reason: string
+): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
@@ -26,7 +29,7 @@ export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingR
       return Promise.reject('Onboarding request not found!');
     }
   } else {
-    return OnboardingApi.rejectOnboardingRequest(tokenId);
+    return OnboardingApi.rejectOnboardingRequest(tokenId, reason);
   }
 };
 
