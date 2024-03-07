@@ -74,38 +74,27 @@ export default function DashboardRequestActions({
 
   return (
     <>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" py={6} mb={6}>
-        {isPendingRequest ? (
-          <>
-            <Stack>
-              <Button
-                variant="outlined"
-                color="error"
-                style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
-                onClick={() => setOpenRejectModal(true)}
-              >
-                {t('onboardingRequestPage.actions.decline.button')}
-              </Button>
-            </Stack>
-
-            <Stack>
-              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
-                {t('onboardingRequestPage.actions.approveButton')}
-              </Button>
-            </Stack>
-          </>
-        ) : (
+      {isPendingRequest && (
+        <Stack direction="row" justifyContent="space-between" alignItems="center" py={4}>
           <Stack>
             <Button
               variant="outlined"
-              sx={{ marginLeft: 3 }}
-              onClick={() => window.location.assign('https://www.pagopa.it/it/')}
+              color="error"
+              style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
+              onClick={() => setOpenRejectModal(true)}
             >
-              {t('onboardingRequestPage.actions.closeButton')}
+              {t('onboardingRequestPage.actions.decline.button')}
             </Button>
           </Stack>
-        )}
-      </Stack>
+
+          <Stack>
+            <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+              {t('onboardingRequestPage.actions.approveButton')}
+            </Button>
+          </Stack>
+        </Stack>
+      )}
+
       <SessionModal
         open={openRejectModal}
         title={t('onboardingRequestPage.actions.decline.modal.title')}

@@ -140,7 +140,12 @@ const App = ({
         <UnloadEventHandler />
 
         <Grid container item justifyContent="center" xs={12}>
-          <Grid item xs={12} display="flex" pb={16}>
+          <Grid
+            item
+            xs={12}
+            display="flex"
+            pb={onboardingRequest.status === 'TOBEVALIDATED' ? 14 : 18}
+          >
             <Switch>
               {AppRouting({
                 history,

@@ -1,7 +1,7 @@
 export default {
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
-    validationDataChip: 'In attesa',
+    validationDataChip: 'Da validare',
     approvedDataChip: 'Approvata',
     rejectedDataChip: 'Rifiutata',
     checkPartyInfoAlert:
@@ -103,7 +103,6 @@ export default {
         },
       },
       approveButton: 'Approva',
-      closeButton: 'Chiudi',
     },
   },
   jwtNotValid: {

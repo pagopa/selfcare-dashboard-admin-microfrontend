@@ -1,4 +1,4 @@
-import { Alert, Chip, Grid, Typography, styled } from '@mui/material';
+import { Alert, Chip, Grid, Typography } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,12 +11,6 @@ import RejectPage from '../rejectedPage/RejectPage';
 import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
-
-const CustomAlert = styled(Alert)({
-  '& .MuiAlert-icon': {
-    color: '#FFCB46',
-  },
-});
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function DashboardRequest() {
@@ -75,11 +69,11 @@ export default function DashboardRequest() {
         case 'ACTIVE':
           return 'success.light';
         case 'PENDING':
-          return 'warning.main';
+          return 'info.main';
         case 'REJECTED':
           return 'error.light';
         default:
-          return 'warning.main';
+          return 'info.main';
       }
     }
     return undefined;
@@ -111,23 +105,23 @@ export default function DashboardRequest() {
           </Grid>
           {onboardingRequestData?.status === 'TOBEVALIDATED' && (
             <Grid item xs={12} width="100%" mt={5}>
-              <CustomAlert
-                severity="warning"
+              <Alert
+                severity="info"
                 sx={{
                   fontSize: 'fontSize',
-                  backgroundColor: 'background.paper',
-                  height: '80px',
+                  height: '53px',
                   alignItems: 'center',
                   color: 'colorTextPrimary',
                   borderLeft: 'solid',
-                  borderLeftColor: 'warning.main',
+                  borderLeftColor: 'info.main',
                   borderLeftWidth: '4px',
                   width: '100%',
                 }}
               >
                 {t('onboardingRequestPage.checkPartyInfoAlert')}
-              </CustomAlert>
+              </Alert>
             </Grid>
+            // TODO Put here the reason for reject (SELC-4404)
           )}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
