@@ -18,7 +18,7 @@ import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
 } from '../dashboard-routes-utils';
-import { mockedOnboardingRequests } from '../../services/__mocks__/dashboardRequestService';
+import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
 import { Product } from '../../model/Product';
 import Layout from './Layout';
 import { mockedPartyProducts, mockedProductRoles } from './data/product';
