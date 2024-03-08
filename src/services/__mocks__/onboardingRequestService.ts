@@ -141,7 +141,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
       },
     ],
     updatedAt: '2024-02-07T11:40:57.393',
-    expiringDate: '2024-03-06T11:40:27.31',
+    expiringDate: '2024-03-08T17:31:27.31',
     reasonForReject: 'Wrong institutionType',
   },
 

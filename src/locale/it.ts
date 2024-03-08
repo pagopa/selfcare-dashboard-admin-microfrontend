@@ -4,6 +4,10 @@ export default {
     validationDataChip: 'Da validare',
     approvedDataChip: 'Approvata',
     rejectedDataChip: 'Rifiutata',
+    expired: {
+      chip: 'Scaduta',
+      reason: 'La richiesta di adesione è scaduta perché sono trascorsi più di 30 giorni.',
+    },
     checkPartyInfoAlert:
       'Controlla le informazioni inserite dall’ente e approva o rifiuta la richiesta.',
     checkPartyRejectReasonAlert:
