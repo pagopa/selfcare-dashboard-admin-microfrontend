@@ -1,10 +1,10 @@
 import { Alert, Chip, Grid, Typography } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
-import { fetchOnboardingPspRequest } from '../../services/onboardingRequestService';
+import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
@@ -37,7 +37,7 @@ export default function DashboardRequest() {
 
   const retrieveOnboardingRequest = (retrieveTokenIdFromUrl: string) => {
     setLoadingRetrieveOnboardingRequest(true);
-    fetchOnboardingPspRequest(retrieveTokenIdFromUrl)
+    fetchOnboardingRequest(retrieveTokenIdFromUrl)
       .then((r) => {
         setOnboardingRequestData(r);
       })
@@ -71,7 +71,7 @@ export default function DashboardRequest() {
         case 'PENDING':
           return 'info.main';
         case 'REJECTED':
-          return 'error.light';
+          return 'warning.main';
         default:
           return 'info.main';
       }
@@ -103,7 +103,7 @@ export default function DashboardRequest() {
               />
             </Grid>
           </Grid>
-          {onboardingRequestData?.status === 'TOBEVALIDATED' && (
+          {onboardingRequestData?.status === 'TOBEVALIDATED' ? (
             <Grid item xs={12} width="100%" mt={5}>
               <Alert
                 severity="info"
@@ -121,8 +121,33 @@ export default function DashboardRequest() {
                 {t('onboardingRequestPage.checkPartyInfoAlert')}
               </Alert>
             </Grid>
-            // TODO Put here the reason for reject (SELC-4404)
-          )}
+          ) : onboardingRequestData?.status === 'REJECTED' ? (
+            <Grid item xs={12} width="100%" mt={5}>
+              <Alert
+                severity="warning"
+                sx={{
+                  fontSize: 'fontSize',
+                  height: '74px',
+                  alignItems: 'center',
+                  color: 'colorTextPrimary',
+                  borderLeft: 'solid',
+                  borderLeftColor: 'warning.main',
+                  borderLeftWidth: '4px',
+                  width: '100%',
+                }}
+              >
+                <Trans
+                  i18nKey={'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'}
+                  components={{
+                    1: <strong style={{ fontWeight: '600' }} />,
+                    3: <br />,
+                  }}
+                >
+                  {`<1>Hai rifiutato questa richiesta di adesione il ${onboardingRequestData?.updatedAt}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
+                </Trans>
+              </Alert>
+            </Grid>
+          ) : undefined}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
