@@ -80,8 +80,7 @@ export default function DashboardRequest() {
   };
 
   const fromISO2ITA = (date?: string) => {
-    const withoutTime = date?.toString().split('T')[0] ?? '';
-    const dateFormat = new Date(withoutTime);
+    const dateFormat = new Date(date as string);
     const day = dateFormat.getDate();
     const month = dateFormat.getMonth() + 1;
     const year = dateFormat.getFullYear();
