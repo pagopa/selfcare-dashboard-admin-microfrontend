@@ -94,7 +94,7 @@ export default function DashboardRequest() {
     <ConfirmPage onboardingRequestData={onboardingRequestData} />
   ) : error ? (
     <RetrieveTokenErrorPage />
-  ) : (
+  ) : onboardingRequestData ? (
     <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
         <Grid item xs={12}>
@@ -171,5 +171,7 @@ export default function DashboardRequest() {
         </Grid>
       </Grid>
     </Grid>
+  ) : (
+    <></>
   );
 }
