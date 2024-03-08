@@ -79,6 +79,16 @@ export default function DashboardRequest() {
     return undefined;
   };
 
+  const fromISO2ITA = (date: string = '') => {
+    const withoutTime = date.split('T')[0];
+    const dateFormat = new Date(withoutTime);
+    const day = dateFormat.getDate();
+    const month = dateFormat.getMonth() + 1;
+    const year = dateFormat.getFullYear();
+
+    return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+  };
+
   return showRejectPage ? (
     <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
@@ -143,7 +153,9 @@ export default function DashboardRequest() {
                     3: <br />,
                   }}
                 >
-                  {`<1>Hai rifiutato questa richiesta di adesione il ${onboardingRequestData?.updatedAt}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
+                  {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                    onboardingRequestData?.updatedAt
+                  )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
                 </Trans>
               </Alert>
             </Grid>
