@@ -88,6 +88,13 @@ export default function DashboardRequest() {
     return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
   };
 
+  const isExpiredRequest =
+    onboardingRequestData?.status !== 'ACTIVE' &&
+    onboardingRequestData?.status !== 'REJECTED' &&
+    onboardingRequestData?.expiringDate
+      ? new Date(onboardingRequestData?.expiringDate) <= new Date()
+      : false;
+
   return showRejectPage ? (
     <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
@@ -105,14 +112,38 @@ export default function DashboardRequest() {
             <Grid item>
               <Chip
                 sx={{
-                  backgroundColor: requestState(onboardingRequestData?.status, false, true),
+                  backgroundColor: isExpiredRequest
+                    ? 'error.main'
+                    : requestState(onboardingRequestData?.status, false, true),
                   height: '30px',
                 }}
-                label={requestState(onboardingRequestData?.status, true, false)}
+                label={
+                  isExpiredRequest
+                    ? t('onboardingRequestPage.expired.chip')
+                    : requestState(onboardingRequestData?.status, true, false)
+                }
               />
             </Grid>
           </Grid>
-          {onboardingRequestData?.status === 'TOBEVALIDATED' ? (
+          {isExpiredRequest ? (
+            <Grid item xs={12} width="100%" mt={5}>
+              <Alert
+                severity="error"
+                sx={{
+                  fontSize: 'fontSize',
+                  height: '53px',
+                  alignItems: 'center',
+                  color: 'colorTextPrimary',
+                  borderLeft: 'solid',
+                  borderLeftColor: 'error.main',
+                  borderLeftWidth: '4px',
+                  width: '100%',
+                }}
+              >
+                {t('onboardingRequestPage.expired.reason')}
+              </Alert>
+            </Grid>
+          ) : onboardingRequestData?.status === 'TOBEVALIDATED' ? (
             <Grid item xs={12} width="100%" mt={5}>
               <Alert
                 severity="info"
@@ -130,35 +161,39 @@ export default function DashboardRequest() {
                 {t('onboardingRequestPage.checkPartyInfoAlert')}
               </Alert>
             </Grid>
-          ) : onboardingRequestData?.status === 'REJECTED' ? (
-            <Grid item xs={12} width="100%" mt={5}>
-              <Alert
-                severity="warning"
-                sx={{
-                  fontSize: 'fontSize',
-                  height: '74px',
-                  alignItems: 'center',
-                  color: 'colorTextPrimary',
-                  borderLeft: 'solid',
-                  borderLeftColor: 'warning.main',
-                  borderLeftWidth: '4px',
-                  width: '100%',
-                }}
-              >
-                <Trans
-                  i18nKey={'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'}
-                  components={{
-                    1: <strong style={{ fontWeight: '600' }} />,
-                    3: <br />,
+          ) : (
+            onboardingRequestData?.status === 'REJECTED' && (
+              <Grid item xs={12} width="100%" mt={5}>
+                <Alert
+                  severity="warning"
+                  sx={{
+                    fontSize: 'fontSize',
+                    height: '74px',
+                    alignItems: 'center',
+                    color: 'colorTextPrimary',
+                    borderLeft: 'solid',
+                    borderLeftColor: 'warning.main',
+                    borderLeftWidth: '4px',
+                    width: '100%',
                   }}
                 >
-                  {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                    onboardingRequestData?.updatedAt
-                  )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
-                </Trans>
-              </Alert>
-            </Grid>
-          ) : undefined}
+                  <Trans
+                    i18nKey={
+                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                    }
+                    components={{
+                      1: <strong style={{ fontWeight: '600' }} />,
+                      3: <br />,
+                    }}
+                  >
+                    {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                      onboardingRequestData?.updatedAt
+                    )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
+                  </Trans>
+                </Alert>
+              </Grid>
+            )
+          )}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
