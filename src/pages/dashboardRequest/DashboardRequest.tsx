@@ -79,8 +79,8 @@ export default function DashboardRequest() {
     return undefined;
   };
 
-  const fromISO2ITA = (date: string = '') => {
-    const withoutTime = date.split('T')[0];
+  const fromISO2ITA = (date?: string) => {
+    const withoutTime = date?.toString().split('T')[0] ?? '';
     const dateFormat = new Date(withoutTime);
     const day = dateFormat.getDate();
     const month = dateFormat.getMonth() + 1;
