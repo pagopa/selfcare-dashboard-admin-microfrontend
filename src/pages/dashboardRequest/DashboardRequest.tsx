@@ -54,7 +54,7 @@ export default function DashboardRequest() {
   ) => {
     if (isChipLabelState) {
       switch (requestStatus) {
-        case 'ACTIVE':
+        case 'COMPLETED':
           return t('onboardingRequestPage.approvedDataChip');
         case 'PENDING':
           return t('onboardingRequestPage.validationDataChip');
@@ -66,7 +66,7 @@ export default function DashboardRequest() {
     }
     if (isBgColorChipState) {
       switch (requestStatus) {
-        case 'ACTIVE':
+        case 'COMPLETED':
           return 'success.light';
         case 'PENDING':
           return 'info.main';
@@ -89,7 +89,7 @@ export default function DashboardRequest() {
   };
 
   const isExpiredRequest =
-    onboardingRequestData?.status !== 'ACTIVE' &&
+    onboardingRequestData?.status !== 'COMPLETED' &&
     onboardingRequestData?.status !== 'REJECTED' &&
     onboardingRequestData?.expiringDate
       ? new Date(onboardingRequestData?.expiringDate) <= new Date()
