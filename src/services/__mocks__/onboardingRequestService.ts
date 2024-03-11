@@ -51,7 +51,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
   {
     tokenId: 'tokenId02',
     productId: 'prod-pagopa',
-    status: 'ACTIVE',
+    status: 'COMPLETED',
     institutionInfo: {
       id: 'institutionId2',
       name: 'Comune di Milano',
