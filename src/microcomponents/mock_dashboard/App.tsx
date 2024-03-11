@@ -18,7 +18,7 @@ import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
 } from '../dashboard-routes-utils';
-import { mockedOnboardingRequests } from '../../services/__mocks__/dashboardRequestService';
+import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
 import { Product } from '../../model/Product';
 import Layout from './Layout';
 import { mockedPartyProducts, mockedProductRoles } from './data/product';
@@ -140,7 +140,12 @@ const App = ({
         <UnloadEventHandler />
 
         <Grid container item justifyContent="center" xs={12}>
-          <Grid item xs={12} display="flex" pb={16}>
+          <Grid
+            item
+            xs={12}
+            display="flex"
+            pb={onboardingRequest.status === 'TOBEVALIDATED' ? 14 : 18}
+          >
             <Switch>
               {AppRouting({
                 history,

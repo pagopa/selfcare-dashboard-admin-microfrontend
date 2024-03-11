@@ -1,10 +1,10 @@
 import { OnboardingApi } from '../api/OnboardingApiClient';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
-import { mockedOnboardingRequests } from './__mocks__/dashboardRequestService';
+import { mockedOnboardingRequests } from './__mocks__/onboardingRequestService';
 
-export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+export const fetchOnboardingRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
+  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
@@ -16,9 +16,12 @@ export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRe
   }
 };
 
-export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
+export const rejectOnboardingRequest = (
+  tokenId: string,
+  reason: string
+): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
+  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
@@ -26,7 +29,7 @@ export const rejectOnboardingPspRequest = (tokenId: string): Promise<OnboardingR
       return Promise.reject('Onboarding request not found!');
     }
   } else {
-    return OnboardingApi.rejectOnboardingRequest(tokenId);
+    return OnboardingApi.rejectOnboardingRequest(tokenId, reason);
   }
 };
 
@@ -34,7 +37,7 @@ export const approveOnboardingPspRequest = (
   tokenId: string
 ): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_PSP_REQUEST_DATA === 'true') {
+  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));

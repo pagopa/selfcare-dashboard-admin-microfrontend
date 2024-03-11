@@ -51,7 +51,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
   {
     tokenId: 'tokenId02',
     productId: 'prod-pagopa',
-    status: 'ACTIVE',
+    status: 'COMPLETED',
     institutionInfo: {
       id: 'institutionId2',
       name: 'Comune di Milano',
@@ -140,6 +140,9 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
         email: 'admin08@comunedi.it',
       },
     ],
+    updatedAt: '2024-02-07T11:40:57.393',
+    expiringDate: '2024-03-08T17:31:27.31',
+    reasonForReject: 'Wrong institutionType',
   },
 
   // Use case for institutionType !== PSP
@@ -205,6 +208,9 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
         email: 'admin08@comunedi.it',
       },
     ],
+    updatedAt: '2024-03-07T11:40:57.393',
+    expiringDate: '2024-05-06T11:40:27.31',
+    reasonForReject: 'Wrong data',
   },
   // Use case for pspData.vatNumberGroup === false
   {

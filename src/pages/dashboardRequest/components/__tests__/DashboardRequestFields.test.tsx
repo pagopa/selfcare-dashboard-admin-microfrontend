@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import DashboardRequestFields from '../DashboardRequestFields';
 import React from 'react';
-import { mockedOnboardingRequests } from '../../../../services/__mocks__/dashboardRequestService';
+import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
 
 test('should render component with no data', async () => {
   render(<DashboardRequestFields onboardingRequestData={undefined} isPSP={false} />);

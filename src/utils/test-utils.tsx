@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { createStore } from '../redux/store';
 
-export const renderWithProviders = (
+export const renderWithProviders = async (
   component: React.ReactElement,
   injectedStore?: ReturnType<typeof createStore>,
   injectedHistory?: ReturnType<typeof createMemoryHistory>
