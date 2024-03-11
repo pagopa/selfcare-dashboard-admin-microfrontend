@@ -56,7 +56,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
     );
 
   return (
-    <Stack spacing={4} mt={4} sx={{ width: '100%' }}>
+    <Stack spacing={4} mt={4} mb={5} sx={{ width: '100%' }}>
       <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
         <Grid
           item
