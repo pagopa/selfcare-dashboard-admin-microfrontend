@@ -1,11 +1,17 @@
 export default {
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
-    validationDataChip: 'In attesa',
+    validationDataChip: 'Da validare',
     approvedDataChip: 'Approvata',
     rejectedDataChip: 'Rifiutata',
+    expired: {
+      chip: 'Scaduta',
+      reason: 'La richiesta di adesione è scaduta perché sono trascorsi più di 30 giorni.',
+    },
     checkPartyInfoAlert:
       'Controlla le informazioni inserite dall’ente e approva o rifiuta la richiesta.',
+    checkPartyRejectReasonAlert:
+      '<1>Hai rifiutato questa richiesta di adesione il {{data}}. </1> <3/>Motivo del rifiuto: “{{reason}}“',
     summaryStepSection: {
       billingDataInfoSummarySection: {
         title: 'Dati dell’ente',
@@ -90,9 +96,19 @@ export default {
       },
     },
     actions: {
-      declineButton: 'Rifiuta',
+      decline: {
+        button: 'Rifiuta',
+        modal: {
+          title: 'Stai rifiutando una richiesta di adesione',
+          message:
+            'Spiega all’ente <1>{{partyName}}</1> perché hai respinto la richiesta di adesione per il prodotto <3>{{productTitle}}</3>. Fai in modo che la motivazione sia chiara e facile da capire, così da comunicare efficacemente la causa del rifiuto.',
+          reason: 'Scrivi il motivo del rifiuto',
+          maxCharactersAllowed: 'Max 500 caratteri',
+          back: 'Indietro',
+          confirm: 'Rifiuta',
+        },
+      },
       approveButton: 'Approva',
-      closeButton: 'Chiudi',
     },
   },
   jwtNotValid: {

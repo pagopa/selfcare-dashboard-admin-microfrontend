@@ -4,7 +4,10 @@ export type OnboardingRequestResource = {
   admins?: Array<UserInfo>;
   institutionInfo: InstitutionInfo;
   manager?: UserInfo;
-  status: 'ACTIVE' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
+  status: 'COMPLETED' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
+  updatedAt?: string;
+  expiringDate?: string;
+  reasonForReject?: string;
 };
 
 type AdditionalInformations = {
@@ -55,4 +58,3 @@ type DpoData = {
   email: string;
   pec: string;
 };
-
