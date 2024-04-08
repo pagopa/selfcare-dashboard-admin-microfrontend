@@ -1,13 +1,4 @@
-import {
-  Collapse,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Collapse, Divider, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 import { useRef, useState } from 'react';
@@ -408,6 +399,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               mr={2}
               display="flex"
               flexDirection="row"
+              alignItems="center"
               justifyContent="space-between"
             >
               <Typography variant="h6">
@@ -436,26 +428,18 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 {/* establishedByRegulatoryProvision */}
                 <Grid container item>
                   <Grid item xs={3} display="flex">
-                    <Tooltip
-                      title={t(
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '21ch',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
                   <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
@@ -492,26 +476,18 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 {/* belongRegulatedMarket */}
                 <Grid container item>
                   <Grid item xs={3} display="flex">
-                    <Tooltip
-                      title={t(
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '19ch',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
                   <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
@@ -583,26 +559,18 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 {/* agentOfPublicService */}
                 <Grid container item>
                   <Grid item xs={3} display="flex">
-                    <Tooltip
-                      title={t(
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '22ch',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
                   <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
