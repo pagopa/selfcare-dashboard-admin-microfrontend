@@ -12,6 +12,7 @@ export default {
       'Controlla le informazioni inserite dall’ente e approva o rifiuta la richiesta.',
     checkPartyRejectReasonAlert:
       '<1>Hai rifiutato questa richiesta di adesione il {{data}}. </1> <3/>Motivo del rifiuto: “{{reason}}“',
+    checkPartyRejectAlert: '<1>Hai rifiutato questa richiesta di adesione il {{data}}.</1>',
     summaryStepSection: {
       billingDataInfoSummarySection: {
         title: 'Dati dell’ente',
