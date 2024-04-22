@@ -57,7 +57,7 @@ export default function DashboardRequest() {
         case 'COMPLETED':
           return t('onboardingRequestPage.approvedDataChip');
         case 'PENDING':
-          return t('onboardingRequestPage.validationDataChip');
+          return t('onboardingRequestPage.approvedDataChip');
         case 'REJECTED':
           return t('onboardingRequestPage.rejectedDataChip');
         default:
@@ -69,7 +69,7 @@ export default function DashboardRequest() {
         case 'COMPLETED':
           return 'success.light';
         case 'PENDING':
-          return 'info.main';
+          return 'success.light';
         case 'REJECTED':
           return 'warning.main';
         default:
@@ -177,19 +177,32 @@ export default function DashboardRequest() {
                     width: '100%',
                   }}
                 >
-                  <Trans
-                    i18nKey={
-                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                    }
-                    components={{
-                      1: <strong style={{ fontWeight: '600' }} />,
-                      3: <br />,
-                    }}
-                  >
-                    {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                  {onboardingRequestData?.reasonForReject ? (
+                    <Trans
+                      i18nKey={
+                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                      }
+                      components={{
+                        1: <strong style={{ fontWeight: '600' }} />,
+                        3: <br />,
+                      }}
+                    >
+                      {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                        onboardingRequestData?.updatedAt
+                      )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
+                    </Trans>
+                  ) : (
+                    <Trans
+                      i18nKey={
+                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                      }
+                      components={{
+                        1: <strong style={{ fontWeight: '600' }} />,
+                      }}
+                    >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
                       onboardingRequestData?.updatedAt
-                    )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
-                  </Trans>
+                    )}. </1>`}</Trans>
+                  )}
                 </Alert>
               </Grid>
             )
@@ -201,7 +214,7 @@ export default function DashboardRequest() {
             productTitle={productTitle}
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
-            isPendingRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
+            isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
           />
         </Grid>
       </Grid>

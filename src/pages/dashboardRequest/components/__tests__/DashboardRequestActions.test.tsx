@@ -29,7 +29,7 @@ test('Test: Landing in an APPROVED onboarding request and click the close button
       productTitle={productId2ProductTitle(mockedOnboardingRequests[1].productId)}
       setShowConfirmPage={() => {}}
       setShowRejectPage={() => {}}
-      isPendingRequest={mockedOnboardingRequests[1].status === 'TOBEVALIDATED'}
+      isToBeValidatedRequest={mockedOnboardingRequests[1].status === 'TOBEVALIDATED'}
     />
   );
 
@@ -50,7 +50,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={setShowConfirmPage}
       setShowRejectPage={() => {}}
-      isPendingRequest={mockedOnboardingRequests[0].status === 'TOBEVALIDATED'}
+      isToBeValidatedRequest={mockedOnboardingRequests[0].status === 'TOBEVALIDATED'}
     />
   );
 
@@ -76,7 +76,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={() => {}}
       setShowRejectPage={setShowRejectPage}
-      isPendingRequest={mockedOnboardingRequests[0].status === 'TOBEVALIDATED'}
+      isToBeValidatedRequest={mockedOnboardingRequests[0].status === 'TOBEVALIDATED'}
     />
   );
 
@@ -120,7 +120,7 @@ test('Test: Onboarding request with not found token scenario', async () => {
       retrieveTokenIdFromUrl={'wrongTokenId'}
       setShowConfirmPage={() => {}}
       setShowRejectPage={() => {}}
-      isPendingRequest={false}
+      isToBeValidatedRequest={false}
     />
   );
 
