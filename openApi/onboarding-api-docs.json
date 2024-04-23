@@ -2502,15 +2502,7 @@
       },
       "InstitutionInfo": {
         "title": "InstitutionInfo",
-        "required": [
-          "address",
-          "fiscalCode",
-          "institutionType",
-          "mailAddress",
-          "name",
-          "vatNumber",
-          "zipCode"
-        ],
+        "required": ["address", "fiscalCode", "institutionType", "mailAddress", "name", "zipCode"],
         "type": "object",
         "properties": {
           "additionalInformations": {

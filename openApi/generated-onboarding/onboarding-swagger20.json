@@ -2230,7 +2230,6 @@
         "institutionType",
         "mailAddress",
         "name",
-        "vatNumber",
         "zipCode"
       ],
       "title": "InstitutionInfo",

@@ -41,7 +41,7 @@ type InstitutionInfo = {
   name: string;
   pspData?: PspData;
   recipientCode?: string;
-  vatNumber: string;
+  vatNumber?: string;
   additionalInformations?: AdditionalInformations;
 };
 
