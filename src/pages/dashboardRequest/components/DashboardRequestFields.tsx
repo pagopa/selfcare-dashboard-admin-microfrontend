@@ -200,20 +200,22 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
             </Grid>
 
             {/* vatNumber */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.vatNumber'
-                  )}
-                </Typography>
+            {onboardingRequestData?.institutionInfo?.vatNumber && (
+              <Grid container item alignItems={'center'}>
+                <Grid item xs={3}>
+                  <Typography sx={{ fontSize: 'fontSize' }}>
+                    {t(
+                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.vatNumber'
+                    )}
+                  </Typography>
+                </Grid>
+                <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                    {onboardingRequestData?.institutionInfo?.vatNumber}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.vatNumber}
-                </Typography>
-              </Grid>
-            </Grid>
+            )}
 
             {/* fields visible only for PSP */}
             {isPSP && (
