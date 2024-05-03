@@ -1,13 +1,4 @@
-import {
-  Collapse,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Collapse, Divider, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 import { useRef, useState } from 'react';
@@ -209,20 +200,22 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
             </Grid>
 
             {/* vatNumber */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.vatNumber'
-                  )}
-                </Typography>
+            {onboardingRequestData?.institutionInfo?.vatNumber && (
+              <Grid container item alignItems={'center'}>
+                <Grid item xs={3}>
+                  <Typography sx={{ fontSize: 'fontSize' }}>
+                    {t(
+                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.vatNumber'
+                    )}
+                  </Typography>
+                </Grid>
+                <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
+                    {onboardingRequestData?.institutionInfo?.vatNumber}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.vatNumber}
-                </Typography>
-              </Grid>
-            </Grid>
+            )}
 
             {/* fields visible only for PSP */}
             {isPSP && (
@@ -407,8 +400,8 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               my={3}
               mr={2}
               display="flex"
-              alignItems="center"
               flexDirection="row"
+              alignItems="center"
               justifyContent="space-between"
             >
               <Typography variant="h6">
@@ -435,32 +428,22 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               <Divider sx={{ mx: 4 }} />
               <Grid container spacing={2} mt={2} mb={4} mx={2}>
                 {/* establishedByRegulatoryProvision */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3} display="flex" alignItems="center">
-                    <Tooltip
-                      title={t(
+                <Grid container item>
+                  <Grid item xs={3} display="flex">
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '21ch',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                       {boolean2response(
                         onboardingRequestData?.institutionInfo.additionalInformations
@@ -473,15 +456,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 {/* establishedByRegulatoryProvisionNote */}
                 {onboardingRequestData.institutionInfo.additionalInformations
                   ?.establishedByRegulatoryProvisionNote && (
-                  <Grid container item alignItems={'center'}>
-                    <Grid item xs={3} display="flex" alignItems="center">
+                  <Grid container item>
+                    <Grid item xs={3} display="flex">
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvisionNote'
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Grid item xs={9} display="flex">
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {
                           onboardingRequestData?.institutionInfo.additionalInformations
@@ -493,32 +476,22 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 )}
 
                 {/* belongRegulatedMarket */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3} display="flex" alignItems="center">
-                    <Tooltip
-                      title={t(
+                <Grid container item>
+                  <Grid item xs={3} display="flex">
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '19ch',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                       {boolean2response(
                         onboardingRequestData?.institutionInfo.additionalInformations
@@ -530,15 +503,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
 
                 {onboardingRequestData.institutionInfo.additionalInformations
                   ?.regulatedMarketNote && (
-                  <Grid container item alignItems={'center'}>
-                    <Grid item xs={3} display="flex" alignItems="center">
+                  <Grid container item>
+                    <Grid item xs={3} display="flex">
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarketNote'
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Grid item xs={9} display="flex">
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {
                           onboardingRequestData?.institutionInfo.additionalInformations
@@ -550,15 +523,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 )}
 
                 {/* ipa */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3} display="flex" alignItems="center">
+                <Grid container item>
+                  <Grid item xs={3} display="flex">
                     <Typography sx={{ fontSize: 'fontSize' }}>
                       {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipa'
                       )}
                     </Typography>
                   </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                       {boolean2response(
                         onboardingRequestData?.institutionInfo.additionalInformations?.ipa
@@ -569,15 +542,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
 
                 {/* ipaCode */}
                 {onboardingRequestData.institutionInfo.additionalInformations?.ipaCode && (
-                  <Grid container item alignItems={'center'}>
-                    <Grid item xs={3} display="flex" alignItems="center">
+                  <Grid container item>
+                    <Grid item xs={3} display="flex">
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipaCode'
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Grid item xs={9} display="flex">
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {onboardingRequestData?.institutionInfo.additionalInformations?.ipaCode}
                       </Typography>
@@ -586,32 +559,22 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 )}
 
                 {/* agentOfPublicService */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3} display="flex" alignItems="center">
-                    <Tooltip
-                      title={t(
+                <Grid container item>
+                  <Grid item xs={3} display="flex">
+                    <Typography
+                      sx={{
+                        fontSize: 'fontSize',
+                        display: 'inline-block',
+                        maxWidth: '22ch',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
                       )}
-                      placement="top"
-                      arrow={true}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 'fontSize',
-                          display: 'inline-block',
-                          maxWidth: '22ch',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
-                        )}
-                      </Typography>
-                    </Tooltip>
+                    </Typography>
                   </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                       {boolean2response(
                         onboardingRequestData?.institutionInfo.additionalInformations
@@ -624,15 +587,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 {/* agentOfPublicServiceNote */}
                 {onboardingRequestData.institutionInfo.additionalInformations
                   ?.agentOfPublicServiceNote && (
-                  <Grid container item alignItems={'center'}>
-                    <Grid item xs={3} display="flex" alignItems="center">
+                  <Grid container item>
+                    <Grid item xs={3} display="flex">
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicServiceNote'
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Grid item xs={9} display="flex">
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {
                           onboardingRequestData?.institutionInfo.additionalInformations
@@ -644,15 +607,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                 )}
 
                 {/* other */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3} display="flex" alignItems="center">
+                <Grid container item>
+                  <Grid item xs={3} display="flex">
                     <Typography sx={{ fontSize: 'fontSize' }}>
                       {t(
                         'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.other'
                       )}
                     </Typography>
                   </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
+                  <Grid item xs={9} display="flex">
                     <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                       {boolean2response(
                         !!onboardingRequestData?.institutionInfo.additionalInformations?.otherNote
@@ -663,15 +626,15 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
 
                 {/* otherNote */}
                 {onboardingRequestData.institutionInfo.additionalInformations?.otherNote && (
-                  <Grid container item alignItems={'center'}>
-                    <Grid item xs={3} display="flex" alignItems="center">
+                  <Grid container item>
+                    <Grid item xs={3} display="flex">
                       <Typography sx={{ fontSize: 'fontSize' }}>
                         {t(
                           'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.otherNote'
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} display="flex" alignItems={'center'}>
+                    <Grid item xs={9} display="flex">
                       <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                         {onboardingRequestData?.institutionInfo.additionalInformations?.otherNote}
                       </Typography>

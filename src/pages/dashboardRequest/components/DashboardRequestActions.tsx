@@ -12,7 +12,7 @@ import {
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
-  isPendingRequest: boolean;
+  isToBeValidatedRequest: boolean;
   retrieveTokenIdFromUrl?: string;
   partyName?: string;
   productTitle?: string;
@@ -21,7 +21,7 @@ type Props = {
 export default function DashboardRequestActions({
   setShowRejectPage,
   setShowConfirmPage,
-  isPendingRequest,
+  isToBeValidatedRequest,
   retrieveTokenIdFromUrl,
   partyName,
   productTitle,
@@ -74,7 +74,7 @@ export default function DashboardRequestActions({
 
   return (
     <>
-      {isPendingRequest && (
+      {isToBeValidatedRequest && (
         <Stack direction="row" justifyContent="space-between" alignItems="center" py={4}>
           <Stack>
             <Button
