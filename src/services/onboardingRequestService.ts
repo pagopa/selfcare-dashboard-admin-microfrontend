@@ -18,7 +18,7 @@ export const fetchOnboardingRequest = (tokenId: string): Promise<OnboardingReque
 
 export const rejectOnboardingRequest = (
   tokenId: string,
-  reason: string
+  _reason?: string
 ): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
@@ -29,7 +29,7 @@ export const rejectOnboardingRequest = (
       return Promise.reject('Onboarding request not found!');
     }
   } else {
-    return OnboardingApi.rejectOnboardingRequest(tokenId, reason);
+    return OnboardingApi.rejectOnboardingRequest(tokenId);
   }
 };
 

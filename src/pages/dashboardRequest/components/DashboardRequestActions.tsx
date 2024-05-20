@@ -30,7 +30,7 @@ export default function DashboardRequestActions({
   const addError = useErrorDispatcher();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
 
-  const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
+  const [_openRejectModal, setOpenRejectModal] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
 
   const approveOnboarding = () => {
@@ -54,7 +54,7 @@ export default function DashboardRequestActions({
   const rejectOnboarding = () => {
     setLoadingRetrieveOnboardingRequest(true);
     if (retrieveTokenIdFromUrl) {
-      rejectOnboardingRequest(retrieveTokenIdFromUrl, reason)
+      rejectOnboardingRequest(retrieveTokenIdFromUrl)
         .then(() => {
           setReason('');
           setShowRejectPage(true);
@@ -81,7 +81,7 @@ export default function DashboardRequestActions({
               variant="outlined"
               color="error"
               style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
-              onClick={() => setOpenRejectModal(true)}
+              onClick={rejectOnboarding}
             >
               {t('onboardingRequestPage.actions.decline.button')}
             </Button>
@@ -96,7 +96,7 @@ export default function DashboardRequestActions({
       )}
 
       <SessionModal
-        open={openRejectModal}
+        open={false}
         title={t('onboardingRequestPage.actions.decline.modal.title')}
         message={
           <Grid container xs={12} spacing={2} mb={2}>
