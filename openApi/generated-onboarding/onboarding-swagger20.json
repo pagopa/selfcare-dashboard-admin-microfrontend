@@ -2723,6 +2723,9 @@
           "type": "string"
         }
       },
+      "required": [
+        "reason"
+      ],
       "title": "ReasonForRejectDto",
       "type": "object"
     },
