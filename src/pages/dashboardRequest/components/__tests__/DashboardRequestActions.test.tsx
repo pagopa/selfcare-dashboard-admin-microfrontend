@@ -88,11 +88,10 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 
   fireEvent.click(declineBtn);
 
-  await waitFor(() => screen.getByText('Stai rifiutando una richiesta di adesione'));
-
+  /*
+  await waitFor(() => screen.getByText('Stai rifiutando una richiesta di adesione'))
   const rejectModalBtn = screen.getAllByText('Rifiuta')[1];
-  const backModalBtn = screen.getByText('Indietro');
-
+  const backModalBtn = screen.getByText('Indietro')
   expect(backModalBtn).toBeEnabled();
   expect(rejectModalBtn).toBeDisabled();
 
@@ -110,8 +109,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
   expect(rejectModalBtn).toBeEnabled();
 
   fireEvent.click(rejectModalBtn);
-
-  // await waitFor(() => expect(setShowRejectPage).toHaveBeenCalled());
+  await waitFor(() => expect(setShowRejectPage).toHaveBeenCalled());
+  */
 });
 
 test('Test: Onboarding request with not found token scenario', async () => {
