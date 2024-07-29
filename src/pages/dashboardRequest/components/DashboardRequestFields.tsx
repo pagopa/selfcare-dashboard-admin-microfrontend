@@ -128,7 +128,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   )}
                 </Typography>
               </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
+              <Grid item xs={9} display="flex" alignItems={'center'} sx={{ pr: 4 }}>
                 <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                   {onboardingRequestData?.institutionInfo.name}
                 </Typography>
@@ -304,7 +304,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               </>
             )}
             {/* recipientCode */}
-            {!isTechPartner && (
+            {!isTechPartner && onboardingRequestData?.institutionInfo.recipientCode && (
               <Grid container item alignItems={'center'}>
                 <Grid item xs={3}>
                   <Typography sx={{ fontSize: 'fontSize' }}>
