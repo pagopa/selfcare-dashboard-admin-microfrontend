@@ -11,7 +11,7 @@ import App from '../../../microcomponents/mock_dashboard/App';
 import React from 'react';
 
 jest.mock('../../../services/onboardingRequestService');
-jest.mock('@pagopa/selfcare-common-frontend/decorators/withLogin');
+jest.mock('@pagopa/selfcare-common-frontend/lib/decorators/withLogin');
 
 // eslint-disable-next-line functional/immutable-data
 (window as any).appRoutes = DASHBOARD_ADMIN_ROUTES;

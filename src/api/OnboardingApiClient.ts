@@ -1,6 +1,9 @@
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/utils/storage';
-import { buildFetchApi, extractResponse } from '@pagopa/selfcare-common-frontend/utils/api-utils';
-import { appStateActions } from '@pagopa/selfcare-common-frontend/redux/slices/appStateSlice';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import {
+  buildFetchApi,
+  extractResponse,
+} from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { ENV } from '../utils/env';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { createClient, WithDefaultsT } from './generated/onboarding/client';
@@ -42,14 +45,12 @@ export const OnboardingApi = {
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-  rejectOnboardingRequest: async (
-    onboardingId: string,
-  ): Promise<OnboardingRequestResource> => {
+  rejectOnboardingRequest: async (onboardingId: string): Promise<OnboardingRequestResource> => {
     const result = await apiClient.rejectOnboardingUsingPOST({
       onboardingId,
       body: {
-        reason: ''
-      }
+        reason: '',
+      },
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
