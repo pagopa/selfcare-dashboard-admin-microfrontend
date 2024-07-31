@@ -3,7 +3,7 @@ import React from 'react';
 import { renderWithProviders } from '../../../../utils/test-utils';
 import DashboardRequestActions from '../DashboardRequestActions';
 import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/lib/utils/productId2ProductTitle';
 
 const oldWindowLocation = global.window.location;
 const mockedLocation = {

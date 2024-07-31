@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import '@pagopa/selfcare-common-frontend/index.css';
+import '@pagopa/selfcare-common-frontend/lib/index.css';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import { CONFIG } from '@pagopa/selfcare-common-frontend/config/env';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/utils/routes-utils';
+import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { store } from '../../redux/store';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
