@@ -1,5 +1,5 @@
 import { Redirect, useParams } from 'react-router';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/utils/routes-utils';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { ENV } from './utils/env';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
 

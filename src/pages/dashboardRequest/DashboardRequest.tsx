@@ -1,8 +1,8 @@
 import { Alert, Chip, Grid, Typography } from '@mui/material';
-import { useLoading } from '@pagopa/selfcare-common-frontend';
+import { useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
