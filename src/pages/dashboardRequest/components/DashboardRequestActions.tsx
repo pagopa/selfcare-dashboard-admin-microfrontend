@@ -2,7 +2,7 @@ import { Button, Grid, Stack, TextField } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend';
+import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 import {
   approveOnboardingPspRequest,

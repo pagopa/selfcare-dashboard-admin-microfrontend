@@ -4,7 +4,7 @@ import { theme } from '@pagopa/mui-italia';
 import { useRef, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/utils/productId2ProductTitle';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
 
 type Props = {
@@ -128,7 +128,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
                   )}
                 </Typography>
               </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
+              <Grid item xs={9} display="flex" alignItems={'center'} sx={{ pr: 4 }}>
                 <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
                   {onboardingRequestData?.institutionInfo.name}
                 </Typography>
@@ -304,7 +304,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               </>
             )}
             {/* recipientCode */}
-            {!isTechPartner && (
+            {!isTechPartner && onboardingRequestData?.institutionInfo.recipientCode && (
               <Grid container item alignItems={'center'}>
                 <Grid item xs={3}>
                   <Typography sx={{ fontSize: 'fontSize' }}>
