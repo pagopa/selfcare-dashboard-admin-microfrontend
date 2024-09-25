@@ -5,8 +5,8 @@ import { ProductRole } from '../../../model/ProductRole';
 export const mockedPartyProducts: Array<Product> = [
   {
     logo: 'https://selcdcheckoutsa.z6.web.core.windows.net/resources/products/prod-io/logo.svg',
-    title: 'App IO',
-    description: 'App IO description',
+    title: 'IO',
+    description: 'IO description',
     id: 'prod-io',
     status: StatusEnum.ACTIVE,
     activationDateTime: new Date(2021, 1, 1),
