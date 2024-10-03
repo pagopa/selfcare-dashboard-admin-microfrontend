@@ -29,6 +29,7 @@ export default {
               sa: 'Gestore privato di piattaforma e-procurement',
               as: 'Società di assicurazione',
               pg: 'Azienda',
+              prv: 'Privato'
             },
           },
           businessName: 'Ragione sociale',
