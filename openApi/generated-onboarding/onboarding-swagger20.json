@@ -1381,6 +1381,12 @@
         ],
         "parameters": [
           {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "schema": {
@@ -2307,7 +2313,19 @@
         "address": {
           "type": "string"
         },
+        "city": {
+          "type": "string"
+        },
+        "codeSDI": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
         "description": {
+          "type": "string"
+        },
+        "digitalAddress": {
           "type": "string"
         },
         "geographicTaxonomies": {
@@ -2315,6 +2333,9 @@
             "$ref": "#/definitions/GeographicTaxonomyDto"
           },
           "type": "array"
+        },
+        "iban": {
+          "type": "string"
         },
         "origin": {
           "enum": [
@@ -2333,13 +2354,22 @@
         "originId": {
           "type": "string"
         },
+        "service": {
+          "type": "string"
+        },
         "subunitCode": {
           "type": "string"
         },
         "subunitType": {
           "type": "string"
         },
+        "syncAsyncMode": {
+          "type": "string"
+        },
         "taxCode": {
+          "type": "string"
+        },
+        "taxCodePT": {
           "type": "string"
         },
         "users": {
@@ -2347,6 +2377,9 @@
             "$ref": "#/definitions/UserDto"
           },
           "type": "array"
+        },
+        "vatNumber": {
+          "type": "string"
         },
         "zipCode": {
           "type": "string"
@@ -2359,16 +2392,88 @@
       "title": "AggregateInstitution",
       "type": "object"
     },
-    "AssistanceContacts": {
+    "AggregateResult": {
       "properties": {
-        "supportEmail": {
+        "address": {
           "type": "string"
         },
-        "supportPhone": {
+        "city": {
+          "type": "string"
+        },
+        "codeSDI": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "digitalAddress": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "originId": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "subunitCode": {
+          "type": "string"
+        },
+        "subunitType": {
+          "type": "string"
+        },
+        "syncAsyncMode": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "taxCodePT": {
+          "type": "string"
+        },
+        "users": {
+          "items": {
+            "$ref": "#/definitions/AggregateUserResult"
+          },
+          "type": "array"
+        },
+        "vatNumber": {
+          "type": "string"
+        },
+        "zipCode": {
           "type": "string"
         }
       },
-      "title": "AssistanceContacts",
+      "title": "AggregateResult",
+      "type": "object"
+    },
+    "AggregateUserResult": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        }
+      },
+      "title": "AggregateUserResult",
       "type": "object"
     },
     "AssistanceContactsDto": {
@@ -2399,21 +2504,6 @@
         }
       },
       "title": "AssistanceContactsResource",
-      "type": "object"
-    },
-    "Attribute": {
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "origin": {
-          "type": "string"
-        }
-      },
-      "title": "Attribute",
       "type": "object"
     },
     "BillingDataDto": {
@@ -2556,21 +2646,6 @@
       "title": "CompanyBillingDataDto",
       "type": "object"
     },
-    "CompanyInformations": {
-      "properties": {
-        "businessRegisterPlace": {
-          "type": "string"
-        },
-        "rea": {
-          "type": "string"
-        },
-        "shareCapital": {
-          "type": "string"
-        }
-      },
-      "title": "CompanyInformations",
-      "type": "object"
-    },
     "CompanyInformationsDto": {
       "properties": {
         "businessRegisterPlace": {
@@ -2695,21 +2770,6 @@
       "title": "CompanyUserDto",
       "type": "object"
     },
-    "DataProtectionOfficer": {
-      "properties": {
-        "address": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "pec": {
-          "type": "string"
-        }
-      },
-      "title": "DataProtectionOfficer",
-      "type": "object"
-    },
     "DpoData": {
       "properties": {
         "address": {
@@ -2764,18 +2824,6 @@
       "title": "DpoDataDto",
       "type": "object"
     },
-    "GeographicTaxonomy": {
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "desc": {
-          "type": "string"
-        }
-      },
-      "title": "GeographicTaxonomy",
-      "type": "object"
-    },
     "GeographicTaxonomyDto": {
       "properties": {
         "code": {
@@ -2806,106 +2854,6 @@
         }
       },
       "title": "GeographicTaxonomyResource",
-      "type": "object"
-    },
-    "Institution": {
-      "properties": {
-        "address": {
-          "type": "string"
-        },
-        "aooParentCode": {
-          "type": "string"
-        },
-        "assistanceContacts": {
-          "$ref": "#/definitions/AssistanceContacts"
-        },
-        "attributes": {
-          "items": {
-            "$ref": "#/definitions/Attribute"
-          },
-          "type": "array"
-        },
-        "city": {
-          "type": "string"
-        },
-        "companyInformations": {
-          "$ref": "#/definitions/CompanyInformations"
-        },
-        "country": {
-          "type": "string"
-        },
-        "county": {
-          "type": "string"
-        },
-        "dataProtectionOfficer": {
-          "$ref": "#/definitions/DataProtectionOfficer"
-        },
-        "description": {
-          "type": "string"
-        },
-        "digitalAddress": {
-          "type": "string"
-        },
-        "externalId": {
-          "type": "string"
-        },
-        "geographicTaxonomies": {
-          "items": {
-            "$ref": "#/definitions/GeographicTaxonomy"
-          },
-          "type": "array"
-        },
-        "id": {
-          "type": "string"
-        },
-        "institutionType": {
-          "enum": [
-            "AS",
-            "CON",
-            "GSP",
-            "PA",
-            "PG",
-            "PRV",
-            "PSP",
-            "PT",
-            "REC",
-            "SA",
-            "SCP"
-          ],
-          "type": "string"
-        },
-        "origin": {
-          "type": "string"
-        },
-        "originId": {
-          "type": "string"
-        },
-        "parentDescription": {
-          "type": "string"
-        },
-        "paymentServiceProvider": {
-          "$ref": "#/definitions/PaymentServiceProvider"
-        },
-        "subunitCode": {
-          "type": "string"
-        },
-        "subunitType": {
-          "type": "string"
-        },
-        "taxCode": {
-          "type": "string"
-        },
-        "users": {
-          "items": {
-            "$ref": "#/definitions/User"
-          },
-          "type": "array"
-        },
-        "zipCode": {
-          "type": "string"
-        }
-      },
-      "title": "Institution",
       "type": "object"
     },
     "InstitutionData": {
@@ -3441,27 +3389,6 @@
       "title": "OnboardingVerify",
       "type": "object"
     },
-    "PaymentServiceProvider": {
-      "properties": {
-        "abiCode": {
-          "type": "string"
-        },
-        "businessRegisterNumber": {
-          "type": "string"
-        },
-        "legalRegisterName": {
-          "type": "string"
-        },
-        "legalRegisterNumber": {
-          "type": "string"
-        },
-        "vatNumberGroup": {
-          "type": "boolean"
-        }
-      },
-      "title": "PaymentServiceProvider",
-      "type": "object"
-    },
     "Problem": {
       "description": "A \"problem detail\" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)",
       "properties": {
@@ -3637,40 +3564,6 @@
       "title": "RowErrorResponse",
       "type": "object"
     },
-    "User": {
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "productRole": {
-          "type": "string"
-        },
-        "role": {
-          "enum": [
-            "ADMIN_EA",
-            "DELEGATE",
-            "MANAGER",
-            "OPERATOR",
-            "SUB_DELEGATE"
-          ],
-          "type": "string"
-        },
-        "surname": {
-          "type": "string"
-        },
-        "taxCode": {
-          "type": "string"
-        }
-      },
-      "title": "User",
-      "type": "object"
-    },
     "UserDataValidationDto": {
       "properties": {
         "name": {
@@ -3797,7 +3690,7 @@
       "properties": {
         "aggregates": {
           "items": {
-            "$ref": "#/definitions/Institution"
+            "$ref": "#/definitions/AggregateResult"
           },
           "type": "array"
         },
