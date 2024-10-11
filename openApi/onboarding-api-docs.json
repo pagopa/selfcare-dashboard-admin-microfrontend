@@ -1257,6 +1257,17 @@
         "summary": "onboarding",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
         "operationId": "onboardingUsingPOST_2",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2876,7 +2887,19 @@
           "address": {
             "type": "string"
           },
+          "city": {
+            "type": "string"
+          },
+          "codeSDI": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
           "description": {
+            "type": "string"
+          },
+          "digitalAddress": {
             "type": "string"
           },
           "geographicTaxonomies": {
@@ -2884,6 +2907,9 @@
             "items": {
               "$ref": "#/components/schemas/GeographicTaxonomyDto"
             }
+          },
+          "iban": {
+            "type": "string"
           },
           "origin": {
             "type": "string",
@@ -2902,13 +2928,22 @@
           "originId": {
             "type": "string"
           },
+          "service": {
+            "type": "string"
+          },
           "subunitCode": {
             "type": "string"
           },
           "subunitType": {
             "type": "string"
           },
+          "syncAsyncMode": {
+            "type": "string"
+          },
           "taxCode": {
+            "type": "string"
+          },
+          "taxCodePT": {
             "type": "string"
           },
           "users": {
@@ -2917,19 +2952,94 @@
               "$ref": "#/components/schemas/UserDto"
             }
           },
+          "vatNumber": {
+            "type": "string"
+          },
           "zipCode": {
             "type": "string"
           }
         }
       },
-      "AssistanceContacts": {
-        "title": "AssistanceContacts",
+      "AggregateResult": {
+        "title": "AggregateResult",
         "type": "object",
         "properties": {
-          "supportEmail": {
+          "address": {
             "type": "string"
           },
-          "supportPhone": {
+          "city": {
+            "type": "string"
+          },
+          "codeSDI": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "digitalAddress": {
+            "type": "string"
+          },
+          "iban": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "originId": {
+            "type": "string"
+          },
+          "service": {
+            "type": "string"
+          },
+          "subunitCode": {
+            "type": "string"
+          },
+          "subunitType": {
+            "type": "string"
+          },
+          "syncAsyncMode": {
+            "type": "string"
+          },
+          "taxCode": {
+            "type": "string"
+          },
+          "taxCodePT": {
+            "type": "string"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregateUserResult"
+            }
+          },
+          "vatNumber": {
+            "type": "string"
+          },
+          "zipCode": {
+            "type": "string"
+          }
+        }
+      },
+      "AggregateUserResult": {
+        "title": "AggregateUserResult",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "taxCode": {
             "type": "string"
           }
         }
@@ -2961,21 +3071,6 @@
           "supportPhone": {
             "type": "string",
             "description": "Institution's support phone contact"
-          }
-        }
-      },
-      "Attribute": {
-        "title": "Attribute",
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "origin": {
-            "type": "string"
           }
         }
       },
@@ -3110,21 +3205,6 @@
           }
         }
       },
-      "CompanyInformations": {
-        "title": "CompanyInformations",
-        "type": "object",
-        "properties": {
-          "businessRegisterPlace": {
-            "type": "string"
-          },
-          "rea": {
-            "type": "string"
-          },
-          "shareCapital": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyInformationsDto": {
         "title": "CompanyInformationsDto",
         "type": "object",
@@ -3220,21 +3300,6 @@
           }
         }
       },
-      "DataProtectionOfficer": {
-        "title": "DataProtectionOfficer",
-        "type": "object",
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "pec": {
-            "type": "string"
-          }
-        }
-      },
       "DpoData": {
         "title": "DpoData",
         "required": ["address", "email", "pec"],
@@ -3281,18 +3346,6 @@
           }
         }
       },
-      "GeographicTaxonomy": {
-        "title": "GeographicTaxonomy",
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          }
-        }
-      },
       "GeographicTaxonomyDto": {
         "title": "GeographicTaxonomyDto",
         "required": ["code", "desc"],
@@ -3319,94 +3372,6 @@
           "desc": {
             "type": "string",
             "description": "Institution's geographic taxonomy extended name"
-          }
-        }
-      },
-      "Institution": {
-        "title": "Institution",
-        "type": "object",
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "aooParentCode": {
-            "type": "string"
-          },
-          "assistanceContacts": {
-            "$ref": "#/components/schemas/AssistanceContacts"
-          },
-          "attributes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attribute"
-            }
-          },
-          "city": {
-            "type": "string"
-          },
-          "companyInformations": {
-            "$ref": "#/components/schemas/CompanyInformations"
-          },
-          "country": {
-            "type": "string"
-          },
-          "county": {
-            "type": "string"
-          },
-          "dataProtectionOfficer": {
-            "$ref": "#/components/schemas/DataProtectionOfficer"
-          },
-          "description": {
-            "type": "string"
-          },
-          "digitalAddress": {
-            "type": "string"
-          },
-          "externalId": {
-            "type": "string"
-          },
-          "geographicTaxonomies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GeographicTaxonomy"
-            }
-          },
-          "id": {
-            "type": "string"
-          },
-          "institutionType": {
-            "type": "string",
-            "enum": ["AS", "CON", "GSP", "PA", "PG", "PRV", "PSP", "PT", "REC", "SA", "SCP"]
-          },
-          "origin": {
-            "type": "string"
-          },
-          "originId": {
-            "type": "string"
-          },
-          "parentDescription": {
-            "type": "string"
-          },
-          "paymentServiceProvider": {
-            "$ref": "#/components/schemas/PaymentServiceProvider"
-          },
-          "subunitCode": {
-            "type": "string"
-          },
-          "subunitType": {
-            "type": "string"
-          },
-          "taxCode": {
-            "type": "string"
-          },
-          "users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/User"
-            }
-          },
-          "zipCode": {
-            "type": "string"
           }
         }
       },
@@ -3888,27 +3853,6 @@
           }
         }
       },
-      "PaymentServiceProvider": {
-        "title": "PaymentServiceProvider",
-        "type": "object",
-        "properties": {
-          "abiCode": {
-            "type": "string"
-          },
-          "businessRegisterNumber": {
-            "type": "string"
-          },
-          "legalRegisterName": {
-            "type": "string"
-          },
-          "legalRegisterNumber": {
-            "type": "string"
-          },
-          "vatNumberGroup": {
-            "type": "boolean"
-          }
-        }
-      },
       "Problem": {
         "title": "Problem",
         "required": ["status", "title"],
@@ -4076,34 +4020,6 @@
           }
         }
       },
-      "User": {
-        "title": "User",
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "productRole": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": ["ADMIN_EA", "DELEGATE", "MANAGER", "OPERATOR", "SUB_DELEGATE"]
-          },
-          "surname": {
-            "type": "string"
-          },
-          "taxCode": {
-            "type": "string"
-          }
-        }
-      },
       "UserDataValidationDto": {
         "title": "UserDataValidationDto",
         "required": ["taxCode"],
@@ -4209,7 +4125,7 @@
           "aggregates": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Institution"
+              "$ref": "#/components/schemas/AggregateResult"
             }
           },
           "errors": {
