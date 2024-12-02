@@ -210,7 +210,6 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
     ],
     updatedAt: '2024-03-07T11:40:57.393',
     expiringDate: '2024-05-06T11:40:27.31',
-    reasonForReject: 'Wrong data',
   },
   // Use case for pspData.vatNumberGroup === false
   {

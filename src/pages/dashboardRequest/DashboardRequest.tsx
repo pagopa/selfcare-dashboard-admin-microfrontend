@@ -1,13 +1,15 @@
-import { Alert, Chip, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useState } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
+import { getOutcomeAlert } from '../../components/getOutcomeAlert';
+import { DashboardRequestHeading } from '../../components/DashboardRequestHeading';
 import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
@@ -27,8 +29,6 @@ export default function DashboardRequest() {
 
   const isPSP = onboardingRequestData?.institutionInfo.institutionType === 'PSP';
 
-  const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
-
   useEffect(() => {
     if (retrieveTokenIdFromUrl) {
       retrieveOnboardingRequest(retrieveTokenIdFromUrl);
@@ -45,47 +45,6 @@ export default function DashboardRequest() {
         setError(true);
       })
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
-  };
-
-  const requestState = (
-    requestStatus: string | undefined,
-    isChipLabelState: boolean,
-    isBgColorChipState: boolean
-  ) => {
-    if (isChipLabelState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'PENDING':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'REJECTED':
-          return t('onboardingRequestPage.rejectedDataChip');
-        default:
-          return t('onboardingRequestPage.validationDataChip');
-      }
-    }
-    if (isBgColorChipState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return 'success.light';
-        case 'PENDING':
-          return 'success.light';
-        case 'REJECTED':
-          return 'warning.main';
-        default:
-          return 'info.main';
-      }
-    }
-    return undefined;
-  };
-
-  const fromISO2ITA = (date?: string) => {
-    const dateFormat = new Date(date as string);
-    const day = dateFormat.getDate();
-    const month = dateFormat.getMonth() + 1;
-    const year = dateFormat.getFullYear();
-
-    return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
   };
 
   const isExpiredRequest =
@@ -105,113 +64,35 @@ export default function DashboardRequest() {
     <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
         <Grid item xs={12}>
-          <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
-            <Grid item>
-              <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
-            </Grid>
-            <Grid item>
-              <Chip
-                sx={{
-                  backgroundColor: isExpiredRequest
-                    ? 'error.main'
-                    : requestState(onboardingRequestData?.status, false, true),
-                  height: '30px',
-                }}
-                label={
-                  isExpiredRequest
-                    ? t('onboardingRequestPage.expired.chip')
-                    : requestState(onboardingRequestData?.status, true, false)
-                }
-              />
-            </Grid>
-          </Grid>
-          {isExpiredRequest ? (
-            <Grid item xs={12} width="100%" mt={5}>
-              <Alert
-                severity="error"
-                sx={{
-                  fontSize: 'fontSize',
-                  height: '53px',
-                  alignItems: 'center',
-                  color: 'colorTextPrimary',
-                  borderLeft: 'solid',
-                  borderLeftColor: 'error.main',
-                  borderLeftWidth: '4px',
-                  width: '100%',
-                }}
-              >
-                {t('onboardingRequestPage.expired.reason')}
-              </Alert>
-            </Grid>
-          ) : onboardingRequestData?.status === 'TOBEVALIDATED' ? (
-            <Grid item xs={12} width="100%" mt={5}>
-              <Alert
-                severity="info"
-                sx={{
-                  fontSize: 'fontSize',
-                  height: '53px',
-                  alignItems: 'center',
-                  color: 'colorTextPrimary',
-                  borderLeft: 'solid',
-                  borderLeftColor: 'info.main',
-                  borderLeftWidth: '4px',
-                  width: '100%',
-                }}
-              >
-                {t('onboardingRequestPage.checkPartyInfoAlert')}
-              </Alert>
-            </Grid>
-          ) : (
-            onboardingRequestData?.status === 'REJECTED' && (
-              <Grid item xs={12} width="100%" mt={5}>
-                <Alert
-                  severity="warning"
-                  sx={{
-                    fontSize: 'fontSize',
-                    height: '74px',
-                    alignItems: 'center',
-                    color: 'colorTextPrimary',
-                    borderLeft: 'solid',
-                    borderLeftColor: 'warning.main',
-                    borderLeftWidth: '4px',
-                    width: '100%',
-                  }}
-                >
-                  {onboardingRequestData?.reasonForReject ? (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                        3: <br />,
-                      }}
-                    >
-                      {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                        onboardingRequestData?.updatedAt
-                      )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
-                    </Trans>
-                  ) : (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                      }}
-                    >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                      onboardingRequestData?.updatedAt
-                    )}. </1>`}</Trans>
-                  )}
-                </Alert>
-              </Grid>
-            )
-          )}
+          <DashboardRequestHeading
+            isExpiredRequest={isExpiredRequest}
+            requestStatus={onboardingRequestData?.status}
+          />
+          {isExpiredRequest
+            ? getOutcomeAlert({
+                severity: 'error',
+                borderColor: 'error.main',
+                message: t('onboardingRequestPage.expired.reason'),
+              })
+            : onboardingRequestData?.status === 'TOBEVALIDATED'
+            ? getOutcomeAlert({
+                severity: 'info',
+                borderColor: 'info.main',
+                message: t('onboardingRequestPage.checkPartyInfoAlert'),
+              })
+            : onboardingRequestData?.status === 'REJECTED' &&
+              getOutcomeAlert({
+                severity: 'warning',
+                borderColor: 'warning.main',
+                hasReason: true,
+                updatedAt: onboardingRequestData?.updatedAt,
+                reasonForReject: onboardingRequestData?.reasonForReject,
+              })}
           <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             partyName={onboardingRequestData?.institutionInfo.name}
-            productTitle={productTitle}
+            productTitle={productId2ProductTitle(onboardingRequestData?.productId ?? '')}
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
