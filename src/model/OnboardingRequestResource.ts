@@ -34,6 +34,9 @@ type InstitutionInfo = {
   address: string;
   dpoData?: DpoData;
   fiscalCode: string;
+  city?: string;
+  country?: string;
+  county?: string;
   id?: string;
   institutionType: string;
   zipCode: string;
