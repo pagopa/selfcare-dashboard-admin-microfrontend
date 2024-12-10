@@ -1,4 +1,4 @@
-// import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import {
   buildFetchApi,
   extractResponse,
@@ -10,7 +10,7 @@ import { createClient, WithDefaultsT } from './generated/onboarding/client';
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
   (wrappedOperation) => (params: any) => {
-    const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp3dF9hMjo3YTo0NjozYjoyYTo2MDo1Njo0MDo4ODphMDo1ZDphNDpmODowMToxZTozZSJ9.eyJmYW1pbHlfbmFtZSI6InNpc3RpIiwiZmlzY2FsX251bWJlciI6IlNTVE1UVDgwQTAxRjIwNUMiLCJuYW1lIjoibWF0dGlhIiwic3BpZF9sZXZlbCI6Imh0dHBzOi8vd3d3LnNwaWQuZ292Lml0L1NwaWRMMiIsImZyb21fYWEiOmZhbHNlLCJ1aWQiOiJkZWE1ZDJjNC05YzNiLTQ3YzEtYmQ5YS0zZTM4YTIwMzcwMDkiLCJsZXZlbCI6IkwyIiwiaWF0IjoxNzMzNzM2NzU1LCJleHAiOjE3MzM3NjkxNTUsImF1ZCI6ImFwaS5kZXYuc2VsZmNhcmUucGFnb3BhLml0IiwiaXNzIjoiU1BJRCIsImp0aSI6Il8wY2M1ODE5YjY2YWNlMjA3MzdiNCJ9.blijFdaw5nrB93U1rYAm6hHNp9cqQe2ABSHwzMeIM3gBuLbpkU_B4s-QJUyIAq29EeHA26V6_uN6SFOmKYSLk2KW9ozNHEO4B_hiDwxjIRz5hVFGaVapEbjppjzOy1BAexyGDhF2WLtxbj5i5k8Dj9djIFgNkZ1cTnMy-IzLVnY5efkBCoCyUziCCRxkTwSrKpoTQdqrG2fJbciPL2O8CL52TxQWN4a-GVFNwjnpQPBj_qvsdyKP_ypP02OeaP7W-0JvJ2UCCdxVUYmhpzOtjmw1PLgs0Ig9yh1_1eKzCBf-rPlsuXIsZT5Zk6fz6NW2r2aL_RSRslF1FOUE9SxMKA';
+    const token = storageTokenOps.read();
     return wrappedOperation({
       ...params,
       bearerAuth: `Bearer ${token}`,
