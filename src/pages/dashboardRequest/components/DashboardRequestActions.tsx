@@ -3,9 +3,11 @@ import { theme } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 import {
   approveOnboardingPspRequest,
+  downloadOnboardingAttachments,
   rejectOnboardingRequest,
 } from '../../../services/onboardingRequestService';
 
@@ -13,6 +15,7 @@ type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
   isToBeValidatedRequest: boolean;
+  isGPU: boolean;
   retrieveTokenIdFromUrl?: string;
   partyName?: string;
   productTitle?: string;
@@ -22,6 +25,7 @@ export default function DashboardRequestActions({
   setShowRejectPage,
   setShowConfirmPage,
   isToBeValidatedRequest,
+  isGPU,
   retrieveTokenIdFromUrl,
   partyName,
   productTitle,
@@ -72,6 +76,28 @@ export default function DashboardRequestActions({
     }
   };
 
+  const downloadAttachment = () => {
+    setLoadingRetrieveOnboardingRequest(true);
+    if (retrieveTokenIdFromUrl) {
+      downloadOnboardingAttachments(retrieveTokenIdFromUrl, '')
+        .then(() => {
+          setShowConfirmPage(false);
+          console.log('download dummy');
+        })
+        // eslint-disable-next-line sonarjs/no-identical-functions
+        .catch((reason: any) => {
+          addError({
+            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not approved`,
+            blocking: false,
+            techDescription: reason,
+            toNotify: false,
+            error: new Error('INVALID_TOKEN_ID'),
+          });
+        })
+        .finally(() => setLoadingRetrieveOnboardingRequest(false));
+    }
+  };
+
   return (
     <>
       {isToBeValidatedRequest && (
@@ -87,11 +113,27 @@ export default function DashboardRequestActions({
             </Button>
           </Stack>
 
-          <Stack>
-            <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
-              {t('onboardingRequestPage.actions.approveButton')}
-            </Button>
-          </Stack>
+          {isGPU ? (
+            <Stack direction={'row'}>
+              <Button
+                variant="naked"
+                sx={{ marginLeft: 3 }}
+                startIcon={<FileDownloadIcon />}
+                onClick={downloadAttachment}
+              >
+                {t('onboardingRequestPage.actions.downloadButton')}
+              </Button>
+              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+                {t('onboardingRequestPage.actions.approveButton')}
+              </Button>
+            </Stack>
+          ) : (
+            <Stack>
+              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+                {t('onboardingRequestPage.actions.approveButton')}
+              </Button>
+            </Stack>
+          )}
         </Stack>
       )}
 

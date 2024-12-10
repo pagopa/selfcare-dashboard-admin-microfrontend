@@ -112,6 +112,8 @@ export default {
         },
       },
       approveButton: 'Approva',
+      downloadButton: 'Scarica',
+      downloadDataButton: 'Scarica i dati'
     },
   },
   jwtNotValid: {

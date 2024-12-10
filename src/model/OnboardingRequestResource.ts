@@ -46,6 +46,7 @@ type InstitutionInfo = {
   recipientCode?: string;
   vatNumber?: string;
   additionalInformations?: AdditionalInformations;
+  attachments?: Array<string>;
 };
 
 type PspData = {
