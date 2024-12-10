@@ -1,10 +1,13 @@
-import { Alert, Chip, Grid, Typography } from '@mui/material';
+import { Alert, Button, Chip, Grid, Typography } from '@mui/material';
 import { useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
-import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
+import {
+  fetchOnboardingRequest,
+  downloadOnboardingAttachments,
+} from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
@@ -26,7 +29,7 @@ export default function DashboardRequest() {
   const retrieveTokenIdFromUrl = window.location.pathname.split('/').pop();
 
   const isPSP = onboardingRequestData?.institutionInfo.institutionType === 'PSP';
-
+  const isGPU = onboardingRequestData?.institutionInfo.institutionType === 'GPU';
   const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
 
   useEffect(() => {
@@ -40,6 +43,18 @@ export default function DashboardRequest() {
     fetchOnboardingRequest(retrieveTokenIdFromUrl)
       .then((r) => {
         setOnboardingRequestData(r);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => setLoadingRetrieveOnboardingRequest(false));
+  };
+
+  const downloadAttachment = (retrieveTokenIdFromUrl: string, name: string) => {
+    setLoadingRetrieveOnboardingRequest(true);
+    downloadOnboardingAttachments(retrieveTokenIdFromUrl, name)
+      .then((_r) => {
+        console.log('download dummy');
       })
       .catch(() => {
         setError(true);
@@ -105,11 +120,17 @@ export default function DashboardRequest() {
     <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
         <Grid item xs={12}>
-          <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={6}>
-            <Grid item>
+          <Grid
+            container
+            direction="row"
+            justifyContent={isGPU ? undefined : 'space-between'}
+            alignItems="center"
+            mt={6}
+          >
+            <Grid item xs={isGPU ? 4 : undefined}>
               <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
             </Grid>
-            <Grid item>
+            <Grid xs={isGPU ? 2 : undefined}>
               <Chip
                 sx={{
                   backgroundColor: isExpiredRequest
@@ -124,6 +145,21 @@ export default function DashboardRequest() {
                 }
               />
             </Grid>
+            {isGPU && (
+              <Grid item xs={6} textAlign={'right'}>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    downloadAttachment(
+                      retrieveTokenIdFromUrl ?? '',
+                      onboardingRequestData?.institutionInfo.attachments?.[0] ?? ''
+                    )
+                  }
+                >
+                  {t('onboardingRequestPage.actions.downloadDataButton')}
+                </Button>
+              </Grid>
+            )}
           </Grid>
           {isExpiredRequest ? (
             <Grid item xs={12} width="100%" mt={5}>
@@ -215,6 +251,7 @@ export default function DashboardRequest() {
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
+            isGPU={isGPU}
           />
         </Grid>
       </Grid>
