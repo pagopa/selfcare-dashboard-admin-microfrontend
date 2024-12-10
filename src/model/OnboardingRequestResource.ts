@@ -2,6 +2,7 @@ export type OnboardingRequestResource = {
   tokenId: string;
   productId: string;
   admins?: Array<UserInfo>;
+  attachments?: Array<string>;
   institutionInfo: InstitutionInfo;
   manager?: UserInfo;
   status: 'COMPLETED' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
