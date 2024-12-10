@@ -371,6 +371,9 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
     tokenId: 'tokenId08',
     productId: 'prod-pagopa',
     status: 'TOBEVALIDATED',
+    attachments: [
+      'dummy.pdf'
+    ],
     institutionInfo: {
       id: 'institutionId3',
       name: 'Comune di Torino',
@@ -398,9 +401,6 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
         email: 'dpo03@dpo.com',
       },
       institutionType: 'GPU',
-      attachments: [
-        'dummy.pdf'
-      ]
     },
     manager: {
       id: 'Manager03',

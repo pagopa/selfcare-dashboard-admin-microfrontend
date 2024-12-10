@@ -152,7 +152,7 @@ export default function DashboardRequest() {
                   onClick={() =>
                     downloadAttachment(
                       retrieveTokenIdFromUrl ?? '',
-                      onboardingRequestData?.institutionInfo.attachments?.[0] ?? ''
+                      onboardingRequestData?.attachments?.[0] ?? ''
                     )
                   }
                 >
@@ -251,6 +251,7 @@ export default function DashboardRequest() {
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
+            attatchmentName={onboardingRequestData?.attachments?.[0] ?? ''}
             isGPU={isGPU}
           />
         </Grid>
