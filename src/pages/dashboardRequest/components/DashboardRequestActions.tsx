@@ -19,6 +19,7 @@ type Props = {
   retrieveTokenIdFromUrl?: string;
   partyName?: string;
   productTitle?: string;
+  attatchmentName?: string;
 };
 
 export default function DashboardRequestActions({
@@ -29,6 +30,7 @@ export default function DashboardRequestActions({
   retrieveTokenIdFromUrl,
   partyName,
   productTitle,
+  attatchmentName,
 }: Props) {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
@@ -79,7 +81,7 @@ export default function DashboardRequestActions({
   const downloadAttachment = () => {
     setLoadingRetrieveOnboardingRequest(true);
     if (retrieveTokenIdFromUrl) {
-      downloadOnboardingAttachments(retrieveTokenIdFromUrl, '')
+      downloadOnboardingAttachments(retrieveTokenIdFromUrl, attatchmentName ?? '')
         .then(() => {
           setShowConfirmPage(false);
           console.log('download dummy');
