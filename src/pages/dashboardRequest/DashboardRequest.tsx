@@ -1,16 +1,18 @@
 import { Alert, Button, Chip, Grid, Typography } from '@mui/material';
-import { useLoading } from '@pagopa/selfcare-common-frontend/lib';
+import { useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
+import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import {
   fetchOnboardingRequest,
-  downloadOnboardingAttachments,
 } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
+import { ENV } from '../../utils/env';
 import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
@@ -19,7 +21,7 @@ import DashboardRequestFields from './components/DashboardRequestFields';
 export default function DashboardRequest() {
   const { t } = useTranslation();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
-
+  const addError = useErrorDispatcher();
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
@@ -43,18 +45,6 @@ export default function DashboardRequest() {
     fetchOnboardingRequest(retrieveTokenIdFromUrl)
       .then((r) => {
         setOnboardingRequestData(r);
-      })
-      .catch(() => {
-        setError(true);
-      })
-      .finally(() => setLoadingRetrieveOnboardingRequest(false));
-  };
-
-  const downloadAttachment = (retrieveTokenIdFromUrl: string, name: string) => {
-    setLoadingRetrieveOnboardingRequest(true);
-    downloadOnboardingAttachments(retrieveTokenIdFromUrl, name)
-      .then((_r) => {
-        console.log('download dummy');
       })
       .catch(() => {
         setError(true);
@@ -101,6 +91,83 @@ export default function DashboardRequest() {
     const year = dateFormat.getFullYear();
 
     return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+  };
+
+  const fileFromReader = async (
+    reader: ReadableStreamDefaultReader<Uint8Array> | undefined
+  ): Promise<string> => {
+    const stream = new ReadableStream({
+      start(controller) {
+        return pump();
+        function pump(): Promise<any> | undefined {
+          return reader?.read().then(({ done, value }) => {
+            if (done) {
+              controller.close();
+              return;
+            }
+            controller.enqueue(value);
+            return pump();
+          });
+        }
+      },
+    });
+    const response = new Response(stream);
+  
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  };
+
+  const downloadAttachment = (
+    setLoadingRetrieveOnboardingRequest: (loading: boolean) => void,
+    addError: (error: AppError) => void,
+    reason?: string,
+    retrieveTokenIdFromUrl?: string,
+    attatchmentName?: string
+  ) => {
+    const sessionToken = storageTokenOps.read();
+    const url = `${ENV.URL_API.API_ONBOARDING_V2}/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${
+      attatchmentName ?? ''
+    }`;
+    if (retrieveTokenIdFromUrl) {
+      fetch(url, {
+        headers: {
+          accept: '*/*',
+          'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
+          authorization: `Bearer ${sessionToken}`,
+          'content-type': 'application/octet-stream',
+        },
+        method: 'GET',
+      })
+        .then((response) => {
+          const contentDisposition = response.headers.get('content-disposition');
+          const matchedIndex = contentDisposition?.indexOf('=') as number;
+          const fileName =
+            contentDisposition?.substring(matchedIndex + 1) ?? 'checklist_adesione_gpu.pdf';
+          return response.blob().then((blob) => {
+            const reader = blob.stream().getReader();
+            void fileFromReader(reader).then((url) => {
+              const link = document.createElement('a');
+              // eslint-disable-next-line functional/immutable-data
+              link.href = url;
+              // eslint-disable-next-line functional/immutable-data
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+            });
+          });
+        })
+        // eslint-disable-next-line sonarjs/no-identical-functions
+        .catch(() => {
+          addError({
+            id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not approved`,
+            blocking: false,
+            techDescription: reason ?? '',
+            toNotify: false,
+            error: new Error('INVALID_TOKEN_ID'),
+          });
+        })
+        .finally(() => setLoadingRetrieveOnboardingRequest(false));
+    }
   };
 
   const isExpiredRequest =
@@ -151,8 +218,10 @@ export default function DashboardRequest() {
                   variant="contained"
                   onClick={() =>
                     downloadAttachment(
-                      retrieveTokenIdFromUrl ?? '',
-                      onboardingRequestData?.attachments?.[0] ?? ''
+                      setLoadingRetrieveOnboardingRequest,
+                      addError,
+                      retrieveTokenIdFromUrl,
+                      onboardingRequestData?.attachments?.[0] ?? '',
                     )
                   }
                 >
@@ -252,6 +321,7 @@ export default function DashboardRequest() {
             setShowConfirmPage={setShowConfirmPage}
             isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
             attatchmentName={onboardingRequestData?.attachments?.[0] ?? ''}
+            downloadAttachment={downloadAttachment}
             isGPU={isGPU}
           />
         </Grid>
