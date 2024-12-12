@@ -4,12 +4,13 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 import {
   approveOnboardingPspRequest,
-  downloadOnboardingAttachments,
   rejectOnboardingRequest,
 } from '../../../services/onboardingRequestService';
+import { ENV } from '../../../utils/env';
 
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
@@ -57,6 +58,30 @@ export default function DashboardRequestActions({
     }
   };
 
+  const fileFromReader = async (
+    reader: ReadableStreamDefaultReader<Uint8Array> | undefined
+  ): Promise<string> => {
+    const stream = new ReadableStream({
+      start(controller) {
+        return pump();
+        function pump(): Promise<any> | undefined {
+          return reader?.read().then(({ done, value }) => {
+            if (done) {
+              controller.close();
+              return;
+            }
+            controller.enqueue(value);
+            return pump();
+          });
+        }
+      },
+    });
+    const response = new Response(stream);
+
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  };
+
   const rejectOnboarding = () => {
     setLoadingRetrieveOnboardingRequest(true);
     if (retrieveTokenIdFromUrl) {
@@ -80,14 +105,41 @@ export default function DashboardRequestActions({
 
   const downloadAttachment = () => {
     setLoadingRetrieveOnboardingRequest(true);
+    const sessionToken = storageTokenOps.read();
     if (retrieveTokenIdFromUrl) {
-      downloadOnboardingAttachments(retrieveTokenIdFromUrl, attatchmentName ?? '')
-        .then(() => {
-          setShowConfirmPage(false);
-          console.log('download dummy');
+      void fetch(
+        ENV.URL_API.API_ONBOARDING_V2 +
+          `/v2/tokens/${retrieveTokenIdFromUrl}/attachment?=name${attatchmentName}`,
+        {
+          headers: {
+            accept: '*/*',
+            'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
+            authorization: `Bearer ${sessionToken}`,
+            'content-type': 'application/octet-stream',
+          },
+          method: 'GET',
+        }
+      )
+        .then((response) => {
+          const contentDisposition = response.headers.get('content-disposition');
+          const matchedIndex = contentDisposition?.indexOf('=') as number;
+          const fileName =
+            contentDisposition?.substring(matchedIndex + 1) ?? 'checklist_adesione_gpu.pdf';
+          return response.blob().then((blob) => {
+            const reader = blob.stream().getReader();
+            void fileFromReader(reader).then((url) => {
+              const link = document.createElement('a');
+              // eslint-disable-next-line functional/immutable-data
+              link.href = url;
+              // eslint-disable-next-line functional/immutable-data
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+            });
+          });
         })
         // eslint-disable-next-line sonarjs/no-identical-functions
-        .catch((reason: any) => {
+        .catch(() => {
           addError({
             id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not approved`,
             blocking: false,

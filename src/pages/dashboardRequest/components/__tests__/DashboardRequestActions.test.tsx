@@ -210,8 +210,11 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
   const setShowRejectPage = jest.fn();
-  global.fetch = jest.fn().mockImplementation(() => {
-    throw new Error('errore');
+
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: false,
+    status: 500,
+    json: async () => ({ message: 'Internal Server Error' }),
   });
 
   await renderWithProviders(
