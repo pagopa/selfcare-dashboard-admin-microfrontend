@@ -208,34 +208,37 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
   fireEvent.click(downloadBtn);
 });
 
-// test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
-//   const setShowRejectPage = jest.fn();
-//   global.fetch = jest.fn().mockImplementation(() => {
-//     throw new Error('errore');
-//   });
+test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
+  const setShowRejectPage = jest.fn();
 
-//   await renderWithProviders(
-//     <DashboardRequestActions
-//       retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
-//       partyName={mockedOnboardingRequests[7].institutionInfo.name}
-//       productTitle={productId2ProductTitle(mockedOnboardingRequests[7].productId)}
-//       setShowConfirmPage={() => {}}
-//       setShowRejectPage={setShowRejectPage}
-//       isToBeValidatedRequest={mockedOnboardingRequests[7].status === 'TOBEVALIDATED'}
-//       isGPU={true}
-//     />
-//   );
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: false,
+    status: 500,
+    json: async () => ({ message: 'Internal Server Error' }),
+  });
 
-//   const approveBtn = screen.getByText('Approva');
-//   const declineBtn = screen.getByText('Rifiuta');
-//   const downloadBtn = screen.getByText('Scarica');
+  await renderWithProviders(
+    <DashboardRequestActions
+      retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
+      partyName={mockedOnboardingRequests[7].institutionInfo.name}
+      productTitle={productId2ProductTitle(mockedOnboardingRequests[7].productId)}
+      setShowConfirmPage={() => {}}
+      setShowRejectPage={setShowRejectPage}
+      isToBeValidatedRequest={mockedOnboardingRequests[7].status === 'TOBEVALIDATED'}
+      isGPU={true}
+    />
+  );
 
-//   expect(approveBtn).toBeInTheDocument();
-//   expect(declineBtn).toBeInTheDocument();
-//   expect(downloadBtn).toBeInTheDocument();
+  const approveBtn = screen.getByText('Approva');
+  const declineBtn = screen.getByText('Rifiuta');
+  const downloadBtn = screen.getByText('Scarica');
 
-//   fireEvent.click(downloadBtn);
-// });
+  expect(approveBtn).toBeInTheDocument();
+  expect(declineBtn).toBeInTheDocument();
+  expect(downloadBtn).toBeInTheDocument();
+
+  fireEvent.click(downloadBtn);
+});
 
 test('Test: Onboarding request with not found token scenario', async () => {
   await renderWithProviders(
