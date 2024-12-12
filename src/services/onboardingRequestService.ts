@@ -48,17 +48,3 @@ export const approveOnboardingPspRequest = (
     return OnboardingApi.approveOnboardingRequest(tokenId);
   }
 };
-
-export const downloadOnboardingAttachments = (tokenId: string, name: string): Promise<OnboardingRequestResource> => {
-  /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
-    const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
-    if (selectedOnboardingRequest) {
-      return new Promise((resolve) => resolve(selectedOnboardingRequest));
-    } else {
-      return Promise.reject('Onboarding request not found!');
-    }
-  } else {
-    return OnboardingApi.downloadOnboardingAttachments(tokenId, name);
-  }
-};
