@@ -221,6 +221,7 @@ export default function DashboardRequest() {
                     downloadAttachment(
                       setLoadingRetrieveOnboardingRequest,
                       addError,
+                      undefined,
                       retrieveTokenIdFromUrl,
                       onboardingRequestData?.attachments?.[0] ?? '',
                     )
