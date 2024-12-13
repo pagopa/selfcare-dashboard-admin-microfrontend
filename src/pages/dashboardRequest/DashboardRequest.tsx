@@ -125,9 +125,10 @@ export default function DashboardRequest() {
     attatchmentName?: string
   ) => {
     const sessionToken = storageTokenOps.read();
-    const url = `${ENV.URL_API.API_ONBOARDING_V2}/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${
-      attatchmentName ?? ''
-    }`;
+    const nameParam = new URLSearchParams({
+      name: attatchmentName ?? '',
+    });
+    const url = `${ENV.URL_API.API_ONBOARDING_V2}/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
     if (retrieveTokenIdFromUrl) {
       fetch(url, {
         headers: {
