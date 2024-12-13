@@ -3,6 +3,8 @@ import { theme } from '@pagopa/mui-italia';
 import { useTranslation, Trans } from 'react-i18next';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 import {
   approveOnboardingPspRequest,
@@ -13,18 +15,30 @@ type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
   isToBeValidatedRequest: boolean;
+  isGPU: boolean;
+  downloadAttachment?: (
+    setLoadingRetrieveOnboardingRequest: (loading: boolean) => void,
+    addError: (error: AppError) => void,
+    reason?: string,
+    retrieveTokenIdFromUrl?: string,
+    attatchmentName?: string
+  ) => void;
   retrieveTokenIdFromUrl?: string;
   partyName?: string;
   productTitle?: string;
+  attatchmentName?: string;
 };
 
 export default function DashboardRequestActions({
   setShowRejectPage,
   setShowConfirmPage,
   isToBeValidatedRequest,
+  isGPU,
+  downloadAttachment,
   retrieveTokenIdFromUrl,
   partyName,
   productTitle,
+  attatchmentName,
 }: Props) {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
@@ -87,11 +101,36 @@ export default function DashboardRequestActions({
             </Button>
           </Stack>
 
-          <Stack>
-            <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
-              {t('onboardingRequestPage.actions.approveButton')}
-            </Button>
-          </Stack>
+          {isGPU ? (
+            <Stack direction={'row'}>
+              <Button
+                variant="naked"
+                sx={{ marginLeft: 3 }}
+                startIcon={<FileDownloadIcon />}
+                onClick={() =>
+                  downloadAttachment &&
+                  downloadAttachment(
+                    setLoadingRetrieveOnboardingRequest,
+                    addError,
+                    reason,
+                    retrieveTokenIdFromUrl,
+                    attatchmentName
+                  )
+                }
+              >
+                {t('onboardingRequestPage.actions.downloadButton')}
+              </Button>
+              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+                {t('onboardingRequestPage.actions.approveButton')}
+              </Button>
+            </Stack>
+          ) : (
+            <Stack>
+              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+                {t('onboardingRequestPage.actions.approveButton')}
+              </Button>
+            </Stack>
+          )}
         </Stack>
       )}
 
