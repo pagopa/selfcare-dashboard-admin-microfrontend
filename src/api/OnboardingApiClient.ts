@@ -61,4 +61,12 @@ export const OnboardingApi = {
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
+
+  downloadOnboardingAttachments: async (onboardingId: string, name: string): Promise<any> => {
+    const result = await apiClient.getAttachmentUsingGET({
+      onboardingId,
+      name,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
 };
