@@ -4304,7 +4304,6 @@
           "institutionType",
           "mailAddress",
           "name",
-          "vatNumber",
           "zipCode"
         ],
         "type": "object",

@@ -35,9 +35,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/InstitutionResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/InstitutionResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -238,9 +236,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/GeographicTaxonomyResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/GeographicTaxonomyResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -692,9 +688,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/GeographicTaxonomyResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/GeographicTaxonomyResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -970,9 +964,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProductResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/ProductResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -1024,9 +1016,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProductResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/ProductResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -1404,9 +1394,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/InstitutionResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/InstitutionResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -1709,9 +1697,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/InstitutionOnboardingResourceArray"
-            }
+            "schema":{"$ref":"#/definitions/InstitutionOnboardingResourceArray"}
           },
           "400": {
             "description": "Bad Request",
@@ -2653,58 +2639,7 @@
       }
     }
   },
-  "definitions": {
-    "InstitutionOnboardingResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/InstitutionOnboardingResource"
-      }
-    },
-    "InstitutionResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/InstitutionResource"
-      }
-    },
-    "ProductResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/ProductResource"
-      }
-    },
-    "ProductResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/ProductResource"
-      }
-    },
-    "GeographicTaxonomyResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/GeographicTaxonomyResource"
-      }
-    },
-    "GeographicTaxonomyResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/GeographicTaxonomyResource"
-      }
-    },
-    "STRINGWrapper": {
-      "type": "string"
-    },
-    "STRINGArray": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "InstitutionResourceArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/InstitutionResource"
-      }
-    },
+  "definitions" : {"InstitutionOnboardingResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionOnboardingResource"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"STRINGWrapper":{"type": "string"},"STRINGArray":{"type": "array", "items": {"type": "string"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},
     "AdditionalInformations": {
       "properties": {
         "agentOfPublicService": {
@@ -3593,7 +3528,6 @@
         "institutionType",
         "mailAddress",
         "name",
-        "vatNumber",
         "zipCode"
       ],
       "title": "InstitutionInfo",
