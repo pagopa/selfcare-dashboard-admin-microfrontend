@@ -9,8 +9,7 @@
     "title": "selc-onboarding",
     "version": "0.1.0-SNAPSHOT"
   },
-  "host": "localhost",
-  "basePath": "/",
+  "basePath": "localhost:80%7BbasePath%7D",
   "schemes": [
     "http"
   ],
@@ -65,13 +64,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "getInstitutions"
+        "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  ",
+        "operationId": "getInstitutionsUsingGET",
+        "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  "
       }
     },
     "/v1/institutions/company/onboarding": {
@@ -133,13 +136,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "onboarding_4"
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "onboardingCompanyUsingPOST",
+        "summary": "The service allows the onboarding of Users to a subunit of an Institution"
       }
     },
     "/v1/institutions/from-infocamere/": {
@@ -187,13 +194,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "getInstitutionsFromInfocamere"
+        "description": "Get Legal Representative's PN PG institution List",
+        "operationId": "getInstitutionsFromInfocamereUsingGET",
+        "summary": "Get Legal Representative's PN PG institution List"
       }
     },
     "/v1/institutions/geographicTaxonomies": {
@@ -252,13 +263,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "getGeographicTaxonomiesByTaxCodeAndSubunitCode"
+        "description": "The service retrieve the institution's geographic taxonomy",
+        "operationId": "getGeographicTaxonomiesByTaxCodeAndSubunitCodeUsingGET",
+        "summary": "The service retrieve the institution's geographic taxonomy"
       }
     },
     "/v1/institutions/onboarding": {
@@ -355,13 +370,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "verifyOnboarding_2"
+        "description": "Checks if the specified institution has been onboarded on the specified product.",
+        "operationId": "verifyOnboardingUsingHEAD",
+        "summary": "Checks if the specified institution has been onboarded on the specified product."
       },
       "post": {
         "consumes": [
@@ -421,13 +440,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "onboarding_3"
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "onboardingUsingPOST",
+        "summary": "The service allows the onboarding of Users to a subunit of an Institution"
       }
     },
     "/v1/institutions/onboarding/": {
@@ -488,13 +511,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "getInstitutionOnboardingInfoById"
+        "description": "The service retrieves the institutions Manager and institution informations",
+        "operationId": "getInstitutionOnboardingInfoUsingGET",
+        "summary": "The service retrieves the institutions Manager and institution informations"
       }
     },
     "/v1/institutions/verification/legal-address": {
@@ -554,13 +581,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "postVerificationLegalAddress"
+        "description": "Get legal address by business tax id",
+        "operationId": "postVerificationLegalAddressUsingPOST",
+        "summary": "Get legal address by business tax id"
       }
     },
     "/v1/institutions/verification/match": {
@@ -620,13 +651,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "postVerificationMatch"
+        "description": "MatchLegal Representative and inserted Institution by querying on Agenzia delle Entrate",
+        "operationId": "postVerificationMatchUsingPOST",
+        "summary": "MatchLegal Representative and inserted Institution by querying on Agenzia delle Entrate"
       }
     },
     "/v1/institutions/{externalInstitutionId}/geographicTaxonomy": {
@@ -679,13 +714,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "getInstitutionGeographicTaxonomy"
+        "description": "The service retrieve the institution's geographic taxonomy",
+        "operationId": "getInstitutionGeographicTaxonomyUsingGET",
+        "summary": "The service retrieve the institution's geographic taxonomy"
       }
     },
     "/v1/institutions/{externalInstitutionId}/products/{productId}": {
@@ -748,13 +787,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
-        "operationId": "verifyOnboarding_1"
+        "description": "Checks if the specified institution has been onboarded on the specified product.",
+        "operationId": "verifyOnboardingProductUsingHEAD",
+        "summary": "Checks if the specified institution has been onboarded on the specified product."
       }
     },
     "/v1/institutions/{externalInstitutionId}/products/{productId}/onboarded-institution-info": {
@@ -815,14 +858,18 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-controller"
         ],
         "deprecated": true,
-        "operationId": "getInstitutionOnboardingInfo"
+        "description": "The service retrieves the institutions Manager and institution informations",
+        "operationId": "getInstitutionOnboardingInfoUsingGET_1",
+        "summary": "The service retrieves the institutions Manager and institution informations"
       }
     },
     "/v1/product/{id}": {
@@ -897,13 +944,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "product-controller"
         ],
-        "operationId": "getProduct"
+        "description": "The service retrieves the product given its internal id",
+        "operationId": "getProductUsingGET",
+        "summary": "The service retrieves the product given its internal id"
       }
     },
     "/v1/products": {
@@ -949,13 +1000,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "product-controller"
         ],
-        "operationId": "getProducts"
+        "description": "The service retrieves all products",
+        "operationId": "getProducts",
+        "summary": "The service retrieves all products"
       }
     },
     "/v1/products/admin": {
@@ -1001,13 +1056,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "product-controller"
         ],
-        "operationId": "getProductsAdmin"
+        "description": "The service retrieves all products for the addition administration functionality",
+        "operationId": "getProductsAdmin",
+        "summary": "The service retrieves all products for the addition administration functionality"
       }
     },
     "/v1/users/check-manager": {
@@ -1025,7 +1084,7 @@
             "name": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OnboardingUserDto"
+              "$ref": "#/definitions/CheckManagerDto"
             }
           }
         ],
@@ -1073,13 +1132,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "user-controller"
         ],
-        "operationId": "checkManager"
+        "description": "Returns true if current manager and previous one are the same",
+        "operationId": "checkManager",
+        "summary": "Returns true if current manager and previous one are the same"
       }
     },
     "/v1/users/onboarding": {
@@ -1141,13 +1204,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "user-controller"
         ],
-        "operationId": "onboarding_2"
+        "description": "The service allows the onboarding of Users",
+        "operationId": "onboardingUsers",
+        "summary": "The service allows the onboarding of Users"
       }
     },
     "/v1/users/onboarding/aggregator": {
@@ -1209,13 +1276,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "user-controller"
         ],
-        "operationId": "onboardingAggregator"
+        "description": "The service allows the onboarding of Users for aggregators",
+        "operationId": "onboardingAggregatorUsingPOST",
+        "summary": "The service allows the onboarding of Users for aggregators"
       }
     },
     "/v1/users/onboarding/{onboardingId}/manager": {
@@ -1276,13 +1347,93 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "user-controller"
         ],
-        "operationId": "getManagerInfo"
+        "description": "Returns true if current manager and previous one are the same",
+        "operationId": "getManagerInfo",
+        "summary": "Returns true if current manager and previous one are the same"
+      }
+    },
+    "/v1/users/search-user": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserTaxCodeDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserId"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "description": "Generic problem response",
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "description": "Generic problem response",
+              "type": "object"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "description": "Generic problem response",
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "description": "Generic problem response",
+              "type": "object"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "user-controller"
+        ],
+        "description": "Returns uuid of specific user from PDV",
+        "operationId": "searchUserId",
+        "summary": "Returns uuid of specific user from PDV"
       }
     },
     "/v1/users/validate": {
@@ -1344,13 +1495,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "user-controller"
         ],
-        "operationId": "validate"
+        "description": "Check if requested user data are valid",
+        "operationId": "validateUsingPOST",
+        "summary": "Check if requested user data are valid"
       }
     },
     "/v2/institutions": {
@@ -1433,13 +1588,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "getInstitution"
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "v2GetInstitutionByFilters",
+        "summary": "The service allows the onboarding of Users to a subunit of an Institution"
       }
     },
     "/v2/institutions/company/onboarding": {
@@ -1501,13 +1660,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "onboarding_1"
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "institutionOnboardingCompany",
+        "summary": "The service allows the onboarding of Users to a subunit of an Institution"
       }
     },
     "/v2/institutions/company/verify-manager": {
@@ -1567,13 +1730,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "verifyManager"
+        "description": "The service allows to verify the legal representative on external registries and retrieve the company name",
+        "operationId": "verifyManagerUsingPOST",
+        "summary": "The service allows to verify the legal representative on external registries and retrieve the company name"
       }
     },
     "/v2/institutions/onboarding": {
@@ -1635,13 +1802,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "onboarding"
+        "description": "The service allows the onboarding of Users to a subunit of an Institution",
+        "operationId": "institutionOnboarding",
+        "summary": "The service allows the onboarding of Users to a subunit of an Institution"
       }
     },
     "/v2/institutions/onboarding/active": {
@@ -1706,13 +1877,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "getActiveOnboarding"
+        "description": "The service retrieves the active onboarding information for a given tax code and product ID",
+        "operationId": "getActiveOnboardingUsingGET",
+        "summary": "The service retrieves the active onboarding information for a given tax code and product ID"
       }
     },
     "/v2/institutions/onboarding/aggregation/verification": {
@@ -1792,13 +1967,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "verifyAggregatesCsv"
+        "description": "The service allows to verify if the given csv contains valid aggregate institutions",
+        "operationId": "verifyAggregatesCsvUsingPOST",
+        "summary": "The service allows to verify if the given csv contains valid aggregate institutions"
       }
     },
     "/v2/institutions/onboarding/recipient-code/verification": {
@@ -1864,13 +2043,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "checkRecipientCode"
+        "description": "The service allows to verify if recipientCode is valid or not",
+        "operationId": "checkRecipientCodeUsingGET",
+        "summary": "The service allows to verify if recipientCode is valid or not"
       }
     },
     "/v2/institutions/onboarding/users/pg": {
@@ -1925,13 +2108,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "institution-v-2-controller"
         ],
-        "operationId": "onboardingUsers"
+        "description": "The service allows the onboarding of Users to a PG Institution",
+        "operationId": "onboardingUsersPgUsingPOST",
+        "summary": "The service allows the onboarding of Users to a PG Institution"
       }
     },
     "/v2/tokens/{onboardingId}": {
@@ -1986,13 +2173,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "retrieveOnboardingRequest"
+        "description": "Service to retrieve a specific onboarding request",
+        "operationId": "retrieveOnboardingRequestUsingGET",
+        "summary": "Service to retrieve a specific onboarding request"
       }
     },
     "/v2/tokens/{onboardingId}/approve": {
@@ -2043,13 +2234,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "approveOnboarding"
+        "description": "Service to approve a specific onboarding request",
+        "operationId": "approveOnboardingUsingPOST",
+        "summary": "Service to approve a specific onboarding request"
       }
     },
     "/v2/tokens/{onboardingId}/attachment": {
@@ -2114,13 +2309,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "getAttachment"
+        "description": "Service to download a specific onboarding attachment",
+        "operationId": "getAttachmentUsingGET",
+        "summary": "Service to download a specific onboarding attachment"
       }
     },
     "/v2/tokens/{onboardingId}/complete": {
@@ -2171,13 +2370,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "delete"
+        "description": "Complete an onboarding request",
+        "operationId": "deleteUsingDELETE",
+        "summary": "Complete an onboarding request"
       },
       "post": {
         "consumes": [
@@ -2245,13 +2448,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "complete"
+        "description": "Complete an onboarding request",
+        "operationId": "completeUsingPOST",
+        "summary": "Complete an onboarding request"
       }
     },
     "/v2/tokens/{onboardingId}/complete-onboarding-users": {
@@ -2321,13 +2528,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "completeOnboardingUsers"
+        "description": "Complete an onboarding users request",
+        "operationId": "completeOnboardingUsersUsingPOST",
+        "summary": "Complete an onboarding users request"
       }
     },
     "/v2/tokens/{onboardingId}/contract": {
@@ -2386,13 +2597,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "getContract"
+        "description": "Service to download a specific onboarding contract",
+        "operationId": "getContractUsingGET",
+        "summary": "Service to download a specific onboarding contract"
       }
     },
     "/v2/tokens/{onboardingId}/products/{productId}/aggregates-csv": {
@@ -2457,13 +2672,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "getAggregatesCsv"
+        "description": "Service to download a specific onboarding aggregates csv",
+        "operationId": "getAggregatesCsvUsingGET",
+        "summary": "Service to download a specific onboarding aggregates csv"
       }
     },
     "/v2/tokens/{onboardingId}/reject": {
@@ -2525,13 +2744,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "rejectOnboarding"
+        "description": "Service to reject a specific onboarding request",
+        "operationId": "rejectOnboardingUsingPOST",
+        "summary": "Service to reject a specific onboarding request"
       }
     },
     "/v2/tokens/{onboardingId}/verify": {
@@ -2586,13 +2809,17 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": [
+              "global"
+            ]
           }
         ],
         "tags": [
           "token-v-2-controller"
         ],
-        "operationId": "verifyOnboarding"
+        "description": "Verify if the token is already consumed",
+        "operationId": "verifyOnboardingUsingPOST",
+        "summary": "Verify if the token is already consumed"
       }
     }
   },
@@ -2710,22 +2937,13 @@
         "recipientCode": {
           "type": "string"
         },
-        "service": {
-          "type": "string"
-        },
         "subunitCode": {
           "type": "string"
         },
         "subunitType": {
           "type": "string"
         },
-        "syncAsyncMode": {
-          "type": "string"
-        },
         "taxCode": {
-          "type": "string"
-        },
-        "taxCodePT": {
           "type": "string"
         },
         "users": {
@@ -2779,22 +2997,13 @@
         "recipientCode": {
           "type": "string"
         },
-        "service": {
-          "type": "string"
-        },
         "subunitCode": {
           "type": "string"
         },
         "subunitType": {
           "type": "string"
         },
-        "syncAsyncMode": {
-          "type": "string"
-        },
         "taxCode": {
-          "type": "string"
-        },
-        "taxCodePT": {
           "type": "string"
         },
         "users": {
@@ -2952,6 +3161,51 @@
           "type": "string"
         }
       },
+      "type": "object"
+    },
+    "CheckManagerDto": {
+      "properties": {
+        "institutionType": {
+          "enum": [
+            "PA",
+            "PG",
+            "GSP",
+            "SA",
+            "PT",
+            "SCP",
+            "PSP",
+            "AS",
+            "REC",
+            "CON",
+            "PRV",
+            "GPU"
+          ],
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "originId": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "subunitCode": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "productId",
+        "userId"
+      ],
       "type": "object"
     },
     "CheckManagerResponse": {
@@ -3956,6 +4210,18 @@
       ],
       "type": "object"
     },
+    "UserId": {
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
     "UserInfo": {
       "properties": {
         "email": {
@@ -3981,6 +4247,17 @@
         "id",
         "name",
         "surname"
+      ],
+      "type": "object"
+    },
+    "UserTaxCodeDto": {
+      "properties": {
+        "taxCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "taxCode"
       ],
       "type": "object"
     },
@@ -4052,16 +4329,12 @@
   },
   "securityDefinitions": {
     "bearerAuth": {
+      "description": "A bearer token in the format of a JWS and conformed to the specifications included in [RFC8725](https://tools.ietf.org/html/RFC8725)",
       "in": "header",
       "name": "Authorization",
       "type": "apiKey"
     }
   },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "tags": [
     {
       "description": "Institution operations",
