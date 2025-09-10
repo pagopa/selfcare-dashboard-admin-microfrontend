@@ -11,18 +11,8 @@
   },
   "servers": [
     {
-      "url": "{url}:{port}{basePath}",
-      "variables": {
-        "url": {
-          "default": "http:localhost"
-        },
-        "port": {
-          "default": "80"
-        },
-        "basePath": {
-          "default": ""
-        }
-      }
+      "url": "http://localhost",
+      "description": "Generated server url"
     }
   ],
   "tags": [
@@ -3741,6 +3731,9 @@
           },
           "certified": {
             "type": "boolean"
+          },
+          "legalForm": {
+            "type": "string"
           }
         }
       },
@@ -3925,6 +3918,29 @@
           },
           "gpuData": {
             "$ref": "#/components/schemas/GPUData"
+          },
+          "istatCode": {
+            "type": "string"
+          },
+          "atecoCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "payment": {
+            "$ref": "#/components/schemas/PaymentDto"
+          }
+        }
+      },
+      "PaymentDto": {
+        "type": "object",
+        "properties": {
+          "iban": {
+            "type": "string"
+          },
+          "holder": {
+            "type": "string"
           }
         }
       },

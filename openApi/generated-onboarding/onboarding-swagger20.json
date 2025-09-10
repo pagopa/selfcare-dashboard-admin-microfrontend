@@ -9,7 +9,8 @@
     "title": "selc-onboarding",
     "version": "0.1.0-SNAPSHOT"
   },
-  "basePath": "localhost:80%7BbasePath%7D",
+  "host": "localhost",
+  "basePath": "/",
   "schemes": [
     "http"
   ],
@@ -3091,6 +3092,9 @@
         "digitalAddress": {
           "type": "string"
         },
+        "legalForm": {
+          "type": "string"
+        },
         "publicServices": {
           "type": "boolean"
         },
@@ -3835,6 +3839,12 @@
         "assistanceContacts": {
           "$ref": "#/definitions/AssistanceContactsDto"
         },
+        "atecoCodes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "billingData": {
           "$ref": "#/definitions/BillingDataDto"
         },
@@ -3873,11 +3883,17 @@
         "isAggregator": {
           "type": "boolean"
         },
+        "istatCode": {
+          "type": "string"
+        },
         "origin": {
           "type": "string"
         },
         "originId": {
           "type": "string"
+        },
+        "payment": {
+          "$ref": "#/definitions/PaymentDto"
         },
         "pricingPlan": {
           "type": "string"
@@ -4018,6 +4034,17 @@
       "required": [
         "status"
       ],
+      "type": "object"
+    },
+    "PaymentDto": {
+      "properties": {
+        "holder": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "string"
+        }
+      },
       "type": "object"
     },
     "PaymentServiceProvider": {
