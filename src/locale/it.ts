@@ -30,7 +30,8 @@ export default {
               as: 'Società di assicurazione',
               pg: 'Azienda',
               prv: 'Privato',
-              gpu: 'Gestore di pubblica utilità e/o di interesse generale'
+              gpu: 'Gestore di pubblica utilità e/o di interesse generale',
+              scec: 'Società in conto economico consolidato'
             },
           },
           businessName: 'Ragione sociale',
