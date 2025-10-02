@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "selc-onboarding",
+    "title": "${openapi_title}",
     "description": "Self Care OnBoarding API documentation",
     "contact": {
       "name": "PagoPA",
@@ -11,18 +11,8 @@
   },
   "servers": [
     {
-      "url": "{url}:{port}{basePath}",
-      "variables": {
-        "url": {
-          "default": "http:localhost"
-        },
-        "port": {
-          "default": "80"
-        },
-        "basePath": {
-          "default": ""
-        }
-      }
+      "url": "http://localhost",
+      "description": "Generated server url"
     }
   ],
   "tags": [
@@ -1734,6 +1724,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "soleTrader",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -3741,6 +3739,9 @@
           },
           "certified": {
             "type": "boolean"
+          },
+          "legalForm": {
+            "type": "string"
           }
         }
       },
@@ -3925,6 +3926,32 @@
           },
           "gpuData": {
             "$ref": "#/components/schemas/GPUData"
+          },
+          "istatCode": {
+            "type": "string"
+          },
+          "atecoCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "payment": {
+            "$ref": "#/components/schemas/PaymentDto"
+          },
+          "soleTrader": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentDto": {
+        "type": "object",
+        "properties": {
+          "iban": {
+            "type": "string"
+          },
+          "holder": {
+            "type": "string"
           }
         }
       },
