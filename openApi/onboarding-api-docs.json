@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "selc-onboarding",
+    "title": "${openapi_title}",
     "description": "Self Care OnBoarding API documentation",
     "contact": {
       "name": "PagoPA",
@@ -1724,6 +1724,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "soleTrader",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -3930,6 +3938,9 @@
           },
           "payment": {
             "$ref": "#/components/schemas/PaymentDto"
+          },
+          "soleTrader": {
+            "type": "boolean"
           }
         }
       },
