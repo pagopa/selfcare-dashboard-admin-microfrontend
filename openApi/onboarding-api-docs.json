@@ -11,18 +11,8 @@
   },
   "servers": [
     {
-      "url": "{url}:{port}{basePath}",
-      "variables": {
-        "url": {
-          "default": "http:localhost"
-        },
-        "port": {
-          "default": "80"
-        },
-        "basePath": {
-          "default": ""
-        }
-      }
+      "url": "http://localhost",
+      "description": "Generated server url"
     }
   ],
   "tags": [
@@ -1737,6 +1727,14 @@
             }
           },
           {
+            "name": "soleTrader",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "verifyType",
             "in": "query",
             "required": false,
@@ -2963,7 +2961,9 @@
                 "REC",
                 "CON",
                 "PRV",
-                "GPU"
+                "PRV_PF",
+                "GPU",
+                "SCEC"
               ]
             }
           }
@@ -3038,8 +3038,8 @@
         "tags": [
           "institution-controller"
         ],
-        "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  ",
-        "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  ",
+        "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.",
+        "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.",
         "operationId": "getInstitutionsUsingGET",
         "parameters": [
           {
@@ -3741,6 +3741,9 @@
           },
           "certified": {
             "type": "boolean"
+          },
+          "legalForm": {
+            "type": "string"
           }
         }
       },
@@ -3872,7 +3875,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ]
           },
           "origin": {
@@ -3925,6 +3930,32 @@
           },
           "gpuData": {
             "$ref": "#/components/schemas/GPUData"
+          },
+          "istatCode": {
+            "type": "string"
+          },
+          "atecoCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "payment": {
+            "$ref": "#/components/schemas/PaymentDto"
+          },
+          "soleTrader": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentDto": {
+        "type": "object",
+        "properties": {
+          "iban": {
+            "type": "string"
+          },
+          "holder": {
+            "type": "string"
           }
         }
       },
@@ -4044,7 +4075,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ]
           },
           "productId": {
@@ -4280,7 +4313,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ]
           },
           "productId": {
@@ -4358,7 +4393,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ]
           },
           "origin": {
@@ -4403,7 +4440,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ]
           },
           "origin": {
@@ -4957,7 +4996,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "GPU",
+              "PRV_PF",
+              "SCEC"
             ]
           },
           "billingData": {
