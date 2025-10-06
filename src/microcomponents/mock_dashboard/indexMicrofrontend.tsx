@@ -1,19 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import '@pagopa/selfcare-common-frontend/index.css';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
+import '@pagopa/selfcare-common-frontend/index.css';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import '../../locale';
+import AdminPage from '../../pages/adminPage/adminPage';
 import { store } from '../../redux/store';
+import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
-import reportWebVitals from '../../reportWebVitals';
 import App from './App';
-import '../../locale';
+import './index.css';
 
 const onSuccessEncoded = encodeURIComponent(location.pathname + location.search);
 
@@ -34,6 +35,9 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
+            <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
+              <AdminPage />
+            </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>

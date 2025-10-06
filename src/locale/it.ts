@@ -1,4 +1,14 @@
 export default {
+  adminPage: {
+    title: 'Panoramica enti',
+    subtitle:
+      'Visualizza e gestisci gli enti aderenti ai prodotti PagoPA. Per operare su uno di questi clicca sul nome in tabella.',
+    searchInstitutions: {
+      title: 'VISUALIZZA ENTE',
+      longLabel:'Cerca ente per Ragione sociale o Codice Fiscale',
+      shortLabel:"Cerca ente"
+    },
+  },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
     validationDataChip: 'Da validare',
@@ -114,7 +124,7 @@ export default {
       },
       approveButton: 'Approva',
       downloadButton: 'Scarica',
-      downloadDataButton: 'Scarica i dati'
+      downloadDataButton: 'Scarica i dati',
     },
   },
   jwtNotValid: {

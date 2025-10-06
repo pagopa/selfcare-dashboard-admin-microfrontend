@@ -1,7 +1,8 @@
-import { Redirect, useParams } from 'react-router';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { ENV } from './utils/env';
+import { Redirect, useParams } from 'react-router';
+import AdminPage from './pages/adminPage/adminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
+import { ENV } from './utils/env';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
 
@@ -33,14 +34,19 @@ export const DASHBOARD_ADMIN_ROUTES = {
     subRoutes: {
       MAIN: {
         // TODO SUBSTITUTE WITH THE ADMIN "HOMEPAGE"
-        path: `${ENV.ROUTES.ADMIN}`,
+        path: `${ENV.ROUTES.ADMIN_PARTY_DETAIL}`,
         exact: true,
         component: DashboardRequest,
       },
       DASHBOARD_ONBOARDING_REQUESTS: {
-        path: `${ENV.ROUTES.ADMIN}/:tokenId`,
+        path: `${ENV.ROUTES.ADMIN_PARTY_DETAIL}`,
         exact: true,
         component: DashboardRequest,
+      },
+      DASHBOARD_ADMIN_SEARCH: {
+        path: `${ENV.ROUTES.ADMIN_SEARCH}`,
+        exact: true,
+        component: AdminPage,
       },
     },
     ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
