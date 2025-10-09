@@ -6,7 +6,7 @@
       "url": "https://www.pagopa.gov.it"
     },
     "description": "Self Care OnBoarding API documentation",
-    "title": "selc-onboarding",
+    "title": "${openapi_title}",
     "version": "0.1.0-SNAPSHOT"
   },
   "host": "localhost",
@@ -73,9 +73,9 @@
         "tags": [
           "institution-controller"
         ],
-        "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  ",
+        "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.",
         "operationId": "getInstitutionsUsingGET",
-        "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.  "
+        "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier."
       }
     },
     "/v1/institutions/company/onboarding": {
@@ -318,6 +318,12 @@
             "name": "vatNumber",
             "required": false,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "soleTrader",
+            "required": false,
+            "type": "boolean"
           },
           {
             "enum": [
@@ -899,7 +905,9 @@
               "REC",
               "CON",
               "PRV",
-              "GPU"
+              "PRV_PF",
+              "GPU",
+              "SCEC"
             ],
             "in": "query",
             "name": "institutionType",
@@ -3182,7 +3190,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "PRV_PF",
+            "GPU",
+            "SCEC"
           ],
           "type": "string"
         },
@@ -3292,7 +3302,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "PRV_PF",
+            "GPU",
+            "SCEC"
           ],
           "type": "string"
         },
@@ -3336,7 +3348,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "PRV_PF",
+            "GPU",
+            "SCEC"
           ],
           "type": "string"
         },
@@ -3550,7 +3564,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "GPU",
+            "PRV_PF",
+            "SCEC"
           ],
           "type": "string"
         },
@@ -3876,7 +3892,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "PRV_PF",
+            "GPU",
+            "SCEC"
           ],
           "type": "string"
         },
@@ -3903,6 +3921,9 @@
         },
         "pspData": {
           "$ref": "#/definitions/PspDataDto"
+        },
+        "soleTrader": {
+          "type": "boolean"
         },
         "subunitCode": {
           "type": "string"
@@ -3986,7 +4007,9 @@
             "REC",
             "CON",
             "PRV",
-            "GPU"
+            "PRV_PF",
+            "GPU",
+            "SCEC"
           ],
           "type": "string"
         },

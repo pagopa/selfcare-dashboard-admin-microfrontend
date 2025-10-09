@@ -5,8 +5,10 @@ export default {
       'Visualizza e gestisci gli enti aderenti ai prodotti PagoPA. Per operare su uno di questi clicca sul nome in tabella.',
     searchInstitutions: {
       title: 'VISUALIZZA ENTE',
-      longLabel:'Cerca ente per Ragione sociale o Codice Fiscale',
-      shortLabel:"Cerca ente"
+      longLabel: 'Cerca ente per Ragione sociale o Codice Fiscale',
+      shortLabel: 'Cerca ente',
+      noResults: 'Nessun risultato',
+      loadingText: 'Caricamento in corso...',
     },
   },
   onboardingRequestPage: {
@@ -41,7 +43,7 @@ export default {
               pg: 'Azienda',
               prv: 'Privato',
               gpu: 'Gestore di pubblica utilità e/o di interesse generale',
-              scec: 'Società in conto economico consolidato'
+              scec: 'Società in conto economico consolidato',
             },
           },
           businessName: 'Ragione sociale',
