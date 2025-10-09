@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
+import { LOADING_RETRIEVE_INSTITUTIONS } from '../../utils/constants';
 
 const AdminPage = () => {
   const { t } = useTranslation();
