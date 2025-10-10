@@ -1,21 +1,20 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, Grid, styled, TextField, Typography } from '@mui/material';
+import { Autocomplete, CircularProgress, Grid, styled, TextField, Typography } from '@mui/material';
 import { PartyAccountItemButton } from '@pagopa/mui-italia';
-import { TitleBox, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
+import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
-import { LOADING_RETRIEVE_INSTITUTIONS } from '../../utils/constants';
+import { ENV } from '../../utils/env';
 
 const AdminPage = () => {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
-  const setLoading = useLoading(LOADING_RETRIEVE_INSTITUTIONS);
-
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<Array<SearchServiceInstitution>>([]);
-  const [inputValue, setInputValue] = useState('');
   const [selectedInstitution, setSelectedInstitution] = useState<SearchServiceInstitution | null>(
     null
   );
@@ -23,36 +22,35 @@ const AdminPage = () => {
   // Debounced search function
   const debouncedSearch = useMemo(
     () =>
-      debounce(async (searchText: string) => {
+      debounce((searchText: string) => {
         if (searchText.length < 3) {
           setOptions([]);
           return;
         }
         setLoading(true);
-        try {
-          const results = await searchInstitutionsService(searchText);
-          setOptions(results);
-        } catch (error) {
-          setOptions([]);
 
-          addError({
-            id: `searchInstitutions-${searchText}-api-error`,
-            blocking: false,
-            techDescription: `Search institutions with text: ${searchText} not found`,
-            toNotify: false,
-            error: error as Error,
+        searchInstitutionsService(searchText)
+          .then((results) => {
+            setOptions(results);
+          })
+          .catch((error) => {
+            setOptions([]);
+
+            addError({
+              id: `searchInstitutions-${searchText}-api-error`,
+              blocking: false,
+              techDescription: `Search institutions with text: ${searchText} not found`,
+              toNotify: false,
+              error: error as Error,
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+            setOpen(true);
           });
-        } finally {
-          setLoading(false);
-        }
-      }, 800),
+      }, 400),
     []
   );
-
-  // Trigger search when input changes
-  useEffect(() => {
-    debouncedSearch(inputValue)?.finally(() => {});
-  }, [inputValue, debouncedSearch]);
 
   const commonStyles = {
     backgroundColor: 'background.paper',
@@ -76,6 +74,9 @@ const AdminPage = () => {
     overflowX: 'hidden',
   });
 
+  const buildUrlLog = (partyId: string) =>
+    `${ENV.URL_INSTITUTION_LOGO.PREFIX}${partyId}${ENV.URL_INSTITUTION_LOGO.SUFFIX}`;
+
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
       <Grid item xs={12}>
@@ -95,25 +96,27 @@ const AdminPage = () => {
         </Typography>
 
         <Autocomplete
-          freeSolo
           id="search-institutions-autocomplete"
+          forcePopupIcon={false}
+          open={open}
           value={selectedInstitution}
           onChange={(_, newValue) => {
             setSelectedInstitution(newValue);
+            setOpen(false);
           }}
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue);
+          onInputChange={(_, newInputValue, reason) => {
+            if (reason === 'input') {
+              debouncedSearch(newInputValue);
+            }
           }}
           options={options}
-          getOptionLabel={(option) => {
-            if (typeof option === 'string') {
-              return option;
-            }
-            return option.description || '';
-          }}
+          getOptionLabel={(option) => option.description || ''}
           noOptionsText={
-            <Typography fontWeight="bold">{t('adminPage.searchInstitutions.noResults')}</Typography>
+            open && !loading ? (
+              <Typography fontWeight="bold">
+                {t('adminPage.searchInstitutions.noResults')}
+              </Typography>
+            ) : null
           }
           filterOptions={(x) => x} // Disable client-side filtering since we search server-side
           disablePortal
@@ -141,14 +144,19 @@ const AdminPage = () => {
               },
             },
           }}
-          renderOption={(_props, option) => (
-            <PartyAccountItemButton
-              partyName={option?.description || ''}
-              image={undefined}
-              parentPartyName={option?.parentDescription}
-              maxCharactersNumberMultiLine={20}
-            />
-          )}
+          renderOption={(props, option) => {
+            const { key, ...rest } = props;
+            return (
+              <li key={key} {...rest} style={{ all: 'unset' }}>
+                <PartyAccountItemButton
+                  partyName={option?.description || ''}
+                  image={option?.id ? buildUrlLog(option.id) : undefined}
+                  parentPartyName={option?.parentDescription}
+                  maxCharactersNumberMultiLine={20}
+                />
+              </li>
+            );
+          }}
           renderInput={(params) => {
             const hasValue = Boolean(params.inputProps.value);
             return (
@@ -159,6 +167,11 @@ const AdminPage = () => {
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: <SearchIcon fontSize="small" />,
+                  endAdornment: loading ? (
+                    <CircularProgress color="inherit" size={16} />
+                  ) : (
+                    params.InputProps.endAdornment
+                  ),
                 }}
                 fullWidth
               />
