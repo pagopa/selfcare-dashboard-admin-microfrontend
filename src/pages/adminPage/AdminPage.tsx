@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
-import { ENV } from '../../utils/env';
+import { buildUrlLog } from '../../utils/helper';
 
 const AdminPage = () => {
   const { t } = useTranslation();
@@ -73,9 +73,6 @@ const AdminPage = () => {
     overflowY: 'auto',
     overflowX: 'hidden',
   });
-
-  const buildUrlLog = (partyId: string) =>
-    `${ENV.URL_INSTITUTION_LOGO.PREFIX}${partyId}${ENV.URL_INSTITUTION_LOGO.SUFFIX}`;
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
