@@ -1,6 +1,6 @@
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { Redirect, useParams } from 'react-router';
-import AdminPage from './pages/adminPage/adminPage';
+import AdminPage from './pages/adminPage/AdminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
 import { ENV } from './utils/env';
 

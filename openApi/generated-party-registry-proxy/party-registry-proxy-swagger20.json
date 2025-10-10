@@ -1,0 +1,2047 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "contact": {
+      "name": "PagoPA",
+      "url": "https://www.pagopa.gov.it"
+    },
+    "description": "Party Registry Proxy API documentation",
+    "title": "selc-party-registry-proxy",
+    "version": "0.1.0-SNAPSHOT"
+  },
+  "host": "localhost",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/aoo": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AOOsResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "aoo-controller"
+        ],
+        "description": "Returns the AOO list",
+        "operationId": "findAOOUsingGET",
+        "summary": "Retrieve all AOO from IPA"
+      }
+    },
+    "/aoo/{codiceUniAoo}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codiceUniAoo",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "categories",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AOOResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "internal-v1",
+          "aoo-controller"
+        ],
+        "description": "Returns an AOO",
+        "operationId": "findAOOByUnicodeUsingGET",
+        "summary": "Retrieve an AOO given its code"
+      }
+    },
+    "/categories": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "enum": [
+              "static",
+              "IPA",
+              "ANAC",
+              "IVASS",
+              "INFOCAMERE"
+            ],
+            "in": "query",
+            "name": "origin",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CategoriesResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "category-controller"
+        ],
+        "description": "Returns the categories list",
+        "operationId": "findCategoriesUsingGET",
+        "summary": "Get all categories"
+      }
+    },
+    "/geotaxonomies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "description",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema":{"$ref":"#/definitions/GeographicTaxonomyResourceArray"}
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "geographic-taxonomies-controller"
+        ],
+        "description": "retrieves the geographic taxonomies by description",
+        "operationId": "retrieveGeoTaxonomiesByDescriptionUsingGET",
+        "summary": "retrieves the geographic taxonomies by description"
+      }
+    },
+    "/geotaxonomies/{geotaxId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "geotaxId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GeographicTaxonomyResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "geographic-taxonomies-controller"
+        ],
+        "description": "retrieves the geographic taxonomy by code",
+        "operationId": "retrieveGeoTaxonomiesByCodeUsingGET",
+        "summary": "retrieves the geographic taxonomy by code"
+      }
+    },
+    "/healthz": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "dapr-controller"
+        ],
+        "operationId": "healthz"
+      }
+    },
+    "/info-camere/institutions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetInstitutionsByLegalDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BusinessesResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "infocamere",
+          "support-pnpg"
+        ],
+        "description": "Get the list of companies represented by the tax code of the person (physical or juridical) passed as a parameter",
+        "operationId": "institutionsByLegalTaxIdUsingPOST",
+        "summary": "Get institutions by legal tax id"
+      }
+    },
+    "/infocamere-pdnd/institution/{taxCode}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taxCode",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PDNDBusinessResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "internal-v1",
+          "infocamere-pdnd"
+        ],
+        "description": "Get the company represented by taxCode of the institution passed as a parameter",
+        "operationId": "institutionPdndByTaxCodeUsingGET",
+        "summary": "Get institution by institution taxCode"
+      }
+    },
+    "/infocamere-pdnd/institutions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "description",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema":{"$ref":"#/definitions/PDNDBusinessResourceArray"}
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "pdnd-info-camere-controller"
+        ],
+        "description": "Get the list of companies represented by description of the institutions passed as a parameter",
+        "operationId": "institutionsPdndByDescriptionUsingGET",
+        "summary": "Get institutions by institution description"
+      }
+    },
+    "/institutions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "categories",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InstitutionsResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "institution-controller"
+        ],
+        "description": "Returns a list of Institutions.",
+        "operationId": "searchInstitutionsUsingGET",
+        "summary": "Search institutions"
+      }
+    },
+    "/institutions/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "enum": [
+              "static",
+              "IPA",
+              "ANAC",
+              "IVASS",
+              "INFOCAMERE"
+            ],
+            "in": "query",
+            "name": "origin",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "categories",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InstitutionResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "institution-controller"
+        ],
+        "description": "Returns a single institution. If 'origin' param is filled, the ID to find is treated as 'originId' ($ref: '#/components/schemas/Institution'); otherwise is treated as 'id' ($ref: '#/components/schemas/Institution')",
+        "operationId": "findInstitutionUsingGET",
+        "summary": "Find institution by ID"
+      }
+    },
+    "/insurance-companies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InsuranceCompaniesResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "ivass-controller"
+        ],
+        "description": "Returns a list of insurance companies",
+        "operationId": "searchInsuranceByIvassCode",
+        "summary": "Search insurance company"
+      }
+    },
+    "/insurance-companies/{originId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "originId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InsuranceCompanyResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "ivass-controller"
+        ],
+        "description": "Returns only one insurance company.",
+        "operationId": "searchInsurancesUsingGET",
+        "summary": "Search insurance company by its IVASS code"
+      }
+    },
+    "/national-registries/legal-address": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "taxId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LegalAddressResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "national-registries",
+          "support-pnpg"
+        ],
+        "description": "Get the legal address of the business given the taxId",
+        "operationId": "legalAddress",
+        "summary": "Retrieve legal address data from InfoCamere"
+      }
+    },
+    "/national-registries/verify-legal": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "taxId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "vatNumber",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LegalVerificationResult"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "national-registries-controller"
+        ],
+        "description": "verify if given taxId is legal of given institution identified with vatNumber",
+        "operationId": "verifyLegalUsingGET",
+        "summary": "Verify legal status from AdE"
+      }
+    },
+    "/origins/{origin}/categories/{code}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "enum": [
+              "static",
+              "IPA",
+              "ANAC",
+              "IVASS",
+              "INFOCAMERE"
+            ],
+            "in": "path",
+            "name": "origin",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CategoryResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "category-controller"
+        ],
+        "description": "Returns a category",
+        "operationId": "findCategoryUsingGET",
+        "summary": "Get a category"
+      }
+    },
+    "/search/institutions": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "products",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "institutionTypes",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "in": "query",
+            "name": "taxCode",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": "*",
+            "in": "query",
+            "name": "searchText",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 50,
+            "format": "int32",
+            "in": "query",
+            "name": "top",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "format": "int32",
+            "in": "query",
+            "name": "skip",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema":{"$ref":"#/definitions/SearchServiceInstitutionArray"}
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "search-controller"
+        ],
+        "operationId": "searchInstitutions"
+      }
+    },
+    "/stations": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/StationsResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "station-controller"
+        ],
+        "description": "Returns a list of station.",
+        "operationId": "searchStationsUsingGET",
+        "summary": "Search station"
+      }
+    },
+    "/stations/{taxId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taxId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/StationResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "station-controller"
+        ],
+        "description": "Returns only one station.",
+        "operationId": "searchStationByTaxCodeUsingGET",
+        "summary": "Search station by its taxCode"
+      }
+    },
+    "/uo": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "default": 10,
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 1,
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "taxCodeInvoicing",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UOsResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "uo-controller"
+        ],
+        "description": "Returns the UO list",
+        "operationId": "findUosUsingGET",
+        "summary": "Retrieve all UO from IPA"
+      }
+    },
+    "/uo/{codiceUniUo}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codiceUniUo",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "categories",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UOResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "internal-v1",
+          "uo-controller"
+        ],
+        "description": "Returns a UO",
+        "operationId": "findUoByUnicodeUsingGET",
+        "summary": "Retrieve a UO given its code"
+      }
+    },
+    "/visura-infocamere-pdnd/institutions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rea",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PDNDBusinessResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "pdnd-visura-info-camere-controller"
+        ],
+        "description": "Get the company represented by rea of the institution passed as a parameter",
+        "operationId": "institutionsPdndByReaGET",
+        "summary": "Get institutions detail by institution rea"
+      }
+    },
+    "/visura-infocamere-pdnd/institutions/{taxCode}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taxCode",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PDNDBusinessResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "pdnd-visura-info-camere-controller"
+        ],
+        "description": "Get the company represented by taxCode of the institution passed as a parameter",
+        "operationId": "institutionVisuraPdndByTaxCodeUsingGET",
+        "summary": "Get institution by institution taxCode"
+      }
+    },
+    "/visura-infocamere-pdnd/institutions/{taxCode}/document": {
+      "get": {
+        "produces": [
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taxCode",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document successfully retrieved",
+            "schema": {
+              "format": "byte",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "pdnd-visura-info-camere-controller"
+        ],
+        "description": "Get the company represented by taxCode of the institution passed as a parameter",
+        "operationId": "institutionVisuraDocumentByTaxCodeUsingGET",
+        "summary": "Get institution by institution taxCode"
+      }
+    }
+  },
+  "definitions" : {"SearchServiceInstitutionArray":{"type": "array", "items": {"$ref": "#/definitions/SearchServiceInstitution"}},"PDNDBusinessResourceArray":{"type": "array", "items": {"$ref": "#/definitions/PDNDBusinessResource"}},"STRINGWrapper":{"type": "string"},"STRINGArray":{"type": "array", "items": {"type": "string"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},
+    "AOOResource": {
+      "properties": {
+        "cap": {
+          "type": "string"
+        },
+        "codAoo": {
+          "type": "string"
+        },
+        "codiceCatastaleComune": {
+          "type": "string"
+        },
+        "codiceComuneISTAT": {
+          "type": "string"
+        },
+        "codiceFiscaleEnte": {
+          "type": "string"
+        },
+        "codiceIpa": {
+          "type": "string"
+        },
+        "codiceUniAoo": {
+          "type": "string"
+        },
+        "cognomeResponsabile": {
+          "type": "string"
+        },
+        "dataAggiornamento": {
+          "type": "string"
+        },
+        "dataIstituzione": {
+          "type": "string"
+        },
+        "denominazioneAoo": {
+          "type": "string"
+        },
+        "denominazioneEnte": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "indirizzo": {
+          "type": "string"
+        },
+        "mail1": {
+          "type": "string"
+        },
+        "mail2": {
+          "type": "string"
+        },
+        "mail3": {
+          "type": "string"
+        },
+        "mailResponsabile": {
+          "type": "string"
+        },
+        "nomeResponsabile": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        },
+        "protocolloInformatico": {
+          "type": "string"
+        },
+        "telefono": {
+          "type": "string"
+        },
+        "telefonoResponsabile": {
+          "type": "string"
+        },
+        "tipoMail1": {
+          "type": "string"
+        },
+        "tipoMail2": {
+          "type": "string"
+        },
+        "tipoMail3": {
+          "type": "string"
+        },
+        "uriprotocolloInformatico": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AOOsResource": {
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/AOOResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    },
+    "BusinessResource": {
+      "properties": {
+        "businessName": {
+          "type": "string"
+        },
+        "businessTaxId": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BusinessesResource": {
+      "properties": {
+        "businesses": {
+          "items": {
+            "$ref": "#/definitions/BusinessResource"
+          },
+          "type": "array"
+        },
+        "legalTaxId": {
+          "type": "string"
+        },
+        "requestDateTime": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CategoriesResource": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CategoryResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "type": "object"
+    },
+    "CategoryResource": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GeographicTaxonomyResource": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "country_abbreviation": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "istat_code": {
+          "type": "string"
+        },
+        "province_abbreviation": {
+          "type": "string"
+        },
+        "province_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GetInstitutionsByLegalDto": {
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/GetInstitutionsByLegalFilterDto"
+        }
+      },
+      "type": "object"
+    },
+    "GetInstitutionsByLegalFilterDto": {
+      "properties": {
+        "legalTaxId": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "InstitutionResource": {
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "aoo": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "digitalAddress": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "istatCode": {
+          "type": "string"
+        },
+        "o": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        },
+        "originId": {
+          "type": "string"
+        },
+        "ou": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "InstitutionsResource": {
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/InstitutionResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    },
+    "InsuranceCompaniesResource": {
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/InsuranceCompanyResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    },
+    "InsuranceCompanyResource": {
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "digitalAddress": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        },
+        "originId": {
+          "type": "string"
+        },
+        "registerType": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "workType": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "LegalAddressResponse": {
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "LegalVerificationResult": {
+      "properties": {
+        "resultCode": {
+          "type": "string"
+        },
+        "resultDetail": {
+          "type": "string"
+        },
+        "verificationResult": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "PDNDBusinessResource": {
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "atecoCodes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "businessName": {
+          "type": "string"
+        },
+        "businessStatus": {
+          "type": "string"
+        },
+        "businessTaxId": {
+          "type": "string"
+        },
+        "cciaa": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "descriptionStateInstitution": {
+          "type": "string"
+        },
+        "digitalAddress": {
+          "type": "string"
+        },
+        "disabledStateInstitution": {
+          "type": "string"
+        },
+        "legalForm": {
+          "type": "string"
+        },
+        "legalNature": {
+          "type": "string"
+        },
+        "legalNatureDescription": {
+          "type": "string"
+        },
+        "nrea": {
+          "type": "string"
+        },
+        "statusCompanyRD": {
+          "type": "string"
+        },
+        "statusCompanyRI": {
+          "type": "string"
+        },
+        "vatNumber": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Problem": {
+      "description": "Generic problem response",
+      "type": "object"
+    },
+    "SearchServiceInstitution": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "institutionTypes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "lastModified": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "parentDescription": {
+          "type": "string"
+        },
+        "products": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "taxCode": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StationResource": {
+      "properties": {
+        "anacEnabled": {
+          "type": "boolean"
+        },
+        "anacEngaged": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "digitalAddress": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        },
+        "originId": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StationsResource": {
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/StationResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    },
+    "UOResource": {
+      "properties": {
+        "cap": {
+          "type": "string"
+        },
+        "codiceCatastaleComune": {
+          "type": "string"
+        },
+        "codiceComuneISTAT": {
+          "type": "string"
+        },
+        "codiceFiscaleEnte": {
+          "type": "string"
+        },
+        "codiceFiscaleSfe": {
+          "type": "string"
+        },
+        "codiceIpa": {
+          "type": "string"
+        },
+        "codiceUniAoo": {
+          "type": "string"
+        },
+        "codiceUniUo": {
+          "type": "string"
+        },
+        "codiceUniUoPadre": {
+          "type": "string"
+        },
+        "cognomeResponsabile": {
+          "type": "string"
+        },
+        "dataAggiornamento": {
+          "type": "string"
+        },
+        "dataIstituzione": {
+          "type": "string"
+        },
+        "denominazioneEnte": {
+          "type": "string"
+        },
+        "descrizioneUo": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "indirizzo": {
+          "type": "string"
+        },
+        "mail1": {
+          "type": "string"
+        },
+        "mail2": {
+          "type": "string"
+        },
+        "mail3": {
+          "type": "string"
+        },
+        "mailResponsabile": {
+          "type": "string"
+        },
+        "nomeResponsabile": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "static",
+            "IPA",
+            "ANAC",
+            "IVASS",
+            "INFOCAMERE"
+          ],
+          "type": "string"
+        },
+        "telefono": {
+          "type": "string"
+        },
+        "telefonoResponsabile": {
+          "type": "string"
+        },
+        "tipoMail1": {
+          "type": "string"
+        },
+        "tipoMail2": {
+          "type": "string"
+        },
+        "tipoMail3": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UOsResource": {
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/UOResource"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "in": "header",
+      "name": "Authorization",
+      "type": "apiKey"
+    }
+  },
+  "x-components": {}
+}

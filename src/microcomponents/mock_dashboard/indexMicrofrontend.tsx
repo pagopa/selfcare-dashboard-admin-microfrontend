@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
-import AdminPage from '../../pages/adminPage/adminPage';
+import AdminPage from '../../pages/adminPage/AdminPage';
 import { store } from '../../redux/store';
 import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
