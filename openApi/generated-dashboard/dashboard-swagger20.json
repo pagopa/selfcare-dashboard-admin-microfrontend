@@ -1589,8 +1589,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/STRINGWrapper"
             }
           },
           "400": {
@@ -1742,8 +1741,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/STRINGWrapper"
             }
           },
           "400": {
@@ -3772,6 +3770,10 @@
         "billing": {
           "$ref": "#/definitions/Billing"
         },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
         "institutionType": {
           "enum": [
             "AS",
@@ -3834,6 +3836,10 @@
         },
         "billing": {
           "$ref": "#/definitions/Billing"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
         },
         "institutionType": {
           "enum": [

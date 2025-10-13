@@ -1,5 +1,8 @@
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
-import { ProductOnBoardingStatusEnum } from '../../api/generated/b4f-dashboard/OnboardedProductResource';
+import {
+  InstitutionTypeEnum,
+  ProductOnBoardingStatusEnum,
+} from '../../api/generated/b4f-dashboard/OnboardedProductResource';
 import { Party } from '../../model/Party';
 
 export const mockedParties: Array<Party> = [
@@ -18,7 +21,7 @@ export const mockedParties: Array<Party> = [
     origin: 'IPA',
     institutionType: 'PA',
     recipientCode: 'CGDAS23A',
-    geographicTaxonomies: undefined,
+    geographicTaxonomies: [],
     supportEmail: '',
     products: [
       {
@@ -32,7 +35,7 @@ export const mockedParties: Array<Party> = [
           publicServices: true,
         },
         userProductActions: [Actions.AccessProductBackoffice, Actions.ListAvailableProducts],
-        institutionType: 'PA',
+        institutionType: InstitutionTypeEnum.PA,
         origin: 'IVASS',
         originId: '20128',
       },
@@ -51,7 +54,7 @@ export const mockedParties: Array<Party> = [
           Actions.AccessProductBackoffice,
           Actions.ViewBilling,
         ],
-        institutionType: 'GPU',
+        institutionType: InstitutionTypeEnum.GPU,
         origin: 'IVASS',
         originId: '20128',
       },
@@ -100,7 +103,7 @@ export const mockedParties: Array<Party> = [
           Actions.ViewDelegations,
           Actions.ViewBilling,
         ],
-        institutionType: 'GPU',
+        institutionType: InstitutionTypeEnum.GPU,
         origin: 'IVASS',
         originId: '20128',
       },

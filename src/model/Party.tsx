@@ -1,15 +1,33 @@
 import { GeographicTaxonomyResource } from '../api/generated/b4f-dashboard/GeographicTaxonomyResource';
 import { InstitutionResource } from '../api/generated/b4f-dashboard/InstitutionResource';
-import { OnboardedProduct } from '../api/generated/b4f-dashboard/OnboardedProduct';
+import { ProductOnBoardingStatusEnum } from '../api/generated/b4f-dashboard/OnboardedProductResource';
 import { buildUrlLog } from '../utils/helper';
 
 export type UserRole = 'ADMIN' | 'LIMITED';
 export type PartyRole = 'DELEGATE' | 'MANAGER' | 'OPERATOR' | 'SUB_DELEGATE';
 export type UserStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED';
 
+export type OnboardedProduct = {
+  authorized?: boolean;
+  billing?: {
+    publicServices?: boolean;
+    recipientCode?: string;
+    vatNumber?: string;
+  };
+  productId?: string;
+  productOnBoardingStatus?: ProductOnBoardingStatusEnum;
+  userProductActions?: Array<string>;
+  userRole?: string;
+  isAggregator?: boolean;
+  institutionType?: string;
+  origin?: string;
+  originId?: string;
+  createdAt?: Date;
+};
+
 export type Party = {
   partyId: string;
-  products: any;
+  products: Array<OnboardedProduct>;
   externalId?: string;
   originId?: string;
   origin?: string;
@@ -27,7 +45,7 @@ export type Party = {
   typology: string;
   institutionType?: string;
   recipientCode?: string;
-  geographicTaxonomies: any;
+  geographicTaxonomies: Array<GeographicTaxonomyResource>;
   vatNumberGroup?: boolean;
   supportEmail?: string;
   vatNumber?: string;

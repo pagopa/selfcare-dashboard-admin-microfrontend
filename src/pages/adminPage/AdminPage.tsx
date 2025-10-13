@@ -1,11 +1,23 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, CircularProgress, Grid, styled, TextField, Typography } from '@mui/material';
-import { PartyAccountItemButton } from '@pagopa/mui-italia';
+import {
+  Autocomplete,
+  Box,
+  Chip,
+  CircularProgress,
+  Grid,
+  styled,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { PartyAccountItem, PartyAccountItemButton, ProductAvatar } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
+import { Party } from '../../model/Party';
+import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { buildUrlLog } from '../../utils/helper';
 
@@ -18,6 +30,7 @@ const AdminPage = () => {
   const [selectedInstitution, setSelectedInstitution] = useState<SearchServiceInstitution | null>(
     null
   );
+  const [partyDetail, setPartyDetail] = useState<Party | null>(null);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -52,6 +65,26 @@ const AdminPage = () => {
     []
   );
 
+  useEffect(() => {
+    if (selectedInstitution?.id) {
+      fetchPartyDetailsService(selectedInstitution.id)
+        .then((party) => {
+          if (party) {
+            setPartyDetail(party);
+          }
+        })
+        .catch((error) => {
+          addError({
+            id: `fetchPartyDetails-${selectedInstitution.id}-api-error`,
+            blocking: false,
+            techDescription: `Fetch party details for institution id: ${selectedInstitution.id} failed`,
+            toNotify: false,
+            error: error as Error,
+          });
+        });
+    }
+  }, [selectedInstitution]);
+
   const commonStyles = {
     backgroundColor: 'background.paper',
     p: 3,
@@ -73,6 +106,17 @@ const AdminPage = () => {
     overflowY: 'auto',
     overflowX: 'hidden',
   });
+
+  const getProductLabel = (productId?: string) => {
+    switch (productId) {
+      case 'prod-interop':
+        return 'Interoperabilità';
+      case 'prod-pagopa':
+        return 'PagoPA';
+      default:
+        return productId;
+    }
+  };
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
@@ -176,6 +220,100 @@ const AdminPage = () => {
           }}
         />
       </Grid>
+
+      {partyDetail && selectedInstitution && (
+        <Grid item xs={12} sx={commonStyles}>
+          <PartyAccountItem
+            image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
+            partyName={selectedInstitution.description || '-'}
+          />
+
+          <Grid
+            container
+            bgcolor={grey[100]}
+            mt={2}
+            p={2}
+            alignItems="center"
+            flexDirection={'row'}
+          >
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.fiscalCode')}
+              </Typography>
+              <Typography>{partyDetail.fiscalCode}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.digitalAddress')}
+              </Typography>
+              <Typography>{partyDetail.digitalAddress || '-'}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.registeredOffice')}
+              </Typography>
+              <Typography>{partyDetail.registeredOffice}</Typography>
+            </Grid>
+          </Grid>
+
+          {/* 5-COLUMN ROW PER PRODUCT */}
+          {partyDetail.products?.map((product) => (
+            <Grid container key={product.productId} mt={3} spacing={2} alignItems="center">
+              <Grid item xs={2}>
+                <Box display="flex" alignItems="center">
+                  <Box width={32} height={32} bgcolor="#E5F0FF" borderRadius="6px" mr={1} />
+                  <ProductAvatar
+                    logoUrl={'TODO url'}
+                    logoBgColor={'TODO get from product or default'}
+                    logoAltText={`Logo ${product?.productId}`}
+                    size="small"
+                  />
+                  <Typography>{getProductLabel(product?.productId)}</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={2}>
+                <Typography>{t('adminPage.selectedPartyDetails.subscriptionDate')}</Typography>
+                <Typography>{product?.createdAt?.toLocaleDateString() || '-'}</Typography>
+              </Grid>
+
+              <Grid item xs={2}>
+                <Typography>{t('adminPage.selectedPartyDetails.agreementStatus')}</Typography>
+                <Grid>
+                  <Chip
+                    label={t('adminPage.selectedPartyDetails.activeStatus')}
+                    variant="filled"
+                    color="success"
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid item xs={2}>
+                <Typography>{t('adminPage.selectedPartyDetails.institutionType')}</Typography>
+                <Typography>
+                  {t(
+                    `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${product?.institutionType?.toLowerCase()}`
+                  ) || '-'}
+                </Typography>
+              </Grid>
+
+              {/* Column 5: Back-office link or action 
+              <Grid item xs={2}>
+                <Typography
+                  fontWeight="bold"
+                  color="primary"
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => handleGoToBackOffice(product)}
+                >
+                  Vedi Back-office →
+                </Typography>
+              </Grid>
+               Column 5: Back-office link or action 
+               */}
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Grid>
   );
 };
