@@ -10,6 +10,16 @@ export default {
       noResults: 'Nessun risultato',
       loadingText: 'Caricamento in corso...',
     },
+    selectedPartyDetails:{
+      fiscalCode: 'Codice Fiscale',
+      digitalAddress: 'Indirizzo PEC primario',
+      registeredOffice: 'Sede Legale',
+      products: 'Prodotto',
+      subscriptionDate: 'Data di adesione',
+      institutionType: 'Tipologia ente',
+      agreementStatus: 'Stato dell\'accordo',
+      activeStatus: 'Attivo',
+    }
   },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',

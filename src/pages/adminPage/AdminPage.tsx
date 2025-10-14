@@ -1,13 +1,32 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, CircularProgress, Grid, styled, TextField, Typography } from '@mui/material';
-import { PartyAccountItemButton } from '@pagopa/mui-italia';
+import {
+  Autocomplete,
+  Box,
+  Chip,
+  CircularProgress,
+  Divider,
+  Grid,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
+import { Party } from '../../model/Party';
+import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
-import { ENV } from '../../utils/env';
+import { buildUrlLog } from '../../utils/helper';
 
 const AdminPage = () => {
   const { t } = useTranslation();
@@ -18,6 +37,7 @@ const AdminPage = () => {
   const [selectedInstitution, setSelectedInstitution] = useState<SearchServiceInstitution | null>(
     null
   );
+  const [partyDetail, setPartyDetail] = useState<Party | null>(null);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -52,6 +72,26 @@ const AdminPage = () => {
     []
   );
 
+  useEffect(() => {
+    if (selectedInstitution?.id) {
+      fetchPartyDetailsService(selectedInstitution.id)
+        .then((party) => {
+          if (party) {
+            setPartyDetail(party);
+          }
+        })
+        .catch((error) => {
+          addError({
+            id: `fetchPartyDetails-${selectedInstitution.id}-api-error`,
+            blocking: false,
+            techDescription: `Fetch party details for institution id: ${selectedInstitution.id} failed`,
+            toNotify: false,
+            error: error as Error,
+          });
+        });
+    }
+  }, [selectedInstitution]);
+
   const commonStyles = {
     backgroundColor: 'background.paper',
     p: 3,
@@ -74,8 +114,16 @@ const AdminPage = () => {
     overflowX: 'hidden',
   });
 
-  const buildUrlLog = (partyId: string) =>
-    `${ENV.URL_INSTITUTION_LOGO.PREFIX}${partyId}${ENV.URL_INSTITUTION_LOGO.SUFFIX}`;
+  const getProductLabel = (productId?: string) => {
+    switch (productId) {
+      case 'prod-interop':
+        return 'Interoperabilità';
+      case 'prod-pagopa':
+        return 'PagoPA';
+      default:
+        return productId;
+    }
+  };
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
@@ -179,6 +227,123 @@ const AdminPage = () => {
           }}
         />
       </Grid>
+
+      {partyDetail && selectedInstitution && (
+        <Grid item xs={12} sx={commonStyles}>
+          <PartyAccountItem
+            image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
+            partyName={selectedInstitution.description || '-'}
+          />
+
+          <Grid
+            container
+            bgcolor={grey[100]}
+            mt={2}
+            p={2}
+            alignItems="center"
+            flexDirection={'row'}
+          >
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.fiscalCode')}
+              </Typography>
+              <Typography>{partyDetail.fiscalCode}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.digitalAddress')}
+              </Typography>
+              <Typography>{partyDetail.digitalAddress || '-'}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="caption" color="textSecondary">
+                {t('adminPage.selectedPartyDetails.registeredOffice')}
+              </Typography>
+              <Typography>{partyDetail.registeredOffice}</Typography>
+            </Grid>
+          </Grid>
+          <Divider sx={{ my: 3 }} />
+          {/* Products Table */}
+          {partyDetail.products && partyDetail.products.length > 0 && (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.product')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.subscriptionDate')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.agreementStatus')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.institutionType')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }} align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {partyDetail.products.map((product) => (
+                    <TableRow key={product.productId} hover>
+                      <TableCell>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Box
+                            width={32}
+                            height={32}
+                            bgcolor="#E5F0FF"
+                            borderRadius="6px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            {/* ProductAvatar component would go here */}
+                          </Box>
+                          <Typography>{getProductLabel(product?.productId)}</Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        {product?.createdAt
+                          ? new Date(product.createdAt).toLocaleDateString()
+                          : '-'}
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={t('adminPage.selectedPartyDetails.activeStatus')}
+                          color="success"
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {t(
+                          `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${product?.institutionType?.toLowerCase()}`
+                        ) || '-'}
+                      </TableCell>
+                      <TableCell align="right">
+                        {/*
+                        <Typography
+                          sx={{
+                            color: 'primary.main',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            '&:hover': {
+                              textDecoration: 'underline',
+                            },
+                          }}
+                        >
+                          Vedi Back-office →
+                        </Typography>
+                      */}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Grid>
+      )}
     </Grid>
   );
 };
