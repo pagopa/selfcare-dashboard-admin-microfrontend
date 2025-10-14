@@ -4,13 +4,20 @@ import {
   Box,
   Chip,
   CircularProgress,
+  Divider,
   Grid,
   styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { PartyAccountItem, PartyAccountItemButton, ProductAvatar } from '@pagopa/mui-italia';
+import { PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -255,63 +262,86 @@ const AdminPage = () => {
               <Typography>{partyDetail.registeredOffice}</Typography>
             </Grid>
           </Grid>
-
-          {/* 5-COLUMN ROW PER PRODUCT */}
-          {partyDetail.products?.map((product) => (
-            <Grid container key={product.productId} mt={3} spacing={2} alignItems="center">
-              <Grid item xs={2}>
-                <Box display="flex" alignItems="center">
-                  <Box width={32} height={32} bgcolor="#E5F0FF" borderRadius="6px" mr={1} />
-                  <ProductAvatar
-                    logoUrl={'TODO url'}
-                    logoBgColor={'TODO get from product or default'}
-                    logoAltText={`Logo ${product?.productId}`}
-                    size="small"
-                  />
-                  <Typography>{getProductLabel(product?.productId)}</Typography>
-                </Box>
-              </Grid>
-
-              <Grid item xs={2}>
-                <Typography>{t('adminPage.selectedPartyDetails.subscriptionDate')}</Typography>
-                <Typography>{product?.createdAt?.toLocaleDateString() || '-'}</Typography>
-              </Grid>
-
-              <Grid item xs={2}>
-                <Typography>{t('adminPage.selectedPartyDetails.agreementStatus')}</Typography>
-                <Grid>
-                  <Chip
-                    label={t('adminPage.selectedPartyDetails.activeStatus')}
-                    variant="filled"
-                    color="success"
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item xs={2}>
-                <Typography>{t('adminPage.selectedPartyDetails.institutionType')}</Typography>
-                <Typography>
-                  {t(
-                    `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${product?.institutionType?.toLowerCase()}`
-                  ) || '-'}
-                </Typography>
-              </Grid>
-
-              {/* Column 5: Back-office link or action 
-              <Grid item xs={2}>
-                <Typography
-                  fontWeight="bold"
-                  color="primary"
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => handleGoToBackOffice(product)}
-                >
-                  Vedi Back-office →
-                </Typography>
-              </Grid>
-               Column 5: Back-office link or action 
-               */}
-            </Grid>
-          ))}
+          <Divider sx={{ my: 3 }} />
+          {/* Products Table */}
+          {partyDetail.products && partyDetail.products.length > 0 && (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.product')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.subscriptionDate')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.agreementStatus')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {t('adminPage.selectedPartyDetails.institutionType')}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }} align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {partyDetail.products.map((product) => (
+                    <TableRow key={product.productId} hover>
+                      <TableCell>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Box
+                            width={32}
+                            height={32}
+                            bgcolor="#E5F0FF"
+                            borderRadius="6px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            {/* ProductAvatar component would go here */}
+                          </Box>
+                          <Typography>{getProductLabel(product?.productId)}</Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        {product?.createdAt
+                          ? new Date(product.createdAt).toLocaleDateString()
+                          : '-'}
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={t('adminPage.selectedPartyDetails.activeStatus')}
+                          color="success"
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {t(
+                          `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${product?.institutionType?.toLowerCase()}`
+                        ) || '-'}
+                      </TableCell>
+                      <TableCell align="right">
+                        {/*
+                        <Typography
+                          sx={{
+                            color: 'primary.main',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            '&:hover': {
+                              textDecoration: 'underline',
+                            },
+                          }}
+                        >
+                          Vedi Back-office →
+                        </Typography>
+                      */}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Grid>
       )}
     </Grid>
