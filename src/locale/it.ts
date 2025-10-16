@@ -14,7 +14,7 @@ export default {
       fiscalCode: 'Codice Fiscale',
       digitalAddress: 'Indirizzo PEC primario',
       registeredOffice: 'Sede Legale',
-      products: 'Prodotto',
+      product: 'Prodotto',
       subscriptionDate: 'Data di adesione',
       institutionType: 'Tipologia ente',
       agreementStatus: 'Stato dell\'accordo',
