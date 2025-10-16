@@ -17,15 +17,17 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
+import { PartyAccountItem, PartyAccountItemButton, ProductAvatar } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { Party } from '../../model/Party';
+import { Product } from '../../model/Product';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
+import { fetchProducts } from '../../services/productService';
 import { buildUrlLog } from '../../utils/helper';
 
 const AdminPage = () => {
@@ -38,6 +40,17 @@ const AdminPage = () => {
     null
   );
   const [partyDetail, setPartyDetail] = useState<Party | null>(null);
+  const [products, setProducts] = useState<Array<Product>>([]);
+
+  useEffect(() => {
+    fetchProducts()
+      .then((products) => {
+        setProducts(products);
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -114,16 +127,27 @@ const AdminPage = () => {
     overflowX: 'hidden',
   });
 
-  const getProductLabel = (productId?: string) => {
-    switch (productId) {
-      case 'prod-interop':
-        return 'Interoperabilità';
-      case 'prod-pagopa':
-        return 'PagoPA';
-      default:
-        return productId;
+  const onboardedProducts = partyDetail?.products.filter(
+    (p) => p.productOnBoardingStatus === 'ACTIVE'
+  );
+
+  const main = onboardedProducts?.find((p) => p.productId === 'prod-interop');
+  const variants = onboardedProducts?.filter((p) => p.productId?.startsWith('prod-interop'));
+
+  const productsToShow = (() => {
+    if (main) {
+      return [main];
     }
-  };
+    if (variants && variants.length === 1) {
+      return variants;
+    }
+    if (variants && variants.length > 1) {
+      return [{ ...variants[0], productId: 'prod-interop' }];
+    }
+    return onboardedProducts;
+  })();
+
+  const getProductToShow = (productId?: string) => products.find((p) => p.id === productId);
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
@@ -247,24 +271,30 @@ const AdminPage = () => {
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.fiscalCode')}
               </Typography>
-              <Typography>{partyDetail.fiscalCode}</Typography>
+              <Typography fontWeight="fontWeightMedium">{partyDetail.fiscalCode}</Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.digitalAddress')}
               </Typography>
-              <Typography>{partyDetail.digitalAddress || '-'}</Typography>
+              <Typography
+                fontWeight="fontWeightMedium"
+                noWrap
+                sx={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}
+              >
+                {partyDetail.digitalAddress || '-'}
+              </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.registeredOffice')}
               </Typography>
-              <Typography>{partyDetail.registeredOffice}</Typography>
+              <Typography fontWeight="fontWeightMedium">{partyDetail.registeredOffice || '-'}</Typography>
             </Grid>
           </Grid>
           <Divider sx={{ my: 3 }} />
           {/* Products Table */}
-          {partyDetail.products && partyDetail.products.length > 0 && (
+          {productsToShow && productsToShow.length > 0 && (
             <TableContainer>
               <Table>
                 <TableHead>
@@ -285,43 +315,42 @@ const AdminPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {partyDetail.products.map((product) => (
-                    <TableRow key={product.productId} hover>
-                      <TableCell>
-                        <Box display="flex" alignItems="center" gap={1}>
-                          <Box
-                            width={32}
-                            height={32}
-                            bgcolor="#E5F0FF"
-                            borderRadius="6px"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            {/* ProductAvatar component would go here */}
+                  {productsToShow?.map((onboardedProduct) => {
+                    const productFromConfiguration = getProductToShow(onboardedProduct?.productId);
+                    return (
+                      <TableRow key={onboardedProduct?.productId} hover>
+                        <TableCell>
+                          <Box display="flex" alignItems="center" gap={1}>
+                            <ProductAvatar
+                              id={onboardedProduct?.productId}
+                              size="small"
+                              logoUrl={productFromConfiguration?.logo || ''}
+                              logoBgColor={productFromConfiguration?.logoBgColor || 'transparent'}
+                              logoAltText={`${onboardedProduct?.productId} logo`}
+                            />
+                            <Typography>{productFromConfiguration?.title || '-'}</Typography>
                           </Box>
-                          <Typography>{getProductLabel(product?.productId)}</Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        {product?.createdAt
-                          ? new Date(product.createdAt).toLocaleDateString()
-                          : '-'}
-                      </TableCell>
-                      <TableCell>
-                        <Chip
-                          label={t('adminPage.selectedPartyDetails.activeStatus')}
-                          color="success"
-                          size="small"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {t(
-                          `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${product?.institutionType?.toLowerCase()}`
-                        ) || '-'}
-                      </TableCell>
-                      <TableCell align="right">
-                        {/*
+                        </TableCell>
+                        <TableCell>
+                          {onboardedProduct?.createdAt
+                            ? new Date(onboardedProduct.createdAt).toLocaleDateString()
+                            : '-'}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={t('adminPage.selectedPartyDetails.activeStatus')}
+                            size="small"
+                            color="success"
+                            sx={{ backgroundColor: 'success.light', color: 'success.main' }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          {t(
+                            `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
+                          ) || '-'}
+                        </TableCell>
+                        <TableCell align="right">
+                          {/*
                         <Typography
                           sx={{
                             color: 'primary.main',
@@ -335,9 +364,10 @@ const AdminPage = () => {
                           Vedi Back-office →
                         </Typography>
                       */}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

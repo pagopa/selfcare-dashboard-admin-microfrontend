@@ -1,14 +1,15 @@
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import {
-    buildFetchApi,
-    extractResponse,
+  buildFetchApi,
+  extractResponse,
 } from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
 import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResource';
+import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
 
 const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
   const token = storageTokenOps.read();
@@ -43,6 +44,11 @@ export const DashboardApi = {
     const result = await apiClient.v2GetInstitution({
       institutionId,
     });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  getProducts: async (): Promise<Array<ProductsResource>> => {
+    const result = await apiClient.getProductsTreeUsingGET({});
     return extractResponse(result, 200, onRedirectToLogin);
   },
 };
