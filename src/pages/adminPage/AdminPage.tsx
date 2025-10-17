@@ -1,3 +1,4 @@
+import { ArrowForward } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Autocomplete,
@@ -17,7 +18,12 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { PartyAccountItem, PartyAccountItemButton, ProductAvatar } from '@pagopa/mui-italia';
+import {
+  ButtonNaked,
+  PartyAccountItem,
+  PartyAccountItemButton,
+  ProductAvatar,
+} from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -148,6 +154,11 @@ const AdminPage = () => {
   })();
 
   const getProductToShow = (productId?: string) => products.find((p) => p.id === productId);
+
+  const handleProductClick = (productId?: string) => {
+    // TODO: implement modal confirmation or tokenExchage to product backOffices
+    console.log('Clicked product with id:', productId);
+  };
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
@@ -289,7 +300,9 @@ const AdminPage = () => {
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.registeredOffice')}
               </Typography>
-              <Typography fontWeight="fontWeightMedium">{partyDetail.registeredOffice || '-'}</Typography>
+              <Typography fontWeight="fontWeightMedium">
+                {partyDetail.registeredOffice || '-'}
+              </Typography>
             </Grid>
           </Grid>
           <Divider sx={{ my: 3 }} />
@@ -350,20 +363,14 @@ const AdminPage = () => {
                           ) || '-'}
                         </TableCell>
                         <TableCell align="right">
-                          {/*
-                        <Typography
-                          sx={{
-                            color: 'primary.main',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            '&:hover': {
-                              textDecoration: 'underline',
-                            },
-                          }}
-                        >
-                          Vedi Back-office →
-                        </Typography>
-                      */}
+                          <ButtonNaked
+                            component="button"
+                            endIcon={<ArrowForward />}
+                            onClick={() => handleProductClick(onboardedProduct?.productId)}
+                            sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                          >
+                            {t('adminPage.selectedPartyDetails.backOffice')}
+                          </ButtonNaked>
                         </TableCell>
                       </TableRow>
                     );
