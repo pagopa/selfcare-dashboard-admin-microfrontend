@@ -51,4 +51,19 @@ export const DashboardApi = {
     const result = await apiClient.getProductsTreeUsingGET({});
     return extractResponse(result, 200, onRedirectToLogin);
   },
+
+  tokenExchangeAdmin: async (
+    institutionId: string,
+    productId: string,
+    environment?: string,
+    lang?: string
+  ): Promise<string> => {
+    const result = await apiClient.v2ExchangeBackofficeAdmin({
+      institutionId,
+      productId,
+      environment,
+      lang,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
 };

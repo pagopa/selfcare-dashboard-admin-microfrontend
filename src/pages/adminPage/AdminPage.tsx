@@ -7,7 +7,6 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  styled,
   Table,
   TableBody,
   TableCell,
@@ -25,20 +24,23 @@ import {
   ProductAvatar,
 } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
+import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
+import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
 import { Product } from '../../model/Product';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
 import { buildUrlLog } from '../../utils/helper';
+import GenericEnvProductModal from './components/GenericEnvProductModal';
+import SessionModalInteropProduct from './components/SessionModalInteropProduct';
+import { commonStyles, CustomListbox } from './utils/styles';
 
 const AdminPage = () => {
-  const { t } = useTranslation();
-  const addError = useErrorDispatcher();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<Array<SearchServiceInstitution>>([]);
@@ -47,6 +49,18 @@ const AdminPage = () => {
   );
   const [partyDetail, setPartyDetail] = useState<Party | null>(null);
   const [products, setProducts] = useState<Array<Product>>([]);
+  const [openCustomEnvInteropModal, setOpenCustomEnvInteropModal] = useState<boolean>(false);
+  const [openGenericEnvProductModal, setOpenGenericEnvProductModal] = useState<boolean>(false);
+
+  const { t } = useTranslation();
+  const addError = useErrorDispatcher();
+  const { invokeProductBo } = useTokenExchange();
+  const lang = i18n.language;
+
+  const interopProductsList = (partyDetail?.products ?? []).filter((p) =>
+    p.productId?.startsWith('prod-interop')
+  );
+  const hasMoreThanOneInteropEnv = interopProductsList.length > 1;
 
   useEffect(() => {
     fetchProducts()
@@ -111,28 +125,6 @@ const AdminPage = () => {
     }
   }, [selectedInstitution]);
 
-  const commonStyles = {
-    backgroundColor: 'background.paper',
-    p: 3,
-    borderRadius: '4px',
-    marginBottom: 5,
-  };
-
-  const CustomListbox = styled('ul')({
-    '&::-webkit-scrollbar': {
-      width: 4,
-    },
-    '&::-webkit-scrollbar-track': {
-      boxShadow: `inset 10px 10px  #E6E9F2`,
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#0073E6',
-      borderRadius: '16px',
-    },
-    overflowY: 'auto',
-    overflowX: 'hidden',
-  });
-
   const onboardedProducts = partyDetail?.products.filter(
     (p) => p.productOnBoardingStatus === 'ACTIVE'
   );
@@ -153,11 +145,37 @@ const AdminPage = () => {
     return onboardedProducts;
   })();
 
-  const getProductToShow = (productId?: string) => products.find((p) => p.id === productId);
+  const getProductToShow = (productId: string) => products.find((p) => p.id === productId);
 
-  const handleProductClick = (productId?: string) => {
-    // TODO: implement modal confirmation or tokenExchage to product backOffices
-    console.log('Clicked product with id:', productId);
+  const handleOnboardedProductClick = (productFromConfiguration?: Product) => {
+    if (!productFromConfiguration) {
+      console.log('No onboarded product provided');
+      return;
+    }
+
+    console.log('Clicked product:', productFromConfiguration);
+
+    if (hasMoreThanOneInteropEnv && productFromConfiguration?.id?.startsWith('prod-interop')) {
+      setOpenCustomEnvInteropModal(true);
+      return;
+    }
+
+    if (
+      productFromConfiguration.backOfficeEnvironmentConfigurations &&
+      productFromConfiguration.backOfficeEnvironmentConfigurations.length > 0 &&
+      productFromConfiguration?.id !== 'prod-interop'
+    ) {
+      setOpenGenericEnvProductModal(true);
+      return;
+    }
+
+    // Fallback: open product backoffice directly
+    void invokeProductBo(
+      productFromConfiguration,
+      selectedInstitution as SearchServiceInstitution,
+      undefined,
+      lang
+    );
   };
 
   return (
@@ -268,6 +286,7 @@ const AdminPage = () => {
           <PartyAccountItem
             image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
             partyName={selectedInstitution.description || '-'}
+            parentPartyName={selectedInstitution.parentDescription || undefined}
           />
 
           <Grid
@@ -306,6 +325,7 @@ const AdminPage = () => {
             </Grid>
           </Grid>
           <Divider sx={{ my: 3 }} />
+
           {/* Products Table */}
           {productsToShow && productsToShow.length > 0 && (
             <TableContainer>
@@ -329,50 +349,129 @@ const AdminPage = () => {
                 </TableHead>
                 <TableBody>
                   {productsToShow?.map((onboardedProduct) => {
-                    const productFromConfiguration = getProductToShow(onboardedProduct?.productId);
+                    const productFromConfiguration = getProductToShow(
+                      onboardedProduct?.productId || ''
+                    );
+                    const interopProduction = products.find((p) => p.id === 'prod-interop');
                     return (
-                      <TableRow key={onboardedProduct?.productId} hover>
-                        <TableCell>
-                          <Box display="flex" alignItems="center" gap={1}>
-                            <ProductAvatar
-                              id={onboardedProduct?.productId}
+                      <>
+                        <TableRow key={onboardedProduct?.productId} hover>
+                          <TableCell>
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <ProductAvatar
+                                id={onboardedProduct?.productId}
+                                size="small"
+                                logoUrl={productFromConfiguration?.logo || ''}
+                                logoBgColor={productFromConfiguration?.logoBgColor || 'transparent'}
+                                logoAltText={`${onboardedProduct?.productId} logo`}
+                              />
+                              <Typography>{productFromConfiguration?.title || '-'}</Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            {onboardedProduct?.createdAt
+                              ? new Date(onboardedProduct.createdAt).toLocaleDateString()
+                              : '-'}
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={t('adminPage.selectedPartyDetails.activeStatus')}
                               size="small"
-                              logoUrl={productFromConfiguration?.logo || ''}
-                              logoBgColor={productFromConfiguration?.logoBgColor || 'transparent'}
-                              logoAltText={`${onboardedProduct?.productId} logo`}
+                              color="success"
+                              sx={{ backgroundColor: 'success.light', color: 'success.main' }}
                             />
-                            <Typography>{productFromConfiguration?.title || '-'}</Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          {onboardedProduct?.createdAt
-                            ? new Date(onboardedProduct.createdAt).toLocaleDateString()
-                            : '-'}
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={t('adminPage.selectedPartyDetails.activeStatus')}
-                            size="small"
-                            color="success"
-                            sx={{ backgroundColor: 'success.light', color: 'success.main' }}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          {t(
-                            `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
-                          ) || '-'}
-                        </TableCell>
-                        <TableCell align="right">
-                          <ButtonNaked
-                            component="button"
-                            endIcon={<ArrowForward />}
-                            onClick={() => handleProductClick(onboardedProduct?.productId)}
-                            sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                          >
-                            {t('adminPage.selectedPartyDetails.backOffice')}
-                          </ButtonNaked>
-                        </TableCell>
-                      </TableRow>
+                          </TableCell>
+                          <TableCell>
+                            {t(
+                              `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
+                            ) || '-'}
+                          </TableCell>
+                          <TableCell align="right">
+                            <ButtonNaked
+                              component="button"
+                              endIcon={<ArrowForward />}
+                              onClick={() => handleOnboardedProductClick(productFromConfiguration)}
+                              sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                            >
+                              {t('adminPage.selectedPartyDetails.backOffice')}
+                            </ButtonNaked>
+                          </TableCell>
+                        </TableRow>
+                        <SessionModalInteropProduct
+                          open={openCustomEnvInteropModal}
+                          title={t('overview.activeProducts.activeProductsEnvModal.title')}
+                          message={
+                            <Trans
+                              i18nKey="overview.activeProducts.activeProductsEnvModal.message"
+                              values={{
+                                productTitle: productFromConfiguration?.id.startsWith(
+                                  'prod-interop'
+                                )
+                                  ? products?.find((pp) => pp.id === 'prod-interop')?.title
+                                  : productFromConfiguration?.title,
+                              }}
+                              components={{ 1: <strong /> }}
+                            >
+                              {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
+                            </Trans>
+                          }
+                          onConfirmLabel={t(
+                            'overview.activeProducts.activeProductsEnvModal.enterButton'
+                          )}
+                          onCloseLabel={t(
+                            'overview.activeProducts.activeProductsEnvModal.backButton'
+                          )}
+                          onConfirm={() =>
+                            invokeProductBo(
+                              interopProduction as Product,
+                              selectedInstitution,
+                              undefined,
+                              lang
+                            )
+                          }
+                          handleClose={() => {
+                            setOpenCustomEnvInteropModal(false);
+                          }}
+                          authorizedInteropProducts={interopProductsList?.map(
+                            (p) => p.productId || ''
+                          )}
+                          products={products}
+                          party={selectedInstitution}
+                        />
+                        <GenericEnvProductModal
+                          open={openGenericEnvProductModal}
+                          title={t('overview.activeProducts.activeProductsEnvModal.title')}
+                          message={
+                            <Trans
+                              i18nKey="overview.activeProducts.activeProductsEnvModal.message"
+                              values={{ productTitle: productFromConfiguration?.title }}
+                              components={{ 1: <strong /> }}
+                            >
+                              {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
+                            </Trans>
+                          }
+                          onConfirmLabel={t(
+                            'overview.activeProducts.activeProductsEnvModal.enterButton'
+                          )}
+                          onCloseLabel={t(
+                            'overview.activeProducts.activeProductsEnvModal.backButton'
+                          )}
+                          onConfirm={(e) =>
+                            invokeProductBo(
+                              productFromConfiguration as Product,
+                              selectedInstitution,
+                              (e.target as HTMLInputElement).value,
+                              lang
+                            )
+                          }
+                          handleClose={() => {
+                            setOpenGenericEnvProductModal(false);
+                          }}
+                          productEnvironments={
+                            productFromConfiguration?.backOfficeEnvironmentConfigurations as any
+                          }
+                        />
+                      </>
                     );
                   })}
                 </TableBody>
