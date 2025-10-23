@@ -28,6 +28,42 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
   },
+  {
+    id: '10987654322',
+    description: 'Istituzione 3',
+    institutionTypes: ['PA'],
+    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    taxCode: '12345678901',
+    parentDescription: 'Ente di appartenenza',
+    lastModified: new Date(),
+  },
+  {
+    id: '10987654322',
+    description: 'Istituzione 4',
+    institutionTypes: ['PA'],
+    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    taxCode: '12345678901',
+    parentDescription: 'Ente di appartenenza',
+    lastModified: new Date(),
+  },
+  {
+    id: '10987654322',
+    description: 'Istituzione 5',
+    institutionTypes: ['PA'],
+    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    taxCode: '12345678901',
+    parentDescription: 'Ente di appartenenza',
+    lastModified: new Date(),
+  },
+  {
+    id: '10987654322',
+    description: 'Istituzione 6',
+    institutionTypes: ['PA'],
+    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    taxCode: '12345678901',
+    parentDescription: 'Ente di appartenenza',
+    lastModified: new Date(),
+  },
 ];
 
 export const mockedEmptySearchInstitutions: Array<SearchServiceInstitution> = [];
@@ -48,11 +84,11 @@ export const mockedLongSearchInstitutions: Array<SearchServiceInstitution> = Arr
 export const mockedSearchInstitutionsService = (
   searchText: string
 ): Promise<Array<SearchServiceInstitution>> => {
-  const selectedInstitution = mockedSearchInstitutions.find(
-    (inst) => inst.description === searchText
+  const selectedInstitution = mockedSearchInstitutions.filter(
+    (inst) => inst.description?.includes(searchText)
   );
   if (selectedInstitution) {
-    return Promise.resolve([selectedInstitution]);
+    return Promise.resolve(selectedInstitution);
   } else {
     return Promise.reject(new Error('Institution not found!'));
   }
