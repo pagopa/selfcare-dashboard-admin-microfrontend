@@ -210,6 +210,7 @@ const AdminPage = () => {
               debouncedSearch(newInputValue);
             }
           }}
+          onBlur={() => setOpen(false)}
           options={options}
           getOptionLabel={(option) => option.description || ''}
           noOptionsText={
@@ -221,11 +222,7 @@ const AdminPage = () => {
           }
           filterOptions={(x) => x} // Disable client-side filtering since we search server-side
           disablePortal
-          PopperComponent={(props) => (
-            <div {...props} style={{ ...props.style, position: 'relative' }}>
-              {typeof props.children === 'function' ? null : props.children}
-            </div>
-          )}
+          
           ListboxComponent={CustomListbox}
           slotProps={{
             paper: {
