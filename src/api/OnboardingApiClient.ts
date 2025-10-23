@@ -1,11 +1,11 @@
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import {
   buildFetchApi,
   extractResponse,
 } from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
-import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
-import { ENV } from '../utils/env';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
+import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/onboarding/client';
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =

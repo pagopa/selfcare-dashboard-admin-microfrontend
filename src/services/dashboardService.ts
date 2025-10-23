@@ -11,3 +11,16 @@ export const fetchPartyDetailsService = (partyId: string): Promise<Party | null>
     );
   }
 };
+
+export const getTokenExchangeAdminService = (
+  institutionId: string,
+  productId: string,
+  environment?: string,
+  lang?: string
+): Promise<string> => {
+  if (process.env.REACT_APP_API_MOCK_PARTIES === 'true') {
+    return Promise.resolve('mocked-token');
+  } else {
+    return DashboardApi.tokenExchangeAdmin(institutionId, productId, environment, lang);
+  }
+};
