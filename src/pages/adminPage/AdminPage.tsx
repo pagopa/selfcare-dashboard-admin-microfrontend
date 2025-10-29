@@ -39,6 +39,7 @@ import { buildUrlLog } from '../../utils/helper';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
 import SessionModalInteropProduct from './components/SessionModalInteropProduct';
 import { commonStyles, CustomListbox } from './utils/styles';
+import { TruncatedTextWithTooltip } from './utils/utils';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(false);
@@ -222,7 +223,6 @@ const AdminPage = () => {
           }
           filterOptions={(x) => x} // Disable client-side filtering since we search server-side
           disablePortal
-          
           ListboxComponent={CustomListbox}
           slotProps={{
             paper: {
@@ -286,21 +286,14 @@ const AdminPage = () => {
             parentPartyName={selectedInstitution.parentDescription || undefined}
           />
 
-          <Grid
-            container
-            bgcolor={grey[100]}
-            mt={2}
-            p={2}
-            alignItems="center"
-            flexDirection={'row'}
-          >
-            <Grid item xs={4}>
+          <Grid container bgcolor={grey[100]} mt={2} alignItems="center" flexDirection={'row'}>
+            <Grid item xs={4} p={2}>
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.fiscalCode')}
               </Typography>
               <Typography fontWeight="fontWeightMedium">{partyDetail.fiscalCode}</Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={4} p={2}>
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.digitalAddress')}
               </Typography>
@@ -309,10 +302,10 @@ const AdminPage = () => {
                 noWrap
                 sx={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}
               >
-                {partyDetail.digitalAddress || '-'}
+                <TruncatedTextWithTooltip text={partyDetail.digitalAddress || '-'} />
               </Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={4} p={2}>
               <Typography variant="caption" color="textSecondary">
                 {t('adminPage.selectedPartyDetails.registeredOffice')}
               </Typography>
