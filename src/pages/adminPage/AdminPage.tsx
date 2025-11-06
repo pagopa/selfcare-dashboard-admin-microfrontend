@@ -1,12 +1,15 @@
 import { ArrowForward } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Autocomplete,
   Box,
+  Button,
   Chip,
   CircularProgress,
   Divider,
   Grid,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -25,9 +28,11 @@ import {
 } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
@@ -35,6 +40,7 @@ import { Product } from '../../model/Product';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
+import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
 import SessionModalInteropProduct from './components/SessionModalInteropProduct';
@@ -56,6 +62,7 @@ const AdminPage = () => {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const { invokeProductBo } = useTokenExchange();
+  const history = useHistory();
   const lang = i18n.language;
 
   const interopProductsList = (partyDetail?.products ?? []).filter((p) =>
@@ -280,11 +287,26 @@ const AdminPage = () => {
 
       {partyDetail && selectedInstitution && (
         <Grid item xs={12} sx={commonStyles}>
-          <PartyAccountItem
-            image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
-            partyName={selectedInstitution.description || '-'}
-            parentPartyName={selectedInstitution.parentDescription || undefined}
-          />
+          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <PartyAccountItem
+              image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
+              partyName={selectedInstitution.description || '-'}
+              parentPartyName={selectedInstitution.parentDescription || undefined}
+            />
+            <Button
+              variant="outlined"
+              onClick={() =>
+                history.push(
+                  resolvePathVariables(ENV.DASHBOARD_ROUTES.OVERVIEW, {
+                    partyId: selectedInstitution.id ?? '',
+                  })
+                )
+              }
+              endIcon={<VisibilityIcon />}
+            >
+              {t('adminPage.selectedPartyDetails.redirectToOverview')}
+            </Button>
+          </Stack>
 
           <Grid container bgcolor={grey[100]} mt={2} alignItems="center" flexDirection={'row'}>
             <Grid item xs={4} p={2}>
@@ -316,7 +338,7 @@ const AdminPage = () => {
           </Grid>
           <Divider sx={{ my: 3 }} />
 
-          {/* Products Table */}
+          {/* Onboarded Products Table */}
           {productsToShow && productsToShow.length > 0 && (
             <TableContainer>
               <Table>

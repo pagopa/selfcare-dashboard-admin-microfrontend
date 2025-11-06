@@ -1,6 +1,6 @@
 import * as env from 'env-var';
-import { Store } from 'redux';
 import { i18n } from 'i18next';
+import { Store } from 'redux';
 
 const PUBLIC_URL_INNER: string | undefined = env.get('PUBLIC_URL').asString() || '/dashboard';
 export const ENV = {
@@ -13,6 +13,10 @@ export const ENV = {
     ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
     ADMIN_SEARCH: `${PUBLIC_URL_INNER}/admin/search`,
     ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
+  },
+
+  DASHBOARD_ROUTES: {
+    OVERVIEW: `${PUBLIC_URL_INNER}/:partyId`,
   },
 
   URL_FE: {

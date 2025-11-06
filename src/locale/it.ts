@@ -14,6 +14,7 @@ export default {
       fiscalCode: 'Codice Fiscale',
       digitalAddress: 'Indirizzo PEC primario',
       registeredOffice: 'Sede Legale',
+      redirectToOverview: 'Vedi Panoramica ente',
       product: 'Prodotto',
       subscriptionDate: 'Data di adesione',
       institutionType: 'Tipologia ente',
