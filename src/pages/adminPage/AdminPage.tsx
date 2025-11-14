@@ -76,7 +76,13 @@ const AdminPage = () => {
         setProducts(products);
       })
       .catch((error) => {
-        console.error('Error fetching products:', error);
+        addError({
+          id: 'fetchProducts-api-error',
+          blocking: false,
+          techDescription: 'Fetch products failed',
+          toNotify: false,
+          error: error as Error,
+        });
       });
   }, []);
 
@@ -137,19 +143,17 @@ const AdminPage = () => {
     (p) => p.productOnBoardingStatus === 'ACTIVE'
   );
 
-  const main = onboardedProducts?.find((p) => p.productId === 'prod-interop');
-  const variants = onboardedProducts?.filter((p) => p.productId?.startsWith('prod-interop'));
+  const interopProducts = onboardedProducts?.filter((p) => p.productId?.startsWith('prod-interop'));
+  const otherProducts = onboardedProducts?.filter((p) => !p.productId?.startsWith('prod-interop'));
 
   const productsToShow = (() => {
-    if (main) {
-      return [main];
+    if (interopProducts && interopProducts.length > 1) {
+      const mainInterop =
+        interopProducts.find((p) => p.productId === 'prod-interop') || interopProducts[0];
+      return [{ ...mainInterop, productId: 'prod-interop' }, ...(otherProducts || [])];
     }
-    if (variants && variants.length === 1) {
-      return variants;
-    }
-    if (variants && variants.length > 1) {
-      return [{ ...variants[0], productId: 'prod-interop' }];
-    }
+
+    // Otherwise show all onboarded products
     return onboardedProducts;
   })();
 
