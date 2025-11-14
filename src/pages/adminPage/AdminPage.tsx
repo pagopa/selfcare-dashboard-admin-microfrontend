@@ -157,7 +157,8 @@ const AdminPage = () => {
     return onboardedProducts;
   })();
 
-  const getProductToShow = (productId: string) => products.find((p) => p.id === productId);
+  const getProductToShow = (productId: string) =>
+    products.find((p) => p.status === 'ACTIVE' && p.id === productId);
 
   const handleOnboardedProductClick = (productFromConfiguration?: Product) => {
     if (!productFromConfiguration) {
