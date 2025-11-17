@@ -221,7 +221,7 @@ export const mockedParties: Array<Party> = [
       {
         productId: 'prod-io-premium',
         authorized: false,
-        productOnBoardingStatus: ProductOnBoardingStatusEnum.REJECTED,
+        productOnBoardingStatus: ProductOnBoardingStatusEnum.ACTIVE,
         userRole: 'ADMIN',
         billing: {
           vatNumber: '11111111111',
@@ -331,7 +331,7 @@ export const mockedParties: Array<Party> = [
       {
         productId: 'prod-pn-dev',
         authorized: true,
-        productOnBoardingStatus: ProductOnBoardingStatusEnum.PENDING,
+        productOnBoardingStatus: ProductOnBoardingStatusEnum.ACTIVE,
         userRole: 'ADMIN',
         billing: {
           vatNumber: '3395867495',
