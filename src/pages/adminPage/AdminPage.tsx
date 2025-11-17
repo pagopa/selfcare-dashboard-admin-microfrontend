@@ -142,11 +142,8 @@ const AdminPage = () => {
 
   const handleOnboardedProductClick = (productFromConfiguration?: Product) => {
     if (!productFromConfiguration) {
-      console.log('No onboarded product provided');
       return;
     }
-
-    console.log('Clicked product:', productFromConfiguration);
 
     if (hasMoreThanOneInteropEnv && productFromConfiguration?.id?.startsWith('prod-interop')) {
       setOpenCustomEnvInteropModal(true);

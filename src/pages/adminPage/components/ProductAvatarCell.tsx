@@ -30,15 +30,6 @@ const ProductAvatarCell: React.FC<ProductAvatarCellProps> = ({
     ? activeSubProduct?.logoBgColor || productFromConfiguration.logoBgColor || 'transparent'
     : productFromConfiguration.logoBgColor || 'transparent';
 
-  console.log(
-    'Rendering ProductAvatarCell for product:',
-    onboardedProduct.productId,
-    'hasActiveSubProduct:',
-    hasActiveSubProduct,
-    ' activeSubProduct:',
-    activeSubProduct
-  );
-
   return (
     <Box display="flex" alignItems="center" gap={1}>
       <ProductAvatar
