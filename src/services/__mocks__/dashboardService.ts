@@ -194,7 +194,7 @@ export const mockedParties: Array<Party> = [
       {
         productId: 'prod-dashboard-psp',
         authorized: false,
-        productOnBoardingStatus: ProductOnBoardingStatusEnum.REJECTED,
+        productOnBoardingStatus: ProductOnBoardingStatusEnum.ACTIVE,
         userRole: 'ADMIN',
         billing: {
           vatNumber: '11111111111',
@@ -265,7 +265,7 @@ export const mockedParties: Array<Party> = [
       {
         productId: 'prod-interop-coll',
         authorized: true,
-        productOnBoardingStatus: ProductOnBoardingStatusEnum.PENDING,
+        productOnBoardingStatus: ProductOnBoardingStatusEnum.ACTIVE,
         userRole: 'ADMIN',
         billing: {
           vatNumber: '3395867495',
@@ -286,7 +286,7 @@ export const mockedParties: Array<Party> = [
       {
         productId: 'prod-interop-atst',
         authorized: true,
-        productOnBoardingStatus: ProductOnBoardingStatusEnum.ACTIVE,
+        productOnBoardingStatus: ProductOnBoardingStatusEnum.REJECTED,
         userRole: 'ADMIN',
         billing: {
           vatNumber: '3395867495',

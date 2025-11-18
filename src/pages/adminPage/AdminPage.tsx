@@ -3,7 +3,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Autocomplete,
-  Box,
   Button,
   Chip,
   CircularProgress,
@@ -20,17 +19,12 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import {
-  ButtonNaked,
-  PartyAccountItem,
-  PartyAccountItemButton,
-  ProductAvatar,
-} from '@pagopa/mui-italia';
+import { ButtonNaked, PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
@@ -43,7 +37,9 @@ import { fetchProducts } from '../../services/productService';
 import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
+import ProductAvatarCell from './components/ProductAvatarCell';
 import SessionModalInteropProduct from './components/SessionModalInteropProduct';
+import { useProductFiltering } from './hooks/useProductFiltering';
 import { commonStyles, CustomListbox } from './utils/styles';
 import { TruncatedTextWithTooltip } from './utils/utils';
 
@@ -65,10 +61,16 @@ const AdminPage = () => {
   const history = useHistory();
   const lang = i18n.language;
 
-  const interopProductsList = (partyDetail?.products ?? []).filter((p) =>
-    p.productId?.startsWith('prod-interop')
-  );
-  const hasMoreThanOneInteropEnv = interopProductsList.length > 1;
+  // Extract product filtering logic to custom hook
+  const {
+    productsToShow,
+    interopProductsList,
+    hasMoreThanOneInteropEnv,
+    getProductTitle,
+    getActiveSubProduct,
+  } = useProductFiltering({ partyDetail, products });
+
+  const interopProduction = products.find((p) => p.id === 'prod-interop');
 
   useEffect(() => {
     fetchProducts()
@@ -76,11 +78,16 @@ const AdminPage = () => {
         setProducts(products);
       })
       .catch((error) => {
-        console.error('Error fetching products:', error);
+        addError({
+          id: 'fetchProducts-api-error',
+          blocking: false,
+          techDescription: 'Fetch products failed',
+          toNotify: false,
+          error: error as Error,
+        });
       });
   }, []);
 
-  // Debounced search function
   const debouncedSearch = useMemo(
     () =>
       debounce((searchText: string) => {
@@ -133,35 +140,10 @@ const AdminPage = () => {
     }
   }, [selectedInstitution]);
 
-  const onboardedProducts = partyDetail?.products.filter(
-    (p) => p.productOnBoardingStatus === 'ACTIVE'
-  );
-
-  const main = onboardedProducts?.find((p) => p.productId === 'prod-interop');
-  const variants = onboardedProducts?.filter((p) => p.productId?.startsWith('prod-interop'));
-
-  const productsToShow = (() => {
-    if (main) {
-      return [main];
-    }
-    if (variants && variants.length === 1) {
-      return variants;
-    }
-    if (variants && variants.length > 1) {
-      return [{ ...variants[0], productId: 'prod-interop' }];
-    }
-    return onboardedProducts;
-  })();
-
-  const getProductToShow = (productId: string) => products.find((p) => p.id === productId);
-
   const handleOnboardedProductClick = (productFromConfiguration?: Product) => {
     if (!productFromConfiguration) {
-      console.log('No onboarded product provided');
       return;
     }
-
-    console.log('Clicked product:', productFromConfiguration);
 
     if (hasMoreThanOneInteropEnv && productFromConfiguration?.id?.startsWith('prod-interop')) {
       setOpenCustomEnvInteropModal(true);
@@ -177,7 +159,6 @@ const AdminPage = () => {
       return;
     }
 
-    // Fallback: open product backoffice directly
     void invokeProductBo(
       productFromConfiguration,
       selectedInstitution as SearchServiceInstitution,
@@ -228,7 +209,7 @@ const AdminPage = () => {
               </Typography>
             ) : null
           }
-          filterOptions={(x) => x} // Disable client-side filtering since we search server-side
+          filterOptions={(x) => x}
           disablePortal
           ListboxComponent={CustomListbox}
           slotProps={{
@@ -338,7 +319,6 @@ const AdminPage = () => {
           </Grid>
           <Divider sx={{ my: 3 }} />
 
-          {/* Onboarded Products Table */}
           {productsToShow && productsToShow.length > 0 && (
             <TableContainer>
               <Table>
@@ -361,24 +341,24 @@ const AdminPage = () => {
                 </TableHead>
                 <TableBody>
                   {productsToShow?.map((onboardedProduct) => {
-                    const productFromConfiguration = getProductToShow(
-                      onboardedProduct?.productId || ''
+                    const productFromConfiguration = products.find(
+                      (p) => p.status === 'ACTIVE' && p.id === onboardedProduct?.productId
                     );
-                    const interopProduction = products.find((p) => p.id === 'prod-interop');
+
+                    if (!productFromConfiguration) {
+                      return null;
+                    }
+
                     return (
-                      <>
-                        <TableRow key={onboardedProduct?.productId} hover>
+                      <Fragment key={onboardedProduct?.productId}>
+                        <TableRow hover>
                           <TableCell>
-                            <Box display="flex" alignItems="center" gap={1}>
-                              <ProductAvatar
-                                id={onboardedProduct?.productId}
-                                size="small"
-                                logoUrl={productFromConfiguration?.logo || ''}
-                                logoBgColor={productFromConfiguration?.logoBgColor || 'transparent'}
-                                logoAltText={`${onboardedProduct?.productId} logo`}
-                              />
-                              <Typography>{productFromConfiguration?.title || '-'}</Typography>
-                            </Box>
+                            <ProductAvatarCell
+                              onboardedProduct={onboardedProduct}
+                              productFromConfiguration={productFromConfiguration}
+                              getActiveSubProduct={getActiveSubProduct}
+                              getProductTitle={getProductTitle}
+                            />
                           </TableCell>
                           <TableCell>
                             {onboardedProduct?.createdAt
@@ -416,11 +396,9 @@ const AdminPage = () => {
                             <Trans
                               i18nKey="overview.activeProducts.activeProductsEnvModal.message"
                               values={{
-                                productTitle: productFromConfiguration?.id.startsWith(
-                                  'prod-interop'
-                                )
-                                  ? products?.find((pp) => pp.id === 'prod-interop')?.title
-                                  : productFromConfiguration?.title,
+                                productTitle: productFromConfiguration.id.startsWith('prod-interop')
+                                  ? interopProduction?.title
+                                  : productFromConfiguration.title,
                               }}
                               components={{ 1: <strong /> }}
                             >
@@ -456,7 +434,7 @@ const AdminPage = () => {
                           message={
                             <Trans
                               i18nKey="overview.activeProducts.activeProductsEnvModal.message"
-                              values={{ productTitle: productFromConfiguration?.title }}
+                              values={{ productTitle: productFromConfiguration.title }}
                               components={{ 1: <strong /> }}
                             >
                               {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
@@ -480,10 +458,10 @@ const AdminPage = () => {
                             setOpenGenericEnvProductModal(false);
                           }}
                           productEnvironments={
-                            productFromConfiguration?.backOfficeEnvironmentConfigurations as any
+                            productFromConfiguration.backOfficeEnvironmentConfigurations as any
                           }
                         />
-                      </>
+                      </Fragment>
                     );
                   })}
                 </TableBody>

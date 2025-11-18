@@ -15,9 +15,9 @@ export type Product = {
   urlPublic?: string;
   tag?: string;
   // product status.The intrinsic state of the product. Product status is unrelated to product onboarding status.
-  status: any;
+  status: StatusEnum;
   imageUrl: string;
-  subProducts?: any;
+  subProducts?: Array<SubProductResource>;
   logoBgColor?: string;
   delegable: boolean;
   invoiceable: boolean;
