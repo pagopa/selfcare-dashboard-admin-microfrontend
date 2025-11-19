@@ -1,8 +1,8 @@
 import { PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { useMemo } from 'react';
-import { Party, OnboardedProduct } from '../../../model/Party';
-import { Product } from '../../../model/Product';
 import { SubProductResource } from '../../../api/generated/b4f-dashboard/SubProductResource';
+import { OnboardedProduct, Party } from '../../../model/Party';
+import { Product } from '../../../model/Product';
 
 interface UseProductFilteringParams {
   partyDetail: Party | null;
@@ -57,16 +57,12 @@ export const useProductFiltering = ({
       return [{ ...mainInterop, productId: 'prod-interop' }, ...otherProducts];
     };
 
-    // Filter to only show ACTIVE products from configuration
-    const isProductActive = (productId: string) =>
-      products.some((p) => p.status === 'ACTIVE' && p.id === productId);
-
-    return getInitialList().filter((product) => isProductActive(product.productId || ''));
+    return getInitialList();
   }, [onboardedProducts, products]);
 
   const getProductTitle = (product: OnboardedProduct, productFromConfig: Product): string => {
     const hasBasicIOAndPremium = onboardedProducts?.some(
-      (p) => p.productId === PRODUCT_IDS.IO || p.productId === PRODUCT_IDS.IO_PREMIUM
+      (p) => p.productId === PRODUCT_IDS.IO && p.productId === PRODUCT_IDS.IO_PREMIUM
     );
 
     if (product.productId === PRODUCT_IDS.IO && hasBasicIOAndPremium) {
