@@ -57,7 +57,11 @@ export const useProductFiltering = ({
       return [{ ...mainInterop, productId: 'prod-interop' }, ...otherProducts];
     };
 
-    return getInitialList();
+    // Filter to only show main products from configuration
+    const isMainProduct = (productId: string) =>
+      products.some((p) =>  p.id === productId);
+
+    return getInitialList().filter((product) => isMainProduct(product.productId || ''));
   }, [onboardedProducts, products]);
 
   const getProductTitle = (product: OnboardedProduct, productFromConfig: Product): string => {
