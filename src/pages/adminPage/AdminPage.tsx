@@ -313,7 +313,7 @@ const AdminPage = () => {
                 {t('adminPage.selectedPartyDetails.registeredOffice')}
               </Typography>
               <Typography fontWeight="fontWeightMedium">
-                {partyDetail.registeredOffice || '-'}
+                {`${partyDetail.registeredOffice} ${partyDetail.city}`}
               </Typography>
             </Grid>
           </Grid>
@@ -342,7 +342,7 @@ const AdminPage = () => {
                 <TableBody>
                   {productsToShow?.map((onboardedProduct) => {
                     const productFromConfiguration = products.find(
-                      (p) => p.status === 'ACTIVE' && p.id === onboardedProduct?.productId
+                      (p) => p.id === onboardedProduct?.productId
                     );
 
                     if (!productFromConfiguration) {
