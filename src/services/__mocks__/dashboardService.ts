@@ -133,6 +133,8 @@ export const mockedParties: Array<Party> = [
       { code: '015146', desc: 'Milano - Comune' },
     ],
     vatNumber: '111122211111',
+    city: 'Roma',
+    country: 'IT',
     products: [
       // Use case with one delegable product
       {
