@@ -58,16 +58,15 @@ export const useProductFiltering = ({
     };
 
     // Filter to only show main products from configuration
-    const isMainProduct = (productId: string) =>
-      products.some((p) =>  p.id === productId);
+    const isMainProduct = (productId: string) => products.some((p) => p.id === productId);
 
     return getInitialList().filter((product) => isMainProduct(product.productId || ''));
   }, [onboardedProducts, products]);
 
   const getProductTitle = (product: OnboardedProduct, productFromConfig: Product): string => {
-    const hasBasicIOAndPremium = onboardedProducts?.some(
-      (p) => p.productId === PRODUCT_IDS.IO && p.productId === PRODUCT_IDS.IO_PREMIUM
-    );
+    const hasBasicIO = onboardedProducts?.some((p) => p.productId === PRODUCT_IDS.IO);
+    const hasPremium = onboardedProducts?.some((p) => p.productId === PRODUCT_IDS.IO_PREMIUM);
+    const hasBasicIOAndPremium = hasBasicIO && hasPremium;
 
     if (product.productId === PRODUCT_IDS.IO && hasBasicIOAndPremium) {
       return `${productFromConfig.title} Premium`;
