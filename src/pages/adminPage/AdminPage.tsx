@@ -24,7 +24,7 @@ import { ALLOWED_PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
@@ -55,7 +55,7 @@ const AdminPage = () => {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const { invokeProductBo } = useTokenExchange();
-  const history = useHistory();
+  // const history = useHistory();
   const lang = i18n.language;
 
   // Extract product filtering logic to custom hook
