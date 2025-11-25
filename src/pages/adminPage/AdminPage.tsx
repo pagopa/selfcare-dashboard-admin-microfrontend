@@ -1,9 +1,7 @@
 import { ArrowForward } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Autocomplete,
-  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -22,11 +20,11 @@ import { grey } from '@mui/material/colors';
 import { ButtonNaked, PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { ALLOWED_PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
@@ -34,7 +32,6 @@ import { Product } from '../../model/Product';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
-import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
 import ProductAvatarCell from './components/ProductAvatarCell';
@@ -58,7 +55,7 @@ const AdminPage = () => {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const { invokeProductBo } = useTokenExchange();
-  const history = useHistory();
+  // const history = useHistory();
   const lang = i18n.language;
 
   // Extract product filtering logic to custom hook
@@ -274,6 +271,8 @@ const AdminPage = () => {
               partyName={selectedInstitution.description || '-'}
               parentPartyName={selectedInstitution.parentDescription || undefined}
             />
+            {/* 
+            TODO hide temporarily the overview button
             <Button
               variant="outlined"
               onClick={() =>
@@ -287,6 +286,7 @@ const AdminPage = () => {
             >
               {t('adminPage.selectedPartyDetails.redirectToOverview')}
             </Button>
+            */}
           </Stack>
 
           <Grid container bgcolor={grey[100]} mt={2} alignItems="center" flexDirection={'row'}>
@@ -378,16 +378,20 @@ const AdminPage = () => {
                               `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
                             ) || '-'}
                           </TableCell>
-                          <TableCell align="right">
-                            <ButtonNaked
-                              component="button"
-                              endIcon={<ArrowForward />}
-                              onClick={() => handleOnboardedProductClick(productFromConfiguration)}
-                              sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                            >
-                              {t('adminPage.selectedPartyDetails.backOffice')}
-                            </ButtonNaked>
-                          </TableCell>
+                          {ALLOWED_PRODUCT_IDS.includes(onboardedProduct.productId || '') && (
+                            <TableCell align="right">
+                              <ButtonNaked
+                                component="button"
+                                endIcon={<ArrowForward />}
+                                onClick={() =>
+                                  handleOnboardedProductClick(productFromConfiguration)
+                                }
+                                sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                              >
+                                {t('adminPage.selectedPartyDetails.backOffice')}
+                              </ButtonNaked>
+                            </TableCell>
+                          )}
                         </TableRow>
                         <SessionModalInteropProduct
                           open={openCustomEnvInteropModal}
