@@ -9,13 +9,13 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
+import ContractPage from '../../pages/contractPage/ContractPage';
 import { store } from '../../redux/store';
 import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
 import App from './App';
 import './index.css';
-
 const onSuccessEncoded = encodeURIComponent(location.pathname + location.search);
 
 // eslint-disable-next-line functional/immutable-data
@@ -40,6 +40,9 @@ root.render(
             </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
+            </Route>
+            <Route path={ENV.ROUTES.ADMIN_CONTRACT} exact={true}>
+              <ContractPage />
             </Route>
             <Route path="*">
               <Redirect
