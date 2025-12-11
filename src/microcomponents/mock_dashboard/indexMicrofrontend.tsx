@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
+import AdminContractPage from '../../pages/adminContractPage/AdminContractPage';
 import AdminPage from '../../pages/adminPage/AdminPage';
 import { store } from '../../redux/store';
 import reportWebVitals from '../../reportWebVitals';
@@ -37,6 +38,9 @@ root.render(
           <Switch>
             <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
               <AdminPage />
+            </Route>
+            <Route path={ENV.ROUTES.ADMIN_CONTRACT} exact={true}>
+              <AdminContractPage />
             </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
