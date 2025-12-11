@@ -2,10 +2,12 @@ import { Box, Paper, Stack, Divider, Button, Tooltip } from '@mui/material';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Download } from '@mui/icons-material';
 import { getContractTemplate } from '../utils/contractTemplate';
+import { $generateHtmlFromLexicalContent } from '../utils/lexicalHtmlSerializer';
 import {
   InitialConfigType,
   LexicalComposer,
 } from '@lexical/react/LexicalComposer';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -127,19 +129,41 @@ interface LexicalEditorProps {
   onContentChange?: (html: string) => void;
 }
 
+const EditorController = ({ 
+  editorRef, 
+  onContentChange 
+}: { 
+  editorRef: React.MutableRefObject<any>;
+  onContentChange: (content: string) => void;
+}): null => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    editorRef.current = editor;
+    
+    const unregister = editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const content = $generateHtmlFromLexicalContent(editor);
+        onContentChange(content);
+      });
+    });
+
+    return () => {
+      unregister();
+    };
+  }, [editor, onContentChange]);
+
+  return null;
+};
+
 const LexicalEditor = ({ onContentChange }: LexicalEditorProps): JSX.Element => {
   const [showDebugView, setShowDebugView] = useState(true);
   const editorRef = useRef<any>(null);
-
-  const getEditorContent = useCallback((): string => {
-    if (!editorRef.current) return '';
-    const editorElement = editorRef.current.querySelector('.editor-content-editable');
-    if (!editorElement) return '';
-    return editorElement.innerHTML;
-  }, []);
+  const lexicalEditorRef = useRef<any>(null);
 
   const handleExport = useCallback((): void => {
-    const content = getEditorContent();
+    if (!lexicalEditorRef.current) return;
+    const content = $generateHtmlFromLexicalContent(lexicalEditorRef.current);
     const htmlContent = getContractTemplate(content);
 
     const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -151,25 +175,13 @@ const LexicalEditor = ({ onContentChange }: LexicalEditorProps): JSX.Element => 
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-  }, [getEditorContent]);
+  }, []);
 
-  const handleEditorChange = useCallback((): void => {
-    const content = getEditorContent();
+  const handleEditorContentChange = useCallback((content: string): void => {
     if (onContentChange) {
       onContentChange(content);
     }
-  }, [getEditorContent, onContentChange]);
-
-  useEffect(() => {
-    const editorElement = editorRef.current?.querySelector('.editor-content-editable');
-    if (!editorElement) {
-      return;
-    }
-    editorElement.addEventListener('input', handleEditorChange);
-    return () => {
-      editorElement.removeEventListener('input', handleEditorChange);
-    };
-  }, [handleEditorChange]);
+  }, [onContentChange]);
 
   return (
     <Paper elevation={0} sx={{ p: 3, border: '1px solid #E3E3E3' }}>
@@ -193,6 +205,7 @@ const LexicalEditor = ({ onContentChange }: LexicalEditorProps): JSX.Element => 
           </Tooltip>
         </Box>
         <LexicalComposer initialConfig={editorConfig}>
+          <EditorController editorRef={lexicalEditorRef} onContentChange={handleEditorContentChange} />
           <Box ref={editorRef} sx={{ position: 'relative' }}>
             <LexicalToolbar onDebugToggle={() => setShowDebugView(!showDebugView)} showDebug={showDebugView} />
             <Box

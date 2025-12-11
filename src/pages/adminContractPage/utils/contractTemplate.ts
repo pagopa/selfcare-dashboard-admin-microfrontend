@@ -18,7 +18,8 @@ export const getContractTemplate = (content: string, logoUrl?: string): string =
             color: black;
         }
     
-        b {
+        b,
+        strong {
             font-weight: bold;
         }
     
@@ -121,6 +122,69 @@ export const getContractTemplate = (content: string, logoUrl?: string): string =
         ul li,
         ol li {
             padding: 0.8mm 0;
+        }
+    
+        a {
+            color: #0066cc !important;
+            text-decoration: underline;
+        }
+    
+        a:visited {
+            color: #0066cc !important;
+        }
+
+        a:hover {
+            color: #0052a3 !important;
+        }
+    
+        .editor-text-bold {
+            font-weight: bold;
+        }
+    
+        .editor-text-italic {
+            font-style: italic;
+        }
+    
+        .editor-text-underline {
+            text-decoration: underline;
+        }
+    
+        .editor-text-strikethrough {
+            text-decoration: line-through;
+        }
+    
+        .editor-code {
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 9pt;
+        }
+    
+        .editor-quote {
+            border-left: 4px solid #d1d5db;
+            padding-left: 16px;
+            color: #6b7280;
+            font-style: italic;
+            margin-left: 0;
+        }
+    
+        .editor-ol {
+            list-style-type: decimal;
+            padding-left: 24px;
+        }
+    
+        .editor-ul {
+            list-style-type: disc;
+            padding-left: 24px;
+        }
+    
+        .editor-listitem {
+            margin-bottom: 8px;
+        }
+    
+        .editor-nested-listitem {
+            padding-left: 16px;
         }
     
         .pagopa-header-logo {
