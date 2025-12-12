@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@lexical/react": "^0.38.2",
     "@mui/icons-material": "^5.8.2",
     "@mui/lab": "^5.0.0-alpha.80",
     "@mui/material": "^5.8.2",
@@ -16,7 +15,6 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-router-hash-link": "^2.4.5",
     "formik": "^2.2.9",
-    "lexical": "^0.38.2",
     "node-fetch": "^3.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
