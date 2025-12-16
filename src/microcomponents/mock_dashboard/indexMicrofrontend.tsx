@@ -10,6 +10,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
 import ContractPage from '../../pages/contractPage/ContractPage';
+import ContractBuildPage from '../../pages/contractPage/ContractEditorPage';
 import { store } from '../../redux/store';
 import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
@@ -41,9 +42,16 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_CONTRACT} exact={true}>
-              <ContractPage />
-            </Route>
+            <Route
+              path={ENV.ROUTES.ADMIN_CONTRACT}
+              exact={true}
+              render={(props) => <ContractPage history={props.history} />}
+            />
+            <Route
+              path="/contracts/:productId/editor"
+              exact
+              render={(props) => <ContractBuildPage {...props} />}
+            />
             <Route path="*">
               <Redirect
                 to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {

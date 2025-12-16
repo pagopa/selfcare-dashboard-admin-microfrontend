@@ -1,37 +1,52 @@
+import { Accordion, AccordionDetails, AccordionSummary, Button, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material';
-import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
+import { useTranslation } from 'react-i18next';
 import type { Product } from '../../../model/Product';
-import { ContractsTable } from './ContractTable';
+import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
+import { ContractTable } from './ContractTable';
 
 type Props = {
   product: Product;
   contracts: Array<ContractTemplateResponse>;
   expanded: boolean;
   onToggle: () => void;
+  onCreate: () => void;
+  onEdit: (contractTemplateId: string) => void;
 };
 
-export const ProductAccordion = ({ product, contracts, expanded, onToggle }: Props) => (
-  <Accordion expanded={expanded} onChange={onToggle}>
-    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          {product.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {contracts.length} contratti
-        </Typography>
-      </Stack>
-    </AccordionSummary>
+export const ProductAccordion = ({ product, contracts, expanded, onToggle, onCreate, onEdit }: Props) => {
+  const { t } = useTranslation();
 
-    <AccordionDetails>
-      {contracts.length === 0 ? (
-        <Typography variant="body2" color="textSecondary">
-          Nessun contratto disponibile
-        </Typography>
-      ) : (
-        <ContractsTable contracts={contracts} productId={product.id} />
-      )}
-    </AccordionDetails>
-  </Accordion>
-);
+  return (
+    <Accordion expanded={expanded} onChange={onToggle}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            {product.title}
+          </Typography>
+
+          <Typography variant="body2" color="textSecondary">
+            {contracts.length}{' '}
+            {t('contractPage.contracts', 'contratti', { count: contracts.length })}
+          </Typography>
+
+          <Stack sx={{ flex: 1 }} />
+
+          <Button size="small" variant="outlined" onClick={(e) => { e.stopPropagation(); onCreate(); }}>
+            {t('contractPage.new', 'Inserisci')}
+          </Button>
+        </Stack>
+      </AccordionSummary>
+
+      <AccordionDetails>
+        {contracts.length === 0 ? (
+          <Typography variant="body2" color="textSecondary">
+            {t('contractPage.noContracts', 'Nessun contratto disponibile per questo prodotto')}
+          </Typography>
+        ) : (
+          <ContractTable contracts={contracts} productId={product.id} onEdit={onEdit} />
+        )}
+      </AccordionDetails>
+    </Accordion>
+  );
+};

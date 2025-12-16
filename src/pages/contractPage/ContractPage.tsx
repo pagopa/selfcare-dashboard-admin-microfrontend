@@ -1,14 +1,21 @@
 import { useState } from 'react';
-
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
-import { useContracts } from './hooks/useContracts';
-import { ProductAccordion } from './components/ProductAccordion';
+import type { History } from 'history';
 
-export default function ContractPage() {
+import { ProductAccordion } from './components/ProductAccordion';
+import { useContracts } from './hooks/useContracts';
+
+type Props = {
+  history: History;
+};
+
+export default function ContractPage({ history }: Props) {
   const { t } = useTranslation();
-  const { loading, products, contractsByProduct } = useContracts();
+
+  const { loading, products, contractsByProduct, loadContractsForProduct } = useContracts();
+
   const [expandedProduct, setExpandedProduct] = useState<string | false>(false);
 
   if (loading) {
@@ -20,7 +27,7 @@ export default function ContractPage() {
   }
 
   return (
-    <Grid container px={3} mt={3} sx={{ width: '100%' }}>
+    <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
       <Grid item xs={12}>
         <TitleBox
           variantTitle="h4"
@@ -35,19 +42,34 @@ export default function ContractPage() {
       <Grid item xs={12}>
         <Stack spacing={2}>
           {products.length === 0 ? (
-            <Typography variant="body2">Nessun prodotto disponibile</Typography>
+            <Typography variant="body2" color="textSecondary">
+              {t('contractPage.noProducts', 'Nessun prodotto disponibile')}
+            </Typography>
           ) : (
-            products.map((product) => (
-              <ProductAccordion
-                key={product.id}
-                product={product}
-                contracts={contractsByProduct[product.id] ?? []}
-                expanded={expandedProduct === product.id}
-                onToggle={() =>
-                  setExpandedProduct(expandedProduct === product.id ? false : product.id)
-                }
-              />
-            ))
+            products.map((product) => {
+              const contracts = contractsByProduct[product.id] ?? [];
+              const expanded = expandedProduct === product.id;
+
+              return (
+                <ProductAccordion
+                  key={product.id}
+                  product={product}
+                  contracts={contracts}
+                  expanded={expanded}
+                  onToggle={() => {
+                    setExpandedProduct(expanded ? false : product.id);
+
+                    if (!expanded) {
+                      void loadContractsForProduct(product);
+                    }
+                  }}
+                  onCreate={() => history.push(`/contracts/${product.id}/editor`)}
+                  onEdit={(contractTemplateId) =>
+                    history.push(`/contracts/${product.id}/${contractTemplateId}/editor`)
+                  }
+                />
+              );
+            })
           )}
         </Stack>
       </Grid>
