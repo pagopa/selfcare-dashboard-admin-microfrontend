@@ -43,7 +43,7 @@ export default function ContractPage({ history }: Props) {
         <Stack spacing={2}>
           {products.length === 0 ? (
             <Typography variant="body2" color="textSecondary">
-              {t('contractPage.noProducts', 'Nessun prodotto disponibile')}
+              {t('contractPage.noProducts')}
             </Typography>
           ) : (
             products.map((product) => {
