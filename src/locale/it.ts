@@ -157,13 +157,14 @@ export default {
     backLabel: 'Torna alla home',
   },
   contractPage: {
-    title: 'Gestione template contratti',
+    title: 'Gestione Contratti',
     subtitle: 'Visualizza e gestisci i template dei contratti per i diversi prodotti',
     noProducts: 'Nessun prodotto disponibile',
     noContracts: 'Nessun contratto disponibile',
     contracts: 'contratti',
     new: 'Inserisci',
     actions: {
+      default: "Azioni",
       create: 'Inserisci',
       edit: 'Modifica',
       download: 'Download',

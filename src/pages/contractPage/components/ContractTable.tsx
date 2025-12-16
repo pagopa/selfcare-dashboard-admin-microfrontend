@@ -21,7 +21,7 @@ export const ContractTable = ({ contracts, productId, onEdit }: Props) => {
             <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.version', 'Versione')}</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdAt', 'Data creazione')}</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdBy', 'Creato da')}</TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>{t('contractPage.actions', 'Azioni')}</TableCell>
+            <TableCell align="center" sx={{ fontWeight: 600 }}>{t('contractPage.actions.default', 'Azioni')}</TableCell>
           </TableRow>
         </TableHead>
 
@@ -42,7 +42,7 @@ export const ContractTable = ({ contracts, productId, onEdit }: Props) => {
 
               <TableCell>{contract.createdBy || '-'}</TableCell>
 
-              <TableCell align="right">
+              <TableCell align="center">
                 <Button
                   size="small"
                   onClick={() => onEdit(contract.contractTemplateId || '')}

@@ -21,26 +21,15 @@ type Props = {
   onEdit: (contractTemplateId: string) => void;
 };
 
-export const ProductDetail = ({
-  product,
-  contracts,
-  expanded,
-  onToggle,
-  onCreate,
-  onEdit,
-}: Props) => {
+export const ProductDetail = ({ product, contracts, onToggle, onCreate, onEdit }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Accordion expanded={expanded} onChange={onToggle}>
+    <Accordion onChange={onToggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
             {product.title}
-          </Typography>
-
-          <Typography variant="body2" color="textSecondary">
-            {contracts.length} {t('contractPage.contracts', { count: contracts.length })}
           </Typography>
 
           <Stack sx={{ flex: 1 }} />

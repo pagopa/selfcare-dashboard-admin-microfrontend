@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
@@ -15,8 +14,6 @@ export default function ContractPage({ history }: Props) {
   const { t } = useTranslation();
 
   const { loading, products, contractsByProduct, loadContractsForProduct } = useContracts();
-
-  const [expandedProduct, setExpandedProduct] = useState<string | false>(false);
 
   if (loading) {
     return (
@@ -48,25 +45,20 @@ export default function ContractPage({ history }: Props) {
           ) : (
             products.map((product) => {
               const contracts = contractsByProduct[product.id] ?? [];
-              const expanded = expandedProduct === product.id;
 
               return (
                 <ProductDetail
                   key={product.id}
                   product={product}
                   contracts={contracts}
-                  expanded={expanded}
                   onToggle={() => {
-                    setExpandedProduct(expanded ? false : product.id);
-
-                    if (!expanded) {
-                      void loadContractsForProduct(product);
-                    }
+                    void loadContractsForProduct(product);
                   }}
                   onCreate={() => history.push(`/contracts/${product.id}/editor`)}
                   onEdit={(contractTemplateId) =>
                     history.push(`/contracts/${product.id}/${contractTemplateId}/editor`)
                   }
+                  expanded={false}
                 />
               );
             })
