@@ -4,7 +4,7 @@ import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
 import type { History } from 'history';
 
-import { ProductAccordion } from './components/ProductAccordion';
+import { ProductDetail } from './components/ProductAccordion';
 import { useContracts } from './hooks/useContracts';
 
 type Props = {
@@ -51,7 +51,7 @@ export default function ContractPage({ history }: Props) {
               const expanded = expandedProduct === product.id;
 
               return (
-                <ProductAccordion
+                <ProductDetail
                   key={product.id}
                   product={product}
                   contracts={contracts}

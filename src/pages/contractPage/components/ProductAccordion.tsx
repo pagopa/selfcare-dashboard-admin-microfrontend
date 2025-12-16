@@ -1,4 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Stack, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Stack,
+  Typography,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import type { Product } from '../../../model/Product';
@@ -14,7 +21,14 @@ type Props = {
   onEdit: (contractTemplateId: string) => void;
 };
 
-export const ProductAccordion = ({ product, contracts, expanded, onToggle, onCreate, onEdit }: Props) => {
+export const ProductDetail = ({
+  product,
+  contracts,
+  expanded,
+  onToggle,
+  onCreate,
+  onEdit,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -26,14 +40,20 @@ export const ProductAccordion = ({ product, contracts, expanded, onToggle, onCre
           </Typography>
 
           <Typography variant="body2" color="textSecondary">
-            {contracts.length}{' '}
-            {t('contractPage.contracts', 'contratti', { count: contracts.length })}
+            {contracts.length} {t('contractPage.contracts', { count: contracts.length })}
           </Typography>
 
           <Stack sx={{ flex: 1 }} />
 
-          <Button size="small" variant="outlined" onClick={(e) => { e.stopPropagation(); onCreate(); }}>
-            {t('contractPage.new', 'Inserisci')}
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCreate();
+            }}
+          >
+            {t('contractPage.new')}
           </Button>
         </Stack>
       </AccordionSummary>
@@ -41,7 +61,7 @@ export const ProductAccordion = ({ product, contracts, expanded, onToggle, onCre
       <AccordionDetails>
         {contracts.length === 0 ? (
           <Typography variant="body2" color="textSecondary">
-            {t('contractPage.noContracts', 'Nessun contratto disponibile per questo prodotto')}
+            {t('contractPage.noContracts')}
           </Typography>
         ) : (
           <ContractTable contracts={contracts} productId={product.id} onEdit={onEdit} />
