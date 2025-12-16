@@ -4,7 +4,7 @@ import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
 import type { History } from 'history';
 
-import { ProductDetail } from './components/ProductAccordion';
+import { ProductDetail } from './components/ProductDetail';
 import { useContracts } from './hooks/useContracts';
 
 type Props = {
