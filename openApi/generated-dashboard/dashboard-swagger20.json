@@ -11,6 +11,204 @@
     "http"
   ],
   "paths": {
+    "/v1/contract": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "name",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "version",
+            "in": "query",
+            "name": "version",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContractTemplateResponseList"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "contracts"
+        ],
+        "description": "List contract templates available",
+        "operationId": "listContractTemplates",
+        "summary": "getContractsListUsingGET"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Product's unique identifier",
+            "in": "query",
+            "name": "productId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ContractTemplateUploadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "contracts"
+        ],
+        "description": "Upload a new contract template version",
+        "operationId": "postUploadContract",
+        "summary": "uploadContractTemplateUsingPOST"
+      }
+    },
+    "/v1/contract/{contractId}": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Contract template's unique identifier",
+            "in": "path",
+            "name": "contractId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Product's unique identifier",
+            "in": "query",
+            "name": "productId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContractTemplateFile"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "contracts"
+        ],
+        "description": "Download a contract template version",
+        "operationId": "downloadContractTemplate",
+        "summary": "downloadContractTemplateUsingGET"
+      }
+    },
     "/v1/delegations": {
       "post": {
         "consumes": [
@@ -3196,6 +3394,96 @@
       "title": "CheckUserResponse",
       "type": "object"
     },
+    "ContractTemplateFile": {
+      "properties": {
+        "data": {
+          "format": "byte",
+          "type": "string"
+        },
+        "file": {
+          "format": "binary",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "HTML",
+            "PDF"
+          ],
+          "type": "string"
+        }
+      },
+      "title": "ContractTemplateFile",
+      "type": "object"
+    },
+    "ContractTemplateResponse": {
+      "properties": {
+        "contractTemplateId": {
+          "type": "string"
+        },
+        "contractTemplatePath": {
+          "type": "string"
+        },
+        "contractTemplateVersion": {
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        }
+      },
+      "title": "ContractTemplateResponse",
+      "type": "object"
+    },
+    "ContractTemplateResponseList": {
+      "properties": {
+        "contractsList": {
+          "items": {
+            "$ref": "#/definitions/ContractTemplateResponse"
+          },
+          "type": "array"
+        }
+      },
+      "title": "ContractTemplateResponseList",
+      "type": "object"
+    },
+    "ContractTemplateUploadRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "file": {
+          "format": "binary",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z0-9 ]+$",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "file",
+        "name",
+        "version"
+      ],
+      "title": "ContractTemplateUploadRequest",
+      "type": "object"
+    },
     "CreateUserDto": {
       "properties": {
         "email": {
@@ -4877,6 +5165,10 @@
     }
   },
   "tags": [
+    {
+      "description": "Contracts operations",
+      "name": "contracts"
+    },
     {
       "description": "Delegation Controller",
       "name": "delegations"

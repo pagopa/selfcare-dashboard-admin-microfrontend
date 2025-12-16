@@ -10,6 +10,9 @@ import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
 import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResource';
 import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
+import { ContractTemplateResponseList } from './generated/b4f-dashboard/ContractTemplateResponseList';
+import { ContractTemplateFile } from './generated/b4f-dashboard/ContractTemplateFile';
+import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
 
 const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
   const token = storageTokenOps.read();
@@ -65,5 +68,38 @@ export const DashboardApi = {
       lang,
     });
     return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  listContractTemplates: async (
+    name: string,
+    version: string
+  ): Promise<ContractTemplateResponseList> => {
+    const result = await apiClient.listContractTemplates({
+      name,
+      version,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  downloadContractTemplate: async (
+    contractId: string,
+    productId: string
+  ): Promise<ContractTemplateFile> => {
+    const result = await apiClient.downloadContractTemplate({
+      contractId,
+      productId,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  postUploadContract: async (
+    productId: string,
+    contractTemplateUploadRequest: ContractTemplateUploadRequest
+  ): Promise<void> => {
+    const result = await apiClient.postUploadContract({
+      productId,
+      body: contractTemplateUploadRequest,
+    });
+    return extractResponse(result, 201, onRedirectToLogin);
   },
 };
