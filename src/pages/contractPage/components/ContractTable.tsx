@@ -1,4 +1,12 @@
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 import { DownloadButton } from './DownloadButton';
@@ -6,10 +14,9 @@ import { DownloadButton } from './DownloadButton';
 type Props = {
   contracts: Array<ContractTemplateResponse>;
   productId: string;
-  onEdit: (contractTemplateId: string) => void;
 };
 
-export const ContractTable = ({ contracts, productId, onEdit }: Props) => {
+export const ContractTable = ({ contracts, productId }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -17,11 +24,13 @@ export const ContractTable = ({ contracts, productId, onEdit }: Props) => {
       <Table>
         <TableHead>
           <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.name', 'Nome')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.version', 'Versione')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdAt', 'Data creazione')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdBy', 'Creato da')}</TableCell>
-            <TableCell align="center" sx={{ fontWeight: 600 }}>{t('contractPage.actions.default', 'Azioni')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.name')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.version')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdAt')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdBy')}</TableCell>
+            <TableCell align="center" sx={{ fontWeight: 600 }}>
+              {t('contractPage.actions.default')}
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -43,15 +52,6 @@ export const ContractTable = ({ contracts, productId, onEdit }: Props) => {
               <TableCell>{contract.createdBy || '-'}</TableCell>
 
               <TableCell align="center">
-                <Button
-                  size="small"
-                  onClick={() => onEdit(contract.contractTemplateId || '')}
-                  disabled={!contract.contractTemplateId}
-                  sx={{ mr: 1 }}
-                >
-                  {t('contractPage.edit', 'Modifica')}
-                </Button>
-
                 <DownloadButton
                   contractId={contract.contractTemplateId || ''}
                   productId={productId}

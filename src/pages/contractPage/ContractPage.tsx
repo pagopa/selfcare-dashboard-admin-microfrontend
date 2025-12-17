@@ -3,7 +3,7 @@ import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
 import type { History } from 'history';
 
-import { ProductDetail } from './components/ProductDetail';
+import { ContractDetail } from './components/ContractDetail';
 import { useContracts } from './hooks/useContracts';
 
 type Props = {
@@ -47,7 +47,7 @@ export default function ContractPage({ history }: Props) {
               const contracts = contractsByProduct[product.id] ?? [];
 
               return (
-                <ProductDetail
+                <ContractDetail
                   key={product.id}
                   product={product}
                   contracts={contracts}

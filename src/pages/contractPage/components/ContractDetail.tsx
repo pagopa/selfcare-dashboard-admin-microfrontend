@@ -21,16 +21,23 @@ type Props = {
   onEdit: (contractTemplateId: string) => void;
 };
 
-export const ProductDetail = ({ product, contracts, onToggle, onCreate, onEdit }: Props) => {
+export const ContractDetail = ({ product, contracts, onToggle, onCreate}: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Accordion onChange={onToggle}>
+    <Accordion
+      onChange={onToggle}
+      elevation={0}
+      disableGutters
+      sx={{
+        border: '1px solid #E0E0E0',
+        borderRadius: 1,
+        '&:before': { display: 'none' },
+      }}
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            {product.title}
-          </Typography>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ width: '100%' }}>
+          <Typography sx={{ flex: 3, fontWeight: 600 }}>{product.title}</Typography>
 
           <Stack sx={{ flex: 1 }} />
 
@@ -53,7 +60,7 @@ export const ProductDetail = ({ product, contracts, onToggle, onCreate, onEdit }
             {t('contractPage.noContracts')}
           </Typography>
         ) : (
-          <ContractTable contracts={contracts} productId={product.id} onEdit={onEdit} />
+          <ContractTable contracts={contracts} productId={product.id}/>
         )}
       </AccordionDetails>
     </Accordion>
