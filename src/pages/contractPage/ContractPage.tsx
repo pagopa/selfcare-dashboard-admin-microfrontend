@@ -13,7 +13,7 @@ type Props = {
 export default function ContractPage({ history }: Props) {
   const { t } = useTranslation();
 
-  const { loading, products, contractsByProduct, loadContractsForProduct } = useContracts();
+  const { loading, products, contractsByProduct } = useContracts();
 
   if (loading) {
     return (
@@ -51,9 +51,6 @@ export default function ContractPage({ history }: Props) {
                   key={product.id}
                   product={product}
                   contracts={contracts}
-                  onToggle={() => {
-                    void loadContractsForProduct(product);
-                  }}
                   onCreate={() => history.push(`/contracts/${product.id}/editor`)}
                   onEdit={(contractTemplateId) =>
                     history.push(`/contracts/${product.id}/${contractTemplateId}/editor`)

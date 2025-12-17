@@ -16,17 +16,15 @@ type Props = {
   product: Product;
   contracts: Array<ContractTemplateResponse>;
   expanded: boolean;
-  onToggle: () => void;
   onCreate: () => void;
   onEdit: (contractTemplateId: string) => void;
 };
 
-export const ContractDetail = ({ product, contracts, onToggle, onCreate}: Props) => {
+export const ContractDetail = ({ product, contracts, onCreate}: Props) => {
   const { t } = useTranslation();
 
   return (
     <Accordion
-      onChange={onToggle}
       elevation={0}
       disableGutters
       sx={{

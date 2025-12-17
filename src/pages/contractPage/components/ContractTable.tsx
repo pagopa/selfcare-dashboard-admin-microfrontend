@@ -35,32 +35,39 @@ export const ContractTable = ({ contracts, productId }: Props) => {
         </TableHead>
 
         <TableBody>
-          {contracts.map((contract, index) => (
-            <TableRow key={contract.contractTemplateId || index}>
-              <TableCell>{contract.name}</TableCell>
-
-              <TableCell>
-                <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                  {contract.contractTemplateVersion}
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : '-'}
-              </TableCell>
-
-              <TableCell>{contract.createdBy || '-'}</TableCell>
-
-              <TableCell align="center">
-                <DownloadButton
-                  contractId={contract.contractTemplateId || ''}
-                  productId={productId}
-                  fileName={`${contract.name}_v${contract.contractTemplateVersion}`}
-                  disabled={!contract.contractTemplateId}
-                />
+          {contracts.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} align="center">
+                Nessun contratto disponibile
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            contracts.map((contract) => (
+              <TableRow key={contract.contractTemplateId}>
+                <TableCell>{contract.name}</TableCell>
+
+                <TableCell>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                    {contract.contractTemplateVersion}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : '-'}
+                </TableCell>
+
+                <TableCell>{contract.createdBy || '-'}</TableCell>
+
+                <TableCell align="center">
+                  <DownloadButton
+                    contractId={contract.contractTemplateId!}
+                    productId={productId}
+                    fileName={`${contract.name}_v${contract.contractTemplateVersion}`}
+                  />
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>
