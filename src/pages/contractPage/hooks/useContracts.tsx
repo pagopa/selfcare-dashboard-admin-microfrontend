@@ -1,9 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
 import { useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
+import { useEffect, useRef, useState } from 'react';
 import type { Product } from '../../../model/Product';
-import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 import { fetchProducts } from '../../../services/productService';
-import { fetchContractTemplates } from '../../../services/contractService';
+import { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
+
+export const contractTemplatesMock: Array<ContractTemplateResponse> = [
+  {
+    contractTemplateId: 'tmpl_001',
+    contractTemplatePath: '/templates/standard-v1.pdf',
+    contractTemplateVersion: '1.0.0',
+    createdAt: '2025-12-17T10:15:30.000Z' as any,
+    createdBy: 'user_123',
+    description: 'Template standard per contratti',
+    name: 'Standard Contract',
+    productId: 'prod-io',
+  },
+  {
+    contractTemplateId: 'tmpl_002',
+    contractTemplatePath: '/templates/premium-v2.pdf',
+    contractTemplateVersion: '2.0.0',
+    createdAt: '2025-10-01T08:00:00.000Z' as any,
+    createdBy: 'user_456',
+    description: 'Template premium aggiornato',
+    name: 'Premium Contract',
+    productId: 'prod-interop',
+  },
+  {
+    contractTemplateId: 'tmpl_002',
+    contractTemplatePath: '/templates/premium-v2.pdf',
+    contractTemplateVersion: '2.0.0',
+    createdAt: '2025-10-01T08:00:00.000Z' as any,
+    createdBy: 'user_456',
+    description: 'Template premium aggiornato',
+    name: 'Premium Contract',
+    productId: 'prod-interop',
+  },
+];
 
 export const useContracts = () => {
   const addError = useErrorDispatcher();
@@ -14,7 +46,7 @@ export const useContracts = () => {
     Record<string, Array<ContractTemplateResponse>>
   >({});
 
-  const hasLoadedRef = useRef(false);
+  const hasLoadedRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (hasLoadedRef.current) {
@@ -24,10 +56,13 @@ export const useContracts = () => {
     // eslint-disable-next-line functional/immutable-data
     hasLoadedRef.current = true;
 
-    const loadProducts = async () => {
+    const loadProducts = async (): Promise<void> => {
       try {
-        const productsData = await fetchProducts();
-        setProducts(productsData);
+        const data = await fetchProducts();
+        const productIdsInContracts = new Set(contractTemplatesMock.map((giamma) => giamma.productId ));
+        const filteredProducts = data.filter((p) => productIdsInContracts.has(p.id));
+        setProducts(filteredProducts);
+        console.log(data);
       } catch (error) {
         addError({
           id: 'load-products-error',
@@ -44,29 +79,24 @@ export const useContracts = () => {
     void loadProducts();
   }, [addError]);
 
-  const loadContractsForProduct = async (product: Product) => {
-    if (contractsByProduct[product.id]) {
-      return;
-    }
+  const loadContractsForProduct = (product: Product): void => {
+    const contracts = contractTemplatesMock.filter(
+      (c) => c.productId === product.id
+    );
 
-    try {
-      const contracts = await fetchContractTemplates(product.title, '');
-      setContractsByProduct((prev) => ({
-        ...prev,
-        [product.id]: contracts,
-      }));
-    } catch {
-      setContractsByProduct((prev) => ({
-        ...prev,
-        [product.id]: [],
-      }));
-    }
+    setContractsByProduct((prev) => ({
+      ...prev,
+      [product.id]: contracts,
+    }));
   };
+
+  useEffect(() => {
+    products.forEach(loadContractsForProduct);
+  }, [products]);
 
   return {
     loading,
     products,
     contractsByProduct,
-    loadContractsForProduct,
   };
 };
