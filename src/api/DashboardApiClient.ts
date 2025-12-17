@@ -71,8 +71,8 @@ export const DashboardApi = {
   },
 
   listContractTemplates: async (
-    name: string,
-    version: string
+    name?: string,
+    version?: string
   ): Promise<ContractTemplateResponseList> => {
     const result = await apiClient.listContractTemplates({
       name,

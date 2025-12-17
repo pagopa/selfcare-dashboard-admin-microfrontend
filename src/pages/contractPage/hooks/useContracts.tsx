@@ -2,40 +2,10 @@ import { useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useRef, useState } from 'react';
 import type { Product } from '../../../model/Product';
 import { fetchProducts } from '../../../services/productService';
+import { fetchContractTemplates } from '../../../services/contractService';
 import { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 
-export const contractTemplatesMock: Array<ContractTemplateResponse> = [
-  {
-    contractTemplateId: 'tmpl_001',
-    contractTemplatePath: '/templates/standard-v1.pdf',
-    contractTemplateVersion: '1.0.0',
-    createdAt: '2025-12-17T10:15:30.000Z' as any,
-    createdBy: 'user_123',
-    description: 'Template standard per contratti',
-    name: 'Standard Contract',
-    productId: 'prod-io',
-  },
-  {
-    contractTemplateId: 'tmpl_002',
-    contractTemplatePath: '/templates/premium-v2.pdf',
-    contractTemplateVersion: '2.0.0',
-    createdAt: '2025-10-01T08:00:00.000Z' as any,
-    createdBy: 'user_456',
-    description: 'Template premium aggiornato',
-    name: 'Premium Contract',
-    productId: 'prod-interop',
-  },
-  {
-    contractTemplateId: 'tmpl_002',
-    contractTemplatePath: '/templates/premium-v2.pdf',
-    contractTemplateVersion: '2.0.0',
-    createdAt: '2025-10-01T08:00:00.000Z' as any,
-    createdBy: 'user_456',
-    description: 'Template premium aggiornato',
-    name: 'Premium Contract',
-    productId: 'prod-interop',
-  },
-];
+
 
 export const useContracts = () => {
   const addError = useErrorDispatcher();
@@ -56,13 +26,27 @@ export const useContracts = () => {
     // eslint-disable-next-line functional/immutable-data
     hasLoadedRef.current = true;
 
-    const loadProducts = async (): Promise<void> => {
+    const loadData = async (): Promise<void> => {
       try {
-        const data = await fetchProducts();
-        const productIdsInContracts = new Set(contractTemplatesMock.map((giamma) => giamma.productId ));
-        const filteredProducts = data.filter((p) => productIdsInContracts.has(p.id));
+        const [products, contracts] = await Promise.all([
+          fetchProducts(),
+          fetchContractTemplates(),
+        ]);
+        const contractsWithProductId = contracts.filter(
+          (contract): contract is ContractTemplateResponse & { productId: string } =>
+            contract.productId !== undefined && contract.productId !== null
+        );
+        const productIdsInContracts = new Set(contractsWithProductId.map((contract) => contract.productId));
+        const filteredProducts = products.filter((p) => productIdsInContracts.has(p.id));
         setProducts(filteredProducts);
-        console.log(data);
+        const contractsByProductMap = contractsWithProductId.reduce<Record<string, Array<ContractTemplateResponse>>>(
+          (acc, contract) => ({
+            ...acc,
+            [contract.productId]: [...(acc[contract.productId] ?? []), contract],
+          }),
+          {}
+        );
+        setContractsByProduct(contractsByProductMap);
       } catch (error) {
         addError({
           id: 'load-products-error',
@@ -76,23 +60,8 @@ export const useContracts = () => {
       }
     };
 
-    void loadProducts();
+    void loadData();
   }, [addError]);
-
-  const loadContractsForProduct = (product: Product): void => {
-    const contracts = contractTemplatesMock.filter(
-      (c) => c.productId === product.id
-    );
-
-    setContractsByProduct((prev) => ({
-      ...prev,
-      [product.id]: contracts,
-    }));
-  };
-
-  useEffect(() => {
-    products.forEach(loadContractsForProduct);
-  }, [products]);
 
   return {
     loading,

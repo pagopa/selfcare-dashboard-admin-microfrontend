@@ -54,7 +54,7 @@
     "description" : "UserGroups operations"
   } ],
   "paths" : {
-    "/v1/contract" : {
+    "/v1/contracts" : {
       "get" : {
         "tags" : [ "contracts" ],
         "summary" : "getContractsListUsingGET",
@@ -64,7 +64,7 @@
           "name" : "name",
           "in" : "query",
           "description" : "name",
-          "required" : true,
+          "required" : false,
           "style" : "form",
           "schema" : {
             "type" : "string"
@@ -73,7 +73,7 @@
           "name" : "version",
           "in" : "query",
           "description" : "version",
-          "required" : true,
+          "required" : false,
           "style" : "form",
           "schema" : {
             "type" : "string"

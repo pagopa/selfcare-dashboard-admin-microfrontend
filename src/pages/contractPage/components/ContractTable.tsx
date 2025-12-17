@@ -44,7 +44,7 @@ export const ContractTable = ({ contracts, productId }: Props) => {
           ) : (
             contracts.map((contract) => (
               <TableRow key={contract.contractTemplateId}>
-                <TableCell>{contract.name}</TableCell>
+                <TableCell>{contract.description}</TableCell>
 
                 <TableCell>
                   <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>

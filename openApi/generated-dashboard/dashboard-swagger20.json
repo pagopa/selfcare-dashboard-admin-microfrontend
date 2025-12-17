@@ -11,7 +11,76 @@
     "http"
   ],
   "paths": {
-    "/v1/contract": {
+    "/v1/contract/{contractId}": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [
+          {
+            "description": "Contract template's unique identifier",
+            "in": "path",
+            "name": "contractId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Product's unique identifier",
+            "in": "query",
+            "name": "productId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContractTemplateFile"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "contracts"
+        ],
+        "description": "Download a contract template version",
+        "operationId": "downloadContractTemplate",
+        "summary": "downloadContractTemplateUsingGET"
+      }
+    },
+    "/v1/contracts": {
       "get": {
         "produces": [
           "application/json",
@@ -22,14 +91,14 @@
             "description": "name",
             "in": "query",
             "name": "name",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
             "description": "version",
             "in": "query",
             "name": "version",
-            "required": true,
+            "required": false,
             "type": "string"
           }
         ],
@@ -138,75 +207,6 @@
         "description": "Upload a new contract template version",
         "operationId": "postUploadContract",
         "summary": "uploadContractTemplateUsingPOST"
-      }
-    },
-    "/v1/contract/{contractId}": {
-      "get": {
-        "produces": [
-          "application/json",
-          "application/problem+json"
-        ],
-        "parameters": [
-          {
-            "description": "Contract template's unique identifier",
-            "in": "path",
-            "name": "contractId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "description": "Product's unique identifier",
-            "in": "query",
-            "name": "productId",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ContractTemplateFile"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/Problem"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Problem"
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "schema": {
-              "$ref": "#/definitions/Problem"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/Problem"
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "global"
-            ]
-          }
-        ],
-        "tags": [
-          "contracts"
-        ],
-        "description": "Download a contract template version",
-        "operationId": "downloadContractTemplate",
-        "summary": "downloadContractTemplateUsingGET"
       }
     },
     "/v1/delegations": {
