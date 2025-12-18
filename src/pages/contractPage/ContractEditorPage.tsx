@@ -55,7 +55,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   };
 
   const handleSave = () => {
-    console.log("todo");
+    console.log('todo');
   };
 
   const safeSelectedProductId = products.some((p) => p.id === selectedProductId)
@@ -75,6 +75,26 @@ export default function ContractBuildPage({ match, location, history }: Props) {
             mbSubTitle={3}
           />
         </Grid>
+
+        <IconButton
+          onClick={() => setSidebarOpen((v) => !v)}
+          sx={(theme) => ({
+            position: 'fixed',
+            top: theme.spacing(10),
+            right: sidebarOpen && isDesktop ? `${SIDEBAR_WIDTH + 16}px` : theme.spacing(2),
+            zIndex: theme.zIndex.drawer + 1,
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 2,
+            bgcolor: 'background.paper',
+            transition: theme.transitions.create(['right'], {
+              duration: theme.transitions.duration.shortest,
+            }),
+          })}
+          aria-label={sidebarOpen ? 'Nascondi dettagli' : 'Mostra dettagli'}
+        >
+          {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
+        </IconButton>
 
         <Grid item xs={12}>
           <Paper
@@ -99,22 +119,6 @@ export default function ContractBuildPage({ match, location, history }: Props) {
                 }),
             }}
           >
-            <IconButton
-              onClick={() => setSidebarOpen((v) => !v)}
-              sx={{
-                position: 'absolute',
-                top: 12,
-                right: 12,
-                border: '1px solid',
-                borderColor: 'divider',
-                borderRadius: 2,
-                bgcolor: 'background.paper',
-              }}
-              aria-label={sidebarOpen ? 'Nascondi dettagli' : 'Mostra dettagli'}
-            >
-              {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
-            </IconButton>
-            
             <ContractEditor />
           </Paper>
 
