@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
-import ContractPage from '../../pages/contractPage/ContractPage';
 import ContractBuildPage from '../../pages/contractPage/ContractEditorPage';
+import ContractPage from '../../pages/contractPage/ContractPage';
 import { store } from '../../redux/store';
 import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
@@ -44,16 +44,17 @@ root.render(
             </Route>
             <Route
               path={ENV.ROUTES.ADMIN_CONTRACT}
-              exact={true}
-              render={(props) => <ContractPage history={props.history} />}
+              exact
+              render={(props) => <ContractPage {...props} />}
             />
             <Route
-              path="/contracts/:productId/editor"
+              path={ENV.ROUTES.ADMIN_CONTRACT_EDITOR}
               exact
               render={(props) => <ContractBuildPage {...props} />}
             />
+            
             <Route
-              path="/contracts/editor"
+              path={`${ENV.ROUTES.ADMIN_CONTRACT_EDITOR}/:productId/:contractTemplateId/editor`}
               exact
               render={(props) => <ContractBuildPage {...props} />}
             />

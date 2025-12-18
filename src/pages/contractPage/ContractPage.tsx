@@ -1,8 +1,9 @@
 import { Button, CircularProgress, Divider, Grid, Stack, Typography } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
-import { useTranslation } from 'react-i18next';
 import type { History } from 'history';
+import { useTranslation } from 'react-i18next';
 
+import { ENV } from '../../utils/env';
 import { ContractDetail } from './components/ContractDetail';
 import { useContracts } from './hooks/useContracts';
 
@@ -41,7 +42,9 @@ export default function ContractPage({ history }: Props) {
             variant="outlined"
             onClick={(e) => {
               e.stopPropagation();
-              history.push('/contracts/editor');
+              history.push(ENV.ROUTES.ADMIN_CONTRACT_EDITOR, {
+                products,
+              });
             }}
           >
             {t('contractPage.new')}
@@ -66,7 +69,10 @@ export default function ContractPage({ history }: Props) {
                   product={product}
                   contracts={contracts}
                   onEdit={(contractTemplateId) =>
-                    history.push(`/contracts/${product.id}/${contractTemplateId}/editor`)
+                    history.push(
+                      `${ENV.ROUTES.ADMIN_CONTRACT_EDITOR}/${product.id}/${contractTemplateId}/editor`,
+                      { products }
+                    )
                   }
                   expanded={false}
                 />
