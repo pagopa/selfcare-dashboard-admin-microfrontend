@@ -114,10 +114,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
             >
               {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
             </IconButton>
-
-            <Typography variant="body2" color="textSecondary">
-              Placeholder editor {safeSelectedProductId && <b>({safeSelectedProductId})</b>}
-            </Typography>
+            
             <ContractEditor />
           </Paper>
 
