@@ -1,4 +1,4 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TuneIcon from '@mui/icons-material/Tune';
 import {
@@ -17,6 +17,7 @@ import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router-dom';
+import { ENV } from '../../utils/env';
 
 type Product = {
   id: string;
@@ -35,7 +36,7 @@ type Props = RouteComponentProps<RouteParams>;
 
 const SIDEBAR_WIDTH = 420;
 
-export default function ContractBuildPage({ match, location }: Props) {
+export default function ContractBuildPage({ match, location, history }: Props) {
   const { t } = useTranslation();
 
   const isDesktop = useMediaQuery('(min-width:900px)');
@@ -48,21 +49,32 @@ export default function ContractBuildPage({ match, location }: Props) {
 
   const [selectedProductId, setSelectedProductId] = useState<string>(match.params.productId ?? '');
 
+  const handleBack = () => {
+    history.push(ENV.ROUTES.ADMIN_CONTRACT);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container px={3} mt={3} spacing={3}>
         <Grid item xs={12}>
-          <TitleBox
-            variantTitle="h4"
-            variantSubTitle="body1"
-            title={t('contractEditor.title')}
-            subTitle={t('contractEditor.subtitle')}
-            mbTitle={2}
-            mbSubTitle={3}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+            <IconButton onClick={handleBack} aria-label="Indietro" sx={{ mt: 0.5 }}>
+              <ArrowBackIcon />
+            </IconButton>
+
+            <Box sx={{ flex: 1 }}>
+              <TitleBox
+                variantTitle="h4"
+                variantSubTitle="body1"
+                title={t('contractEditor.title')}
+                subTitle={t('contractEditor.subtitle')}
+                mbTitle={2}
+                mbSubTitle={3}
+              />
+            </Box>
+          </Box>
         </Grid>
 
-        {/* EDITOR */}
         <Grid item xs={12}>
           <Paper
             elevation={0}
@@ -91,6 +103,7 @@ export default function ContractBuildPage({ match, location }: Props) {
                 borderRadius: 2,
                 bgcolor: 'background.paper',
               }}
+              aria-label={sidebarOpen ? 'Nascondi dettagli' : 'Mostra dettagli'}
             >
               {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
             </IconButton>
@@ -118,9 +131,6 @@ export default function ContractBuildPage({ match, location }: Props) {
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
           <Typography variant="subtitle1">Informazioni contratto</Typography>
-          <IconButton onClick={() => setSidebarOpen(false)}>
-            <ChevronLeftIcon />
-          </IconButton>
         </Box>
 
         <Stack spacing={2}>
