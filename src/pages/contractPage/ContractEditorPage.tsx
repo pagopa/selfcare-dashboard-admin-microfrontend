@@ -1,8 +1,8 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TuneIcon from '@mui/icons-material/Tune';
 import {
   Box,
+  Button,
   Drawer,
   Grid,
   IconButton,
@@ -41,7 +41,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const { t } = useTranslation();
 
   const isDesktop = useMediaQuery('(min-width:900px)');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const drawerVariant = useMemo(() => (isDesktop ? 'persistent' : 'temporary'), [isDesktop]);
 
@@ -54,26 +54,26 @@ export default function ContractBuildPage({ match, location, history }: Props) {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);
   };
 
+  const handleSave = () => {
+    console.log("todo");
+  };
+
+  const safeSelectedProductId = products.some((p) => p.id === selectedProductId)
+    ? selectedProductId
+    : '';
+
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container px={3} mt={3} spacing={3}>
         <Grid item xs={12}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-            <IconButton onClick={handleBack} aria-label="Indietro" sx={{ mt: 0.5 }}>
-              <ArrowBackIcon />
-            </IconButton>
-
-            <Box sx={{ flex: 1 }}>
-              <TitleBox
-                variantTitle="h4"
-                variantSubTitle="body1"
-                title={t('contractEditor.title')}
-                subTitle={t('contractEditor.subtitle')}
-                mbTitle={2}
-                mbSubTitle={3}
-              />
-            </Box>
-          </Box>
+          <TitleBox
+            variantTitle="h4"
+            variantSubTitle="body1"
+            title={t('contractEditor.title')}
+            subTitle={t('contractEditor.subtitle')}
+            mbTitle={2}
+            mbSubTitle={3}
+          />
         </Grid>
 
         <Grid item xs={12}>
@@ -88,9 +88,15 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
+
               ...(isDesktop && sidebarOpen
                 ? { width: `calc(100% - ${SIDEBAR_WIDTH}px)` }
                 : { width: '100%' }),
+
+              transition: (theme) =>
+                theme.transitions.create('width', {
+                  duration: theme.transitions.duration.shortest,
+                }),
             }}
           >
             <IconButton
@@ -109,8 +115,21 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
             </IconButton>
 
+            <Typography variant="body2" color="textSecondary">
+              Placeholder editor {safeSelectedProductId && <b>({safeSelectedProductId})</b>}
+            </Typography>
             <ContractEditor />
           </Paper>
+
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            <Button variant="outlined" size="small" onClick={handleBack}>
+              Indietro
+            </Button>
+
+            <Button variant="contained" size="small" onClick={handleSave}>
+              Salva
+            </Button>
+          </Stack>
         </Grid>
       </Grid>
 
@@ -119,6 +138,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
         anchor="right"
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        ModalProps={{ keepMounted: true }}
         PaperProps={{
           sx: {
             width: SIDEBAR_WIDTH,
@@ -128,7 +148,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
           },
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="subtitle1">Informazioni contratto</Typography>
         </Box>
 
@@ -139,7 +159,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
           <TextField
             select
             label="Tipo prodotto"
-            value={selectedProductId}
+            value={safeSelectedProductId}
             fullWidth
             disabled={products.length === 0}
             onChange={(e) => setSelectedProductId(e.target.value)}
@@ -154,6 +174,12 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               </MenuItem>
             ))}
           </TextField>
+
+          {products.length === 0 && (
+            <Typography variant="body2" color="textSecondary">
+              Nessun prodotto disponibile
+            </Typography>
+          )}
         </Stack>
       </Drawer>
     </Box>
