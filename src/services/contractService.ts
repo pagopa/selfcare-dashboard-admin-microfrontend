@@ -1,4 +1,4 @@
-import { DashboardApi } from '../api/DashboardApiClient';
+import { ContractsApi } from '../api/ContractsApiClient';
 import { ContractTemplateResponse } from '../api/generated/b4f-dashboard/ContractTemplateResponse';
 import { ContractTemplateFile } from '../api/generated/b4f-dashboard/ContractTemplateFile';
 import { ContractTemplateUploadRequest } from '../api/generated/b4f-dashboard/ContractTemplateUploadRequest';
@@ -7,7 +7,7 @@ export const fetchContractTemplates = async (
   name?: string,
   version?: string
 ): Promise<Array<ContractTemplateResponse>> => {
-  const response = await DashboardApi.listContractTemplates(name, version);
+  const response = await ContractsApi.listContractTemplates(name, version);
   
   const contractsList = (response as any).contracts ?? response.contractsList;
   
@@ -49,10 +49,10 @@ export const downloadContractTemplate = async (
   contractId: string,
   productId: string
 ): Promise<ContractTemplateFile> =>
-  DashboardApi.downloadContractTemplate(contractId, productId);
+  ContractsApi.downloadContractTemplate(contractId, productId);
 
 export const uploadContractTemplate = async (
   productId: string,
   uploadRequest: ContractTemplateUploadRequest
 ): Promise<void> =>
-  DashboardApi.postUploadContract(productId, uploadRequest);
+  ContractsApi.postUploadContract(productId, uploadRequest);
