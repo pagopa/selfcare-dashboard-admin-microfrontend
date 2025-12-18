@@ -14,19 +14,32 @@ import { ContractTemplateResponseList } from './generated/b4f-dashboard/Contract
 import { ContractTemplateFile } from './generated/b4f-dashboard/ContractTemplateFile';
 import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
 
-const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
-  const token = storageTokenOps.read();
-  return wrappedOperation({
-    ...params,
-    bearerAuth: `Bearer ${token}`,
-  });
-};
+const MOCK_BEARER_TOKEN = storageTokenOps.read();
+
+const MOCK_BEARER_TOKEN_CONTRACTS = storageTokenOps.read();
+
+const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => wrappedOperation({
+  ...params,
+  bearerAuth: `Bearer ${MOCK_BEARER_TOKEN}`,
+});
+
+const withBearerAndPartyIdContracts: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => wrappedOperation({
+  ...params,
+  bearerAuth: `Bearer ${MOCK_BEARER_TOKEN_CONTRACTS}`,
+});
 
 const apiClient = createClient({
   baseUrl: ENV.URL_API.API_DASHBOARD,
   basePath: '',
   fetchApi: buildFetchApi(ENV.API_TIMEOUT_MS.DASHBOARD),
   withDefaults: withBearerAndPartyId,
+});
+
+const apiClientContracts = createClient({
+  baseUrl: ENV.URL_API.API_DASHBOARD,
+  basePath: '',
+  fetchApi: buildFetchApi(ENV.API_TIMEOUT_MS.DASHBOARD),
+  withDefaults: withBearerAndPartyIdContracts,
 });
 
 const onRedirectToLogin = () =>
@@ -74,7 +87,7 @@ export const DashboardApi = {
     name?: string,
     version?: string
   ): Promise<ContractTemplateResponseList> => {
-    const result = await apiClient.listContractTemplates({
+    const result = await apiClientContracts.listContractTemplates({
       name,
       version,
     });
@@ -85,7 +98,7 @@ export const DashboardApi = {
     contractId: string,
     productId: string
   ): Promise<ContractTemplateFile> => {
-    const result = await apiClient.downloadContractTemplate({
+    const result = await apiClientContracts.downloadContractTemplate({
       contractId,
       productId,
     });
@@ -96,7 +109,7 @@ export const DashboardApi = {
     productId: string,
     contractTemplateUploadRequest: ContractTemplateUploadRequest
   ): Promise<void> => {
-    const result = await apiClient.postUploadContract({
+    const result = await apiClientContracts.postUploadContract({
       productId,
       body: contractTemplateUploadRequest,
     });
