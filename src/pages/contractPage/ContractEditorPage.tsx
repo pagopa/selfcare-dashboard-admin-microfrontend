@@ -21,7 +21,7 @@ import { ENV } from '../../utils/env';
 
 type Product = {
   id: string;
-  name: string;
+  title: string;
 };
 
 type LocationState = {
@@ -151,7 +151,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
 
             {products.map((product) => (
               <MenuItem key={product.id} value={product.id}>
-                {product.id}
+                {product.title}
               </MenuItem>
             ))}
           </TextField>
