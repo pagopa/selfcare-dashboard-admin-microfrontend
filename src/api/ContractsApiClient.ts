@@ -63,11 +63,17 @@ export const ContractsApi = {
 
   postUploadContract: async (
     productId: string,
-    contractTemplateUploadRequest: ContractTemplateUploadRequest
+    name : string,
+    version : string,
+    file : File,
+    description?: string
   ): Promise<void> => {
     const result = await apiClientContracts.postUploadContract({
       productId,
-      body: contractTemplateUploadRequest,
+      name,
+      version,
+      file,
+      description,
     });
     return extractResponse(result, 201, onRedirectToLogin);
   },

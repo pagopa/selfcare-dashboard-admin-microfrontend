@@ -140,21 +140,63 @@
         "summary" : "uploadContractTemplateUsingPOST",
         "description" : "Upload a new contract template version",
         "operationId" : "postUploadContract",
-        "parameters" : [ {
-          "name" : "productId",
-          "in" : "query",
-          "description" : "Product's unique identifier",
-          "required" : true,
-          "style" : "form",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "description": "Product's unique identifier",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            } 
+          },
+            {
+              "name": "name",
+              "in": "query",
+              "description": "name",
+              "required": true,
+              "style": "form",
+              "schema": {
+                "pattern": "^[a-zA-Z0-9 ]+$",
+                "type": "string"
+              }
+            },
+            {
+              "name": "description",
+              "in": "query",
+              "description": "description",
+              "required": false,
+              "style": "form",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "version",
+              "in": "query",
+              "description": "version",
+              "required": true,
+              "style": "form",
+              "schema": {
+                "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                "type": "string"
+              }
+            }
+        ],
         "requestBody" : {
           "content" : {
-            "application/json" : {
+            "multipart/form-data" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ContractTemplateUploadRequest"
+                "required" : [ "file" ],
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "description" : "file",
+                    "format" : "binary"
+                  }
+                }
               }
             }
           }

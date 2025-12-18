@@ -1,7 +1,6 @@
 import { ContractsApi } from '../api/ContractsApiClient';
 import { ContractTemplateResponse } from '../api/generated/b4f-dashboard/ContractTemplateResponse';
 import { ContractTemplateFile } from '../api/generated/b4f-dashboard/ContractTemplateFile';
-import { ContractTemplateUploadRequest } from '../api/generated/b4f-dashboard/ContractTemplateUploadRequest';
 
 export const fetchContractTemplates = async (
   name?: string,
@@ -53,6 +52,11 @@ export const downloadContractTemplate = async (
 
 export const uploadContractTemplate = async (
   productId: string,
-  uploadRequest: ContractTemplateUploadRequest
-): Promise<void> =>
-  ContractsApi.postUploadContract(productId, uploadRequest);
+  name : string,
+  version : string,
+  htmlContent : string,
+  description?: string
+): Promise<void> => {
+  const file = new File([htmlContent], `${name}_${version}.html`, { type: 'text/html' });
+  return ContractsApi.postUploadContract(productId, name, version, file, description);
+};

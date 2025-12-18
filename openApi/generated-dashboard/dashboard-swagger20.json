@@ -150,7 +150,7 @@
       },
       "post": {
         "consumes": [
-          "application/json"
+          "multipart/form-data"
         ],
         "produces": [
           "application/problem+json"
@@ -164,11 +164,35 @@
             "type": "string"
           },
           {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/ContractTemplateUploadRequest"
-            }
+            "description": "name",
+            "in": "query",
+            "name": "name",
+            "pattern": "^[a-zA-Z0-9 ]+$",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "description",
+            "in": "query",
+            "name": "description",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "version",
+            "in": "query",
+            "name": "version",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "file",
+            "format": "binary",
+            "in": "formData",
+            "name": "file",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

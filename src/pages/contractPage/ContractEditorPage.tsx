@@ -18,7 +18,8 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router-dom';
 import { ENV } from '../../utils/env';
-import ContractEditor from './components/ContractEditor';
+import { uploadContractTemplate } from '../../services/contractService';
+import { ContractEditor } from './components/ContractEditor';
 
 type Product = {
   id: string;
@@ -54,8 +55,12 @@ export default function ContractBuildPage({ match, location, history }: Props) {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);
   };
 
-  const handleSave = () => {
-    console.log('todo');
+  const handleSave = async () => {
+    const el = document.querySelector(".pell-content") as HTMLDivElement | null;
+    if (el && selectedProductId) {
+      // FIXME: read version and name
+      await uploadContractTemplate(safeSelectedProductId, "New Contract", "1.0.0", el.innerHTML);
+    }
   };
 
   const safeSelectedProductId = products.some((p) => p.id === selectedProductId)
@@ -119,7 +124,9 @@ export default function ContractBuildPage({ match, location, history }: Props) {
                 }),
             }}
           >
-            <ContractEditor />
+            <ContractEditor 
+              productId={safeSelectedProductId}
+            />
           </Paper>
 
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>

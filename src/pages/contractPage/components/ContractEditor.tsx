@@ -3,7 +3,11 @@ import { useEffect, useRef } from "react";
 import pell from "pell";
 import styles from "../utils/contractEditor.module.css";
 
-function ContractEditor() {
+type Props = {
+  productId: string;
+};
+
+export const ContractEditor = ({ productId }: Props) => {
     const initialized = useRef(false);
 
     useEffect(() => {
@@ -75,7 +79,7 @@ function ContractEditor() {
         <div className={styles.contractEditorContainer}>
             <div style={{overflow: 'auto'}}>
                 <img className={styles.pagopaHeaderLogo} src="https://selfcare.pagopa.it/assets/logo_pagopacorp.png"/>
-                <img className={styles.productHeaderLogo} src="https://selfcare.pagopa.it/resources/products/prod-idpay/logo.png"/>
+                <img className={styles.productHeaderLogo} src={`https://selfcare.pagopa.it/resources/products/${productId}/logo.png`}/>
             </div>
             <div>
                 <div id="contracteditor" className={styles.contractEditor}/>
@@ -92,6 +96,4 @@ function ContractEditor() {
             </div>
         </div>
     );
-}
-
-export default ContractEditor;
+};
