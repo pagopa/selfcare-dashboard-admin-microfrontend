@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Stack, Typography } from '@mui/material';
+import { Button, CircularProgress, Divider, Grid, Stack, Typography } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
 import type { History } from 'history';
@@ -25,15 +25,29 @@ export default function ContractPage({ history }: Props) {
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ mb: 3 }}>
         <TitleBox
           variantTitle="h4"
           variantSubTitle="body1"
           title={t('contractPage.title')}
           subTitle={t('contractPage.subtitle')}
           mbTitle={2}
-          mbSubTitle={5}
+          mbSubTitle={2}
         />
+
+        <Stack direction="row" justifyContent="flex-end">
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={(e) => {
+              e.stopPropagation();
+              history.push('/contracts/editor');
+            }}
+          >
+            {t('contractPage.new')}
+          </Button>
+        </Stack>
+        <Divider sx={{ mt: 2 }} />
       </Grid>
 
       <Grid item xs={12}>
@@ -51,7 +65,6 @@ export default function ContractPage({ history }: Props) {
                   key={product.id}
                   product={product}
                   contracts={contracts}
-                  onCreate={() => history.push(`/contracts/${product.id}/editor`)}
                   onEdit={(contractTemplateId) =>
                     history.push(`/contracts/${product.id}/${contractTemplateId}/editor`)
                   }

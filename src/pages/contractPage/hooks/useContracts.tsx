@@ -5,8 +5,6 @@ import { fetchProducts } from '../../../services/productService';
 import { fetchContractTemplates } from '../../../services/contractService';
 import { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 
-
-
 export const useContracts = () => {
   const addError = useErrorDispatcher();
 
@@ -36,10 +34,14 @@ export const useContracts = () => {
           (contract): contract is ContractTemplateResponse & { productId: string } =>
             contract.productId !== undefined && contract.productId !== null
         );
-        const productIdsInContracts = new Set(contractsWithProductId.map((contract) => contract.productId));
+        const productIdsInContracts = new Set(
+          contractsWithProductId.map((contract) => contract.productId)
+        );
         const filteredProducts = products.filter((p) => productIdsInContracts.has(p.id));
         setProducts(filteredProducts);
-        const contractsByProductMap = contractsWithProductId.reduce<Record<string, Array<ContractTemplateResponse>>>(
+        const contractsByProductMap = contractsWithProductId.reduce<
+          Record<string, Array<ContractTemplateResponse>>
+        >(
           (acc, contract) => ({
             ...acc,
             [contract.productId]: [...(acc[contract.productId] ?? []), contract],

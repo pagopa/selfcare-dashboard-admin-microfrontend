@@ -1,11 +1,4 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import type { Product } from '../../../model/Product';
@@ -16,11 +9,10 @@ type Props = {
   product: Product;
   contracts: Array<ContractTemplateResponse>;
   expanded: boolean;
-  onCreate: () => void;
   onEdit: (contractTemplateId: string) => void;
 };
 
-export const ContractDetail = ({ product, contracts, onCreate}: Props) => {
+export const ContractDetail = ({ product, contracts }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -38,17 +30,6 @@ export const ContractDetail = ({ product, contracts, onCreate}: Props) => {
           <Typography sx={{ flex: 3, fontWeight: 600 }}>{product.title}</Typography>
 
           <Stack sx={{ flex: 1 }} />
-
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={(e) => {
-              e.stopPropagation();
-              onCreate();
-            }}
-          >
-            {t('contractPage.new')}
-          </Button>
         </Stack>
       </AccordionSummary>
 
@@ -58,7 +39,7 @@ export const ContractDetail = ({ product, contracts, onCreate}: Props) => {
             {t('contractPage.noContracts')}
           </Typography>
         ) : (
-          <ContractTable contracts={contracts} productId={product.id}/>
+          <ContractTable contracts={contracts} productId={product.id} />
         )}
       </AccordionDetails>
     </Accordion>

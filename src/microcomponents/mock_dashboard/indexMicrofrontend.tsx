@@ -52,6 +52,11 @@ root.render(
               exact
               render={(props) => <ContractBuildPage {...props} />}
             />
+            <Route
+              path="/contracts/editor"
+              exact
+              render={(props) => <ContractBuildPage {...props} />}
+            />
             <Route path="*">
               <Redirect
                 to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {

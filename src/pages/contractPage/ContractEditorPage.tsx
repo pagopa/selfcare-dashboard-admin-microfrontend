@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router-dom';
 
 type RouteParams = {
-  productId: string;
+  productId?: string;
   contractTemplateId?: string;
 };
 
