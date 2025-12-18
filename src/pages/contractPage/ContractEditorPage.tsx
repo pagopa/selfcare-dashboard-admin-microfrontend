@@ -18,6 +18,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router-dom';
 import { ENV } from '../../utils/env';
+import ContractEditor from './components/ContractEditor';
 
 type Product = {
   id: string;
@@ -108,9 +109,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               {sidebarOpen ? <ChevronRightIcon /> : <TuneIcon />}
             </IconButton>
 
-            <Typography variant="body2" color="textSecondary">
-              Placeholder editor {selectedProductId && <b>({selectedProductId})</b>}
-            </Typography>
+            <ContractEditor />
           </Paper>
         </Grid>
       </Grid>
