@@ -60,9 +60,10 @@ export const ContractTable = ({ contracts, productId }: Props) => {
 
                 <TableCell align="center">
                   <DownloadButton
-                    contractId={contract.contractTemplateId!}
+                    contractId={contract.contractTemplateId ?? ''}
                     productId={productId}
                     fileName={`${contract.name}_v${contract.contractTemplateVersion}`}
+                    disabled={!contract.contractTemplateId}
                   />
                 </TableCell>
               </TableRow>
