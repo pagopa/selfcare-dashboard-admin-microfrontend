@@ -161,6 +161,7 @@ export default {
     subtitle: 'Visualizza e gestisci i template dei contratti per i diversi prodotti',
     noProducts: 'Nessun prodotto disponibile',
     noContracts: 'Nessun contratto disponibile',
+    product: 'Prodotto',
     contracts: 'contratti',
     new: 'Inserisci',
     actions: {
@@ -177,8 +178,8 @@ export default {
       actions: 'Azioni',
     },
     contractEditor: {
-      title: 'Editor contratto',
-      subtitle: 'Area di configurazione del template di contratto',
+      title: 'Gestione template contratti',
+      subtitle: 'Crea e modifica i template dei contratti per i tuoi prodotti',
       placeholder:
         'Qui verrà montato il componente di editor per la creazione e modifica del contratto',
     },

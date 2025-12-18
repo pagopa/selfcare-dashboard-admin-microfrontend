@@ -24,12 +24,12 @@ export const ContractTable = ({ contracts, productId }: Props) => {
       <Table>
         <TableHead>
           <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.name')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.version')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdAt')}</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.createdBy')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.table.name')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.table.version')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.table.createdAt')}</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>{t('contractPage.table.createdBy')}</TableCell>
             <TableCell align="center" sx={{ fontWeight: 600 }}>
-              {t('contractPage.actions.default')}
+              {t('contractPage.table.actions')}
             </TableCell>
           </TableRow>
         </TableHead>

@@ -69,8 +69,8 @@ export default function ContractBuildPage({ match, location, history }: Props) {
           <TitleBox
             variantTitle="h4"
             variantSubTitle="body1"
-            title={t('contractEditor.title')}
-            subTitle={t('contractEditor.subtitle')}
+            title={t('contractPage.contractEditor.title')}
+            subTitle={t('contractPage.contractEditor.subtitle')}
             mbTitle={2}
             mbSubTitle={3}
           />

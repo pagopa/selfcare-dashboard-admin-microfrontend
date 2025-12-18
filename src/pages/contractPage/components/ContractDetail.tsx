@@ -26,10 +26,11 @@ export const ContractDetail = ({ product, contracts }: Props) => {
       }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ width: '100%' }}>
-          <Typography sx={{ flex: 3, fontWeight: 600 }}>{product.title}</Typography>
-
-          <Stack sx={{ flex: 1 }} />
+        <Stack direction="column" sx={{ width: '100%' }}>
+          <Typography variant="caption" color="textSecondary">
+            {t('contractPage.product')}
+          </Typography>
+          <Typography sx={{ fontWeight: 600 }}>{product.title}</Typography>
         </Stack>
       </AccordionSummary>
 
