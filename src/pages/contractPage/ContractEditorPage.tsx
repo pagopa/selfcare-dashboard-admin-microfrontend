@@ -105,7 +105,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               borderColor: 'divider',
               minHeight: 520,
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               justifyContent: 'center',
               position: 'relative',
 
