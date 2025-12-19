@@ -1,0 +1,140 @@
+@import url(https://themes.googleusercontent.com/fonts/css?kit=-lTUqgJg2dxbe4D7B5DEIA3jn2WilaVUapNOYl4762s);
+
+.contractEditorContainer {
+    width: 100%;
+}
+
+.contractEditorContainer * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    margin-block: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-size: 10pt;
+    line-height: 1.8;
+    color: black;
+    background-color: transparent;
+}
+
+.contractEditorContainer .pagopaHeaderLogo {
+    width: 150px;
+    height: auto;
+    float: left;
+}
+
+.contractEditorContainer .productHeaderLogo {
+    width: 64px;
+    height: auto;
+    float: right;
+}
+
+.contractEditorContainer .pagopaFooterInfo {
+    font-size: 6pt;
+    float: left;
+}
+
+.contractEditorContainer .pagopaFooterLogo {
+    width: 64px;
+    height: auto;
+    float: right;
+}
+
+:global(#contracteditor .pell-content) {
+    margin-top: 5mm;
+    min-height: 50px;
+}
+
+:global(#contracteditor .pell-actionbar) {
+    border-bottom: 1px solid rgb(203 203 203);
+}
+
+:global(#contracteditor .pell-button) {
+    min-width: 20pt;
+    height: 20pt;
+    margin-right: 5px;
+}
+
+:global(#contracteditor .pell-button:hover) {
+    background-color: #f0f0f0;
+}
+
+:global(#contracteditor .pell-button-selected) {
+    background-color: #f0f0f0;
+}
+
+.contractEditor {
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+}
+
+.contractEditor h1 {
+    font-size: 14pt;
+    text-align: center;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+}
+
+.contractEditor p {
+    margin-top: 1mm;
+    margin-bottom: 1mm;
+}
+
+.contractEditor h1,
+.contractEditor h2,
+.contractEditor h3,
+.contractEditor h4,
+.contractEditor h5,
+.contractEditor h6 {
+    font-weight: bold;
+}
+
+.contractEditor h1 {
+    font-size: 14pt;
+    text-align: center;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+}
+
+.contractEditor h2 {
+    font-size: 13pt;
+    margin-top: 1.5mm;
+    margin-bottom: 1.5mm;
+}
+
+.contractEditor h3 {
+    font-size: 12pt;
+    margin-top: 1mm;
+    margin-bottom: 1mm;
+}
+
+.contractEditor h4 {
+    font-size: 11pt;
+    margin-top: 0.8mm;
+    margin-bottom: 0.8mm;
+}
+
+.contractEditor h5 {
+    font-size: 10pt;
+    margin-top: 0.7mm;
+    margin-bottom: 0.7mm;
+}
+
+.contractEditor h6 {
+    font-size: 10pt;
+    margin-top: 0.5mm;
+    margin-bottom: 0.5mm;
+}
+
+.contractEditor ul,
+.contractEditor ol {
+    list-style: none;
+    margin: 0;
+    padding-left: 5mm;
+}
+
+.contractEditor ul li,
+.contractEditor ol li {
+    padding: 0.8mm 0;
+}

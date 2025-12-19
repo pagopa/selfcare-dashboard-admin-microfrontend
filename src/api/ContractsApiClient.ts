@@ -8,21 +8,22 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
-import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResource';
-import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
+import { ContractTemplateResponseList } from './generated/b4f-dashboard/ContractTemplateResponseList';
+// import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
 
 const MOCK_BEARER_TOKEN = storageTokenOps.read();
 
-const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => wrappedOperation({
-  ...params,
-  bearerAuth: `Bearer ${MOCK_BEARER_TOKEN}`,
-});
+const withBearerAuthContracts: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) =>
+  wrappedOperation({
+    ...params,
+    bearerAuth: `Bearer ${MOCK_BEARER_TOKEN}`,
+  });
 
-const apiClient = createClient({
+const apiClientContracts = createClient({
   baseUrl: ENV.URL_API.API_DASHBOARD,
   basePath: '',
   fetchApi: buildFetchApi(ENV.API_TIMEOUT_MS.DASHBOARD),
-  withDefaults: withBearerAndPartyId,
+  withDefaults: withBearerAuthContracts,
 });
 
 const onRedirectToLogin = () =>
@@ -38,31 +39,32 @@ const onRedirectToLogin = () =>
     })
   );
 
-export const DashboardApi = {
-  getInstitution: async (institutionId: string): Promise<InstitutionResource> => {
-    const result = await apiClient.v2GetInstitution({
-      institutionId,
+export const ContractsApi = {
+  listContractTemplates: async (
+    name?: string,
+    version?: string
+  ): Promise<ContractTemplateResponseList> => {
+    const result = await apiClientContracts.listContractTemplates({
+      name,
+      version,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-  getProducts: async (): Promise<Array<ProductsResource>> => {
-    const result = await apiClient.getProductsTreeUsingGET({});
-    return extractResponse(result, 200, onRedirectToLogin);
-  },
-
-  tokenExchangeAdmin: async (
-    institutionId: string,
+  postUploadContract: async (
     productId: string,
-    environment?: string,
-    lang?: string
-  ): Promise<string> => {
-    const result = await apiClient.v2ExchangeBackofficeAdmin({
-      institutionId,
+    name: string,
+    version: string,
+    file: File,
+    description?: string
+  ): Promise<void> => {
+    const result = await apiClientContracts.postUploadContract({
       productId,
-      environment,
-      lang,
+      name,
+      version,
+      file,
+      description,
     });
-    return extractResponse(result, 200, onRedirectToLogin);
+    return extractResponse(result, 201, onRedirectToLogin);
   },
 };

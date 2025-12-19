@@ -156,4 +156,33 @@ export default {
     description: `L’adesione di <1>{{ente}}</1> non è andata a buon fine. Invieremo un’email all’indirizzo PEC indicato. Al suo interno, ci sono le istruzioni per completare l'adesione.`,
     backLabel: 'Torna alla home',
   },
+  contractPage: {
+    title: 'Gestione Contratti',
+    subtitle: 'Visualizza e gestisci i template dei contratti per i diversi prodotti',
+    noProducts: 'Nessun prodotto disponibile',
+    noContracts: 'Nessun contratto disponibile',
+    product: 'Prodotto',
+    contracts: 'contratti',
+    new: 'Inserisci',
+    edit: 'Modifica',
+    actions: {
+      default: "Azioni",
+      create: 'Inserisci',
+      edit: 'Modifica',
+      download: 'Download',
+    },
+    table: {
+      name: 'Nome',
+      version: 'Versione',
+      createdAt: 'Data creazione',
+      createdBy: 'Creato da',
+      actions: 'Azioni',
+    },
+    contractEditor: {
+      title: 'Gestione template contratti',
+      subtitle: 'Crea e modifica i template dei contratti per i tuoi prodotti',
+      placeholder:
+        'Qui verrà montato il componente di editor per la creazione e modifica del contratto',
+    },
+  },
 };

@@ -3,6 +3,8 @@ import { Redirect, useParams } from 'react-router';
 import AdminPage from './pages/adminPage/AdminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
 import { ENV } from './utils/env';
+import ContractPage from './pages/contractPage/ContractPage';
+import ContractEditorPage from './pages/contractPage/ContractEditorPage';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
 
@@ -47,6 +49,16 @@ export const DASHBOARD_ADMIN_ROUTES = {
         path: `${ENV.ROUTES.ADMIN_SEARCH}`,
         exact: true,
         component: AdminPage,
+      },
+      ADMIN_CONTRACT: {
+        path: `${ENV.ROUTES.ADMIN_CONTRACT}`,
+        exact: true,
+        component: ContractPage,
+      },
+      ADMIN_CONTRACT_EDITOR: {
+        path: `${ENV.ROUTES.ADMIN_CONTRACT_EDITOR}`,
+        exact: true,
+        component: ContractEditorPage,
       },
     },
     ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
