@@ -9,14 +9,17 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
+import { Product } from '../../../model/Product';
 import { DownloadButton } from './DownloadButton';
+import { EditButton } from './EditButton';
 
 type Props = {
   contracts: Array<ContractTemplateResponse>;
   productId: string;
+  products: Array<Product>;
 };
 
-export const ContractTable = ({ contracts, productId }: Props) => {
+export const ContractTable = ({ contracts, productId, products }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -64,6 +67,15 @@ export const ContractTable = ({ contracts, productId }: Props) => {
                     productId={productId}
                     fileName={`${contract.description}_v${contract.contractTemplateVersion}`}
                     disabled={!contract.contractTemplateId}
+                  />
+                  <EditButton
+                    contractId={contract.contractTemplateId ?? ''}
+                    productId={productId}
+                    name={contract.description}
+                    version={contract.contractTemplateVersion}
+                    products={products}
+                    disabled={!contract.contractTemplateId}
+                    fileName={`${contract.description}_v${contract.contractTemplateVersion}`}
                   />
                 </TableCell>
               </TableRow>

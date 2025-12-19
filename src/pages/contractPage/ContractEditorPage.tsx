@@ -14,7 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router-dom';
 import { ENV } from '../../utils/env';
@@ -28,6 +28,10 @@ type Product = {
 
 type LocationState = {
   products?: Array<Product>;
+  productId?: string;
+  name?: string;
+  version?: string;
+  contractHtml?: string;
 };
 
 type RouteParams = {
@@ -38,7 +42,7 @@ type Props = RouteComponentProps<RouteParams>;
 
 const SIDEBAR_WIDTH = 420;
 
-export default function ContractBuildPage({ match, location, history }: Props) {
+export default function ContractBuildPage({ location, history }: Props) {
   const { t } = useTranslation();
 
   const isDesktop = useMediaQuery('(min-width:900px)');
@@ -49,9 +53,20 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const state = location.state as LocationState | undefined;
   const products: Array<Product> = state?.products ?? [];
 
-  const [selectedProductId, setSelectedProductId] = useState<string>(match.params.productId ?? '');
-  const [selectedName, setSelectedName] = useState<string>("");
-  const [selectedVersion, setSelectedVersion] = useState<string>("");
+  const [selectedProductId, setSelectedProductId] = useState<string>(state?.productId ?? '');
+  const [selectedName, setSelectedName] = useState<string>(state?.name ?? "");
+  const [selectedVersion, setSelectedVersion] = useState<string>(state?.version ?? "");
+  const [contractHtml] = useState<string>(state?.contractHtml ?? "");
+
+  useEffect(() => {
+    if (contractHtml) {
+      const el = document.querySelector(".pell-content") as HTMLDivElement | null;
+      if (el) {
+        // eslint-disable-next-line functional/immutable-data
+        el.innerHTML = contractHtml;
+      }
+    }
+  }, [contractHtml]);
 
   const handleBack = () => {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);

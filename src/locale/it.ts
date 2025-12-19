@@ -164,6 +164,7 @@ export default {
     product: 'Prodotto',
     contracts: 'contratti',
     new: 'Inserisci',
+    edit: 'Modifica',
     actions: {
       default: "Azioni",
       create: 'Inserisci',

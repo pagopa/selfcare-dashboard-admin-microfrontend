@@ -75,6 +75,7 @@ export default function ContractPage({ history }: Props) {
                     )
                   }
                   expanded={false}
+                  products={products}
                 />
               );
             })

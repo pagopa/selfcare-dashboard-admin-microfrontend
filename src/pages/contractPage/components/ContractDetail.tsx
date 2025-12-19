@@ -10,9 +10,10 @@ type Props = {
   contracts: Array<ContractTemplateResponse>;
   expanded: boolean;
   onEdit: (contractTemplateId: string) => void;
+  products: Array<Product>;
 };
 
-export const ContractDetail = ({ product, contracts }: Props) => {
+export const ContractDetail = ({ product, contracts, products }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -40,7 +41,7 @@ export const ContractDetail = ({ product, contracts }: Props) => {
             {t('contractPage.noContracts')}
           </Typography>
         ) : (
-          <ContractTable contracts={contracts} productId={product.id} />
+          <ContractTable contracts={contracts} productId={product.id} products={products} />
         )}
       </AccordionDetails>
     </Accordion>
