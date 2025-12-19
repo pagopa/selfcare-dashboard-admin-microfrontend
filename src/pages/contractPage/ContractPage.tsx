@@ -1,20 +1,17 @@
 import { Button, CircularProgress, Divider, Grid, Stack, Typography } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
-import type { History } from 'history';
 import { useTranslation } from 'react-i18next';
 
+import { useHistory } from 'react-router-dom';
 import { ENV } from '../../utils/env';
 import { ContractDetail } from './components/ContractDetail';
 import { useContracts } from './hooks/useContracts';
 
-type Props = {
-  history: History;
-};
-
-export default function ContractPage({ history }: Props) {
+export default function ContractPage() {
   const { t } = useTranslation();
 
   const { loading, products, contractsByProduct } = useContracts();
+  const history = useHistory();
 
   if (loading) {
     return (

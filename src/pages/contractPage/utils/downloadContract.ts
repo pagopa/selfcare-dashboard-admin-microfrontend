@@ -1,4 +1,3 @@
-import { storageTokenOps } from "@pagopa/selfcare-common-frontend/lib/utils/storage";
 import { AppError } from "@pagopa/selfcare-common-frontend/lib/model/AppError";
 import { ENV } from "../../../utils/env";
 
