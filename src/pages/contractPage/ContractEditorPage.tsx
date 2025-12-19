@@ -42,7 +42,7 @@ type Props = RouteComponentProps<RouteParams>;
 
 const SIDEBAR_WIDTH = 420;
 
-export default function ContractBuildPage({ location, history }: Props) {
+export default function ContractEditorPage({ location, history }: Props) {
   const { t } = useTranslation();
 
   const isDesktop = useMediaQuery('(min-width:900px)');
