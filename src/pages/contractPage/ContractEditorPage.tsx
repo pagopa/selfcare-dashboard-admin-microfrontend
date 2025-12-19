@@ -60,8 +60,13 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const handleSave = async () => {
     const el = document.querySelector(".pell-content") as HTMLDivElement | null;
     if (el && selectedProductId && selectedName && selectedVersion) {
-      await uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML);
-      handleBack();
+      uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML).then(() => {
+        alert("Template del contratto salvato con successo");
+        handleBack();
+      }).catch((err) => {
+        console.error(err);
+        alert("ERRORE: impossibile salvare il template del contratto. Versione già esistente?");
+      });
     }
   };
 
