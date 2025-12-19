@@ -16,9 +16,9 @@ import {
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { RouteComponentProps } from 'react-router-dom';
-import { ENV } from '../../utils/env';
+import { type RouteComponentProps } from 'react-router-dom';
 import { uploadContractTemplate } from '../../services/contractService';
+import { ENV } from '../../utils/env';
 import { ContractEditor } from './components/ContractEditor';
 
 type Product = {
@@ -73,15 +73,17 @@ export default function ContractBuildPage({ location, history }: Props) {
   };
 
   const handleSave = async () => {
-    const el = document.querySelector(".pell-content") as HTMLDivElement | null;
+    const el = document.querySelector('.pell-content') as HTMLDivElement | null;
     if (el && selectedProductId && selectedName && selectedVersion) {
-      uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML).then(() => {
-        alert("Template del contratto salvato con successo");
-        handleBack();
-      }).catch((err) => {
-        console.error(err);
-        alert("ERRORE: impossibile salvare il template del contratto. Versione già esistente?");
-      });
+      uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML)
+        .then(() => {
+          alert('Template del contratto salvato con successo');
+          handleBack();
+        })
+        .catch((err) => {
+          console.error(err);
+          alert('ERRORE: impossibile salvare il template del contratto. Versione già esistente?');
+        });
     }
   };
 
@@ -157,9 +159,7 @@ export default function ContractBuildPage({ location, history }: Props) {
                 }),
             }}
           >
-            <ContractEditor 
-              productId={safeSelectedProductId}
-            />
+            <ContractEditor productId={safeSelectedProductId} />
           </Paper>
 
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
@@ -167,7 +167,12 @@ export default function ContractBuildPage({ location, history }: Props) {
               Indietro
             </Button>
 
-            <Button variant="contained" size="small" onClick={handleSave} disabled={!selectedName || !selectedVersion || !selectedProductId}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleSave}
+              disabled={!selectedName || !selectedVersion || !selectedProductId}
+            >
               Salva
             </Button>
           </Stack>
@@ -194,8 +199,21 @@ export default function ContractBuildPage({ location, history }: Props) {
         </Box>
 
         <Stack spacing={2}>
-          <TextField label="Nome documento" fullWidth value={selectedName} onChange={(e) => setSelectedName(e.target.value)} required />
-          <TextField label="Versione" fullWidth value={selectedVersion} onChange={handleVersionChange} required placeholder='0.0.1' />
+          <TextField
+            label="Nome documento"
+            fullWidth
+            value={selectedName}
+            onChange={(e) => setSelectedName(e.target.value)}
+            required
+          />
+          <TextField
+            label="Versione"
+            fullWidth
+            value={selectedVersion}
+            onChange={handleVersionChange}
+            required
+            placeholder="0.0.1"
+          />
 
           <TextField
             select
