@@ -50,8 +50,8 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const products: Array<Product> = state?.products ?? [];
 
   const [selectedProductId, setSelectedProductId] = useState<string>(match.params.productId ?? '');
-  const [selectedName, setSelectedName] = useState<string>();
-  const [selectedVersion, setSelectedVersion] = useState<string>();
+  const [selectedName, setSelectedName] = useState<string>("");
+  const [selectedVersion, setSelectedVersion] = useState<string>("");
 
   const handleBack = () => {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);
@@ -62,6 +62,17 @@ export default function ContractBuildPage({ match, location, history }: Props) {
     if (el && selectedProductId && selectedName && selectedVersion) {
       await uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML);
       handleBack();
+    }
+  };
+
+  const handleVersionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+
+    // Allow partial matches while typing
+    const regex = /^(\d|\d\.|\d\.\d|\d\.\d\.|\d\.\d\.\d)?$/;
+
+    if (regex.test(newValue)) {
+      setSelectedVersion(newValue);
     }
   };
 
@@ -164,7 +175,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
 
         <Stack spacing={2}>
           <TextField label="Nome documento" fullWidth value={selectedName} onChange={(e) => setSelectedName(e.target.value)} required />
-          <TextField label="Versione" fullWidth value={selectedVersion} onChange={(e) => setSelectedVersion(e.target.value)} required placeholder='0.0.1' />
+          <TextField label="Versione" fullWidth value={selectedVersion} onChange={handleVersionChange} required placeholder='0.0.1' />
 
           <TextField
             select
