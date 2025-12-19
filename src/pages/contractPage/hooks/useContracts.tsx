@@ -1,9 +1,12 @@
 import { useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { useEffect, useRef, useState } from 'react';
 import type { Product } from '../../../model/Product';
+import {
+  fetchContractTemplatesNested,
+  type ContractsNestedResponse,
+} from '../../../services/contractService';
+import type { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 import { fetchProducts } from '../../../services/productService';
-import { fetchContractTemplates } from '../../../services/contractService';
-import { ContractTemplateResponse } from '../../../api/generated/b4f-dashboard/ContractTemplateResponse';
 
 export const useContracts = () => {
   const addError = useErrorDispatcher();
@@ -17,43 +20,49 @@ export const useContracts = () => {
   const hasLoadedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (hasLoadedRef.current) {
-      return;
-    }
+    if (hasLoadedRef.current) {return;}
 
     // eslint-disable-next-line functional/immutable-data
     hasLoadedRef.current = true;
 
-    const loadData = async (): Promise<void> => {
+    const loadData = async () => {
       try {
-        const [products, contracts] = await Promise.all([
-          fetchProducts(),
-          fetchContractTemplates(),
-        ]);
-        const contractsWithProductId = contracts.filter(
-          (contract): contract is ContractTemplateResponse & { productId: string } =>
-            contract.productId !== undefined && contract.productId !== null
+        const [productsResponse, contractsResponse]: [
+          Array<Product>,
+          ContractsNestedResponse
+        ] = await Promise.all([fetchProducts(), fetchContractTemplatesNested()]);
+
+        const mappedContracts: Record<string, Array<ContractTemplateResponse>> = {};
+
+        // Trasformiamo l'oggetto annidato in un array singolo per ogni prodotto
+        for (const [productId, contractsByName] of Object.entries(contractsResponse)) {
+          // eslint-disable-next-line functional/immutable-data
+          mappedContracts[productId] = [];
+          for (const [contractName, contractList] of Object.entries(contractsByName)) {
+            const contractsArray: Array<ContractTemplateResponse> = (contractList as Array<ContractTemplateResponse>).map(
+              (contract) => ({
+                ...contract,
+                description: contractName,
+              })
+            );
+            // eslint-disable-next-line functional/immutable-data
+            mappedContracts[productId].push(...contractsArray);
+          }
+        }
+
+        setContractsByProduct(mappedContracts);
+
+        const productIdsWithContracts = new Set(Object.keys(mappedContracts));
+        const filteredProducts: Array<Product> = productsResponse.filter((p) =>
+          productIdsWithContracts.has(p.id)
         );
-        const productIdsInContracts = new Set(
-          contractsWithProductId.map((contract) => contract.productId)
-        );
-        const filteredProducts = products.filter((p) => productIdsInContracts.has(p.id));
+
         setProducts(filteredProducts);
-        const contractsByProductMap = contractsWithProductId.reduce<
-          Record<string, Array<ContractTemplateResponse>>
-        >(
-          (acc, contract) => ({
-            ...acc,
-            [contract.productId]: [...(acc[contract.productId] ?? []), contract],
-          }),
-          {}
-        );
-        setContractsByProduct(contractsByProductMap);
       } catch (error) {
         addError({
-          id: 'load-products-error',
+          id: 'load-contracts-error',
           blocking: false,
-          techDescription: 'Failed to load products',
+          techDescription: 'Failed to load products or contracts',
           toNotify: false,
           error: error as Error,
         });

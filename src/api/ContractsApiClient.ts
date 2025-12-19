@@ -8,7 +8,6 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
-import { ContractTemplateFile } from './generated/b4f-dashboard/ContractTemplateFile';
 import { ContractTemplateResponseList } from './generated/b4f-dashboard/ContractTemplateResponseList';
 // import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
 
@@ -48,17 +47,6 @@ export const ContractsApi = {
     const result = await apiClientContracts.listContractTemplates({
       name,
       version,
-    });
-    return extractResponse(result, 200, onRedirectToLogin);
-  },
-
-  downloadContractTemplate: async (
-    contractId: string,
-    productId: string
-  ): Promise<ContractTemplateFile> => {
-    const result = await apiClientContracts.downloadContractTemplate({
-      contractId,
-      productId,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
