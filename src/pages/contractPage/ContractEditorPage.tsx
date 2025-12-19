@@ -42,7 +42,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const { t } = useTranslation();
 
   const isDesktop = useMediaQuery('(min-width:900px)');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const drawerVariant = useMemo(() => (isDesktop ? 'persistent' : 'temporary'), [isDesktop]);
 
@@ -50,6 +50,8 @@ export default function ContractBuildPage({ match, location, history }: Props) {
   const products: Array<Product> = state?.products ?? [];
 
   const [selectedProductId, setSelectedProductId] = useState<string>(match.params.productId ?? '');
+  const [selectedName, setSelectedName] = useState<string>();
+  const [selectedVersion, setSelectedVersion] = useState<string>();
 
   const handleBack = () => {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);
@@ -57,9 +59,9 @@ export default function ContractBuildPage({ match, location, history }: Props) {
 
   const handleSave = async () => {
     const el = document.querySelector(".pell-content") as HTMLDivElement | null;
-    if (el && selectedProductId) {
-      // FIXME: read version and name
-      await uploadContractTemplate(safeSelectedProductId, "New Contract", "1.0.0", el.innerHTML);
+    if (el && selectedProductId && selectedName && selectedVersion) {
+      await uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML);
+      handleBack();
     }
   };
 
@@ -134,7 +136,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
               Indietro
             </Button>
 
-            <Button variant="contained" size="small" onClick={handleSave}>
+            <Button variant="contained" size="small" onClick={handleSave} disabled={!selectedName || !selectedVersion || !selectedProductId}>
               Salva
             </Button>
           </Stack>
@@ -161,8 +163,8 @@ export default function ContractBuildPage({ match, location, history }: Props) {
         </Box>
 
         <Stack spacing={2}>
-          <TextField label="Nome documento" fullWidth />
-          <TextField label="Versione" fullWidth />
+          <TextField label="Nome documento" fullWidth value={selectedName} onChange={(e) => setSelectedName(e.target.value)} required />
+          <TextField label="Versione" fullWidth value={selectedVersion} onChange={(e) => setSelectedVersion(e.target.value)} required placeholder='0.0.1' />
 
           <TextField
             select
@@ -171,6 +173,7 @@ export default function ContractBuildPage({ match, location, history }: Props) {
             fullWidth
             disabled={products.length === 0}
             onChange={(e) => setSelectedProductId(e.target.value)}
+            required
           >
             <MenuItem value="" disabled>
               Seleziona prodotto

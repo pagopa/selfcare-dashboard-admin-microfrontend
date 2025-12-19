@@ -69,12 +69,6 @@
     margin-bottom: 5mm;
 }
 
-.contractEditor mark {
-    color: black;
-    position: relative;
-    content: "xxxx";
-}
-
 .contractEditor h1 {
     font-size: 14pt;
     text-align: center;
