@@ -10,7 +10,7 @@ export async function downloadContract(
   onError: (error: AppError) => void
 ) {
   try {
-    const token = "TOKEN";
+    const token = storageTokenOps.read();
     const url = `${ENV.URL_API.API_DASHBOARD}/v1/contracts/${contractId}?productId=${productId}&contractName=${fileName}`;
 
     const response = await fetch(url, {
