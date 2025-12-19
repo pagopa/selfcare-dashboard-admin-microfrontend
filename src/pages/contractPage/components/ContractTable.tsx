@@ -62,7 +62,7 @@ export const ContractTable = ({ contracts, productId }: Props) => {
                   <DownloadButton
                     contractId={contract.contractTemplateId ?? ''}
                     productId={productId}
-                    fileName={`${contract.name}_v${contract.contractTemplateVersion}`}
+                    fileName={`${contract.description}_v${contract.contractTemplateVersion}`}
                     disabled={!contract.contractTemplateId}
                   />
                 </TableCell>
