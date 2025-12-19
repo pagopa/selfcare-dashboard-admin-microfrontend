@@ -4,19 +4,21 @@ import {
   buildFetchApi,
   extractResponse,
 } from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
-import { ContractTemplateResponseList } from './generated/b4f-dashboard/ContractTemplateResponseList';
 import { ContractTemplateFile } from './generated/b4f-dashboard/ContractTemplateFile';
-import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
+import { ContractTemplateResponseList } from './generated/b4f-dashboard/ContractTemplateResponseList';
+// import { ContractTemplateUploadRequest } from './generated/b4f-dashboard/ContractTemplateUploadRequest';
 
-const MOCK_BEARER_TOKEN_IAM = "REPLACE_WITH_YOUR_CONTRACT_TOKEN";
+const MOCK_BEARER_TOKEN = storageTokenOps.read();
 
-const withBearerAuthContracts: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => wrappedOperation({
-  ...params,
-  bearerAuth: `Bearer ${MOCK_BEARER_TOKEN_IAM}`,
-});
+const withBearerAuthContracts: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) =>
+  wrappedOperation({
+    ...params,
+    bearerAuth: `Bearer ${MOCK_BEARER_TOKEN}`,
+  });
 
 const apiClientContracts = createClient({
   baseUrl: ENV.URL_API.API_DASHBOARD,
@@ -63,9 +65,9 @@ export const ContractsApi = {
 
   postUploadContract: async (
     productId: string,
-    name : string,
-    version : string,
-    file : File,
+    name: string,
+    version: string,
+    file: File,
     description?: string
   ): Promise<void> => {
     const result = await apiClientContracts.postUploadContract({
