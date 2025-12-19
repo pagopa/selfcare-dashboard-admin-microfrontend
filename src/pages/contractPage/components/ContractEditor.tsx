@@ -53,7 +53,6 @@ export const ContractEditor = ({ productId }: Props) => {
                     <option value="\${lastName}">Cognome</option>
                 `;
                 placeholderSelect.onchange = (e) => handleSelctChange(e);
-                actionBar.appendChild(placeholderSelect);
 
                 const headingSelect = document.createElement('select');
                 headingSelect.id = 'placeholder';
@@ -68,7 +67,9 @@ export const ContractEditor = ({ productId }: Props) => {
                     <option value="<h6>Titolo 6</h6>">Titolo 6</option>
                 `;
                 headingSelect.onchange = (e) => handleSelctChange(e);
+
                 actionBar.appendChild(headingSelect);
+                actionBar.appendChild(placeholderSelect);
             }
 
             initialized.current = true;
