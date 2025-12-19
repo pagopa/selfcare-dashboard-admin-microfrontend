@@ -80,7 +80,7 @@ export const ContractEditor = ({ productId }: Props) => {
         <div className={styles.contractEditorContainer}>
             <div style={{overflow: 'auto'}}>
                 <img className={styles.pagopaHeaderLogo} src="https://selfcare.pagopa.it/assets/logo_pagopacorp.png"/>
-                <img className={styles.productHeaderLogo} src={`https://selfcare.pagopa.it/resources/products/${productId}/logo.png`}/>
+                <img className={styles.productHeaderLogo} src={`https://selfcare.pagopa.it/resources/products/${productId}/logo.png`} onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src = 'https://www.freeiconspng.com/thumbs/cat-png/baby-cat-png-12.png'; }} />
             </div>
             <div>
                 <div id="contracteditor" className={styles.contractEditor}/>
