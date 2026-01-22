@@ -5,11 +5,10 @@ import {
   UserNotifyHandle,
 } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
-import { useParams, Route, Switch, useHistory } from 'react-router';
+import { useParams, Route, Switch, useHistory, Link } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
 import { Box, Grid, useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
