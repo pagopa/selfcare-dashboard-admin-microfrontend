@@ -1,7 +1,10 @@
 import { ArrowForward } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Autocomplete,
+  Box,
+  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -25,6 +28,8 @@ import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 // import { useHistory } from 'react-router-dom';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
@@ -32,6 +37,7 @@ import { Product } from '../../model/Product';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
+import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
 import ProductAvatarCell from './components/ProductAvatarCell';
@@ -55,7 +61,7 @@ const AdminPage = () => {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const { invokeProductBo } = useTokenExchange();
-  // const history = useHistory();
+  const history = useHistory();
   const lang = i18n.language;
 
   // Extract product filtering logic to custom hook
@@ -265,14 +271,18 @@ const AdminPage = () => {
 
       {partyDetail && selectedInstitution && (
         <Grid item xs={12} sx={commonStyles}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-            <PartyAccountItem
-              image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
-              partyName={selectedInstitution.description || '-'}
-              parentPartyName={selectedInstitution.parentDescription || undefined}
-            />
-            {/* 
-            TODO hide temporarily the overview button
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ xs: 'stretch', sm: 'center' }}
+            spacing={2}
+          >
+            <Box sx={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
+              <PartyAccountItem
+                image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
+                partyName={selectedInstitution.description || '-'}
+              />
+            </Box>
             <Button
               variant="outlined"
               onClick={() =>
@@ -283,10 +293,10 @@ const AdminPage = () => {
                 )
               }
               endIcon={<VisibilityIcon />}
+              sx={{ flexShrink: 0 }}
             >
               {t('adminPage.selectedPartyDetails.redirectToOverview')}
             </Button>
-            */}
           </Stack>
 
           <Grid container bgcolor={grey[100]} mt={2} alignItems="center" flexDirection={'row'}>
