@@ -2,10 +2,10 @@ import { SearchServiceInstitution } from '../../api/generated/party-registry-pro
 
 export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
-    id: '12345678901',
+    id: '3',
     description: 'Istituzione 1asdsad adsad asbdas sad adas dasdas das adasd asdasdsa , adsa dsad a,as,d asd asd asdas,a asdas sadasd asd asdas,das dad,asa,d sa asd asdsad asdsa dsadas dsadasd sad sadasdsad asdasdasdsa dsadasdasdasd sadasd asd sad sad asd asd nasdkjbasjkdfhsakjfdbakjsbdkjsabjkdj asd asd ,sa ,d asd ',
     institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    products: ['prod-io', 'prod-pagopa'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),

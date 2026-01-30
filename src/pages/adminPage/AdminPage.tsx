@@ -27,8 +27,8 @@ import { ALLOWED_PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-// import { useHistory } from 'react-router-dom';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
@@ -120,8 +120,27 @@ const AdminPage = () => {
             setOpen(true);
           });
       }, 400),
+
     []
   );
+
+  useEffect(
+    () => () => {
+      debouncedSearch.cancel();
+    },
+    [debouncedSearch]
+  );
+
+  useEffect(() => {
+    const storedInstitution = storageOpsBuilder(
+      'selectedInstitution',
+      'object',
+      false
+    ).read() as SearchServiceInstitution | null;
+    if (storedInstitution) {
+      setSelectedInstitution(storedInstitution);
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedInstitution?.id) {
@@ -132,6 +151,9 @@ const AdminPage = () => {
           }
         })
         .catch((error) => {
+          storageOpsBuilder('selectedInstitution', 'object', false).delete();
+          setSelectedInstitution(null);
+
           addError({
             id: `fetchPartyDetails-${selectedInstitution.id}-api-error`,
             blocking: false,
@@ -195,6 +217,11 @@ const AdminPage = () => {
           value={selectedInstitution}
           onChange={(_, newValue) => {
             setSelectedInstitution(newValue);
+            if (newValue) {
+              storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
+            } else {
+              storageOpsBuilder('selectedInstitution', 'object', false).delete();
+            }
             setOpen(false);
           }}
           onInputChange={(_, newInputValue, reason) => {
