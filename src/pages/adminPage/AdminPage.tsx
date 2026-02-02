@@ -308,6 +308,7 @@ const AdminPage = () => {
               <PartyAccountItem
                 image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
                 partyName={selectedInstitution.description || '-'}
+                parentPartyName={selectedInstitution.parentDescription || undefined}
               />
             </Box>
             <Button
