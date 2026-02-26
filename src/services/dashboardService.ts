@@ -3,7 +3,7 @@ import { institutionResource2Party, Party } from '../model/Party';
 import { mockedParties } from './__mocks__/dashboardService';
 
 export const fetchPartyDetailsService = (partyId: string): Promise<Party | null> => {
-  if (process.env.REACT_APP_API_MOCK_PARTIES === 'true') {
+  if (process.env.VITE_API_MOCK_PARTIES === 'true') {
     return Promise.resolve(mockedParties[2] ?? null);
   } else {
     return DashboardApi.getInstitution(partyId).then((institutionResource) =>
@@ -18,7 +18,7 @@ export const getTokenExchangeAdminService = (
   environment?: string,
   lang?: string
 ): Promise<string> => {
-  if (process.env.REACT_APP_API_MOCK_PARTIES === 'true') {
+  if (process.env.VITE_API_MOCK_PARTIES === 'true') {
     return Promise.resolve('mocked-token');
   } else {
     return DashboardApi.tokenExchangeAdmin(institutionId, productId, environment, lang);

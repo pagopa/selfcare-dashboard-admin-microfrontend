@@ -21,20 +21,18 @@
     "react-dropzone": "^11.4.2",
     "react-router-dom": "^5.3.4",
     "react-router-hash-link": "^2.4.3",
-    "react-scripts": "5.0.0",
     "react-use-scrollspy": "^3.0.1",
     "url": "^0.11.0"
   },
   "scripts": {
     "clean": "npm-run-all clean:*",
-    "start": "craco start",
+    "start": "vite",
     "prebuild": "npm run generate",
-    "build": "craco build",
+    "build": "tsc && vite build",
     "clean:build": "rimraf build",
-    "test": "craco test -i",
-    "test:coverage": "craco test -i --coverage",
+    "test": "vitest run --reporter=verbose",
+    "test:coverage": "vitest run --coverage",
     "clean:coverage": "rimraf coverage",
-    "eject": "react-scripts eject",
     "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx ",
     "prettify": "prettier --write \"./**/*.{ts,tsx}\"",
@@ -45,12 +43,6 @@
     "generate:api-onboarding": "yarn run clean:api-onboarding && mkdirp openApi/generated-onboarding && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/onboarding-api-docs.json > openApi/generated-onboarding/onboarding-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated-onboarding/onboarding-swagger20.json && gen-api-models --api-spec openApi/generated-onboarding/onboarding-swagger20.json --out-dir src/api/generated/onboarding --no-strict --request-types --response-decoders --client && node openApi/scripts/api-onboarding_fixPostGen.js",
     "generate:api-party-registry-proxy": "yarn run clean:api-party-registry-proxy && mkdirp openApi/generated-party-registry-proxy && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/party-registry-proxy-api-docs.json > openApi/generated-party-registry-proxy/party-registry-proxy-swagger20.json && node openApi/scripts/api-party-registry-proxy_fixPreGen.js && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated-party-registry-proxy/party-registry-proxy-swagger20.json && gen-api-models --api-spec openApi/generated-party-registry-proxy/party-registry-proxy-swagger20.json --out-dir src/api/generated/party-registry-proxy --no-strict --request-types --response-decoders --client && node openApi/scripts/api-party-registry-proxy_fixPostGen.js",
     "generate:api-b4f-dashboard": "yarn run clean:api-b4f-dashboard && mkdirp openApi/generated-dashboard && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/dashboard-api-docs.json > openApi/generated-dashboard/dashboard-swagger20.json && node openApi/scripts/api-b4f-dashboard_fixPreGen.js && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated-dashboard/dashboard-swagger20.json && gen-api-models --api-spec openApi/generated-dashboard/dashboard-swagger20.json --out-dir src/api/generated/b4f-dashboard --no-strict --request-types --response-decoders --client && node openApi/scripts/api-b4f-dashboard_fixPostGen.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -65,8 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@craco/craco": "^6.4.3",
+    "@originjs/vite-plugin-federation": "^1.4.1",
     "@pagopa/openapi-codegen-ts": "^12.1.2",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "12.1.2",
@@ -75,8 +66,9 @@
     "@types/redux-logger": "^3.0.13",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/coverage-v8": "4.0.18",
     "api-spec-converter": "^2.12.0",
-    "craco-module-federation": "^1.1.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-functional": "^4.2.1",
@@ -84,11 +76,17 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-sonarjs": "^0.13.0",
+    "jsdom": "^28.0.0",
     "mkdirp": "^1.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "regex-replace": "^2.3.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "vite": "7.0.0",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-html": "^3.2.2",
+    "vite-tsconfig-paths": "^6.1.0",
+    "vitest": "^4.0.18"
   },
   "resolutions": {
     "static-eval": "^2.0.2",
@@ -98,15 +96,5 @@
     "svgo": "^2.8.0",
     "json-schema-ref-parser": "^7.1.0",
     "z-schema": "^4.2.4"
-  },
-  "jest": {
-    "restoreMocks": true,
-    "clearMocks": true,
-    "resetMocks": true,
-    "coveragePathIgnorePatterns": [
-      "src/index.tsx",
-      "src/reportWebVitals.ts",
-      "src/api/generated"
-    ]
   }
 }

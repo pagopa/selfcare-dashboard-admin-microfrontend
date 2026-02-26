@@ -10,7 +10,7 @@ const originalFetch = global.fetch;
 
 const oldWindowLocation = global.window.location;
 const mockedLocation = {
-  assign: jest.fn(),
+  assign: vi.fn(),
   pathname: '',
   origin: 'MOCKED_ORIGIN',
   search: '',
@@ -48,8 +48,8 @@ test('Test: Landing in an APPROVED onboarding request and click the close button
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPROVE it with success API request', async () => {
-  const setShowConfirmPage = jest.fn();
-  const mockedApproveOnboardingPspRequest = jest.spyOn(OnboardingApi, 'approveOnboardingRequest');
+  const setShowConfirmPage = vi.fn();
+  const mockedApproveOnboardingPspRequest = vi.spyOn(OnboardingApi, 'approveOnboardingRequest');
   mockedApproveOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[0]);
 
   await renderWithProviders(
@@ -74,8 +74,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPROVE it, with API error', async () => {
-  const setShowConfirmPage = jest.fn();
-  global.fetch = jest.fn().mockImplementation(() => {
+  const setShowConfirmPage = vi.fn();
+  global.fetch = vi.fn().mockImplementation(() => {
     throw new Error('errore');
   });
 
@@ -101,8 +101,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it API request', async () => {
-  const setShowRejectPage = jest.fn();
-  const mockedRejectOnboardingPspRequest = jest.spyOn(OnboardingApi, 'rejectOnboardingRequest');
+  const setShowRejectPage = vi.fn();
+  const mockedRejectOnboardingPspRequest = vi.spyOn(OnboardingApi, 'rejectOnboardingRequest');
   mockedRejectOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[2]);
 
   await renderWithProviders(
@@ -151,8 +151,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
-  const setShowRejectPage = jest.fn();
-  global.fetch = jest.fn().mockImplementation(() => {
+  const setShowRejectPage = vi.fn();
+  global.fetch = vi.fn().mockImplementation(() => {
     throw new Error('errore');
   });
 
@@ -178,8 +178,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNLOAD the resource, with success API request', async () => {
-  const setShowRejectPage = jest.fn();
-  const mockedDownloadOnboardingAttachments = jest.spyOn(
+  const setShowRejectPage = vi.fn();
+  const mockedDownloadOnboardingAttachments = vi.spyOn(
     OnboardingApi,
     'downloadOnboardingAttachments'
   );
@@ -209,9 +209,9 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
-  const setShowRejectPage = jest.fn();
+  const setShowRejectPage = vi.fn();
 
-  global.fetch = jest.fn().mockResolvedValue({
+  global.fetch = vi.fn().mockResolvedValue({
     ok: false,
     status: 500,
     json: async () => ({ message: 'Internal Server Error' }),
