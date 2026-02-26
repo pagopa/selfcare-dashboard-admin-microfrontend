@@ -1,10 +1,9 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
+import { fireEvent, screen } from '@testing-library/react';
+import { OnboardingApi } from '../../../../api/OnboardingApiClient';
+import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
 import { renderWithProviders } from '../../../../utils/test-utils';
 import DashboardRequestActions from '../DashboardRequestActions';
-import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
-import { OnboardingApi } from '../../../../api/OnboardingApiClient';
 
 const originalFetch = global.fetch;
 
