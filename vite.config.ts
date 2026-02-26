@@ -47,10 +47,11 @@ export default defineConfig(({ mode }) => {
       port: 3003,
     },
     build: {
-      target: 'esnext', // OBBLIGATORIO per @originjs/vite-plugin-federation
-      minify: false, // OBBLIGATORIO per MF remotes
+      target: 'esnext',
+      minify: false,
       outDir: 'dist',
       sourcemap: true,
+      assetsDir: '',
     },
     define: {
       'process.env': Object.fromEntries(
