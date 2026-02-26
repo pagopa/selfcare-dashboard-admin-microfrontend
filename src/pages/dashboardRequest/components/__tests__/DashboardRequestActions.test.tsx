@@ -1,16 +1,15 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
+import { fireEvent, screen } from '@testing-library/react';
+import { OnboardingApi } from '../../../../api/OnboardingApiClient';
+import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
 import { renderWithProviders } from '../../../../utils/test-utils';
 import DashboardRequestActions from '../DashboardRequestActions';
-import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
-import { OnboardingApi } from '../../../../api/OnboardingApiClient';
 
 const originalFetch = global.fetch;
 
 const oldWindowLocation = global.window.location;
 const mockedLocation = {
-  assign: jest.fn(),
+  assign: vi.fn(),
   pathname: '',
   origin: 'MOCKED_ORIGIN',
   search: '',
@@ -48,8 +47,8 @@ test('Test: Landing in an APPROVED onboarding request and click the close button
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPROVE it with success API request', async () => {
-  const setShowConfirmPage = jest.fn();
-  const mockedApproveOnboardingPspRequest = jest.spyOn(OnboardingApi, 'approveOnboardingRequest');
+  const setShowConfirmPage = vi.fn();
+  const mockedApproveOnboardingPspRequest = vi.spyOn(OnboardingApi, 'approveOnboardingRequest');
   mockedApproveOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[0]);
 
   await renderWithProviders(
@@ -74,8 +73,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPROVE it, with API error', async () => {
-  const setShowConfirmPage = jest.fn();
-  global.fetch = jest.fn().mockImplementation(() => {
+  const setShowConfirmPage = vi.fn();
+  global.fetch = vi.fn().mockImplementation(() => {
     throw new Error('errore');
   });
 
@@ -101,8 +100,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it API request', async () => {
-  const setShowRejectPage = jest.fn();
-  const mockedRejectOnboardingPspRequest = jest.spyOn(OnboardingApi, 'rejectOnboardingRequest');
+  const setShowRejectPage = vi.fn();
+  const mockedRejectOnboardingPspRequest = vi.spyOn(OnboardingApi, 'rejectOnboardingRequest');
   mockedRejectOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[2]);
 
   await renderWithProviders(
@@ -151,8 +150,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
-  const setShowRejectPage = jest.fn();
-  global.fetch = jest.fn().mockImplementation(() => {
+  const setShowRejectPage = vi.fn();
+  global.fetch = vi.fn().mockImplementation(() => {
     throw new Error('errore');
   });
 
@@ -178,8 +177,8 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNLOAD the resource, with success API request', async () => {
-  const setShowRejectPage = jest.fn();
-  const mockedDownloadOnboardingAttachments = jest.spyOn(
+  const setShowRejectPage = vi.fn();
+  const mockedDownloadOnboardingAttachments = vi.spyOn(
     OnboardingApi,
     'downloadOnboardingAttachments'
   );
@@ -209,9 +208,9 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
 });
 
 test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJECT it with API error', async () => {
-  const setShowRejectPage = jest.fn();
+  const setShowRejectPage = vi.fn();
 
-  global.fetch = jest.fn().mockResolvedValue({
+  global.fetch = vi.fn().mockResolvedValue({
     ok: false,
     status: 500,
     json: async () => ({ message: 'Internal Server Error' }),
