@@ -18,9 +18,6 @@ export default defineConfig(({ mode }) => {
           './RoutingAdmin': './src/remotes/RoutingAdmin',
         },
         shared: [
-          '@pagopa/selfcare-common-frontend',
-          '@pagopa/mui-italia',
-          '@pagopa/ts-commons',
           'react',
           'react-dom',
           'react-redux',
@@ -52,7 +49,7 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'esnext', // OBBLIGATORIO per @originjs/vite-plugin-federation
       minify: false, // OBBLIGATORIO per MF remotes
-      outDir: 'build',
+      outDir: 'dist',
       sourcemap: true,
     },
     define: {
