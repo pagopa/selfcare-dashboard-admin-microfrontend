@@ -46,6 +46,9 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3003,
     },
+    resolve: {
+      dedupe: ['react', 'react-dom', 'react-redux'],
+    },
     build: {
       target: 'esnext',
       minify: false,
