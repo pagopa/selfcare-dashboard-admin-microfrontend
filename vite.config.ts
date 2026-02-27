@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => {
         shared: [
           'react',
           'react-dom',
-          'react-redux',
           'react-router-dom',
           '@emotion/react',
           '@emotion/styled',
