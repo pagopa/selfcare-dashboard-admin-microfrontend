@@ -1,3 +1,4 @@
+import path from 'path';
 import federation from '@originjs/vite-plugin-federation';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
@@ -50,6 +51,12 @@ export default defineConfig(({ mode, command }) => {
     },
     resolve: {
       dedupe: ['react', 'react-dom', 'react-redux'],
+      alias: [
+        {
+          find: /^@pagopa\/selfcare-common-frontend$/,
+          replacement: path.resolve('./node_modules/@pagopa/selfcare-common-frontend/lib/index.js'),
+        },
+      ],
     },
     build: {
       target: 'esnext',
