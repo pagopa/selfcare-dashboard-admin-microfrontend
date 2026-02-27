@@ -25,3 +25,6 @@ generated
 
 # Local .terraform directories
 **/.terraform/*
+
+# Module Federation temp files
+.__mf__temp

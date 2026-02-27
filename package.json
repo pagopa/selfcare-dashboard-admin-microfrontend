@@ -29,6 +29,8 @@
     "start": "vite",
     "prebuild": "npm run generate",
     "build": "tsc && vite build",
+    "build:watch": "vite build --watch",
+    "preview": "vite preview",
     "clean:build": "rimraf build",
     "test": "vitest run --reporter=verbose",
     "test:coverage": "vitest run --coverage",
@@ -57,7 +59,7 @@
     ]
   },
   "devDependencies": {
-    "@originjs/vite-plugin-federation": "^1.4.1",
+    "@module-federation/vite": "^1.0.0",
     "@pagopa/openapi-codegen-ts": "^12.1.2",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "12.1.2",
