@@ -4,10 +4,16 @@ import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
+  const base =
+    command === 'build' && env.VITE_URL_CDN
+      ? `${env.VITE_URL_CDN}/microcomponents/dashboard/admin/onboarding/`
+      : '/';
+
   return {
+    base,
     plugins: [
       react(),
       tsconfigPaths(),
@@ -20,7 +26,6 @@ export default defineConfig(({ mode }) => {
         shared: [
           'react',
           'react-dom',
-          'react-router-dom',
           '@emotion/react',
           '@emotion/styled',
           '@mui/icons-material',
@@ -28,8 +33,6 @@ export default defineConfig(({ mode }) => {
           '@mui/lab',
           '@mui/x-data-grid',
           '@mui/x-data-grid-generator',
-          'i18next',
-          'react-i18next',
           'core-js',
           'mixpanel-browser',
         ],
