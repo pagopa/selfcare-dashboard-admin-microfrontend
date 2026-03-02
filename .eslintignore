@@ -6,3 +6,4 @@ src/vite-env.d.ts
 Dangerfile.ts
 src/reportWebVitals.ts
 **/generated/**
+dist/
