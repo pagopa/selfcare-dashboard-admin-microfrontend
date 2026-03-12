@@ -8,11 +8,7 @@ export default defineConfig({
     exclude: ['**/node_modules/**'],
     coverage: {
       provider: 'v8',
-      exclude: [
-        'src/index.js',
-        'src/reportWebVitals.ts',
-        'src/api/generated/**',
-      ],
+      exclude: ['src/index.js', 'src/api/generated/**'],
     },
   },
 });
