@@ -1,4 +1,4 @@
-import { Switch } from 'react-router';
+import { Switch } from 'react-router-dom';
 import { DASHBOARD_ADMIN_ROUTES } from '../routes';
 import {
   buildRoutes,
