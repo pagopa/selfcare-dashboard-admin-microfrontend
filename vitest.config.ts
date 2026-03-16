@@ -10,7 +10,6 @@ export default defineConfig({
       provider: 'v8',
       exclude: [
         'src/index.js',
-        'src/reportWebVitals.ts',
         'src/api/generated/**',
       ],
     },
