@@ -23,17 +23,19 @@ import { grey } from '@mui/material/colors';
 import { ButtonNaked, PartyAccountItem, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
+import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
 import { ALLOWED_PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../hooks/useTokenExchange';
 import { Party } from '../../model/Party';
 import { Product } from '../../model/Product';
+import { useAppDispatch } from '../../redux/hooks';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
@@ -62,6 +64,7 @@ const AdminPage = () => {
   const addError = useErrorDispatcher();
   const { invokeProductBo } = useTokenExchange();
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const lang = i18n.language;
 
   // Extract product filtering logic to custom hook
@@ -148,6 +151,14 @@ const AdminPage = () => {
         .then((party) => {
           if (party) {
             setPartyDetail(party);
+            const productPermissions = [...party.products]
+              .filter((product) => product.productOnBoardingStatus === 'ACTIVE')
+              .map((product) => ({
+                productId: product.productId ?? '',
+                actions: product.userProductActions ? [...product.userProductActions] : [],
+              }));
+
+            dispatch(setProductPermissions(productPermissions));
           }
         })
         .catch((error) => {
