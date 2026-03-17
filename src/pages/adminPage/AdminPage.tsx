@@ -24,7 +24,7 @@ import { ButtonNaked, PartyAccountItem, PartyAccountItemButton } from '@pagopa/m
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
-import { ALLOWED_PRODUCT_IDS } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
@@ -427,7 +427,7 @@ const AdminPage = () => {
                               `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
                             ) || '-'}
                           </TableCell>
-                          {ALLOWED_PRODUCT_IDS.includes(onboardedProduct.productId || '') && (
+                          {isProductAllowed(onboardedProduct.productId || '') && (
                             <TableCell align="right">
                               <ButtonNaked
                                 component="button"
