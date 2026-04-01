@@ -14,7 +14,7 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
     id: '10987654321',
     description: 'Istituzione 2',
     institutionTypes: ['PA'],
-    products: ['prod-interop', 'PRODOTTO_2'],
+    products: ['prod-interop', 'prod-interop-atst'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
