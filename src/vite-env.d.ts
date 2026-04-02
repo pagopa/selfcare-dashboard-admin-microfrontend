@@ -1,12 +1,11 @@
-/// <reference types="react-scripts" />
+/// <reference types="vite/client" />
 
-declare namespace NodeJS {
-  interface ProcessEnv {
-    NODE_ENV: 'development' | 'uat' | 'production';
-
-    VITE_API_MOCK_REQUEST_DATA: string;
-  }
+interface ImportMetaEnv {
+  readonly VITE_ALLOWED_PRODUCTS_BACKSTAGE: string;
+  readonly NODE_ENV: 'development' | 'uat' | 'production';
+  readonly VITE_API_MOCK_REQUEST_DATA: string;
 }
-interface Window {
-  Stripe: any;
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }

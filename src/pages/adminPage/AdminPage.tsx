@@ -18,7 +18,6 @@ import {
 import { ButtonNaked, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
-import { isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
@@ -38,6 +37,7 @@ import SessionModalInteropProduct from './components/SessionModalInteropProduct'
 import { useProductFiltering } from './hooks/useProductFiltering';
 import { useProductNavigation } from './hooks/useProductNavigation';
 import { commonStyles, CustomListbox } from './utils/styles';
+import { isProductAllowed } from './utils/utils';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(false);
