@@ -42,4 +42,6 @@ export const ENV = {
     PREFIX: import.meta.env.VITE_URL_INSTITUTION_LOGO_PREFIX,
     SUFFIX: import.meta.env.VITE_URL_INSTITUTION_LOGO_SUFFIX,
   },
+
+  ALLOWED_PREFIXES: import.meta.env.VITE_ALLOWED_PRODUCTS_BACKSTAGE || '',
 };
