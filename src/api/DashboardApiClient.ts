@@ -47,6 +47,14 @@ export const DashboardApi = {
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
+  getAllInstituionById: async (institutionId: string): Promise<InstitutionResource> => {
+    const result = await apiClient.v2GetAllInstitution({
+      institutionId,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+
   getProducts: async (): Promise<Array<ProductsResource>> => {
     const result = await apiClient.getProductsTreeUsingGET({});
     return extractResponse(result, 200, onRedirectToLogin);
