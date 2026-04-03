@@ -1,3 +1,4 @@
+import { isPagoPaUser } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { DashboardApi } from '../api/DashboardApiClient';
 import { institutionResource2Party, Party } from '../model/Party';
 import { mockedParties } from './__mocks__/dashboardService';
@@ -6,7 +7,11 @@ export const fetchPartyDetailsService = (partyId: string): Promise<Party | null>
   if (process.env.VITE_API_MOCK_PARTIES === 'true') {
     return Promise.resolve(mockedParties[2] ?? null);
   } else {
-    return DashboardApi.getInstitution(partyId).then((institutionResource) =>
+    const apiToCall = isPagoPaUser()
+      ? DashboardApi.getAllInstituionById
+      : DashboardApi.getInstitution;
+
+    return apiToCall(partyId).then((institutionResource) =>
       institutionResource ? institutionResource2Party(institutionResource) : null
     );
   }
