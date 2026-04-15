@@ -23,6 +23,11 @@ export default {
       backOffice: 'Vedi Back-office',
     },
   },
+  institutionOnboardings: {
+    title: 'Enti e adesioni',
+    subtitle:
+      'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
+  },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
     validationDataChip: 'Da validare',
