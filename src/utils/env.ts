@@ -12,6 +12,7 @@ export const ENV = {
     ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
     ADMIN_SEARCH: `${PUBLIC_URL_INNER}/admin/search`,
     ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
+    ADMIN_INSTITUTION_ONBOARDINGS: `${PUBLIC_URL_INNER}/admin/institution-onboardings`,
   },
 
   DASHBOARD_ROUTES: {
