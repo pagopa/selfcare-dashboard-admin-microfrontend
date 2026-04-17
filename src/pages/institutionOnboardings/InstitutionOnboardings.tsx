@@ -1,12 +1,13 @@
 import { Grid } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend';
 import { useTranslation } from 'react-i18next';
+import { FiltersBar } from './components/FiltersBar/FiltersBar';
 
 const InstitutionOnboardings = () => {
   const { t } = useTranslation();
   return (
-    <>
-      <Grid container px={3} mt={3} sx={{ width: '100%' }}>
+    <Grid container px={3} mt={3} sx={{ width: '100%' }}>
+      <Grid item xs={12}>
         <TitleBox
           variantTitle="h4"
           variantSubTitle="body1"
@@ -16,7 +17,10 @@ const InstitutionOnboardings = () => {
           mbSubTitle={5}
         />
       </Grid>
-    </>
+      <Grid item xs={12}>
+        <FiltersBar />
+      </Grid>
+    </Grid>
   );
 };
 

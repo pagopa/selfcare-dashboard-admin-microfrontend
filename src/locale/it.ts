@@ -27,6 +27,14 @@ export default {
     title: 'Enti e adesioni',
     subtitle:
       'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
+    filters: {
+      search: 'Nome ente o Codice Fiscale',
+      products: 'Prodotto',
+      institutionTypes: 'Tipologia ente',
+      status: 'Stato dell’accordo',
+      filtersButton: 'Filtra',
+      resetButton: 'Rimuovi filtri',
+    },
   },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
