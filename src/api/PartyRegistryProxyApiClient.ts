@@ -6,6 +6,7 @@ import {
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/party-registry-proxy/client';
+import { OnboardingIndexSearchResource } from './generated/party-registry-proxy/OnboardingIndexSearchResource';
 import { SearchServiceInstitution } from './generated/party-registry-proxy/SearchServiceInstitution';
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
@@ -37,10 +38,31 @@ const onRedirectToLogin = () =>
     })
   );
 
-export const OnboardingApi = {
+export const PartyRegisrtyApi = {
   searchInstitutions: async (searchText: string): Promise<Array<SearchServiceInstitution>> => {
-    const result = await apiClient.searchInstitutions({
+    const result = await apiClient.searchInstitutionsUsingGET({
+      search: searchText,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  searchOnboardings: async (
+    searchText: string,
+    products: Array<string>,
+    institutionTypes: Array<string>,
+    statuses: Array<string>,
+    page: number,
+    pageSize: number,
+    orderBy: string
+  ): Promise<OnboardingIndexSearchResource> => {
+    const result = await apiClient.retrieveOnboardingOnSearchEngine({
       searchText,
+      products,
+      institutionTypes,
+      statuses,
+      page,
+      pageSize,
+      orderBy,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
