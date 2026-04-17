@@ -173,7 +173,7 @@ const AdminPage = () => {
   }, [selectedInstitution]);
 
   return (
-    <Grid container px={3} mt={3} sx={{ width: '100%', backgroundColor: 'transparent !important' }}>
+    <Grid px={3} mt={3} sx={{ width: '100%' }}>
       <Grid item xs={12}>
         <TitleBox
           variantTitle="h4"
