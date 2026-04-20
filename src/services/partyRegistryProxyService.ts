@@ -1,5 +1,5 @@
 import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/SearchServiceInstitution';
-import { OnboardingApi } from '../api/PartyRegistryProxyApiClient';
+import { PartyRegisrtyApi } from '../api/PartyRegistryProxyApiClient';
 import { mockedSearchInstitutionsService } from './__mocks__/partyRegistryProxyService';
 
 export const searchInstitutionsService = async (
@@ -8,6 +8,6 @@ export const searchInstitutionsService = async (
   if (process.env.VITE_API_MOCK_PARTIES === 'true') {
     return mockedSearchInstitutionsService(searchText);
   } else {
-    return OnboardingApi.searchInstitutions(searchText).then((response) => response);
+    return PartyRegisrtyApi.searchInstitutions(searchText);
   }
 };

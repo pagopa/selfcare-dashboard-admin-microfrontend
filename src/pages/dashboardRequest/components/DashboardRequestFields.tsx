@@ -34,9 +34,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
 
   const getInstitutionTypeDescription = (institutionType: string) =>
     ({
-      institutionType: t(
-        `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${institutionType.toLowerCase()}`
-      ),
+      institutionType: t(`common.institutionType.descriptions.${institutionType.toLowerCase()}`),
     }.institutionType);
 
   const boolean2response = (value?: boolean) =>

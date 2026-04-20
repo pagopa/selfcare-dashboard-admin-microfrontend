@@ -44,7 +44,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
         component: AdminPage,
       },
       DASHBOARD_INSTITUTION_ONBOARDINGS: {
-        path: `${ENV.ROUTES.ADMIN_INSTITUTION_ONBOARDINGS}`,
+        path: `${ENV.ROUTES.ADMIN_ONBOARDINGS}`,
         exact: true,
         component: InstitutionOnboardings,
       },

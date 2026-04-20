@@ -1,11 +1,12 @@
 import { TFunction } from 'i18next';
+import { Product } from '../../../../model/Product';
 
-export const getFiltersConfig = (t: TFunction): Array<FilterConfig> => [
+export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<FilterConfig> => [
   {
     type: 'text',
     key: 'search',
     label: t('institutionOnboardings.filters.search'),
-    grow: 2,  // search takes double space
+    grow: 2, // search takes double space
   },
   {
     type: 'select',
@@ -13,12 +14,10 @@ export const getFiltersConfig = (t: TFunction): Array<FilterConfig> => [
     label: t('institutionOnboardings.filters.products'),
     multiple: true,
     grow: 1,
-    options: [
-      { label: t('institutionOnboardings.filters.productA'), value: '1' },
-      { label: t('institutionOnboardings.filters.productB'), value: '2' },
-      { label: t('institutionOnboardings.filters.productC'), value: '3' },
-      { label: t('institutionOnboardings.filters.productD'), value: '4' },
-    ],
+    options: products.map((p) => ({
+      label: p.title,
+      value: p.id,
+    })),
   },
   {
     type: 'select',
@@ -27,10 +26,17 @@ export const getFiltersConfig = (t: TFunction): Array<FilterConfig> => [
     multiple: true,
     grow: 1,
     options: [
-      { label: t('institutionOnboardings.filters.bank'),    value: 'bank' },
-      { label: t('institutionOnboardings.filters.fintech'), value: 'fintech' },
-      { label: t('institutionOnboardings.filters.bintech'), value: 'bintech' },
-      { label: t('institutionOnboardings.filters.cintech'), value: 'cintech' },
+      { label: t('common.institutionType.descriptions.pa'),   value: 'PA' },
+      { label: t('common.institutionType.descriptions.gsp'),  value: 'GSP' },
+      { label: t('common.institutionType.descriptions.pt'),   value: 'PT' },
+      { label: t('common.institutionType.descriptions.scp'),  value: 'SCP' },
+      { label: t('common.institutionType.descriptions.psp'),  value: 'PSP' },
+      { label: t('common.institutionType.descriptions.sa'),   value: 'SA' },
+      { label: t('common.institutionType.descriptions.as'),   value: 'AS' },
+      { label: t('common.institutionType.descriptions.pg'),   value: 'PG' },
+      { label: t('common.institutionType.descriptions.prv'),  value: 'PRV' },
+      { label: t('common.institutionType.descriptions.gpu'),  value: 'GPU' },
+      { label: t('common.institutionType.descriptions.scec'), value: 'SCEC' },
     ],
   },
   {

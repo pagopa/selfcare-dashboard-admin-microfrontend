@@ -38,7 +38,7 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
               <AdminPage />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_INSTITUTION_ONBOARDINGS} exact={true}>
+            <Route path={ENV.ROUTES.ADMIN_ONBOARDINGS} exact={true}>
               <InstitutionOnboardings />
             </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>

@@ -53,7 +53,6 @@ const AdminPage = () => {
   const addError = useErrorDispatcher();
   const dispatch = useAppDispatch();
 
-  // Extract product filtering logic to custom hook
   const {
     productsToShow,
     interopProductsList,
@@ -73,7 +72,6 @@ const AdminPage = () => {
     closeInteropModal,
     closeGenericEnvModal,
   } = useProductNavigation({ products, selectedInstitution, hasMoreThanOneInteropEnv });
-
   useEffect(() => {
     fetchProducts()
       .then((products) => {
@@ -338,7 +336,7 @@ const AdminPage = () => {
                             </TableCell>
                             <TableCell>
                               {t(
-                                `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
+                                `common.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
                               ) || '-'}
                             </TableCell>
                             {isProductAllowed(onboardedProduct.productId || '') && (

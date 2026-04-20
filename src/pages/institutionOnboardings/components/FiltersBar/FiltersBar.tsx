@@ -18,7 +18,8 @@ export const FiltersBar = () => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
-  const filtersConfig = getFiltersConfig(t);
+  const products = [];
+  const filtersConfig = getFiltersConfig(t, products);
 
   const [draftFilters, setDraftFilters] = useState(() => parseFilters(location.search));
 
@@ -78,7 +79,6 @@ export const FiltersBar = () => {
       }}
     >
       {filtersConfig.map((filter) => {
-        // 👇 Control who gets more space here
         const flexGrow = filter.grow ?? 1;
 
         if (filter.type === 'text') {
@@ -93,7 +93,7 @@ export const FiltersBar = () => {
                 flexGrow,
                 flexShrink: 1,
                 flexBasis: 0,
-                minWidth: 0, // critical: prevents flex item from overflowing
+                minWidth: 0,
               }}
             />
           );
@@ -108,7 +108,7 @@ export const FiltersBar = () => {
                 flexGrow,
                 flexShrink: 1,
                 flexBasis: 0,
-                minWidth: 0, // critical: prevents flex item from overflowing
+                minWidth: 0,
               }}
             >
               <InputLabel>{filter.label}</InputLabel>
