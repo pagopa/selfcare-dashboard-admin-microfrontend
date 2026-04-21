@@ -104,7 +104,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               <Grid item xs={3}>
                 <Typography sx={{ fontSize: 'fontSize' }}>
                   {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.title'
+                    'common.institutionType.title'
                   )}
                 </Typography>
               </Grid>

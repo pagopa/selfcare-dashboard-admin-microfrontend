@@ -72,6 +72,7 @@ const AdminPage = () => {
     closeInteropModal,
     closeGenericEnvModal,
   } = useProductNavigation({ products, selectedInstitution, hasMoreThanOneInteropEnv });
+  
   useEffect(() => {
     fetchProducts()
       .then((products) => {

@@ -149,7 +149,7 @@ export const mockedSearchOnboardingsService = (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  _orderBy: string
+  // _orderBy: string
 ): Promise<OnboardingIndexSearchResource> => {
   let filtered = [...mockedOnboardings];
 

@@ -11,14 +11,18 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Product } from '../../../../model/Product';
 import { getFiltersConfig } from './filtersConfig';
 import { parseFilters, serializeFilters } from './filtersUtils';
 
-export const FiltersBar = () => {
+type Filters = {
+  products: Array<Product>;
+};
+
+export const FiltersBar = ({ products }: Filters) => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
-  const products = [];
   const filtersConfig = getFiltersConfig(t, products);
 
   const [draftFilters, setDraftFilters] = useState(() => parseFilters(location.search));
@@ -52,7 +56,7 @@ export const FiltersBar = () => {
   };
 
   const resetFilters = () => {
-    const empty: typeof draftFilters = {
+    const empty = {
       search: '',
       productIds: [],
       institutionTypeIds: [],
@@ -157,10 +161,10 @@ export const FiltersBar = () => {
       })}
 
       <Button variant="contained" onClick={applyFilters} size="small" sx={{ flexShrink: 0 }}>
-        {t('institutionOnboardings.filters.filtersButton')}
+        {t('onboardingsPage.filters.filtersButton')}
       </Button>
       <Button onClick={resetFilters} color="primary" size="small" sx={{ flexShrink: 0 }}>
-        {t('institutionOnboardings.filters.resetButton')}
+        {t('onboardingsPage.filters.resetButton')}
       </Button>
     </Box>
   );

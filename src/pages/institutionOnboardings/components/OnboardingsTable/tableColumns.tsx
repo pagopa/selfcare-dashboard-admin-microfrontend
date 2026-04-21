@@ -1,7 +1,9 @@
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box, Chip, Tooltip } from '@mui/material';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { TFunction } from 'i18next';
+import { Trans } from 'react-i18next';
 import { Product } from '../../../../model/Product';
 
 const STATUS_CHIP_CONFIG: Record<
@@ -20,6 +22,7 @@ const truncatedCellSx = {
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   width: '100%',
+  pl: 2,
 } as const;
 
 const renderCellWithTooltip = (params: GridRenderCellParams) => {
@@ -45,20 +48,38 @@ const renderActionCell = () => (
   <ArrowForwardIosIcon fontSize="small" color="primary" sx={{ cursor: 'pointer' }} />
 );
 
+export const RenderNoRowsOverlay = () => (
+  <Stack
+    alignItems="center"
+    justifyContent="center"
+    mt={5}
+    flexDirection="row"
+    bgcolor="background.paper"
+    height="100%"
+  >
+    <SentimentDissatisfiedIcon />
+    <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+      <Trans i18nKey="onboardingsPage.table.noResults">
+        I filtri che hai applicato non hanno dato nessun risultato.
+      </Trans>
+    </Typography>
+  </Stack>
+);
+
 export const getOnboardingsColumns = (
   t: TFunction,
   products: Array<Product>
 ): Array<GridColDef> => [
   {
     field: 'description',
-    headerName: t('institutionOnboardings.table.institutionName'),
+    headerName: t('onboardingsPage.table.institutionName'),
     flex: 2,
-    sortable: true,
+    sortable: false,
     renderCell: renderCellWithTooltip,
   },
   {
     field: 'productId',
-    headerName: t('institutionOnboardings.table.product'),
+    headerName: t('onboardingsPage.table.product'),
     flex: 1,
     sortable: false,
     valueGetter: (params) => {
@@ -70,7 +91,7 @@ export const getOnboardingsColumns = (
   },
   {
     field: 'institutionType',
-    headerName: t('institutionOnboardings.table.institutionType'),
+    headerName: t('onboardingsPage.table.institutionType'),
     flex: 1,
     sortable: false,
     valueGetter: (params) => {
@@ -86,7 +107,7 @@ export const getOnboardingsColumns = (
   },
   {
     field: 'status',
-    headerName: t('institutionOnboardings.table.status'),
+    headerName: t('onboardingsPage.table.status'),
     flex: 1,
     sortable: false,
     renderCell: renderStatusCell,

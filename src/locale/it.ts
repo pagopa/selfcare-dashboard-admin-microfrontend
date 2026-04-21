@@ -41,7 +41,7 @@ export default {
       backOffice: 'Vedi Back-office',
     },
   },
-  institutionOnboardings: {
+  onboardingsPage: {
     title: 'Enti e adesioni',
     subtitle:
       'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
@@ -52,6 +52,15 @@ export default {
       status: 'Stato dell’accordo',
       filtersButton: 'Filtra',
       resetButton: 'Rimuovi filtri',
+      statusOptions: {
+        request: 'Richiesta ricevuta',
+        toBeValidated: 'In validazione',
+        pending: 'In attesa',
+        completed: 'Attivo',
+        failed: 'In errore',
+        rejected: 'Rifiutato',
+        deleted: 'Disattivo',
+      },
     },
     table: {
       institutionName: 'Nome ente',
@@ -59,7 +68,7 @@ export default {
       institutionType: 'Tipologia ente',
       status: 'Stato',
       loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
-      noResults: 'Nessun risultato trovato.',
+      noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',
     },
   },
   onboardingRequestPage: {

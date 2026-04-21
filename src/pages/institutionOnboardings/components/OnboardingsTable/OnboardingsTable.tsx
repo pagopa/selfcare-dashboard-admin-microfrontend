@@ -1,21 +1,12 @@
-import { Box, styled } from '@mui/material';
+import { Box, MenuItem, Select, styled } from '@mui/material';
 import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui/x-data-grid';
-import { useHistory } from 'react-router-dom';
+import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
+import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { useHistory } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { ENV } from '../../../../utils/env';
-
-type Props = {
-  readonly rows: ReadonlyArray<OnboardingIndexResource>;
-  readonly columns: Array<GridColDef>;
-  readonly page: number;
-  readonly pageSize: number;
-  readonly totalRows: number;
-  readonly sortModel: GridSortModel;
-  readonly loading: boolean;
-  readonly onPageChange: (newPage: number) => void;
-  readonly onSortModelChange: (model: GridSortModel) => void;
-};
+import { RenderNoRowsOverlay } from './tableColumns';
 
 const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
 
@@ -84,6 +75,19 @@ const CustomDataGrid = styled(DataGrid)({
   },
 });
 
+type Props = {
+  readonly rows: ReadonlyArray<OnboardingIndexResource>;
+  readonly columns: Array<GridColDef>;
+  readonly page: number;
+  readonly pageSize: number;
+  readonly totalRows: number;
+  readonly sortModel: GridSortModel;
+  readonly loading: boolean;
+  readonly onPageChange: (newPage: number) => void;
+  readonly onPageSizeChange: (newSize: number) => void;
+  readonly onSortModelChange: (model: GridSortModel) => void;
+};
+
 export const OnboardingsTable = ({
   rows,
   columns,
@@ -93,9 +97,17 @@ export const OnboardingsTable = ({
   sortModel,
   loading,
   onPageChange,
+  onPageSizeChange,
   onSortModelChange,
 }: Props) => {
   const history = useHistory();
+
+  const pageModel: Page = {
+    number: page,
+    size: pageSize,
+    totalElements: totalRows,
+    totalPages: Math.ceil(totalRows / pageSize),
+  };
 
   const handleRowClick = (params: { row: OnboardingIndexResource }) => {
     const { onboardingId } = params.row;
@@ -109,7 +121,17 @@ export const OnboardingsTable = ({
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box
+      id="OnboardingsSearchTableBox"
+      sx={{
+        position: 'relative',
+        width: '100% !important',
+        border: 'none',
+        backgroundColor: '#E9EBF1',
+      }}
+      justifyContent="start"
+      p={1}
+    >
       <CustomDataGrid
         autoHeight
         rows={rows as Array<OnboardingIndexResource>}
@@ -128,9 +150,33 @@ export const OnboardingsTable = ({
         disableSelectionOnClick
         disableColumnFilter
         disableColumnSelector
+        disableColumnMenu
         onRowClick={handleRowClick}
         components={{
           Row: CustomRow,
+          NoRowsOverlay: RenderNoRowsOverlay,
+          Pagination: () => (
+            <CustomPagination
+              page={pageModel}
+              onPageRequest={(req) => onPageChange(req.page)}
+              variant="text"
+              pageSizeControl={
+                pageModel.totalElements > 10 && (
+                  <Select
+                    size="small"
+                    value={pageSize}
+                    onChange={(e) => onPageSizeChange(Number(e.target.value))}
+                  >
+                    {[10, 20, 50, 70].map((opt) => (
+                      <MenuItem key={opt} value={opt}>
+                        {opt}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )
+              }
+            />
+          ),
         }}
       />
     </Box>
