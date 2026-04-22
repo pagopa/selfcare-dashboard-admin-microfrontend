@@ -42,7 +42,7 @@ export default {
     },
   },
   onboardingsPage: {
-    title: 'Enti e adesioni',
+    title: 'Adesioni',
     subtitle:
       'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
     filters: {
