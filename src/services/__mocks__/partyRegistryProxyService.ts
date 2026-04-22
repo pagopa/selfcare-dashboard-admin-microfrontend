@@ -5,7 +5,8 @@ import { SearchServiceInstitution } from '../../api/generated/party-registry-pro
 export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '3',
-    description: 'Istituzione 1asdsad adsad asbdas sad adas dasdas das adasd asdasdsa , adsa dsad a,as,d asd asd asdas,a asdas sadasd asd asdas,das dad,asa,d sa asd asdsad asdsa dsadas dsadasd sad sadasdsad asdasdasdsa dsadasdasdasd sadasd asd sad sad asd asd nasdkjbasjkdfhsakjfdbakjsbdkjsabjkdj asd asd ,sa ,d asd ',
+    description:
+      'Istituzione 1asdsad adsad asbdas sad adas dasdas das adasd asdasdsa , adsa dsad a,as,d asd asd asdas,a asdas sadasd asd asdas,das dad,asa,d sa asd asdsad asdsa dsadas dsadasd sad sadasdsad asdasdasdsa dsadasdasdasd sadasd asd sad sad asd asd nasdkjbasjkdfhsakjfdbakjsbdkjsabjkdj asd asd ,sa ,d asd ',
     institutionTypes: ['PA'],
     products: ['prod-io', 'prod-pagopa'],
     taxCode: '12345678901',
@@ -86,8 +87,8 @@ export const mockedLongSearchInstitutions: Array<SearchServiceInstitution> = Arr
 export const mockedSearchInstitutionsService = (
   searchText: string
 ): Promise<Array<SearchServiceInstitution>> => {
-  const selectedInstitution = mockedSearchInstitutions.filter(
-    (inst) => inst.description?.includes(searchText)
+  const selectedInstitution = mockedSearchInstitutions.filter((inst) =>
+    inst.description?.includes(searchText)
   );
   if (selectedInstitution) {
     return Promise.resolve(selectedInstitution);
@@ -148,9 +149,10 @@ export const mockedSearchOnboardingsService = (
   institutionTypes: Array<string>,
   statuses: Array<string>,
   page: number,
-  pageSize: number,
+  pageSize: number
   // _orderBy: string
 ): Promise<OnboardingIndexSearchResource> => {
+  // eslint-disable-next-line functional/no-let
   let filtered = [...mockedOnboardings];
 
   if (searchText) {
