@@ -1,8 +1,8 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { renderWithProviders } from '../../../utils/test-utils';
-import OnboardingsPage from '../OnboardingsPage';
+import { screen, waitFor } from '@testing-library/react';
 import { searchOnboardingsService } from '../../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../../services/productService';
+import { renderWithProviders } from '../../../utils/test-utils';
+import OnboardingsPage from '../OnboardingsPage';
 
 // Increased timeout for stability
 vi.setConfig({ testTimeout: 20000 });
@@ -102,5 +102,4 @@ describe('OnboardingsPage component', () => {
     // Verify history push (path includes the onboardingId from mock)
     expect(history.location.pathname).toContain('onb-1');
   });
-
 });
