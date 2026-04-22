@@ -2,7 +2,7 @@ import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils
 import { Redirect, useParams } from 'react-router-dom';
 import AdminPage from './pages/adminPage/AdminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
-import InstitutionOnboardings from './pages/institutionOnboardings/InstitutionOnboardings';
+import OnboardingsPage from './pages/onboardingsPage/OnboardingsPage';
 import { ENV } from './utils/env';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
@@ -46,7 +46,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
       DASHBOARD_ONBOARDINGS: {
         path: `${ENV.ROUTES.ADMIN_ONBOARDINGS}`,
         exact: true,
-        component: InstitutionOnboardings,
+        component: OnboardingsPage,
       },
       ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
     },

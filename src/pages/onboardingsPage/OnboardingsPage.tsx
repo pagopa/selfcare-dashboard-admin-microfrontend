@@ -14,7 +14,7 @@ import { parseFilters } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/tableColumns';
 
-const InstitutionOnboardings = () => {
+const OnboardingsPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const addError = useErrorDispatcher();
@@ -127,4 +127,4 @@ const InstitutionOnboardings = () => {
   );
 };
 
-export default InstitutionOnboardings;
+export default OnboardingsPage;
