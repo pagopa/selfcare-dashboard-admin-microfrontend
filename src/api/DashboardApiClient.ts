@@ -12,7 +12,7 @@ import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResour
 import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
 
 const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
-  const token = storageTokenOps.read();
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiI5OTIwODc4Yy05MTUzLTQxNmQtOTcwOS0yMGI1NGE1MGI5MzgiLCJlbWFpbCI6Im9yYWxkby5kb2NpQG50dGRhdGEuY29tIiwiaXNzIjoiUEFHT1BBIiwiYXVkIjoiYXBpLmRldi5zZWxmY2FyZS5wYWdvcGEuaXQiLCJpYXQiOjE3NjE1NTUzMjUsImV4cCI6MTk2MTU4NzcyNSwianRpIjoiZTBjZWViNjMtNzQ4OC00YjUzLWIwMjgtMTZkMjE1NTUwMjA2In0.aoIurFBwduL4bI_wkY45BEXGHmzHjo_-Nxe0zLUFBs1Zid2EKrS5zAXJ6DXW2JS_QkIvmd8A1TkzKb88LGX2Sf2R9yZA3fwoQj3-DtDVRlfGOr5oNyKMSNecQR9etsbqClLGzioFl0vuvMi7U2lTMPGPF7FNuuto5SdCcXITaysYjqBm2sPrclMu8mUs5qLyoWTF02Nv_KAqhvPs8Sic03c7SQjaXRXb9S2ZLAOox418VxTLvxzxeq8HWZvkvOqXH9iBVn74HNfCXiyGisznixBvupLLuoMhRYdcwMj5ZF9A9KXXoljdRmCLYFJdz4biOrf_4K1uqTLwvPz3yFEbZQ';
   return wrappedOperation({
     ...params,
     bearerAuth: `Bearer ${token}`,
