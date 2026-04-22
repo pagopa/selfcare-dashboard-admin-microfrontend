@@ -40,6 +40,7 @@ const CustomDataGrid = styled(DataGrid)({
   '.MuiDataGrid-columnHeaders': { borderBottom: 'none' },
   '.MuiDataGrid-row': {
     backgroundColor: 'white',
+    borderBottom: '1px solid #E8EBF1',
     '&.Mui-selected': {
       backgroundColor: '#ebf4fd',
       '&:hover': { backgroundColor: 'transparent' },
@@ -49,9 +50,15 @@ const CustomDataGrid = styled(DataGrid)({
     },
   },
   '.MuiDataGrid-row:first-of-type': { borderRadius: '4px 4px 0 0' },
-  '.MuiDataGrid-row:last-child': { borderRadius: '0 0 4px 4px' },
+  '.MuiDataGrid-row:last-child': {
+    borderRadius: '0 0 4px 4px',
+    borderBottom: 'none',
+  },
   '.MuiDataGrid-row:first-of-type:last-child': {
     borderRadius: '4px',
+  },
+  '& .MuiPaginationItem-root.Mui-disabled': {
+    display: 'none',
   },
   '.justifyContentNormal': {
     fontSize: '16px',
@@ -72,6 +79,17 @@ const CustomDataGrid = styled(DataGrid)({
   },
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     width: '100% !important',
+  },
+  '& .MuiDataGrid-footerContainer': {
+    borderTop: 'none !important',
+    marginTop: '8px',
+  },
+  '& .MuiPaginationItem-root.Mui-selected': {
+    backgroundColor: `#0B3EE3 !important`,
+    color: 'white !important',
+    '&:hover': {
+      backgroundColor: `#0B50F7 !important`,
+    },
   },
 });
 

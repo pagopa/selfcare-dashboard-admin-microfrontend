@@ -63,10 +63,10 @@ export default {
       },
     },
     table: {
-      institutionName: 'Nome ente',
+      institutionName: 'Ente',
       product: 'Prodotto',
       institutionType: 'Tipologia ente',
-      status: 'Stato',
+      status: "Stato dell'accordo",
       loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
       noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',
     },

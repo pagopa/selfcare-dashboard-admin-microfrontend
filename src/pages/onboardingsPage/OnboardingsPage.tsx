@@ -4,13 +4,13 @@ import { GridSortModel } from '@mui/x-data-grid';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { Product } from '../../model/Product';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
 import { FiltersBar } from './components/FiltersBar/FiltersBar';
-import { parseFilters } from './components/FiltersBar/filtersUtils';
+import { parseFilters, serializeFilters } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/tableColumns';
 
@@ -19,12 +19,12 @@ const OnboardingsPage = () => {
   const location = useLocation();
   const addError = useErrorDispatcher();
 
-  const [pageSize, setPageSize] = useState(10);
+  const history = useHistory();
+  const filters = parseFilters(location.search);
+
   const [rows, setRows] = useState<Array<OnboardingIndexResource>>([]);
   const [totalRows, setTotalRows] = useState(0);
-  const [page, setPage] = useState(0);
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
-  // TODO { field: 'description', sort: 'asc' },
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Array<Product>>([]);
 
@@ -50,22 +50,14 @@ const OnboardingsPage = () => {
   const columns = getOnboardingsColumns(t, products);
 
   useEffect(() => {
-    setPage(0);
-  }, [location.search]);
-
-  useEffect(() => {
-    const filters = parseFilters(location.search);
-    // const orderBy = sortModel.length > 0 ? `${sortModel[0].field},${sortModel[0].sort}` : '';
-
     setLoading(true);
     searchOnboardingsService(
       filters.search,
       filters.productIds,
       filters.institutionTypeIds,
       filters.stateIds,
-      page,
-      pageSize
-      // orderBy
+      filters.page,
+      filters.size
     )
       .then((response) => {
         setRows([...(response.onboardings ?? [])]);
@@ -78,20 +70,31 @@ const OnboardingsPage = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [location.search, page, sortModel]);
+  }, [location.search, sortModel]);
 
   const handlePageSizeChange = (newSize: number) => {
-    setPageSize(newSize);
-    setPage(0);
+    const newFilters = { ...filters, size: newSize, page: 0 };
+    history.push({
+      pathname: location.pathname,
+      search: serializeFilters(newFilters),
+    });
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    const newFilters = { ...filters, page: newPage };
+    history.push({
+      pathname: location.pathname,
+      search: serializeFilters(newFilters),
+    });
   };
 
   const handleSortModelChange = (model: GridSortModel) => {
     setSortModel(model);
-    setPage(0);
+    const newFilters = { ...filters, page: 0 };
+    history.push({
+      pathname: location.pathname,
+      search: serializeFilters(newFilters),
+    });
   };
 
   return (
@@ -113,8 +116,8 @@ const OnboardingsPage = () => {
         <OnboardingsTable
           rows={rows}
           columns={columns}
-          page={page}
-          pageSize={pageSize}
+          page={filters.page}
+          pageSize={filters.size}
           onPageSizeChange={handlePageSizeChange}
           totalRows={totalRows}
           sortModel={sortModel}

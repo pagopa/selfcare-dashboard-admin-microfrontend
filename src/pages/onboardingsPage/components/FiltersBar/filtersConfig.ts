@@ -1,12 +1,27 @@
 import { TFunction } from 'i18next';
 import { Product } from '../../../../model/Product';
+import { FilterConfig } from './types';
+
+const getProductOptions = (products: Array<Product>): Array<{ label: string; value: string }> => {
+  const activeProducts = products.filter((p) => p.status === 'ACTIVE');
+
+  return activeProducts.flatMap((p) => {
+    const productOption = { label: p.title, value: p.id };
+
+    const subProductOptions = (p.subProducts ?? [])
+      .filter((sp) => sp.status === 'ACTIVE' && sp.id && sp.title)
+      .map((sp) => ({ label: sp.title as string, value: sp.id as string }));
+
+    return [productOption, ...subProductOptions];
+  });
+};
 
 export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<FilterConfig> => [
   {
     type: 'text',
     key: 'search',
     label: t('onboardingsPage.filters.search'),
-    grow: 2, // search takes double space
+    grow: 2,
   },
   {
     type: 'select',
@@ -14,10 +29,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     label: t('onboardingsPage.filters.products'),
     multiple: true,
     grow: 1,
-    options: products.map((p) => ({
-      label: p.title,
-      value: p.id,
-    })),
+    options: getProductOptions(products),
   },
   {
     type: 'select',
@@ -46,8 +58,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     multiple: true,
     grow: 1,
     options: [
-      { label: t('onboardingsPage.filters.statusOptions.request'), value: 'REQUEST' },
-      { label: t('onboardingsPage.filters.statusOptions.toBeValidated'), value: 'TO_BE_VALIDATED' },
+      { label: t('onboardingsPage.filters.statusOptions.toBeValidated'), value: 'TOBEVALIDATED' },
       { label: t('onboardingsPage.filters.statusOptions.pending'), value: 'PENDING' },
       { label: t('onboardingsPage.filters.statusOptions.completed'), value: 'COMPLETED' },
       { label: t('onboardingsPage.filters.statusOptions.failed'), value: 'FAILED' },

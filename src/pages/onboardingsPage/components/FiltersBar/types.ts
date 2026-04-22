@@ -1,11 +1,13 @@
-type Filters = {
+export type Filters = {
   search: string;
   productIds: Array<string>;
   institutionTypeIds: Array<string>;
   stateIds: Array<string>;
+  page: number;
+  size: number;
 };
 
-type FilterConfig =
+export type FilterConfig =
   | {
       type: 'text';
       key: keyof Filters;
