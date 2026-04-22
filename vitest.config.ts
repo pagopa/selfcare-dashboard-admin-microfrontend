@@ -10,13 +10,10 @@ export default defineConfig({
       },
     },
     setupFiles: ['./src/setupTests.ts'],
-    exclude: ['**/node_modules/**'],
+    exclude: ['**/node_modules/**', 'src/api/**', 'src/locale/**', 'src/services/__mocks__/**'],
     coverage: {
       provider: 'v8',
-      exclude: [
-        'src/index.js',
-        'src/api/generated/**',
-      ],
+      exclude: ['src/index.js', 'src/api/**', 'src/locale/**', 'src/services/__mocks__/**'],
     },
   },
 });

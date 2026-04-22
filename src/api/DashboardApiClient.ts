@@ -54,7 +54,6 @@ export const DashboardApi = {
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
-
   getProducts: async (): Promise<Array<ProductsResource>> => {
     const result = await apiClient.getProductsTreeUsingGET({});
     return extractResponse(result, 200, onRedirectToLogin);

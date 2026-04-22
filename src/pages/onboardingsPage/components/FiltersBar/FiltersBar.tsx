@@ -8,17 +8,24 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Product } from '../../../../model/Product';
 import { getFiltersConfig } from './filtersConfig';
 import { parseFilters, serializeFilters } from './filtersUtils';
+import { Filters } from './types';
 
-export const FiltersBar = () => {
+type Props = {
+  products: Array<Product>;
+};
+
+export const FiltersBar = ({ products }: Props) => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
-  const filtersConfig = getFiltersConfig(t);
+  const filtersConfig = getFiltersConfig(t, products);
 
   const [draftFilters, setDraftFilters] = useState(() => parseFilters(location.search));
 
@@ -35,10 +42,11 @@ export const FiltersBar = () => {
   };
 
   const applyFilters = () => {
-    const query = serializeFilters(draftFilters);
+    const filtersToApply = { ...draftFilters, page: 0 };
+    const query = serializeFilters(filtersToApply);
     const current = parseFilters(location.search);
 
-    const isSame = JSON.stringify(current) === JSON.stringify(draftFilters);
+    const isSame = JSON.stringify(current) === JSON.stringify(filtersToApply);
 
     if (isSame) {
       return;
@@ -51,11 +59,13 @@ export const FiltersBar = () => {
   };
 
   const resetFilters = () => {
-    const empty: typeof draftFilters = {
+    const empty: Filters = {
       search: '',
       productIds: [],
       institutionTypeIds: [],
       stateIds: [],
+      page: 0,
+      size: 10,
     };
 
     setDraftFilters(empty);
@@ -78,7 +88,6 @@ export const FiltersBar = () => {
       }}
     >
       {filtersConfig.map((filter) => {
-        // 👇 Control who gets more space here
         const flexGrow = filter.grow ?? 1;
 
         if (filter.type === 'text') {
@@ -93,7 +102,8 @@ export const FiltersBar = () => {
                 flexGrow,
                 flexShrink: 1,
                 flexBasis: 0,
-                minWidth: 0, // critical: prevents flex item from overflowing
+                minWidth: 0,
+                borderRadius: '8px',
               }}
             />
           );
@@ -108,7 +118,8 @@ export const FiltersBar = () => {
                 flexGrow,
                 flexShrink: 1,
                 flexBasis: 0,
-                minWidth: 0, // critical: prevents flex item from overflowing
+                minWidth: 0,
+                borderRadius: '8px',
               }}
             >
               <InputLabel>{filter.label}</InputLabel>
@@ -129,6 +140,13 @@ export const FiltersBar = () => {
                 value={draftFilters[filter.key] as Array<string>}
                 onChange={(e) => handleFilterChange(filter.key, e.target.value as Array<string>)}
                 input={<OutlinedInput label={filter.label} />}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 400,
+                    },
+                  },
+                }}
                 renderValue={(selected) => (
                   <Box
                     sx={{
@@ -139,7 +157,9 @@ export const FiltersBar = () => {
                       width: '100%',
                     }}
                   >
-                    {selected.join(', ')}
+                    {(selected as Array<string>)
+                      .map((val) => filter.options.find((o) => o.value === val)?.label ?? val)
+                      .join(', ')}
                   </Box>
                 )}
               >
@@ -156,12 +176,22 @@ export const FiltersBar = () => {
         return null;
       })}
 
-      <Button variant="contained" onClick={applyFilters} size="small" sx={{ flexShrink: 0 }}>
-        {t('institutionOnboardings.filters.filtersButton')}
+      <Button
+        variant="contained"
+        onClick={applyFilters}
+        size="small"
+        sx={{ flexShrink: 0, backgroundColor: '#0B3EE3', borderRadius: '8px' }}
+      >
+        {t('onboardingsPage.filters.filtersButton')}
       </Button>
-      <Button onClick={resetFilters} color="primary" size="small" sx={{ flexShrink: 0 }}>
-        {t('institutionOnboardings.filters.resetButton')}
-      </Button>
+      <ButtonNaked
+        onClick={resetFilters}
+        color="primary"
+        size="small"
+        sx={{ flexShrink: 0, color: '#0B3EE3' }}
+      >
+        {t('onboardingsPage.filters.resetButton')}
+      </ButtonNaked>
     </Box>
   );
 };

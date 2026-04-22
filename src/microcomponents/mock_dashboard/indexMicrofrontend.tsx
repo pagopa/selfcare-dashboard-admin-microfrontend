@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
-import InstitutionOnboardings from '../../pages/institutionOnboardings/InstitutionOnboardings';
+import OnboardingsPage from '../../pages/onboardingsPage/OnboardingsPage';
 import { store } from '../../redux/store';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
@@ -38,8 +38,8 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
               <AdminPage />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_INSTITUTION_ONBOARDINGS} exact={true}>
-              <InstitutionOnboardings />
+            <Route path={ENV.ROUTES.ADMIN_ONBOARDINGS} exact={true}>
+              <OnboardingsPage />
             </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />

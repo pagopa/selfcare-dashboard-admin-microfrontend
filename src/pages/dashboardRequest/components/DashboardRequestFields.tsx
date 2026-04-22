@@ -34,9 +34,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
 
   const getInstitutionTypeDescription = (institutionType: string) =>
     ({
-      institutionType: t(
-        `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.descriptions.${institutionType.toLowerCase()}`
-      ),
+      institutionType: t(`common.institutionType.descriptions.${institutionType.toLowerCase()}`),
     }.institutionType);
 
   const boolean2response = (value?: boolean) =>
@@ -106,7 +104,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
               <Grid item xs={3}>
                 <Typography sx={{ fontSize: 'fontSize' }}>
                   {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.institutionType.title'
+                    'common.institutionType.title'
                   )}
                 </Typography>
               </Grid>

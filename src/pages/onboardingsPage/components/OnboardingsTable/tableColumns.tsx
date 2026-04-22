@@ -1,0 +1,153 @@
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { GridColDef, GridRenderCellParams, GridOverlay } from '@mui/x-data-grid';
+import { TFunction } from 'i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { useHistory, useLocation } from 'react-router-dom';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { Product } from '../../../../model/Product';
+
+const STATUS_CHIP_CONFIG: Record<
+  string,
+  { label: string; color: 'success' | 'warning' | 'error' | 'info' | 'default' }
+> = {
+  COMPLETED: { label: 'Attivo', color: 'success' },
+  PENDING: { label: 'In attesa', color: 'warning' },
+  TOBEVALIDATED: { label: 'Da validare', color: 'default' },
+  SUSPENDED: { label: 'Sospeso', color: 'default' },
+  REJECTED: { label: 'Rifiutato', color: 'error' },
+  DELETED: { label: 'Disattivo', color: 'error' },
+  FAILED: { label: 'In errore', color: 'error' },
+};
+
+const truncatedCellSx = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  width: '100%',
+  pl: 2,
+} as const;
+
+const renderCellWithTooltip = (params: GridRenderCellParams) => {
+  const text = params.formattedValue ?? params.value ?? '';
+  return (
+    <Tooltip title={text} arrow enterDelay={300}>
+      <Box sx={truncatedCellSx}>{text}</Box>
+    </Tooltip>
+  );
+};
+
+const renderStatusCell = (params: GridRenderCellParams<string>) => {
+  const value = params.value ?? '';
+  const config = STATUS_CHIP_CONFIG[value] ?? { label: value, color: 'default' as const };
+  return (
+    <Tooltip title={config.label} arrow enterDelay={300}>
+      <Chip label={config.label} color={config.color} size="small" />
+    </Tooltip>
+  );
+};
+
+const renderActionCell = () => (
+  <ArrowForwardIosIcon fontSize="small" color="primary" sx={{ cursor: 'pointer' }} />
+);
+
+export const RenderNoRowsOverlay = () => {
+  const history = useHistory();
+  const location = useLocation();
+  const { t } = useTranslation();
+
+  const handleReset = () => {
+    history.push({
+      pathname: location.pathname,
+      search: '',
+    });
+  };
+
+  return (
+    <GridOverlay sx={{ pointerEvents: 'auto' }}>
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="row"
+        sx={{ height: '100%', width: '100%', pointerEvents: 'auto' }}
+      >
+        <SentimentDissatisfiedIcon />
+        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+          <Trans i18nKey="onboardingsPage.table.noResults">
+            I filtri che hai applicato non hanno dato nessun risultato.
+          </Trans>
+        </Typography>
+        <ButtonNaked
+          size="small"
+          onClick={handleReset}
+          sx={{ ml: 1, color: '#0B3EE3', cursor: 'pointer', pointerEvents: 'auto' }}
+        >
+          {t('onboardingsPage.filters.resetButton')}
+        </ButtonNaked>
+      </Stack>
+    </GridOverlay>
+  );
+};
+
+export const getOnboardingsColumns = (
+  t: TFunction,
+  products: Array<Product>
+): Array<GridColDef> => [
+  {
+    field: 'description',
+    headerName: t('onboardingsPage.table.institutionName'),
+    flex: 2,
+    sortable: false,
+    renderCell: renderCellWithTooltip,
+  },
+  {
+    field: 'productId',
+    headerName: t('onboardingsPage.table.product'),
+    flex: 1,
+    sortable: false,
+    valueGetter: (params) => {
+      const productId = params.row?.productId;
+
+      const subProduct = products
+        .flatMap((p) => p.subProducts ?? [])
+        .find((sp) => sp.id === productId);
+
+      const product = products.find((p) => p.id === productId);
+
+      return subProduct?.title ?? product?.title ?? productId ?? '';
+    },
+    renderCell: renderCellWithTooltip,
+  },
+  {
+    field: 'institutionType',
+    headerName: t('onboardingsPage.table.institutionType'),
+    flex: 1,
+    sortable: false,
+    valueGetter: (params) => {
+      const raw = params.row?.institutionType as string | undefined;
+      if (!raw) {
+        return '';
+      }
+      const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
+      const translated = t(key);
+      return translated !== key ? translated : raw;
+    },
+    renderCell: renderCellWithTooltip,
+  },
+  {
+    field: 'status',
+    headerName: t('onboardingsPage.table.status'),
+    flex: 1,
+    sortable: false,
+    renderCell: renderStatusCell,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    width: 60,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: renderActionCell,
+  },
+];
