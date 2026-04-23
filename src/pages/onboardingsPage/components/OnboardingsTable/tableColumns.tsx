@@ -1,20 +1,22 @@
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
-import { GridColDef, GridRenderCellParams, GridOverlay } from '@mui/x-data-grid';
+import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
+import { ButtonNaked } from '@pagopa/mui-italia';
 import { TFunction } from 'i18next';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { Product } from '../../../../model/Product';
 
 const STATUS_CHIP_CONFIG: Record<
   string,
   { label: string; color: 'success' | 'warning' | 'error' | 'info' | 'default' }
 > = {
-  COMPLETED: { label: 'Attivo', color: 'success' },
+  REQUEST: { label: 'Richiesta ricevuta', color: 'warning' },
   PENDING: { label: 'In attesa', color: 'warning' },
   TOBEVALIDATED: { label: 'Da validare', color: 'default' },
+  COMPLETED: { label: 'Attivo', color: 'success' },
   SUSPENDED: { label: 'Sospeso', color: 'default' },
   REJECTED: { label: 'Rifiutato', color: 'error' },
   DELETED: { label: 'Disattivo', color: 'error' },
@@ -93,12 +95,19 @@ export const RenderNoRowsOverlay = () => {
 export const getOnboardingsColumns = (
   t: TFunction,
   products: Array<Product>
-): Array<GridColDef> => [
+): Array<GridColDef<OnboardingIndexResource>> => [
   {
     field: 'description',
     headerName: t('onboardingsPage.table.institutionName'),
     flex: 2,
     sortable: false,
+    valueGetter: (params) => {
+      const description = params.row?.description;
+      const parentDescription = params.row?.parentDescription;
+      return description && parentDescription
+        ? `${description} - ${parentDescription}`
+        : description || '';
+    },
     renderCell: renderCellWithTooltip,
   },
   {
@@ -131,7 +140,7 @@ export const getOnboardingsColumns = (
       }
       const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
       const translated = t(key);
-      return translated !== key ? translated : raw;
+      return translated === key ? raw : translated;
     },
     renderCell: renderCellWithTooltip,
   },

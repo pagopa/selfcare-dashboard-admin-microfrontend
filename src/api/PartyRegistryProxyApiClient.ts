@@ -40,8 +40,8 @@ const onRedirectToLogin = () =>
 
 export const PartyRegisrtyApi = {
   searchInstitutions: async (searchText: string): Promise<Array<SearchServiceInstitution>> => {
-    const result = await apiClient.searchInstitutionsUsingGET({
-      search: searchText,
+    const result = await apiClient.searchInstitutions({
+      searchText,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },
@@ -55,7 +55,7 @@ export const PartyRegisrtyApi = {
     pageSize: number
     // orderBy: string
   ): Promise<OnboardingIndexSearchResource> => {
-    const result = await apiClient.retrieveOnboardingOnSearchEngine({
+    const result = await apiClient.searchOnboardings({
       searchText,
       products,
       institutionTypes,

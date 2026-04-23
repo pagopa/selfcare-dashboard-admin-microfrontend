@@ -126,7 +126,7 @@ export const OnboardingsTable = ({
     totalElements: totalRows,
     totalPages: Math.ceil(totalRows / pageSize),
   };
-
+/*
   const handleRowClick = (params: { row: OnboardingIndexResource }) => {
     const { onboardingId } = params.row;
     if (onboardingId) {
@@ -137,7 +137,7 @@ export const OnboardingsTable = ({
       );
     }
   };
-
+*/
   return (
     <Box
       id="OnboardingsSearchTableBox"
@@ -169,7 +169,7 @@ export const OnboardingsTable = ({
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        onRowClick={handleRowClick}
+        // onRowClick={handleRowClick}
         components={{
           Row: CustomRow,
           NoRowsOverlay: RenderNoRowsOverlay,

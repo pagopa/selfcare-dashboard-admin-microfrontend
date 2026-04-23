@@ -58,6 +58,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     multiple: true,
     grow: 1,
     options: [
+      { label: t('onboardingsPage.filters.statusOptions.request'), value: 'REQUEST' },
       { label: t('onboardingsPage.filters.statusOptions.toBeValidated'), value: 'TOBEVALIDATED' },
       { label: t('onboardingsPage.filters.statusOptions.pending'), value: 'PENDING' },
       { label: t('onboardingsPage.filters.statusOptions.completed'), value: 'COMPLETED' },

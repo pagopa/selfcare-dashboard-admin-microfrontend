@@ -98,6 +98,11 @@ export const FiltersBar = ({ products }: Props) => {
               label={filter.label}
               value={draftFilters[filter.key as keyof typeof draftFilters] as string}
               onChange={(e) => handleFilterChange(filter.key, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  applyFilters();
+                }
+              }}
               sx={{
                 flexGrow,
                 flexShrink: 1,

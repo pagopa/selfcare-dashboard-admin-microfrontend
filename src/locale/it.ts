@@ -40,6 +40,12 @@ export default {
       activeStatus: 'Attivo',
       backOffice: 'Vedi Back-office',
     },
+    backofficeNotIntegratedModal: {
+      title: 'Il back-office non è ancora integrato.',
+      description:
+        "Ci dispiace, ma {productName} non è ancora disponibile nell'Area Riservata Backstage.",
+      close: 'Chiudi',
+    },
   },
   onboardingsPage: {
     title: 'Adesioni',
