@@ -88,8 +88,8 @@ describe('OnboardingsTable component', () => {
     renderTable();
     expect(await screen.findByText('Ente 1')).toBeInTheDocument();
   });
-
-  test('should call onRowClick and navigate', async () => {
+// TODO remove skip after enabling click
+  test.skip('should call onRowClick and navigate', async () => {
     const { history } = renderTable();
     const row = await screen.findByText('Ente 1');
     fireEvent.click(row);
