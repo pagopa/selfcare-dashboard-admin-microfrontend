@@ -47,8 +47,11 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
       { label: t('common.institutionType.descriptions.as'), value: 'AS' },
       { label: t('common.institutionType.descriptions.pg'), value: 'PG' },
       { label: t('common.institutionType.descriptions.prv'), value: 'PRV' },
+      { label: t('common.institutionType.descriptions.prv_pf'), value: 'PRV_PF' },
       { label: t('common.institutionType.descriptions.gpu'), value: 'GPU' },
       { label: t('common.institutionType.descriptions.scec'), value: 'SCEC' },
+      { label: t('common.institutionType.descriptions.rec'), value: 'REC' },
+      { label: t('common.institutionType.descriptions.con'), value: 'CON' },
     ],
   },
   {
