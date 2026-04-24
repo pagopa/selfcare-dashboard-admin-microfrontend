@@ -12,13 +12,17 @@ export default {
         as: 'Società di assicurazione',
         pg: 'Azienda',
         prv: 'Privato',
+        prv_pf: 'Ditte individuali',
         gpu: 'Gestore di pubblica utilità e/o di interesse generale',
         scec: 'Società in conto economico consolidato',
+        rec: 'Recapitista',
+        con: 'Consolidatore',
+        oth: 'Altro',
       },
     },
   },
   adminPage: {
-    title: 'Panoramica enti',
+    title: 'Dashboard',
     subtitle:
       'Visualizza e gestisci gli enti aderenti ai prodotti PagoPA. Per operare su uno di questi clicca sul nome in tabella.',
     searchInstitutions: {
