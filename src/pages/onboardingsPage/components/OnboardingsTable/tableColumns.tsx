@@ -5,14 +5,13 @@ import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid'
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { TFunction } from 'i18next';
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
+import { useTokenExchange } from '../../../../hooks/useTokenExchange';
 import { Product } from '../../../../model/Product';
-import { ENV } from '../../../../utils/env';
 import BackofficeNotIntegratedModal from '../../../adminPage/components/BackofficeNotIntegratedModal';
 
 const STATUS_CHIP_CONFIG: Record<
@@ -61,9 +60,9 @@ const ActionCell = ({
   params: GridRenderCellParams<OnboardingIndexResource>;
   products: Array<Product>;
 }) => {
-  const history = useHistory();
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
+  const { invokeProductBo } = useTokenExchange();
   const [openModal, setOpenModal] = useState(false);
 
   const productId = params.row?.productId || '';
@@ -88,13 +87,10 @@ const ActionCell = ({
         endIcon={<ArrowForward />}
         onClick={() => {
           if (isProductAllowed(productId)) {
-            const onboardingId = params.row?.onboardingId;
-            if (onboardingId) {
-              history.push(
-                resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
-                  tokenId: onboardingId,
-                })
-              );
+            const selectedParty = params.row;
+            const productFromConfiguration = products.find((p) => p.id === productId);
+            if (productFromConfiguration) {
+              void invokeProductBo(productFromConfiguration, selectedParty);
             }
           } else {
             setOpenModal(true);
