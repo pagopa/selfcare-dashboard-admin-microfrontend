@@ -1,12 +1,26 @@
-import * as env from 'env-var';
 import { i18n } from 'i18next';
 import { Store } from 'redux';
 
-const PUBLIC_URL_INNER: string | undefined = env.get('PUBLIC_URL').asString() || '/dashboard';
+const requiredEnv = (name: string, value: string | undefined): string => {
+  if (!value) {
+    throw new Error(`${name} is required`);
+  }
+
+  return value;
+};
+
+const optionalStringEnv = (value: string | undefined, defaultValue: string): string =>
+  value ?? defaultValue;
+
+const optionalBoolEnv = (value: string | undefined, defaultValue = 'false'): boolean =>
+  (value ?? defaultValue) === 'true';
+
+const PUBLIC_URL_INNER = import.meta.env.VITE_PUBLIC_URL || '/dashboard';
+
 export const ENV = {
   STORE: {} as Store,
   i18n: {} as i18n,
-  ENV: env.get('REACT_APP_ENV').required().asString(),
+  ENV: requiredEnv('VITE_ENV', import.meta.env.VITE_ENV),
   PUBLIC_URL: PUBLIC_URL_INNER,
 
   ROUTES: {
@@ -22,27 +36,42 @@ export const ENV = {
   },
 
   URL_FE: {
-    LOGIN: env.get('REACT_APP_URL_FE_LOGIN').required().asString(),
-    LOGOUT: env.get('REACT_APP_URL_FE_LOGOUT').required().asString(),
-    ONBOARDING: env.get('REACT_APP_URL_FE_ONBOARDING').required().asString(),
-    LANDING: env.get('REACT_APP_URL_FE_LANDING').required().asString(),
-    ASSISTANCE: env.get('REACT_APP_URL_FE_ASSISTANCE').required().asString(),
+    LOGIN: requiredEnv('VITE_URL_FE_LOGIN', import.meta.env.VITE_URL_FE_LOGIN),
+    LOGOUT: requiredEnv('VITE_URL_FE_LOGOUT', import.meta.env.VITE_URL_FE_LOGOUT),
+    ONBOARDING: requiredEnv('VITE_URL_FE_ONBOARDING', import.meta.env.VITE_URL_FE_ONBOARDING),
+    LANDING: requiredEnv('VITE_URL_FE_LANDING', import.meta.env.VITE_URL_FE_LANDING),
+    ASSISTANCE: requiredEnv('VITE_URL_FE_ASSISTANCE', import.meta.env.VITE_URL_FE_ASSISTANCE),
   },
 
   URL_DOCUMENTATION: 'https://docs.pagopa.it/area-riservata/',
 
   URL_API: {
-    API_DASHBOARD: env.get('REACT_APP_URL_API_DASHBOARD').required().asString(),
-    API_ONBOARDING_V2: env.get('REACT_APP_URL_API_ONBOARDING_V2').required().asString(),
-    PARTY_REGISTRY_PROXY: env.get('REACT_APP_URL_API_PARTY_REGISTRY_PROXY').required().asString(),
+    API_DASHBOARD: requiredEnv('VITE_URL_API_DASHBOARD', import.meta.env.VITE_URL_API_DASHBOARD),
+    API_ONBOARDING_V2: requiredEnv(
+      'VITE_URL_API_ONBOARDING_V2',
+      import.meta.env.VITE_URL_API_ONBOARDING_V2
+    ),
+    PARTY_REGISTRY_PROXY: requiredEnv(
+      'VITE_URL_API_PARTY_REGISTRY_PROXY',
+      import.meta.env.VITE_URL_API_PARTY_REGISTRY_PROXY
+    ),
   },
 
   API_TIMEOUT_MS: {
-    DASHBOARD: env.get('REACT_APP_API_DASHBOARD_TIMEOUT_MS').required().asInt(),
+    DASHBOARD: Number.parseInt(
+      requiredEnv('VITE_API_DASHBOARD_TIMEOUT_MS', import.meta.env.VITE_API_DASHBOARD_TIMEOUT_MS),
+      10
+    ),
   },
 
   URL_INSTITUTION_LOGO: {
-    PREFIX: env.get('REACT_APP_URL_INSTITUTION_LOGO_PREFIX').required().asString(),
-    SUFFIX: env.get('REACT_APP_URL_INSTITUTION_LOGO_SUFFIX').required().asString(),
+    PREFIX: requiredEnv(
+      'VITE_URL_INSTITUTION_LOGO_PREFIX',
+      import.meta.env.VITE_URL_INSTITUTION_LOGO_PREFIX
+    ),
+    SUFFIX: requiredEnv(
+      'VITE_URL_INSTITUTION_LOGO_SUFFIX',
+      import.meta.env.VITE_URL_INSTITUTION_LOGO_SUFFIX
+    ),
   },
 };

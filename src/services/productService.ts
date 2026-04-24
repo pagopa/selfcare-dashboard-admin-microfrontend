@@ -3,7 +3,7 @@ import { mockedPartyProducts } from '../microcomponents/mock_dashboard/data/prod
 import { Product, productResource2Product } from '../model/Product';
 
 export const fetchProducts = (): Promise<Array<Product>> => {
-  if (process.env.VITE_API_MOCK_PRODUCTS === 'true') {
+  if (import.meta.env.VITE_API_MOCK_PRODUCTS === 'true') {
     return Promise.resolve(mockedPartyProducts);
   } else {
     return DashboardApi.getProducts().then((productResources) =>

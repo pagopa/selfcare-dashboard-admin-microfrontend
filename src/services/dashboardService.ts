@@ -4,7 +4,7 @@ import { institutionResource2Party, Party } from '../model/Party';
 import { mockedParties } from './__mocks__/dashboardService';
 
 export const fetchPartyDetailsService = (partyId: string): Promise<Party | null> => {
-  if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
+  if (import.meta.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     return Promise.resolve(mockedParties[2] ?? null);
   } else {
     const apiToCall = isPagoPaUser()
@@ -23,7 +23,7 @@ export const getTokenExchangeAdminService = (
   environment?: string,
   lang?: string
 ): Promise<string> => {
-  if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
+  if (import.meta.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     return Promise.resolve('mocked-token');
   } else {
     return DashboardApi.tokenExchangeAdmin(institutionId, productId, environment, lang);
