@@ -33,7 +33,7 @@ export default function BackofficeNotIntegratedModal({
       >
         <IconButton
           onClick={onClose}
-          sx={{ position: 'absolute', top: 12, right: 12 , color:'black'}}
+          sx={{ position: 'absolute', top: 12, right: 12, color: 'black' }}
           aria-label="close"
         >
           <CloseIcon />
@@ -44,7 +44,6 @@ export default function BackofficeNotIntegratedModal({
             width: 64,
             height: 64,
             borderRadius: '50%',
-            bgcolor: 'primary.light',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
