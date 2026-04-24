@@ -9,6 +9,7 @@ import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
 import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResource';
+import { ProductRolePermissionsList } from './generated/b4f-dashboard/ProductRolePermissionsList';
 import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
 
 const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
@@ -71,6 +72,11 @@ export const DashboardApi = {
       environment,
       lang,
     });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  permissionsList: async (): Promise<ProductRolePermissionsList> => {
+    const result = await apiClient.getMyPermissions({});
     return extractResponse(result, 200, onRedirectToLogin);
   },
 };

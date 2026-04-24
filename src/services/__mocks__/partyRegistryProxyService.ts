@@ -98,12 +98,13 @@ export const mockedSearchInstitutionsService = (
 };
 
 const STATUSES = [
-  'REQUEST',
-  'COMPLETED',
   'PENDING',
   'TOBEVALIDATED',
-  'REJECTED',
+  'COMPLETED',
   'SUSPENDED',
+  'REJECTED',
+  'DELETED',
+  'FAILED',
 ] as const;
 const PRODUCTS = ['prod-io', 'prod-pagopa', 'prod-interop', 'prod-pn', 'prod-cgn'] as const;
 const INSTITUTION_TYPES = ['PA', 'GSP', 'PSP', 'PT', 'SCP', 'SA'] as const;

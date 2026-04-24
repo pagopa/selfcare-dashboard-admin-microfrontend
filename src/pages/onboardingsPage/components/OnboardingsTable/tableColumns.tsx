@@ -13,7 +13,6 @@ const STATUS_CHIP_CONFIG: Record<
   string,
   { label: string; color: 'success' | 'warning' | 'error' | 'info' | 'default' }
 > = {
-  REQUEST: { label: 'Richiesta ricevuta', color: 'warning' },
   PENDING: { label: 'In attesa', color: 'warning' },
   TOBEVALIDATED: { label: 'Da validare', color: 'default' },
   COMPLETED: { label: 'Attivo', color: 'success' },
