@@ -4,7 +4,7 @@ import { mockedOnboardingRequests } from './__mocks__/onboardingRequestService';
 
 export const fetchOnboardingRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
+  if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
@@ -21,7 +21,7 @@ export const rejectOnboardingRequest = (
   _reason?: string
 ): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
+  if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
@@ -37,7 +37,7 @@ export const approveOnboardingPspRequest = (
   tokenId: string
 ): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
-  if (process.env.REACT_APP_API_MOCK_REQUEST_DATA === 'true') {
+  if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));

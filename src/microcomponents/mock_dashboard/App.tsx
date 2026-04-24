@@ -5,7 +5,7 @@ import {
   UserNotifyHandle,
 } from '@pagopa/selfcare-common-frontend/lib';
 import { useTranslation } from 'react-i18next';
-import { useParams, Route, Switch, useHistory } from 'react-router';
+import { useParams, Route, Switch, useHistory } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
 import { Box, Grid, useTheme } from '@mui/material';

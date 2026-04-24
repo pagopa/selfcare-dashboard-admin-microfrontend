@@ -845,6 +845,51 @@
         "summary": "Verify legal status from AdE"
       }
     },
+    "/onboarding/update-index": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OnboardingIndexResource"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Onboarding index updated successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "onboarding"
+        ],
+        "operationId": "updateOnboardingIndex"
+      }
+    },
     "/origins/{origin}/categories/{code}": {
       "get": {
         "produces": [
@@ -914,6 +959,7 @@
         "parameters": [
           {
             "collectionFormat": "multi",
+            "description": "List of products to be filtered",
             "in": "query",
             "items": {
               "type": "string"
@@ -924,6 +970,7 @@
           },
           {
             "collectionFormat": "multi",
+            "description": "List of institution types to be filtered",
             "in": "query",
             "items": {
               "type": "string"
@@ -933,6 +980,7 @@
             "type": "array"
           },
           {
+            "description": "Institution fiscal code",
             "in": "query",
             "name": "taxCode",
             "required": false,
@@ -940,6 +988,7 @@
           },
           {
             "default": "*",
+            "description": "Search text pattern",
             "in": "query",
             "name": "searchText",
             "required": false,
@@ -947,6 +996,7 @@
           },
           {
             "default": 50,
+            "description": "Maximum number of items per page. It is optional, and the default value is 10 when not specified",
             "format": "int32",
             "in": "query",
             "name": "top",
@@ -955,6 +1005,7 @@
           },
           {
             "default": 0,
+            "description": "Desired page number for result pagination. It is optional, and the default value is 1 when not specified",
             "format": "int32",
             "in": "query",
             "name": "skip",
@@ -988,9 +1039,116 @@
           }
         ],
         "tags": [
-          "search-controller"
+          "institution",
+          "external-v2",
+          "support"
         ],
-        "operationId": "searchInstitutions"
+        "description": "Retrieves a list of institutions based on a search engine query",
+        "operationId": "retrieveInstitutionOnSearchEngine",
+        "summary": "Retrieve institutions"
+      }
+    },
+    "/search/onboardings": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchText",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "products",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "institutionTypes",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "statuses",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "default": 0,
+            "format": "int64",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 15,
+            "format": "int64",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": "description asc",
+            "in": "query",
+            "name": "orderBy",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OnboardingIndexSearchResource"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "institution",
+          "external-v2",
+          "support"
+        ],
+        "description": "Retrieves a list of onboardings based on a search engine query",
+        "operationId": "retrieveOnboardingOnSearchEngine",
+        "summary": "Retrieve onboardings"
       }
     },
     "/stations": {
@@ -1756,6 +1914,87 @@
         },
         "verificationResult": {
           "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "OnboardingIndexResource": {
+      "properties": {
+        "activatedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "expiringDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "institutionId": {
+          "type": "string"
+        },
+        "institutionType": {
+          "type": "string"
+        },
+        "onboardingId": {
+          "type": "string"
+        },
+        "parentDescription": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subunitCode": {
+          "type": "string"
+        },
+        "subunitType": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "onboardingId"
+      ],
+      "type": "object"
+    },
+    "OnboardingIndexSearchResource": {
+      "properties": {
+        "onboardings": {
+          "items": {
+            "$ref": "#/definitions/OnboardingIndexResource"
+          },
+          "type": "array"
+        },
+        "page": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "pageSize": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "totalElements": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "totalPages": {
+          "format": "int64",
+          "type": "integer"
         }
       },
       "type": "object"

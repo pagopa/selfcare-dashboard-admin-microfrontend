@@ -1,4 +1,22 @@
 export default {
+  common: {
+    institutionType: {
+      title: 'Tipologia amministrazione',
+      descriptions: {
+        pa: 'Pubblica amministrazione',
+        gsp: 'Gestore di Pubblico Servizio',
+        pt: 'Partner tecnologico',
+        scp: 'Società a Controllo Pubblico',
+        psp: 'Prestatore Servizi di Pagamento',
+        sa: 'Gestore privato di piattaforma e-procurement',
+        as: 'Società di assicurazione',
+        pg: 'Azienda',
+        prv: 'Privato',
+        gpu: 'Gestore di pubblica utilità e/o di interesse generale',
+        scec: 'Società in conto economico consolidato',
+      },
+    },
+  },
   adminPage: {
     title: 'Panoramica enti',
     subtitle:
@@ -23,6 +41,36 @@ export default {
       backOffice: 'Vedi Back-office',
     },
   },
+  onboardingsPage: {
+    title: 'Adesioni',
+    subtitle:
+      'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
+    filters: {
+      search: 'Nome ente o Codice Fiscale',
+      products: 'Prodotto',
+      institutionTypes: 'Tipologia ente',
+      status: 'Stato dell’accordo',
+      filtersButton: 'Filtra',
+      resetButton: 'Rimuovi filtri',
+      statusOptions: {
+        request: 'Richiesta ricevuta',
+        toBeValidated: 'In validazione',
+        pending: 'In attesa',
+        completed: 'Attivo',
+        failed: 'In errore',
+        rejected: 'Rifiutato',
+        deleted: 'Disattivo',
+      },
+    },
+    table: {
+      institutionName: 'Ente',
+      product: 'Prodotto',
+      institutionType: 'Tipologia ente',
+      status: "Stato dell'accordo",
+      loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
+      noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',
+    },
+  },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
     validationDataChip: 'Da validare',
@@ -42,22 +90,6 @@ export default {
         title: 'Dati dell’ente',
         billingDataInfoSummary: {
           product: 'Prodotto',
-          institutionType: {
-            title: 'Tipologia amministrazione',
-            descriptions: {
-              pa: 'Pubblica amministrazione',
-              gsp: 'Gestore di Pubblico Servizio',
-              pt: 'Partner tecnologico',
-              scp: 'Società a Controllo Pubblico',
-              psp: 'Prestatore Servizi di Pagamento',
-              sa: 'Gestore privato di piattaforma e-procurement',
-              as: 'Società di assicurazione',
-              pg: 'Azienda',
-              prv: 'Privato',
-              gpu: 'Gestore di pubblica utilità e/o di interesse generale',
-              scec: 'Società in conto economico consolidato',
-            },
-          },
           businessName: 'Ragione sociale',
           registeredOffice: 'Sede legale',
           zipCode: 'CAP',

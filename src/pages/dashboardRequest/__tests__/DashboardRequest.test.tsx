@@ -1,12 +1,11 @@
 /* eslint-disable functional/immutable-data */
 import { cleanup, screen } from '@testing-library/react';
-import React from 'react';
 import { renderWithProviders } from '../../../utils/test-utils';
 import DashboardRequest from '../DashboardRequest';
 
 const oldWindowLocation = { ...global.window.location };
 const mockedLocation = {
-  assign: jest.fn(),
+  assign: vi.fn(),
   pathname: '/some/path/tokenId02',
   origin: 'MOCKED_ORIGIN',
   search: '',

@@ -6,9 +6,7 @@ import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/uti
 import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
-import {
-  fetchOnboardingRequest,
-} from '../../services/onboardingRequestService';
+import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
@@ -112,7 +110,7 @@ export default function DashboardRequest() {
       },
     });
     const response = new Response(stream);
-  
+
     const blob = await response.blob();
     return URL.createObjectURL(blob);
   };
@@ -128,7 +126,9 @@ export default function DashboardRequest() {
     const nameParam = new URLSearchParams({
       name: attatchmentName ?? '',
     });
-    const url = `${ENV.URL_API.API_ONBOARDING_V2}/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
+    const url = `${
+      ENV.URL_API.API_ONBOARDING_V2
+    }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
     if (retrieveTokenIdFromUrl) {
       fetch(url, {
         headers: {
@@ -171,13 +171,6 @@ export default function DashboardRequest() {
     }
   };
 
-  const isExpiredRequest =
-    onboardingRequestData?.status !== 'COMPLETED' &&
-    onboardingRequestData?.status !== 'REJECTED' &&
-    onboardingRequestData?.expiringDate
-      ? new Date(onboardingRequestData?.expiringDate) <= new Date()
-      : false;
-
   return showRejectPage ? (
     <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
@@ -201,16 +194,10 @@ export default function DashboardRequest() {
             <Grid xs={isGPU ? 2 : undefined}>
               <Chip
                 sx={{
-                  backgroundColor: isExpiredRequest
-                    ? 'error.main'
-                    : requestState(onboardingRequestData?.status, false, true),
+                  backgroundColor: requestState(onboardingRequestData?.status, false, true),
                   height: '30px',
                 }}
-                label={
-                  isExpiredRequest
-                    ? t('onboardingRequestPage.expired.chip')
-                    : requestState(onboardingRequestData?.status, true, false)
-                }
+                label={requestState(onboardingRequestData?.status, true, false)}
               />
             </Grid>
             {isGPU && (
@@ -223,7 +210,7 @@ export default function DashboardRequest() {
                       addError,
                       undefined,
                       retrieveTokenIdFromUrl,
-                      onboardingRequestData?.attachments?.[0] ?? '',
+                      onboardingRequestData?.attachments?.[0] ?? ''
                     )
                   }
                 >
@@ -232,25 +219,7 @@ export default function DashboardRequest() {
               </Grid>
             )}
           </Grid>
-          {isExpiredRequest ? (
-            <Grid item xs={12} width="100%" mt={5}>
-              <Alert
-                severity="error"
-                sx={{
-                  fontSize: 'fontSize',
-                  height: '53px',
-                  alignItems: 'center',
-                  color: 'colorTextPrimary',
-                  borderLeft: 'solid',
-                  borderLeftColor: 'error.main',
-                  borderLeftWidth: '4px',
-                  width: '100%',
-                }}
-              >
-                {t('onboardingRequestPage.expired.reason')}
-              </Alert>
-            </Grid>
-          ) : onboardingRequestData?.status === 'TOBEVALIDATED' ? (
+          {onboardingRequestData?.status === 'TOBEVALIDATED' ? (
             <Grid item xs={12} width="100%" mt={5}>
               <Alert
                 severity="info"
