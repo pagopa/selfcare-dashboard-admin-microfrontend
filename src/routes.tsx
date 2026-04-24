@@ -1,9 +1,10 @@
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router';
 import AdminPage from './pages/adminPage/AdminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
-import OnboardingsPage from './pages/onboardingsPage/OnboardingsPage';
 import { ENV } from './utils/env';
+import ContractPage from './pages/contractPage/ContractPage';
+import ContractEditorPage from './pages/contractPage/ContractEditorPage';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
 
@@ -33,6 +34,12 @@ export const DASHBOARD_ADMIN_ROUTES = {
     path: ENV.ROUTES.ADMIN,
     exact: false,
     subRoutes: {
+      MAIN: {
+        // TODO SUBSTITUTE WITH THE ADMIN "HOMEPAGE"
+        path: `${ENV.ROUTES.ADMIN_PARTY_DETAIL}`,
+        exact: true,
+        component: DashboardRequest,
+      },
       DASHBOARD_ONBOARDING_REQUESTS: {
         path: `${ENV.ROUTES.ADMIN_PARTY_DETAIL}`,
         exact: true,
@@ -43,12 +50,17 @@ export const DASHBOARD_ADMIN_ROUTES = {
         exact: true,
         component: AdminPage,
       },
-      DASHBOARD_ONBOARDINGS: {
-        path: `${ENV.ROUTES.ADMIN_ONBOARDINGS}`,
+      ADMIN_CONTRACT: {
+        path: `${ENV.ROUTES.ADMIN_CONTRACT}`,
         exact: true,
-        component: OnboardingsPage,
+        component: ContractPage,
       },
-      ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
+      ADMIN_CONTRACT_EDITOR: {
+        path: `${ENV.ROUTES.ADMIN_CONTRACT_EDITOR}`,
+        exact: true,
+        component: ContractEditorPage,
+      },
     },
+    ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
   },
 };

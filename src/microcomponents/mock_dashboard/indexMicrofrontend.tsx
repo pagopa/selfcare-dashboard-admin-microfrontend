@@ -9,13 +9,14 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
-import OnboardingsPage from '../../pages/onboardingsPage/OnboardingsPage';
+import ContractEditorPage from '../../pages/contractPage/ContractEditorPage';
+import ContractPage from '../../pages/contractPage/ContractPage';
 import { store } from '../../redux/store';
+import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
 import App from './App';
 import './index.css';
-
 const onSuccessEncoded = encodeURIComponent(location.pathname + location.search);
 
 // eslint-disable-next-line functional/immutable-data
@@ -38,12 +39,20 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
               <AdminPage />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_ONBOARDINGS} exact={true}>
-              <OnboardingsPage />
-            </Route>
             <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>
+            <Route path={ENV.ROUTES.ADMIN_CONTRACT} exact render={() => <ContractPage />} />
+            <Route
+              path={ENV.ROUTES.ADMIN_CONTRACT_EDITOR}
+              exact
+              render={(props) => <ContractEditorPage {...props} />}
+            />
+            <Route
+              path={`${ENV.ROUTES.ADMIN_CONTRACT_EDITOR}/:productId/:contractTemplateId/editor`}
+              exact
+              render={(props) => <ContractEditorPage {...props} />}
+            />
             <Route path="*">
               <Redirect
                 to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
@@ -57,3 +66,8 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

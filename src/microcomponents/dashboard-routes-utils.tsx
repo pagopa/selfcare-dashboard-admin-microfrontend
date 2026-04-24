@@ -8,7 +8,7 @@ import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
 import { RouteConfig, RoutesObject } from '../routes';
 
 export type DashboardMicrofrontendPageProps = {
-  decorators: DashboardDecoratorsType;
+  decorators?: DashboardDecoratorsType;
 } & DashboardMicrocomponentsProps;
 
 export type DashboardMicrocomponentsProps = {
@@ -43,13 +43,18 @@ const reduceDecorators = (
 export const buildRoutes = (decorators: DashboardDecoratorsType, rs: RoutesObject) =>
   Object.values(rs).map((route, i) => {
     const { path, exact, component: Component, subRoutes } = route;
+    const safeDecorators = decorators ?? ({
+      withProductRolesMap: (WrappedComponent) => WrappedComponent,
+      withSelectedProduct: (WrappedComponent) => WrappedComponent,
+      withSelectedProductRoles: (WrappedComponent) => WrappedComponent,
+    } as DashboardDecoratorsType);
     const decoratorResult = useMemo(
-      () => (Component ? reduceDecorators(decorators, route) : undefined),
-      []
+      () => (Component ? reduceDecorators(safeDecorators, route) : undefined),
+      [Component, route, safeDecorators]
     );
     const WrappedComponent = useMemo(
       () => (Component && decoratorResult ? decoratorResult(Component) : undefined),
-      []
+      [Component, decoratorResult]
     );
     return (
       <Route path={path} exact={exact} key={i}>
