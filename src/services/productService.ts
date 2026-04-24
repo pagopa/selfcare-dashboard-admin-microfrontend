@@ -37,14 +37,24 @@ export const fetchProducts = (): Promise<Array<Product>> => {
 export const getPermissionsListService = (): Promise<ProductRolePermissionsList> => {
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
     return Promise.resolve({
-      permissions: [
+      items: [
         {
           productId: 'ALL',
           role: 'mocked-role',
           permissions: COMMON_ADMIN_ACTIONS,
         },
+        {
+          productId: 'prod-pn',
+          role: 'mocked-role',
+          permissions: COMMON_ADMIN_ACTIONS,
+        },
+        {
+          productId: 'prod-io',
+          role: 'mocked-role',
+          permissions: COMMON_ADMIN_ACTIONS,
+        },
       ],
-    });
+    } as ProductRolePermissionsList);
   } else {
     return DashboardApi.permissionsList();
   }

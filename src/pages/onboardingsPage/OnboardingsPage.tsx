@@ -9,6 +9,7 @@ import { OnboardingIndexResource } from '../../api/generated/party-registry-prox
 import { Product } from '../../model/Product';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
+import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { FiltersBar } from './components/FiltersBar/FiltersBar';
 import { parseFilters, serializeFilters } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
@@ -18,9 +19,10 @@ const OnboardingsPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const addError = useErrorDispatcher();
-
   const history = useHistory();
   const filters = parseFilters(location.search);
+
+  useGlobalPermissions();
 
   const [rows, setRows] = useState<Array<OnboardingIndexResource>>([]);
   const [totalRows, setTotalRows] = useState(0);

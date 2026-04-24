@@ -1,13 +1,19 @@
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { ArrowForward } from '@mui/icons-material';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
+import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { TFunction } from 'i18next';
+import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { Product } from '../../../../model/Product';
+import { ENV } from '../../../../utils/env';
+import BackofficeNotIntegratedModal from '../../../adminPage/components/BackofficeNotIntegratedModal';
 
 const STATUS_CHIP_CONFIG: Record<
   string,
@@ -16,7 +22,6 @@ const STATUS_CHIP_CONFIG: Record<
   PENDING: { label: 'In attesa', color: 'warning' },
   TOBEVALIDATED: { label: 'Da validare', color: 'default' },
   COMPLETED: { label: 'Attivo', color: 'success' },
-  SUSPENDED: { label: 'Sospeso', color: 'default' },
   REJECTED: { label: 'Rifiutato', color: 'error' },
   DELETED: { label: 'Disattivo', color: 'error' },
   FAILED: { label: 'In errore', color: 'error' },
@@ -49,9 +54,64 @@ const renderStatusCell = (params: GridRenderCellParams<string>) => {
   );
 };
 
-const renderActionCell = () => (
-  <ArrowForwardIosIcon fontSize="small" color="primary" sx={{ cursor: 'pointer' }} />
-);
+const ActionCell = ({
+  params,
+  products,
+}: {
+  params: GridRenderCellParams<OnboardingIndexResource>;
+  products: Array<Product>;
+}) => {
+  const history = useHistory();
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const [openModal, setOpenModal] = useState(false);
+
+  const productId = params.row?.productId || '';
+  const status = params.row?.status;
+
+  if (
+    status !== 'COMPLETED' ||
+    !(
+      hasPermission(productId, Actions.AccessProductBackofficeAdmin) ||
+      hasPermission('ALL', Actions.AccessProductBackofficeAdmin)
+    )
+  ) {
+    return null;
+  }
+
+  const productName = products.find((p) => p.id === productId)?.title || productId;
+
+  return (
+    <>
+      <ButtonNaked
+        component="button"
+        endIcon={<ArrowForward />}
+        onClick={() => {
+          if (isProductAllowed(productId)) {
+            const onboardingId = params.row?.onboardingId;
+            if (onboardingId) {
+              history.push(
+                resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
+                  tokenId: onboardingId,
+                })
+              );
+            }
+          } else {
+            setOpenModal(true);
+          }
+        }}
+        sx={{ color: 'primary.main', fontWeight: 'bold' }}
+      >
+        {t('adminPage.selectedPartyDetails.backOffice')}
+      </ButtonNaked>
+      <BackofficeNotIntegratedModal
+        open={openModal}
+        productName={productName}
+        onClose={() => setOpenModal(false)}
+      />
+    </>
+  );
+};
 
 export const RenderNoRowsOverlay = () => {
   const history = useHistory();
@@ -153,9 +213,9 @@ export const getOnboardingsColumns = (
   {
     field: 'actions',
     headerName: '',
-    width: 60,
+    width: 150,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: renderActionCell,
+    renderCell: (params) => <ActionCell params={params} products={products} />,
   },
 ];
