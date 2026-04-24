@@ -16,12 +16,14 @@ import {
   Typography,
 } from '@mui/material';
 import { ButtonNaked, PartyAccountItemButton } from '@pagopa/mui-italia';
-import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
+import { TitleBox, useErrorDispatcher, usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
+import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { ProductOnBoardingStatusEnum } from '../../api/generated/b4f-dashboard/OnboardedProductResource';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { Party } from '../../model/Party';
 import { Product } from '../../model/Product';
@@ -31,6 +33,7 @@ import { searchInstitutionsService } from '../../services/partyRegistryProxyServ
 import { fetchProducts } from '../../services/productService';
 import { buildUrlLog } from '../../utils/helper';
 import AdminPartyInfo from './components/AdminPartyInfo';
+import BackofficeNotIntegratedModal from './components/BackofficeNotIntegratedModal';
 import GenericEnvProductModal from './components/GenericEnvProductModal';
 import ProductAvatarCell from './components/ProductAvatarCell';
 import SessionModalInteropProduct from './components/SessionModalInteropProduct';
@@ -48,10 +51,12 @@ const AdminPage = () => {
   );
   const [partyDetail, setPartyDetail] = useState<Party | null>(null);
   const [products, setProducts] = useState<Array<Product>>([]);
+  const [openBackofficeNotIntegratedModal, setOpenBackofficeNotIntegratedModal] = useState(false);
 
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const dispatch = useAppDispatch();
+  const { hasPermission } = usePermissions();
 
   const {
     productsToShow,
@@ -72,7 +77,7 @@ const AdminPage = () => {
     closeInteropModal,
     closeGenericEnvModal,
   } = useProductNavigation({ products, selectedInstitution, hasMoreThanOneInteropEnv });
-  
+
   useEffect(() => {
     fetchProducts()
       .then((products) => {
@@ -340,20 +345,27 @@ const AdminPage = () => {
                                 `common.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
                               ) || '-'}
                             </TableCell>
-                            {isProductAllowed(onboardedProduct.productId || '') && (
-                              <TableCell align="right">
-                                <ButtonNaked
-                                  component="button"
-                                  endIcon={<ArrowForward />}
-                                  onClick={() =>
-                                    handleOnboardedProductClick(productFromConfiguration)
-                                  }
-                                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                                >
-                                  {t('adminPage.selectedPartyDetails.backOffice')}
-                                </ButtonNaked>
-                              </TableCell>
-                            )}
+                            {onboardedProduct.productOnBoardingStatus ===
+                              ProductOnBoardingStatusEnum.ACTIVE &&
+                              hasPermission(
+                                onboardedProduct.productId || '',
+                                Actions.AccessProductBackofficeAdmin
+                              ) && (
+                                <TableCell align="right">
+                                  <ButtonNaked
+                                    component="button"
+                                    endIcon={<ArrowForward />}
+                                    onClick={() =>
+                                      isProductAllowed(onboardedProduct.productId || '')
+                                        ? handleOnboardedProductClick(productFromConfiguration)
+                                        : setOpenBackofficeNotIntegratedModal(true)
+                                    }
+                                    sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                                  >
+                                    {t('adminPage.selectedPartyDetails.backOffice')}
+                                  </ButtonNaked>
+                                </TableCell>
+                              )}
                           </TableRow>
                         </Fragment>
                       );
@@ -361,6 +373,11 @@ const AdminPage = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <BackofficeNotIntegratedModal
+                open={openBackofficeNotIntegratedModal}
+                productName={activeProduct?.title ?? ''}
+                onClose={() => setOpenBackofficeNotIntegratedModal(false)}
+              />
               <SessionModalInteropProduct
                 open={openInteropModal}
                 title={t('overview.activeProducts.activeProductsEnvModal.title')}

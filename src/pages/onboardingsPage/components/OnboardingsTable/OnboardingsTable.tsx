@@ -2,10 +2,10 @@ import { Box, MenuItem, Select, styled } from '@mui/material';
 import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui/x-data-grid';
 import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
 import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { useHistory } from 'react-router-dom';
+// import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+// import { useHistory } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
-import { ENV } from '../../../../utils/env';
+// import { ENV } from '../../../../utils/env';
 import { RenderNoRowsOverlay } from './tableColumns';
 
 const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
@@ -118,7 +118,7 @@ export const OnboardingsTable = ({
   onPageSizeChange,
   onSortModelChange,
 }: Props) => {
-  const history = useHistory();
+ //  const history = useHistory();
 
   const pageModel: Page = {
     number: page,
@@ -126,7 +126,7 @@ export const OnboardingsTable = ({
     totalElements: totalRows,
     totalPages: Math.ceil(totalRows / pageSize),
   };
-
+/*
   const handleRowClick = (params: { row: OnboardingIndexResource }) => {
     const { onboardingId } = params.row;
     if (onboardingId) {
@@ -137,7 +137,7 @@ export const OnboardingsTable = ({
       );
     }
   };
-
+*/
   return (
     <Box
       id="OnboardingsSearchTableBox"
@@ -169,7 +169,7 @@ export const OnboardingsTable = ({
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        onRowClick={handleRowClick}
+        // onRowClick={handleRowClick}
         components={{
           Row: CustomRow,
           NoRowsOverlay: RenderNoRowsOverlay,

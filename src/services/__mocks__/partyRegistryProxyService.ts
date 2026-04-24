@@ -97,7 +97,14 @@ export const mockedSearchInstitutionsService = (
   }
 };
 
-const STATUSES = ['ACTIVE', 'PENDING', 'TOBEVALIDATED', 'REJECTED', 'SUSPENDED'] as const;
+const STATUSES = [
+  'REQUEST',
+  'COMPLETED',
+  'PENDING',
+  'TOBEVALIDATED',
+  'REJECTED',
+  'SUSPENDED',
+] as const;
 const PRODUCTS = ['prod-io', 'prod-pagopa', 'prod-interop', 'prod-pn', 'prod-cgn'] as const;
 const INSTITUTION_TYPES = ['PA', 'GSP', 'PSP', 'PT', 'SCP', 'SA'] as const;
 const INSTITUTION_NAMES = [
@@ -127,12 +134,14 @@ const INSTITUTION_NAMES = [
   'Comune di Padova',
   'Comune di Trieste',
 ] as const;
+const PARENT_NAMES = ['Ente di appartenenza 1', 'Ente di appartenenza 2'] as const;
 
 export const mockedOnboardings: Array<OnboardingIndexResource> = Array.from(
   { length: 25 },
   (_, i) => ({
     onboardingId: `onb-${String(i + 1).padStart(3, '0')}`,
     description: INSTITUTION_NAMES[i % INSTITUTION_NAMES.length],
+    parentDescription: PARENT_NAMES[i % PARENT_NAMES.length],
     productId: PRODUCTS[i % PRODUCTS.length],
     institutionType: INSTITUTION_TYPES[i % INSTITUTION_TYPES.length],
     status: STATUSES[i % STATUSES.length],

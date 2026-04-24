@@ -1,7 +1,10 @@
 import { OnboardingIndexSearchResource } from '../api/generated/party-registry-proxy/OnboardingIndexSearchResource';
 import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { PartyRegisrtyApi } from '../api/PartyRegistryProxyApiClient';
-import { mockedSearchInstitutionsService, mockedSearchOnboardingsService } from './__mocks__/partyRegistryProxyService';
+import {
+  mockedSearchInstitutionsService,
+  mockedSearchOnboardingsService,
+} from './__mocks__/partyRegistryProxyService';
 
 export const searchInstitutionsService = async (
   searchText: string
@@ -19,7 +22,7 @@ export const searchOnboardingsService = async (
   institutionTypes: Array<string>,
   statuses: Array<string>,
   page: number,
-  pageSize: number,
+  pageSize: number
   // orderBy: string
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
@@ -30,7 +33,7 @@ export const searchOnboardingsService = async (
       institutionTypes,
       statuses,
       page,
-      pageSize,
+      pageSize
       // orderBy
     );
   } else {
@@ -40,7 +43,7 @@ export const searchOnboardingsService = async (
       institutionTypes,
       statuses,
       page,
-      pageSize,
+      pageSize
       // orderBy
     );
   }
