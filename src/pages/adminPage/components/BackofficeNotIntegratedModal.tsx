@@ -1,7 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 type Props = {
   open: boolean;
@@ -60,7 +60,15 @@ export default function BackofficeNotIntegratedModal({
         </Typography>
 
         <Typography variant="body2" color="text.secondary" mb={3}>
-          {t('adminPage.backofficeNotIntegratedModal.description', { productName })}
+          <Trans
+            i18nKey="adminPage.backofficeNotIntegratedModal.description"
+            values={{ productName }}
+            components={{
+              1: <strong />,
+            }}
+          >
+            {`Ci dispiace, ma <1>{{productName}}</1> non è ancora disponibile nell'Area Riservata Backstage.`}
+          </Trans>
         </Typography>
 
         <Button variant="contained" onClick={onClose} sx={{ borderRadius: 2, px: 4 }}>
