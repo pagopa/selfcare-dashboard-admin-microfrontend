@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -41,17 +41,18 @@ export default function BackofficeNotIntegratedModal({
 
         <Box
           sx={{
-            width: 64,
-            height: 64,
+            width: 53,
+            height: 53,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mx: 'auto',
             mb: 2,
+            backgroundColor: '#CED8F9 !important',
           }}
         >
-          <ErrorOutlineIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+          <PriorityHighOutlinedIcon sx={{ color: '#0B3EE3 !important', fontSize: 32 }} />
         </Box>
 
         <Typography variant="h6" fontWeight="bold" mb={1}>
