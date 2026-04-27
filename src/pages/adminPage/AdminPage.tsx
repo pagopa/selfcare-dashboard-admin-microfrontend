@@ -157,7 +157,6 @@ const AdminPage = () => {
                 productId: product.productId ?? '',
                 actions: product.userProductActions ? [...product.userProductActions] : [],
               }));
-
             dispatch(setProductPermissions(productPermissions));
           }
         })

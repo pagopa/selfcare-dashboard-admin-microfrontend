@@ -555,6 +555,60 @@
         "summary": "Retrieve institution's delegations"
       }
     },
+    "/v1/products/my-permissions": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProductRolePermissionsList"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "products"
+        ],
+        "description": "Service to retrieve the logged user's permissions for all products",
+        "operationId": "getMyPermissions",
+        "summary": "Service to retrieve the logged user's permissions for all products"
+      }
+    },
     "/v1/products/{productId}/brokers/{institutionType}": {
       "get": {
         "produces": [
@@ -2958,6 +3012,60 @@
         "summary": "getUsers"
       }
     },
+    "/v2/users/otp-info": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/problem+json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserOtpEmailInfo"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Problem"
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ],
+        "tags": [
+          "user"
+        ],
+        "description": "Service to get the otp info for the current user",
+        "operationId": "getUserOtpEmailInfoUsingGET",
+        "summary": "getUserOtpEmailInfo"
+      }
+    },
     "/v2/users/search": {
       "post": {
         "consumes": [
@@ -4539,6 +4647,37 @@
       },
       "type": "object"
     },
+    "ProductRolePermissions": {
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "permissions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProductRolePermissionsList": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/ProductRolePermissions"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
     "ProductRoleResource": {
       "description": "Available product roles",
       "properties": {
@@ -5081,6 +5220,23 @@
           "type": "string"
         },
         "surname": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserOtpEmailInfo": {
+      "properties": {
+        "canUserChangeOtpEmail": {
+          "type": "boolean"
+        },
+        "otpEmail": {
+          "type": "string"
+        },
+        "otpReferenceInstitutionId": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         }
       },

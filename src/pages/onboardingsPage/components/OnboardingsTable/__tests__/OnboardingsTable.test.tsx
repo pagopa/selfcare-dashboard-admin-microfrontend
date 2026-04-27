@@ -4,6 +4,21 @@ import { Router } from 'react-router-dom';
 import { OnboardingsTable } from '../OnboardingsTable';
 import { getOnboardingsColumns } from '../tableColumns';
 
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next');
+  return {
+    ...actual,
+    useTranslation: () => ({
+      t: (key: string) => {
+        if (key === 'adminPage.selectedPartyDetails.backOffice') return 'Back Office';
+        if (key === 'common.institutionType.descriptions.pa') return 'Pubblica Amministrazione';
+        return key;
+      },
+    }),
+    Trans: ({ children }: any) => children,
+  };
+});
+
 vi.mock('@pagopa/selfcare-common-frontend/lib/components/CustomPagination', () => ({
   __esModule: true,
   default: (props: any) => (
@@ -39,8 +54,26 @@ vi.mock('@mui/x-data-grid', async () => {
   };
 });
 
+vi.mock('@pagopa/selfcare-common-frontend/lib', async () => {
+  const actual = await vi.importActual('@pagopa/selfcare-common-frontend/lib');
+  return {
+    ...actual,
+    usePermissions: () => ({
+      hasPermission: () => true,
+      getAllProductsWithPermission: () => [],
+    }),
+  };
+});
+
+vi.mock('../../../../../hooks/useTokenExchange', () => ({
+  useTokenExchange: () => ({
+    invokeProductBo: vi.fn(),
+  }),
+}));
+
 const tMock = vi.fn((key: string) => {
   if (key === 'common.institutionType.descriptions.pa') return 'Pubblica Amministrazione';
+  if (key === 'adminPage.selectedPartyDetails.backOffice') return 'Back Office';
   return key;
 });
 
@@ -148,10 +181,12 @@ describe('tableColumns rendering logic', () => {
     expect(getByText('Attivo')).toBeInTheDocument();
   });
 
-  test('renderActionCell should render icon', () => {
+  test('renderActionCell should render button', () => {
     const actionColumn = realColumns.find((c) => c.field === 'actions');
-    const { container } = render(<>{actionColumn?.renderCell!({} as any)}</>);
-    expect(container.querySelector('svg')).toBeInTheDocument();
+    const { getByRole } = render(
+      <>{actionColumn?.renderCell!({ row: { status: 'COMPLETED', productId: 'prod-1' } } as any)}</>
+    );
+    expect(getByRole('button', { name: /back office/i })).toBeInTheDocument();
   });
 });
 

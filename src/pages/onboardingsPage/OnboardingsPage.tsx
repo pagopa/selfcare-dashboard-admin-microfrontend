@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../api/generated/party-registry-proxy/OnboardingIndexResource';
+import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { Product } from '../../model/Product';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../services/productService';
@@ -18,9 +19,10 @@ const OnboardingsPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const addError = useErrorDispatcher();
-
   const history = useHistory();
   const filters = parseFilters(location.search);
+
+  useGlobalPermissions();
 
   const [rows, setRows] = useState<Array<OnboardingIndexResource>>([]);
   const [totalRows, setTotalRows] = useState(0);
