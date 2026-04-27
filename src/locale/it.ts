@@ -45,9 +45,8 @@ export default {
       backOffice: 'Vedi Back-office',
     },
     backofficeNotIntegratedModal: {
-      title: 'Il back-office non è ancora integrato.',
-      description:
-        "Ci dispiace, ma <1>{{productName}}</1> non è ancora disponibile nell'Area Riservata Backstage.",
+      title: 'Il back-office non è ancora integrato in Area Riservata Backstage.',
+      description: 'Ci dispiace, <1>{{productName}}</1> non è disponibile al momento.',
       close: 'Chiudi',
     },
   },

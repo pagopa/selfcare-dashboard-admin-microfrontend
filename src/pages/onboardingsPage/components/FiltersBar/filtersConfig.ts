@@ -3,7 +3,7 @@ import { Product } from '../../../../model/Product';
 import { FilterConfig } from './types';
 
 const getProductOptions = (products: Array<Product>): Array<{ label: string; value: string }> => {
-  const activeProducts = products.filter((p) => p.status === 'ACTIVE');
+  const activeProducts = products.filter((p) => p.status === 'ACTIVE' || p.status === 'TESTING');
 
   return activeProducts.flatMap((p) => {
     const productOption = { label: p.title, value: p.id };
