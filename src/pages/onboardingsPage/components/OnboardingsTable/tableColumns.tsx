@@ -4,6 +4,7 @@ import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
+import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { TFunction } from 'i18next';
 import { useState } from 'react';
@@ -86,6 +87,9 @@ const ActionCell = ({
         component="button"
         endIcon={<ArrowForward />}
         onClick={() => {
+          trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
+            product_id: productId,
+          });
           if (isProductAllowed(productId)) {
             const selectedParty = params.row;
             const productFromConfiguration = products.find((p) => p.id === productId);

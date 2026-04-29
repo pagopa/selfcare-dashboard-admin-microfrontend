@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { GridSortModel } from '@mui/x-data-grid';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend';
+import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -29,6 +30,10 @@ const OnboardingsPage = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Array<Product>>([]);
+
+  useEffect(() => {
+    trackEvent('BACKSTAGE_ONBOARDINGS');
+  }, []);
 
   useEffect(() => {
     if (products.length > 0) {

@@ -1,6 +1,7 @@
 import useErrorDispatcher from '@pagopa/selfcare-common-frontend/lib/hooks/useErrorDispatcher';
 import useLoading from '@pagopa/selfcare-common-frontend/lib/hooks/useLoading';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
+import { OnboardingIndexResource } from '../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { Product } from '../model/Product';
 import { getTokenExchangeAdminService } from '../services/dashboardService';
@@ -14,13 +15,17 @@ export const useTokenExchange = () => {
 
   const invokeProductBo = async (
     product: Product,
-    selectedParty: SearchServiceInstitution,
+    selectedParty: SearchServiceInstitution | OnboardingIndexResource,
     selectedEnvironment?: string,
     lang?: string
   ): Promise<void> => {
     const selectedEnvironmentUrl = product.backOfficeEnvironmentConfigurations?.find(
       (p) => p.environment === selectedEnvironment
     )?.url;
+
+    const partyId =
+      ('onboardingId' in selectedParty ? selectedParty.institutionId : selectedParty.id) ?? '';
+
     const result = selectedEnvironmentUrl
       ? validateUrlBO(selectedEnvironmentUrl)
       : validateUrlBO(product?.urlBO);
@@ -38,12 +43,12 @@ export const useTokenExchange = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     selectedEnvironment
       ? (setLoading(true),
-        getTokenExchangeAdminService(selectedParty.id || '', product.id, selectedEnvironment, lang)
+        getTokenExchangeAdminService(partyId || '', product.id, selectedEnvironment, lang)
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: selectedParty.id,
+                party_id: partyId,
                 product_id: product.id,
                 target: selectedEnvironment,
               },
@@ -61,12 +66,12 @@ export const useTokenExchange = () => {
           )
           .finally(() => setLoading(false)))
       : (setLoading(true),
-        getTokenExchangeAdminService(selectedParty.id || '', product.id, undefined, lang)
+        getTokenExchangeAdminService(partyId, product.id, undefined, lang)
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: selectedParty.id,
+                party_id: partyId,
                 product_id: product.id,
                 target: 'prod',
               },
