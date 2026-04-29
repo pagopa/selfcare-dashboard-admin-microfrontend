@@ -204,7 +204,9 @@ const AdminPage = () => {
           open={open}
           value={selectedInstitution}
           onChange={(_, newValue) => {
-            trackEvent('BACKSTAGE_PARTY_SELECTION');
+            trackEvent('BACKSTAGE_PARTY_SELECTION', {
+              party_id: newValue?.id || 'id_undefined',
+            });
             setSelectedInstitution(newValue);
             if (newValue) {
               storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
@@ -361,7 +363,7 @@ const AdminPage = () => {
                                     component="button"
                                     endIcon={<ArrowForward />}
                                     onClick={() => {
-                                      trackEvent('BACKSTAGE_OPEN_PRODUCT', {
+                                      trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
                                         product_id: onboardedProduct.productId || '',
                                       });
                                       if (isProductAllowed(onboardedProduct.productId || '')) {

@@ -87,7 +87,7 @@ const ActionCell = ({
         component="button"
         endIcon={<ArrowForward />}
         onClick={() => {
-          trackEvent('BACKSTAGE_OPEN_PRODUCT', {
+          trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
             product_id: productId,
           });
           if (isProductAllowed(productId)) {
