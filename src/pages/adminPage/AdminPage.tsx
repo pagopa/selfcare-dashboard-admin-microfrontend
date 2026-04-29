@@ -18,6 +18,7 @@ import {
 import { ButtonNaked, PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher, usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
+import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
@@ -77,6 +78,10 @@ const AdminPage = () => {
     closeInteropModal,
     closeGenericEnvModal,
   } = useProductNavigation({ products, selectedInstitution, hasMoreThanOneInteropEnv });
+
+  useEffect(() => {
+    trackEvent('BACKSTAGE_DASHBOARD');
+  }, []);
 
   useEffect(() => {
     fetchProducts()
@@ -199,6 +204,7 @@ const AdminPage = () => {
           open={open}
           value={selectedInstitution}
           onChange={(_, newValue) => {
+            trackEvent('BACKSTAGE_PARTY_SELECTION');
             setSelectedInstitution(newValue);
             if (newValue) {
               storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
@@ -354,11 +360,16 @@ const AdminPage = () => {
                                   <ButtonNaked
                                     component="button"
                                     endIcon={<ArrowForward />}
-                                    onClick={() =>
-                                      isProductAllowed(onboardedProduct.productId || '')
-                                        ? handleOnboardedProductClick(productFromConfiguration)
-                                        : setOpenBackofficeNotIntegratedModal(true)
-                                    }
+                                    onClick={() => {
+                                      trackEvent('BACKSTAGE_OPEN_PRODUCT', {
+                                        product_id: onboardedProduct.productId || '',
+                                      });
+                                      if (isProductAllowed(onboardedProduct.productId || '')) {
+                                        handleOnboardedProductClick(productFromConfiguration);
+                                      } else {
+                                        setOpenBackofficeNotIntegratedModal(true);
+                                      }
+                                    }}
                                     sx={{ color: 'primary.main', fontWeight: 'bold' }}
                                   >
                                     {t('adminPage.selectedPartyDetails.backOffice')}
