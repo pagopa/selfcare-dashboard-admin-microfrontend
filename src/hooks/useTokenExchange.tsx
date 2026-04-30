@@ -6,6 +6,7 @@ import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/
 import { Product } from '../model/Product';
 import { getTokenExchangeAdminService } from '../services/dashboardService';
 import { LOADING_TASK_TOKEN_EXCHANGE } from '../utils/constants';
+import { getAppArea } from '../utils/utils';
 
 const hostnameRegexp = /^(?:https?:\/\/)([-.a-zA-Z0-9_]+)/;
 
@@ -51,6 +52,7 @@ export const useTokenExchange = () => {
                 party_id: partyId,
                 product_id: product.id,
                 target: selectedEnvironment,
+                from: getAppArea(),
               },
               () => window.location.assign(url)
             );
@@ -74,6 +76,7 @@ export const useTokenExchange = () => {
                 party_id: partyId,
                 product_id: product.id,
                 target: 'prod',
+                from: getAppArea(),
               },
               () => window.location.assign(url)
             );
