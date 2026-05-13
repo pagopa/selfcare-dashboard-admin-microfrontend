@@ -17,14 +17,43 @@ import BackofficeNotIntegratedModal from '../../../adminPage/components/Backoffi
 
 const STATUS_CHIP_CONFIG: Record<
   string,
-  { label: string; color: 'success' | 'warning' | 'error' | 'info' | 'default' }
+  {
+    label: string;
+    tooltipText: string;
+    color: 'success' | 'warning' | 'error' | 'info' | 'default';
+  }
 > = {
-  PENDING: { label: 'In attesa', color: 'warning' },
-  TOBEVALIDATED: { label: 'Da validare', color: 'default' },
-  COMPLETED: { label: 'Attivo', color: 'success' },
-  REJECTED: { label: 'Rifiutato', color: 'error' },
-  DELETED: { label: 'Disattivo', color: 'error' },
-  FAILED: { label: 'In errore', color: 'error' },
+  TOBEVALIDATED: {
+    label: 'Da validare',
+    tooltipText: 'Richiesta di adesione in attesa di approvazione da parte di un utente PagoPA.',
+    color: 'default',
+  },
+  PENDING: {
+    label: 'In attesa',
+    tooltipText:
+      "L'ente deve caricare il contratto firmato per completare la richiesta di adesione.",
+    color: 'warning',
+  },
+  COMPLETED: {
+    label: 'Attivo',
+    tooltipText: "L'ente è aderente al prodotto. La richiesta è stata completata con successo.",
+    color: 'success',
+  },
+  REJECTED: {
+    label: 'Rifiutato',
+    tooltipText: 'Richiesta di adesione rifiutata da un utente PagoPA dopo le verifiche.',
+    color: 'error',
+  },
+  DELETED: {
+    label: 'Disattivo',
+    tooltipText: "L'ente non risulta più aderente al prodotto.",
+    color: 'error',
+  },
+  FAILED: {
+    label: 'In errore',
+    tooltipText: 'La richiesta di adesione non è andata a buon fine a causa di un errore tecnico.',
+    color: 'error',
+  },
 };
 
 const truncatedCellSx = {
@@ -46,9 +75,13 @@ const renderCellWithTooltip = (params: GridRenderCellParams) => {
 
 const renderStatusCell = (params: GridRenderCellParams<string>) => {
   const value = params.value ?? '';
-  const config = STATUS_CHIP_CONFIG[value] ?? { label: value, color: 'default' as const };
+  const config = STATUS_CHIP_CONFIG[value] ?? {
+    label: value,
+    tooltipText: '',
+    color: 'default' as const,
+  };
   return (
-    <Tooltip title={config.label} arrow enterDelay={300}>
+    <Tooltip title={config.tooltipText} arrow enterDelay={300}>
       <Chip label={config.label} color={config.color} size="small" />
     </Tooltip>
   );
