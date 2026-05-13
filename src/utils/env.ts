@@ -11,8 +11,10 @@ export const ENV = {
   ROUTES: {
     ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
     ADMIN_SEARCH: `${PUBLIC_URL_INNER}/admin/search`,
+    ADMIN_SEARCH_DETAIL: `${PUBLIC_URL_INNER}/admin/search/:partyId`,
     ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
     ADMIN_ONBOARDINGS: `${PUBLIC_URL_INNER}/admin/onboardings`,
+    ADMIN_ONBOARDINGS_DETAIL: `${PUBLIC_URL_INNER}/admin/onboardings/:partyId`,
   },
 
   DASHBOARD_ROUTES: {
