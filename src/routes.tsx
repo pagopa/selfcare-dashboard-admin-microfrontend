@@ -3,6 +3,7 @@ import { Redirect, useParams } from 'react-router-dom';
 import AdminPage from './pages/adminPage/AdminPage';
 import DashboardRequest from './pages/dashboardRequest/DashboardRequest';
 import OnboardingsPage from './pages/onboardingsPage/OnboardingsPage';
+import PartyDetailPage from './pages/partyDetailPage/PartyDetailPage';
 import { ENV } from './utils/env';
 
 export const BASE_ROUTE = ENV.PUBLIC_URL;
@@ -46,7 +47,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
       DASHBOARD_ADMIN_SEARCH_DETAIL: {
         path: `${ENV.ROUTES.ADMIN_SEARCH_DETAIL}`,
         exact: true,
-        component: AdminPage,
+        component: PartyDetailPage,
       },
       DASHBOARD_ONBOARDINGS: {
         path: `${ENV.ROUTES.ADMIN_ONBOARDINGS}`,
@@ -56,7 +57,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
       DASHBOARD_ONBOARDINGS_DETAIL: {
         path: `${ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL}`,
         exact: true,
-        component: OnboardingsPage,
+        component: PartyDetailPage,
       },
       ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
     },
