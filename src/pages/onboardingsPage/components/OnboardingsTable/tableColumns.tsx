@@ -13,7 +13,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { useTokenExchange } from '../../../../hooks/useTokenExchange';
 import { Product } from '../../../../model/Product';
-import BackofficeNotIntegratedModal from '../../../adminPage/components/BackofficeNotIntegratedModal';
+import BackofficeNotIntegratedModal from '../../../../components/BackofficeNotIntegratedModal';
 
 const STATUS_CHIP_CONFIG: Record<
   string,

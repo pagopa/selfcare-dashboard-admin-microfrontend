@@ -1,8 +1,7 @@
 import useErrorDispatcher from '@pagopa/selfcare-common-frontend/lib/hooks/useErrorDispatcher';
 import useLoading from '@pagopa/selfcare-common-frontend/lib/hooks/useLoading';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
-import { OnboardingIndexResource } from '../api/generated/party-registry-proxy/OnboardingIndexResource';
-import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/SearchServiceInstitution';
+import { Party } from '../model/Party';
 import { Product } from '../model/Product';
 import { getTokenExchangeAdminService } from '../services/dashboardService';
 import { LOADING_TASK_TOKEN_EXCHANGE } from '../utils/constants';
@@ -16,16 +15,13 @@ export const useTokenExchange = () => {
 
   const invokeProductBo = async (
     product: Product,
-    selectedParty: SearchServiceInstitution | OnboardingIndexResource,
+    selectedParty: Party | null,
     selectedEnvironment?: string,
     lang?: string
   ): Promise<void> => {
     const selectedEnvironmentUrl = product.backOfficeEnvironmentConfigurations?.find(
       (p) => p.environment === selectedEnvironment
     )?.url;
-
-    const partyId =
-      ('onboardingId' in selectedParty ? selectedParty.institutionId : selectedParty.id) ?? '';
 
     const result = selectedEnvironmentUrl
       ? validateUrlBO(selectedEnvironmentUrl)
@@ -44,12 +40,17 @@ export const useTokenExchange = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     selectedEnvironment
       ? (setLoading(true),
-        getTokenExchangeAdminService(partyId || '', product.id, selectedEnvironment, lang)
+        getTokenExchangeAdminService(
+          selectedParty?.partyId || '',
+          product.id,
+          selectedEnvironment,
+          lang
+        )
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: partyId,
+                party_id: selectedParty?.partyId,
                 product_id: product.id,
                 target: selectedEnvironment,
                 from: getAppArea(),
@@ -68,12 +69,12 @@ export const useTokenExchange = () => {
           )
           .finally(() => setLoading(false)))
       : (setLoading(true),
-        getTokenExchangeAdminService(partyId, product.id, undefined, lang)
+        getTokenExchangeAdminService(selectedParty?.partyId || '', product.id, undefined, lang)
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: partyId,
+                party_id: selectedParty?.partyId,
                 product_id: product.id,
                 target: 'prod',
                 from: getAppArea(),

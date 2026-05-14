@@ -15,9 +15,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { TFunction } from 'i18next';
 import * as React from 'react';
 import { withTranslation } from 'react-i18next';
-import { SearchServiceInstitution } from '../../../api/generated/party-registry-proxy/SearchServiceInstitution';
-import { useTokenExchange } from '../../../hooks/useTokenExchange';
-import { Product } from '../../../model/Product';
+import { useTokenExchange } from '../hooks/useTokenExchange';
+import { Party } from '../model/Party';
+import { Product } from '../model/Product';
 
 type Props = {
   /** If this component should be displayed or not */
@@ -51,8 +51,8 @@ type Props = {
   showCloseButton?: boolean;
   /** party products */
   products?: Array<Product>;
-  /** party list */
-  party?: SearchServiceInstitution;
+  /** party detail */
+  party?: Party;
 };
 
 /** Selfcare's popup */

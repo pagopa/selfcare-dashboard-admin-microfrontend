@@ -5,18 +5,16 @@ import { PartyAccountItem } from '@pagopa/mui-italia';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { SearchServiceInstitution } from '../../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { Party } from '../../../model/Party';
 import { ENV } from '../../../utils/env';
 import { buildUrlLog } from '../../../utils/helper';
-import { TruncatedTextWithTooltip } from '../utils/utils';
+import { TruncatedTextWithTooltip } from '../../adminPage/utils/utils';
 
 type AdminPartyInfoProps = {
   partyDetail: Party;
-  selectedInstitution: SearchServiceInstitution;
 };
 
-const AdminPartyInfo = ({ partyDetail, selectedInstitution }: AdminPartyInfoProps) => {
+const AdminPartyInfo = ({ partyDetail }: AdminPartyInfoProps) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -30,9 +28,9 @@ const AdminPartyInfo = ({ partyDetail, selectedInstitution }: AdminPartyInfoProp
       >
         <Box sx={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
           <PartyAccountItem
-            image={selectedInstitution.id ? buildUrlLog(selectedInstitution.id) : undefined}
-            partyName={selectedInstitution.description || '-'}
-            parentPartyName={selectedInstitution.parentDescription || undefined}
+            image={partyDetail.partyId ? buildUrlLog(partyDetail.partyId) : undefined}
+            partyName={partyDetail.description || '-'}
+            parentPartyName={partyDetail.parentDescription || undefined}
           />
         </Box>
         <Button
@@ -40,7 +38,7 @@ const AdminPartyInfo = ({ partyDetail, selectedInstitution }: AdminPartyInfoProp
           onClick={() =>
             history.push(
               resolvePathVariables(ENV.DASHBOARD_ROUTES.OVERVIEW, {
-                partyId: selectedInstitution.id ?? '',
+                partyId: partyDetail.partyId ?? '',
               })
             )
           }
@@ -52,7 +50,7 @@ const AdminPartyInfo = ({ partyDetail, selectedInstitution }: AdminPartyInfoProp
       </Stack>
 
       <Grid container bgcolor={grey[100]} mt={2} alignItems="center" flexDirection="row">
-        <Grid item xs={4} p={2}>
+        <Grid item xs={3} p={2}>
           <Typography variant="caption" color="textSecondary">
             {t('adminPage.selectedPartyDetails.fiscalCode')}
           </Typography>
@@ -65,7 +63,7 @@ const AdminPartyInfo = ({ partyDetail, selectedInstitution }: AdminPartyInfoProp
 
           <TruncatedTextWithTooltip text={partyDetail.digitalAddress || '-'} />
         </Grid>
-        <Grid item xs={4} p={2}>
+        <Grid item p={2}>
           <Typography variant="caption" color="textSecondary">
             {t('adminPage.selectedPartyDetails.registeredOffice')}
           </Typography>

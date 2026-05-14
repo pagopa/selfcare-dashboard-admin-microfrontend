@@ -1,9 +1,9 @@
 // ProductAvatarCell.tsx
 import { Box, Typography } from '@mui/material';
 import { ProductAvatar } from '@pagopa/mui-italia';
-import { SubProductResource } from '../../../api/generated/b4f-dashboard/SubProductResource';
-import { OnboardedProduct } from '../../../model/Party';
-import { Product } from '../../../model/Product';
+import { SubProductResource } from '../api/generated/b4f-dashboard/SubProductResource';
+import { OnboardedProduct } from '../model/Party';
+import { Product } from '../model/Product';
 
 interface ProductAvatarCellProps {
   onboardedProduct: OnboardedProduct;
