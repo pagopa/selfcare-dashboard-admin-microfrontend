@@ -27,7 +27,7 @@ import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegrat
 import GenericEnvProductModal from '../../components/GenericEnvProductModal';
 import ProductAvatarCell from '../../components/ProductAvatarCell';
 import SessionModalInteropProduct from '../../components/SessionModalInteropProduct';
-import { useFetchProducts } from '../../hooks/usePartyProducts';
+import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { Party } from '../../model/Party';
 import { useAppDispatch } from '../../redux/hooks';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
@@ -100,7 +100,7 @@ const PartyDetailPage = () => {
   }, [partyId]);
 
   const goBack = () => {
-    const backTo = location.pathname.startsWith('/search')
+    const backTo = location.pathname.startsWith('/dashboard/admin/search')
       ? `${ENV.ROUTES.ADMIN_SEARCH}`
       : `${ENV.ROUTES.ADMIN_ONBOARDINGS}`;
     history.push(backTo);

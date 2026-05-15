@@ -3,12 +3,15 @@ import { Autocomplete, CircularProgress, Grid, TextField, Typography } from '@mu
 import { PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
+import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
 import { commonStyles, CustomListbox } from './utils/styles';
 
@@ -22,6 +25,7 @@ const AdminPage = () => {
 
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
+  const history = useHistory();
 
   useEffect(() => {
     trackEvent('BACKSTAGE_DASHBOARD');
@@ -105,11 +109,13 @@ const AdminPage = () => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
             });
-            setSelectedInstitution(newValue);
+
             if (newValue) {
-              storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
-            } else {
-              storageOpsBuilder('selectedInstitution', 'object', false).delete();
+              history.push(
+                resolvePathVariables(ENV.ROUTES.ADMIN_SEARCH_DETAIL, {
+                  partyId: newValue?.id || '',
+                })
+              );
             }
             setOpen(false);
           }}

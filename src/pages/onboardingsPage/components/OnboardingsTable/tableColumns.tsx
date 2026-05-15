@@ -6,14 +6,16 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { TFunction } from 'i18next';
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
+import BackofficeNotIntegratedModal from '../../../../components/BackofficeNotIntegratedModal';
 import { useTokenExchange } from '../../../../hooks/useTokenExchange';
 import { Product } from '../../../../model/Product';
-import BackofficeNotIntegratedModal from '../../../../components/BackofficeNotIntegratedModal';
+import { ENV } from '../../../../utils/env';
 
 const STATUS_CHIP_CONFIG: Record<
   string,
@@ -83,6 +85,50 @@ const renderStatusCell = (params: GridRenderCellParams<string>) => {
   return (
     <Tooltip title={config.tooltipText} arrow enterDelay={300}>
       <Chip label={config.label} color={config.color} size="small" />
+    </Tooltip>
+  );
+};
+
+const DescriptionCell = ({ params }: { params: GridRenderCellParams<OnboardingIndexResource> }) => {
+  const history = useHistory();
+  const text = params.row?.description ?? '';
+  const isClickable = params.row?.status === 'COMPLETED' || params.row?.status === 'DELETED';
+
+  if (!isClickable) {
+    return (
+      <Tooltip title={text} arrow enterDelay={300}>
+        <Box sx={truncatedCellSx}>{text}</Box>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Tooltip title={text} arrow enterDelay={300}>
+      <Box sx={truncatedCellSx}>
+        <ButtonNaked
+          color="primary"
+          component="button"
+          sx={{
+            fontWeight: 700,
+            fontSize: '16px',
+            textAlign: 'left',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            maxWidth: '100%',
+            display: 'block',
+          }}
+          onClick={() => {
+            history.push(
+              resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
+                tokenId: params.row.institutionId,
+              })
+            );
+          }}
+        >
+          {text}
+        </ButtonNaked>
+      </Box>
     </Tooltip>
   );
 };
@@ -200,7 +246,7 @@ export const getOnboardingsColumns = (
         ? `${description} - ${parentDescription}`
         : description || '';
     },
-    renderCell: renderCellWithTooltip,
+    renderCell: (params) => <DescriptionCell params={params} />,
   },
   {
     field: 'productId',
