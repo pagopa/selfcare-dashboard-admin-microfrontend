@@ -1,6 +1,7 @@
 import useErrorDispatcher from '@pagopa/selfcare-common-frontend/lib/hooks/useErrorDispatcher';
 import useLoading from '@pagopa/selfcare-common-frontend/lib/hooks/useLoading';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
+import { OnboardingIndexResource } from '../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { Party } from '../model/Party';
 import { Product } from '../model/Product';
 import { getTokenExchangeAdminService } from '../services/dashboardService';
@@ -15,7 +16,7 @@ export const useTokenExchange = () => {
 
   const invokeProductBo = async (
     product: Product,
-    selectedParty: Party | null,
+    selectedParty: OnboardingIndexResource | Party,
     selectedEnvironment?: string,
     lang?: string
   ): Promise<void> => {
@@ -37,20 +38,18 @@ export const useTokenExchange = () => {
       return;
     }
 
+    const partyId =
+      ('onboardingId' in selectedParty ? selectedParty.institutionId : selectedParty.partyId) ?? '';
+
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     selectedEnvironment
       ? (setLoading(true),
-        getTokenExchangeAdminService(
-          selectedParty?.partyId || '',
-          product.id,
-          selectedEnvironment,
-          lang
-        )
+        getTokenExchangeAdminService(partyId, product.id, selectedEnvironment, lang)
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: selectedParty?.partyId,
+                party_id: partyId,
                 product_id: product.id,
                 target: selectedEnvironment,
                 from: getAppArea(),
@@ -69,12 +68,12 @@ export const useTokenExchange = () => {
           )
           .finally(() => setLoading(false)))
       : (setLoading(true),
-        getTokenExchangeAdminService(selectedParty?.partyId || '', product.id, undefined, lang)
+        getTokenExchangeAdminService(partyId, product.id, undefined, lang)
           .then((url) => {
             trackEvent(
               'DASHBOARD_OPEN_PRODUCT',
               {
-                party_id: selectedParty?.partyId,
+                party_id: partyId,
                 product_id: product.id,
                 target: 'prod',
                 from: getAppArea(),

@@ -118,26 +118,13 @@ export const OnboardingsTable = ({
   onPageSizeChange,
   onSortModelChange,
 }: Props) => {
- //  const history = useHistory();
-
   const pageModel: Page = {
     number: page,
     size: pageSize,
     totalElements: totalRows,
     totalPages: Math.ceil(totalRows / pageSize),
   };
-/*
-  const handleRowClick = (params: { row: OnboardingIndexResource }) => {
-    const { onboardingId } = params.row;
-    if (onboardingId) {
-      history.push(
-        resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
-          tokenId: onboardingId,
-        })
-      );
-    }
-  };
-*/
+
   return (
     <Box
       id="OnboardingsSearchTableBox"
@@ -152,7 +139,7 @@ export const OnboardingsTable = ({
     >
       <CustomDataGrid
         autoHeight
-        rows={rows as Array<OnboardingIndexResource>}
+        rows={rows}
         columns={columns}
         getRowId={(row) => row.onboardingId}
         paginationMode="server"
