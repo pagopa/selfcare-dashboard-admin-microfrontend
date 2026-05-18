@@ -16,7 +16,7 @@ export const useTokenExchange = () => {
 
   const invokeProductBo = async (
     product: Product,
-    selectedParty: OnboardingIndexResource | Party,
+    selectedParty: OnboardingIndexResource | Party | null,
     selectedEnvironment?: string,
     lang?: string
   ): Promise<void> => {
@@ -39,7 +39,9 @@ export const useTokenExchange = () => {
     }
 
     const partyId =
-      ('onboardingId' in selectedParty ? selectedParty.institutionId : selectedParty.partyId) ?? '';
+      (selectedParty &&
+        ('onboardingId' in selectedParty ? selectedParty.institutionId : selectedParty.partyId)) ??
+      '';
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     selectedEnvironment
