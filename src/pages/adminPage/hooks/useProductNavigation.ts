@@ -6,7 +6,7 @@ import { Product } from '../../../model/Product';
 
 type UseProductNavigationProps = {
   products: Array<Product>;
-  partyDetail: Party;
+  partyDetail: Party | null;
   hasMoreThanOneInteropEnv: boolean;
 };
 
