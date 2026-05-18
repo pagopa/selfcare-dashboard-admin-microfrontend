@@ -109,7 +109,7 @@ const AdminPage = () => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
             });
-
+            setOpen(false);
             if (newValue) {
               history.push(
                 resolvePathVariables(ENV.ROUTES.ADMIN_SEARCH_DETAIL, {
@@ -117,7 +117,6 @@ const AdminPage = () => {
                 })
               );
             }
-            setOpen(false);
           }}
           onInputChange={(_, newInputValue, reason) => {
             if (reason === 'input') {
