@@ -21,7 +21,7 @@ import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import { ProductOnBoardingStatusEnum } from '../../api/generated/b4f-dashboard/OnboardedProductResource';
 import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
@@ -46,7 +46,6 @@ const PartyDetailPage = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const addError = useErrorDispatcher();
-  const location = useLocation();
 
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
