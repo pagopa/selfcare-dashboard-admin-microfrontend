@@ -121,7 +121,7 @@ const DescriptionCell = ({ params }: { params: GridRenderCellParams<OnboardingIn
           onClick={() => {
             history.push(
               resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
-                tokenId: params.row.institutionId,
+                partyId: params.row.institutionId,
               })
             );
           }}
