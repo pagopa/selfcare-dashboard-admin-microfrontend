@@ -4,6 +4,9 @@ import { OnboardingApi } from '../../../../api/OnboardingApiClient';
 import { mockedOnboardingRequests } from '../../../../services/__mocks__/onboardingRequestService';
 import { renderWithProviders } from '../../../../utils/test-utils';
 import DashboardRequestActions from '../DashboardRequestActions';
+import { createStore } from '../../../../redux/store';
+import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
+import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 
 const originalFetch = global.fetch;
 
@@ -26,8 +29,21 @@ afterEach(() => {
   global.fetch = originalFetch;
 });
 
+const renderWithPermissions = async (component: React.ReactElement) => {
+  const store = createStore();
+  store.dispatch(
+    setProductPermissions([
+      {
+        productId: 'prod-io',
+        actions: [Actions.ManageAccountPage],
+      },
+    ])
+  );
+  return renderWithProviders(component, store);
+};
+
 test('Test: Landing in an APPROVED onboarding request and click the close button', async () => {
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[1].tokenId}
       partyName={mockedOnboardingRequests[1].institutionInfo.name}
@@ -51,7 +67,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
   const mockedApproveOnboardingPspRequest = vi.spyOn(OnboardingApi, 'approveOnboardingRequest');
   mockedApproveOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[0]);
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
@@ -78,7 +94,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
     throw new Error('errore');
   });
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
@@ -104,7 +120,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
   const mockedRejectOnboardingPspRequest = vi.spyOn(OnboardingApi, 'rejectOnboardingRequest');
   mockedRejectOnboardingPspRequest.mockResolvedValueOnce(mockedOnboardingRequests[2]);
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
@@ -155,7 +171,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
     throw new Error('errore');
   });
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
@@ -184,7 +200,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
   );
   mockedDownloadOnboardingAttachments.mockResolvedValueOnce(mockedOnboardingRequests[7]);
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
       partyName={mockedOnboardingRequests[7].institutionInfo.name}
@@ -216,7 +232,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
     json: async () => ({ message: 'Internal Server Error' }),
   });
 
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
       partyName={mockedOnboardingRequests[7].institutionInfo.name}
@@ -240,7 +256,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
 });
 
 test('Test: Onboarding request with not found token scenario', async () => {
-  await renderWithProviders(
+  await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={'wrongTokenId'}
       setShowConfirmPage={() => {}}
