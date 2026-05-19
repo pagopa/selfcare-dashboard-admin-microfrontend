@@ -166,8 +166,6 @@ export const FiltersBar = ({ products }: Props) => {
                         borderLeft: '3.5px solid transparent',
                         borderRight: '3.5px solid transparent',
                         backgroundClip: 'padding-box',
-                        maxHeight: '20px',
-                        minHeight: '20px',
                       },
                       '&::-webkit-scrollbar-button': {
                         display: 'none',
