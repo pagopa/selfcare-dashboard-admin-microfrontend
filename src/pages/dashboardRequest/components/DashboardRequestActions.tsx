@@ -1,15 +1,21 @@
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Button, Grid, Stack, TextField } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import { useTranslation, Trans } from 'react-i18next';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { SessionModal, useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import {
+  SessionModal,
+  useErrorDispatcher,
+  useLoading,
+  usePermissions,
+} from '@pagopa/selfcare-common-frontend/lib';
 import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
-import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
+import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   approveOnboardingPspRequest,
   rejectOnboardingRequest,
 } from '../../../services/onboardingRequestService';
+import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../../utils/constants';
 
 type Props = {
   setShowRejectPage: Dispatch<SetStateAction<boolean | undefined>>;
@@ -39,10 +45,11 @@ export default function DashboardRequestActions({
   partyName,
   productTitle,
   attatchmentName,
-}: Props) {
+}: Readonly<Props>) {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
+  const { getAllProductsWithPermission } = usePermissions();
 
   const [_openRejectModal, setOpenRejectModal] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
@@ -86,9 +93,11 @@ export default function DashboardRequestActions({
     }
   };
 
+  const isAccountUser = getAllProductsWithPermission(Actions.ManageAccountPage).length > 0;
+
   return (
     <>
-      {isToBeValidatedRequest && (
+      {isToBeValidatedRequest && isAccountUser && (
         <Stack direction="row" justifyContent="space-between" alignItems="center" py={4}>
           <Stack>
             <Button

@@ -18,9 +18,10 @@ import NavigationBar, {
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import { ProductOnBoardingStatusEnum } from '../../api/generated/b4f-dashboard/OnboardedProductResource';
 import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
@@ -45,7 +46,6 @@ const PartyDetailPage = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const addError = useErrorDispatcher();
-  const location = useLocation();
 
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
@@ -100,10 +100,7 @@ const PartyDetailPage = () => {
   }, [partyId]);
 
   const goBack = () => {
-    const backTo = location.pathname.startsWith('/dashboard/admin/search')
-      ? `${ENV.ROUTES.ADMIN_SEARCH}`
-      : `${ENV.ROUTES.ADMIN_ONBOARDINGS}`;
-    history.push(backTo);
+    history.goBack();
   };
 
   const innerPaths: Array<NavigationPath> = [];
@@ -153,6 +150,15 @@ const PartyDetailPage = () => {
                       if (!productFromConfiguration) {
                         return null;
                       }
+                      const canAccessBackofficeAdmin = hasPermission(
+                        onboardedProduct.productId || '',
+                        Actions.AccessProductBackofficeAdmin
+                      );
+
+                      const canAccessAccountPage = hasPermission(
+                        onboardedProduct.productId || '',
+                        Actions.ViewAccountPage
+                      );
 
                       return (
                         <Fragment key={onboardedProduct?.productId}>
@@ -185,10 +191,7 @@ const PartyDetailPage = () => {
                             </TableCell>
                             {onboardedProduct.productOnBoardingStatus ===
                               ProductOnBoardingStatusEnum.ACTIVE &&
-                              hasPermission(
-                                onboardedProduct.productId || '',
-                                Actions.AccessProductBackofficeAdmin
-                              ) && (
+                              canAccessBackofficeAdmin && (
                                 <TableCell align="right">
                                   <ButtonNaked
                                     component="button"
@@ -209,6 +212,24 @@ const PartyDetailPage = () => {
                                   </ButtonNaked>
                                 </TableCell>
                               )}
+                            {canAccessAccountPage && (
+                              <TableCell align="right">
+                                <ButtonNaked
+                                  component="button"
+                                  endIcon={<ArrowForward />}
+                                  onClick={() => {
+                                    history.push(
+                                      resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
+                                        tokenId: onboardedProduct.tokenId || '',
+                                      })
+                                    );
+                                  }}
+                                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                                >
+                                  {t('adminPage.selectedPartyDetails.accountPage')}
+                                </ButtonNaked>
+                              </TableCell>
+                            )}
                           </TableRow>
                         </Fragment>
                       );

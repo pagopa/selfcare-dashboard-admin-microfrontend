@@ -23,6 +23,7 @@ export type OnboardedProduct = {
   origin?: string;
   originId?: string;
   createdAt?: Date;
+  tokenId?: string;
 };
 
 export type Party = {

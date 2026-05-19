@@ -43,6 +43,7 @@ export default {
       agreementStatus: "Stato dell'accordo",
       activeStatus: 'Attivo',
       backOffice: 'Vedi Back-office',
+      accountPage: 'Dettaglio adesione',
     },
     backofficeNotIntegratedModal: {
       title: 'Il back-office non è ancora integrato in Area Riservata Backstage.',

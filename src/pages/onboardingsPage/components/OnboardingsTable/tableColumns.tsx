@@ -121,7 +121,7 @@ const DescriptionCell = ({ params }: { params: GridRenderCellParams<OnboardingIn
           onClick={() => {
             history.push(
               resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
-                tokenId: params.row.institutionId,
+                partyId: params.row.institutionId,
               })
             );
           }}
@@ -148,41 +148,53 @@ const ActionCell = ({
   const productId = params.row?.productId || '';
   const status = params.row?.status;
 
-  if (
-    status !== 'COMPLETED' ||
-    !(
-      hasPermission(productId, Actions.AccessProductBackofficeAdmin) ||
-      hasPermission('ALL', Actions.AccessProductBackofficeAdmin)
-    )
-  ) {
-    return null;
-  }
+  const canAccessBackofficeAdmin =
+    hasPermission(productId, Actions.AccessProductBackofficeAdmin) ||
+    hasPermission('ALL', Actions.AccessProductBackofficeAdmin);
+
+  const canAccessAccountPage =
+    hasPermission(productId, Actions.ViewAccountPage) ||
+    hasPermission('ALL', Actions.ViewAccountPage);
 
   const productName = products.find((p) => p.id === productId)?.title || productId;
 
   return (
     <>
-      <ButtonNaked
-        component="button"
-        endIcon={<ArrowForward />}
-        onClick={() => {
-          trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
-            product_id: productId,
-          });
-          if (isProductAllowed(productId)) {
-            const selectedParty = params.row;
-            const productFromConfiguration = products.find((p) => p.id === productId);
-            if (productFromConfiguration) {
-              void invokeProductBo(productFromConfiguration, selectedParty);
+      {status === 'COMPLETED' && canAccessBackofficeAdmin && (
+        <ButtonNaked
+          component="button"
+          endIcon={<ArrowForward />}
+          onClick={() => {
+            trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
+              product_id: productId,
+            });
+            if (isProductAllowed(productId)) {
+              const selectedParty = params.row;
+              const productFromConfiguration = products.find((p) => p.id === productId);
+              if (productFromConfiguration) {
+                void invokeProductBo(productFromConfiguration, selectedParty);
+              }
+            } else {
+              setOpenModal(true);
             }
-          } else {
-            setOpenModal(true);
-          }
-        }}
-        sx={{ color: 'primary.main', fontWeight: 'bold' }}
-      >
-        {t('adminPage.selectedPartyDetails.backOffice')}
-      </ButtonNaked>
+          }}
+          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+        >
+          {t('adminPage.selectedPartyDetails.backOffice')}
+        </ButtonNaked>
+      )}
+      {canAccessAccountPage && (
+        <ButtonNaked
+          component="button"
+          endIcon={<ArrowForward />}
+          onClick={() => {
+            trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
+              product_id: productId,
+            });
+          }}
+          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+        />
+      )}
       <BackofficeNotIntegratedModal
         open={openModal}
         productName={productName}
@@ -272,7 +284,7 @@ export const getOnboardingsColumns = (
     flex: 1,
     sortable: false,
     valueGetter: (params) => {
-      const raw = params.row?.institutionType as string | undefined;
+      const raw = params.row?.institutionType;
       if (!raw) {
         return '';
       }
