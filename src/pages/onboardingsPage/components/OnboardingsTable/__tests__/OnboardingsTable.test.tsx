@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { OnboardingsTable } from '../OnboardingsTable';
-import { getOnboardingsColumns } from '../tableColumns';
+import { getOnboardingsColumns, RenderNoRowsOverlay } from '../tableColumns';
 
 vi.mock('react-i18next', async () => {
   const actual = await vi.importActual('react-i18next');
@@ -82,16 +82,19 @@ const mockProducts = [
 ];
 
 const mockRows = [
-  { 
-    onboardingId: '1', 
-    description: 'Ente 1', 
-    productId: 'prod-1', 
+  {
+    onboardingId: '1',
+    description: 'Ente 1',
+    productId: 'prod-1',
     status: 'COMPLETED',
-    institutionType: 'PA'
-  }
+    institutionType: 'PA',
+  },
 ];
 
-const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any).map(c => ({...c, width: 200}));
+const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any, true).map((c) => ({
+  ...c,
+  width: 200,
+}));
 
 const mockProps = {
   rows: mockRows,
@@ -121,7 +124,7 @@ describe('OnboardingsTable component', () => {
     renderTable();
     expect(await screen.findByText('Ente 1')).toBeInTheDocument();
   });
-// TODO remove skip after enabling click
+  // TODO remove skip after enabling click
   test.skip('should call onRowClick and navigate', async () => {
     const { history } = renderTable();
     const row = await screen.findByText('Ente 1');
@@ -147,8 +150,8 @@ describe('OnboardingsTable component', () => {
 
 describe('tableColumns rendering logic', () => {
   test('valueGetter for products should resolve product and subproduct titles', () => {
-    const productColumn = realColumns.find(c => c.field === 'productId');
-    
+    const productColumn = realColumns.find((c) => c.field === 'productId');
+
     // Test product resolution
     const res1 = productColumn?.valueGetter!({ row: { productId: 'prod-1' } } as any);
     expect(res1).toBe('Product 1');
@@ -190,7 +193,6 @@ describe('tableColumns rendering logic', () => {
   });
 });
 
-import { RenderNoRowsOverlay } from '../tableColumns';
 describe('RenderNoRowsOverlay', () => {
   test('should render reset button and call history.push on click', () => {
     const history = createMemoryHistory();
