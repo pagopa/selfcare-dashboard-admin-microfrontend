@@ -212,14 +212,14 @@ const PartyDetailPage = () => {
                                   </ButtonNaked>
                                 </TableCell>
                               )}
-                            {canAccessAccountPage && (
+                            {!canAccessBackofficeAdmin && canAccessAccountPage && (
                               <TableCell align="right">
                                 <ButtonNaked
                                   component="button"
                                   endIcon={<ArrowForward />}
                                   onClick={() => {
                                     history.push(
-                                      resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
+                                      resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                                         tokenId: onboardedProduct.tokenId || '',
                                       })
                                     );

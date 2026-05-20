@@ -63,7 +63,7 @@ const truncatedCellSx = {
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   width: '100%',
-  pl: 2,
+  pl: 1,
 } as const;
 
 const renderCellWithTooltip = (params: GridRenderCellParams) => {
@@ -84,7 +84,7 @@ const renderStatusCell = (params: GridRenderCellParams<string>) => {
   };
   return (
     <Tooltip title={config.tooltipText} arrow enterDelay={300}>
-      <Chip label={config.label} color={config.color} size="small" />
+      <Chip label={config.label} color={config.color} size="small" sx={{ ml: 1 }} />
     </Tooltip>
   );
 };
@@ -141,6 +141,7 @@ const ActionCell = ({
   products: Array<Product>;
 }) => {
   const { t } = useTranslation();
+  const history = useHistory();
   const { hasPermission } = usePermissions();
   const { invokeProductBo } = useTokenExchange();
   const [openModal, setOpenModal] = useState(false);
@@ -183,14 +184,16 @@ const ActionCell = ({
           {t('adminPage.selectedPartyDetails.backOffice')}
         </ButtonNaked>
       )}
-      {canAccessAccountPage && (
+      {!canAccessBackofficeAdmin && canAccessAccountPage && (
         <ButtonNaked
           component="button"
           endIcon={<ArrowForward />}
           onClick={() => {
-            trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
-              product_id: productId,
-            });
+            history.push(
+              resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
+                partyId: params.row.onboardingId,
+              })
+            );
           }}
           sx={{ color: 'primary.main', fontWeight: 'bold' }}
         />
