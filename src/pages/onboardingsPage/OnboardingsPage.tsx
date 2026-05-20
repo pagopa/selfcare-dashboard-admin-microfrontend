@@ -1,8 +1,9 @@
 import { Grid } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { GridSortModel } from '@mui/x-data-grid';
-import { TitleBox } from '@pagopa/selfcare-common-frontend';
+import { TitleBox, usePermissions } from '@pagopa/selfcare-common-frontend';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
+import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -33,7 +34,16 @@ const OnboardingsPage = () => {
     trackEvent('BACKSTAGE_ONBOARDINGS');
   }, []);
 
-  const columns = getOnboardingsColumns(t, products);
+  const { hasPermission } = usePermissions();
+
+  const hasBackofficeAdmin = rows.some(
+    (row) =>
+      row.status === 'COMPLETED' &&
+      (hasPermission(row.productId ?? '', Actions.AccessProductBackofficeAdmin) ||
+        hasPermission('ALL', Actions.AccessProductBackofficeAdmin))
+  );
+
+  const columns = getOnboardingsColumns(t, products, hasBackofficeAdmin);
 
   useEffect(() => {
     setLoading(true);

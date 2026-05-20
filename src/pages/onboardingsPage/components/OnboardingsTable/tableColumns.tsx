@@ -5,7 +5,7 @@ import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid'
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
-import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { TFunction } from 'i18next';
 import { useState } from 'react';
@@ -195,7 +195,7 @@ const ActionCell = ({
               })
             );
           }}
-          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+          sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
         />
       )}
       <BackofficeNotIntegratedModal
@@ -247,7 +247,8 @@ export const RenderNoRowsOverlay = () => {
 
 export const getOnboardingsColumns = (
   t: TFunction,
-  products: Array<Product>
+  products: Array<Product>,
+  hasBackofficeAdmin: boolean
 ): Array<GridColDef<OnboardingIndexResource>> => [
   {
     field: 'description',
@@ -307,9 +308,11 @@ export const getOnboardingsColumns = (
   {
     field: 'actions',
     headerName: '',
-    width: 150,
+    width: hasBackofficeAdmin ? 160 : 56,
     sortable: false,
     disableColumnMenu: true,
+    align: 'right',
+    headerAlign: 'right',
     renderCell: (params) => <ActionCell params={params} products={products} />,
   },
 ];
