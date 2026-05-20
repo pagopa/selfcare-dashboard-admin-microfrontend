@@ -191,7 +191,7 @@ const ActionCell = ({
           onClick={() => {
             history.push(
               resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                partyId: params.row.onboardingId,
+                tokenId: params.row.onboardingId,
               })
             );
           }}
