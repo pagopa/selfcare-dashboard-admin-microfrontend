@@ -5,7 +5,7 @@ import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid'
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
-import { isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { TFunction } from 'i18next';
 import { useState } from 'react';
