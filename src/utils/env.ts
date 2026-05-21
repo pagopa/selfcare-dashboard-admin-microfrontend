@@ -27,6 +27,7 @@ export const ENV = {
     ONBOARDING: import.meta.env.VITE_URL_FE_ONBOARDING,
     LANDING: import.meta.env.VITE_URL_FE_LANDING,
     ASSISTANCE: import.meta.env.VITE_URL_FE_ASSISTANCE,
+    BACKSTAGE: import.meta.env.VITE_URL_FE_BACKSTAGE,
   },
 
   URL_DOCUMENTATION: 'https://docs.pagopa.it/area-riservata/',

@@ -24,7 +24,14 @@ const apiClient = createClient({
   withDefaults: withBearerAndInstitutionId,
 });
 
-const onRedirectToLogin = () =>
+const buildOnSuccess = () => encodeURIComponent(window.location.pathname + window.location.search);
+
+const onRedirectToLogin = () => {
+  const onSuccessEncoded = buildOnSuccess();
+  const redirectUrl = `${ENV.URL_FE.LOGIN}?onSuccess=${onSuccessEncoded}`;
+
+  window.location.assign(redirectUrl);
+
   ENV.STORE.dispatch(
     appStateActions.addError({
       id: 'tokenNotValid',
@@ -36,6 +43,28 @@ const onRedirectToLogin = () =>
       displayableDescription: ENV.i18n.t('session.expired.message'),
     })
   );
+};
+
+const onRedirectToBackstage = () => {
+  const fallbackLoginUrl = ENV.URL_FE.LOGIN;
+  const redirectBaseUrl = ENV.URL_FE.BACKSTAGE || fallbackLoginUrl;
+  const onSuccessEncoded = encodeURIComponent(window.location.pathname + window.location.search);
+  const redirectUrl = `${redirectBaseUrl}?onSuccess=${onSuccessEncoded}`;
+
+  window.location.assign(redirectUrl);
+
+  ENV.STORE.dispatch(
+    appStateActions.addError({
+      id: 'tokenNotValid',
+      error: new Error(),
+      techDescription: 'token expired or not valid',
+      toNotify: false,
+      blocking: false,
+      displayableTitle: ENV.i18n.t('session.expired.title'),
+      displayableDescription: ENV.i18n.t('session.expired.message'),
+    })
+  );
+};
 
 export const OnboardingApi = {
   fetchOnboardingRequest: async (onboardingId: string): Promise<OnboardingRequestResource> => {
@@ -52,14 +81,14 @@ export const OnboardingApi = {
         reason: '',
       },
     });
-    return extractResponse(result, 200, onRedirectToLogin);
+    return extractResponse(result, 200, onRedirectToBackstage);
   },
 
   approveOnboardingRequest: async (onboardingId: string): Promise<OnboardingRequestResource> => {
     const result = await apiClient.approveOnboardingUsingPOST({
       onboardingId,
     });
-    return extractResponse(result, 200, onRedirectToLogin);
+    return extractResponse(result, 200, onRedirectToBackstage);
   },
 
   downloadOnboardingAttachments: async (onboardingId: string, name: string): Promise<any> => {
