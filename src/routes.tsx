@@ -35,7 +35,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
     exact: false,
     subRoutes: {
       DASHBOARD_ONBOARDING_REQUESTS: {
-        path: `${ENV.ROUTES.ADMIN_PARTY_DETAIL}`,
+        path: `${ENV.ROUTES.ADMIN_REQUEST_DETAIL}`,
         exact: true,
         component: DashboardRequest,
       },

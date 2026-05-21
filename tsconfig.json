@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "lib": ["es6", "dom", "es2019"],
+    "lib": ["esnext", "dom", "es2019"],
     "jsx": "react-jsx",
     "noEmit": true,
     "strict": true,
@@ -25,10 +25,5 @@
     "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src/**/*", "vite.config.ts", "vitest.config.ts"],
-  "exclude": [
-    "__mocks__",
-    "dist",
-    "node_modules",
-    "Dangerfile.ts"
-  ]
+  "exclude": ["__mocks__", "dist", "node_modules", "Dangerfile.ts"]
 }

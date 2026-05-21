@@ -1,6 +1,9 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   InputLabel,
   MenuItem,
@@ -96,7 +99,7 @@ export const FiltersBar = ({ products }: Props) => {
               key={filter.key}
               size="small"
               label={filter.label}
-              value={draftFilters[filter.key as keyof typeof draftFilters] as string}
+              value={draftFilters[filter.key as keyof typeof draftFilters]}
               onChange={(e) => handleFilterChange(filter.key, e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -109,6 +112,7 @@ export const FiltersBar = ({ products }: Props) => {
                 flexBasis: 0,
                 minWidth: 0,
                 borderRadius: '8px',
+                backgroundColor: '#FFFFFF',
               }}
             />
           );
@@ -125,6 +129,7 @@ export const FiltersBar = ({ products }: Props) => {
                 flexBasis: 0,
                 minWidth: 0,
                 borderRadius: '8px',
+                backgroundColor: '#FFFFFF',
               }}
             >
               <InputLabel>{filter.label}</InputLabel>
@@ -137,18 +142,32 @@ export const FiltersBar = ({ products }: Props) => {
                     overflow: 'hidden',
                     minWidth: 0,
                   },
-                  '& .MuiOutlinedInput-root': {
-                    overflow: 'hidden',
-                  },
                 }}
                 multiple={filter.multiple}
                 value={draftFilters[filter.key] as Array<string>}
-                onChange={(e) => handleFilterChange(filter.key, e.target.value as Array<string>)}
+                onChange={(e) => handleFilterChange(filter.key, e.target.value)}
                 input={<OutlinedInput label={filter.label} />}
                 MenuProps={{
                   PaperProps: {
                     sx: {
-                      maxHeight: 400,
+                      maxHeight: 500,
+
+                      '&::-webkit-scrollbar': {
+                        width: '15px',
+                      },
+                      '&::-webkit-scrollbar-track': {
+                        boxShadow: 'inset -1px 0px 0px #F0F0F0, inset 1px 0px 0px #E8E8E8',
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#C1C1C1',
+                        borderRadius: '8px',
+                        borderLeft: '3.5px solid transparent',
+                        borderRight: '3.5px solid transparent',
+                        backgroundClip: 'padding-box',
+                      },
+                      '&::-webkit-scrollbar-button': {
+                        display: 'none',
+                      },
                     },
                   },
                 }}
@@ -168,11 +187,47 @@ export const FiltersBar = ({ products }: Props) => {
                   </Box>
                 )}
               >
-                {filter.options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {filter.options.map((option) => {
+                  const isSelected = Array.isArray(draftFilters[filter.key])
+                    ? (draftFilters[filter.key] as Array<string>).includes(option.value)
+                    : false;
+                  return (
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: '8px',
+                        borderBottom: '1px solid #E8EBF1',
+                        '&:last-child': {
+                          borderBottom: 'none',
+                        },
+                        backgroundColor: 'transparent',
+                        '&:hover, &.Mui-selected, &.Mui-focusVisible': {
+                          backgroundColor: 'rgba(11, 62, 227, 0.08) !important',
+                        },
+                        '&.Mui-selected': {
+                          color: 'inherit !important',
+                        },
+                      }}
+                    >
+                      <span>{option.label}</span>
+                      <Checkbox
+                        checked={isSelected}
+                        icon={
+                          <CheckBoxOutlineBlankIcon fontSize="small" sx={{ color: '#0E0F13' }} />
+                        }
+                        checkedIcon={<CheckBoxIcon fontSize="small" sx={{ color: '#0B3EE3' }} />}
+                        disableRipple
+                        sx={{
+                          padding: 0,
+                        }}
+                      />
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           );

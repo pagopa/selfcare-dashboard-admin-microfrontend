@@ -41,12 +41,12 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_ONBOARDINGS} exact={true}>
               <OnboardingsPage />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
+            <Route path={ENV.ROUTES.ADMIN_REQUEST_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>
             <Route path="*">
               <Redirect
-                to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
+                to={resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                   tokenId: 'tokenId01',
                 })}
               />
