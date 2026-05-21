@@ -24,11 +24,17 @@ const apiClient = createClient({
   withDefaults: withBearerAndInstitutionId,
 });
 
-const buildOnSuccess = () => encodeURIComponent(window.location.pathname + window.location.search);
+const buildOnSuccess = () => `${window.location.pathname}${window.location.search}`;
+
+const buildRedirectUrl = (baseUrl: string) => {
+  const [urlWithoutHash, hashFragment] = baseUrl.split('#');
+  const separator = urlWithoutHash.includes('?') ? '&' : '?';
+  const onSuccess = encodeURIComponent(buildOnSuccess());
+  return `${urlWithoutHash}${separator}onSuccess=${onSuccess}${hashFragment ? `#${hashFragment}` : ''}`;
+};
 
 const onRedirectToLogin = () => {
-  const onSuccessEncoded = buildOnSuccess();
-  const redirectUrl = `${ENV.URL_FE.LOGIN}?onSuccess=${onSuccessEncoded}`;
+  const redirectUrl = buildRedirectUrl(ENV.URL_FE.LOGIN);
 
   window.location.assign(redirectUrl);
 
@@ -48,8 +54,7 @@ const onRedirectToLogin = () => {
 const onRedirectToBackstage = () => {
   const fallbackLoginUrl = ENV.URL_FE.LOGIN;
   const redirectBaseUrl = ENV.URL_FE.BACKSTAGE || fallbackLoginUrl;
-  const onSuccessEncoded = encodeURIComponent(window.location.pathname + window.location.search);
-  const redirectUrl = `${redirectBaseUrl}?onSuccess=${onSuccessEncoded}`;
+  const redirectUrl = buildRedirectUrl(redirectBaseUrl);
 
   window.location.assign(redirectUrl);
 
