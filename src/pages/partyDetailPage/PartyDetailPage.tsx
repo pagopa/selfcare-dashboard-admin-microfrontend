@@ -221,7 +221,8 @@ const PartyDetailPage = () => {
                                     history.push(
                                       resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                                         tokenId: onboardedProduct.tokenId || '',
-                                      })
+                                      }),
+                                      { fromDashboard: true }
                                     );
                                   }}
                                   sx={{ color: 'primary.main', fontWeight: 'bold' }}

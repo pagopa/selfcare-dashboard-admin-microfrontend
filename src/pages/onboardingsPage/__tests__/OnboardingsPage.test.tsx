@@ -26,6 +26,7 @@ const mockOnboardings = {
   onboardings: [
     {
       onboardingId: 'onb-1',
+      institutionId: 'onb-1',
       description: 'Comune di Test',
       productId: 'prod-1',
       status: 'COMPLETED',
@@ -95,7 +96,7 @@ describe('OnboardingsPage component', () => {
     expect(resetBtn.length).toBeGreaterThan(0);
   });
 
-  test.skip('should navigate to the detail page when a row is clicked', async () => {
+  test('should navigate to the detail page when a row is clicked', async () => {
     const { history } = await renderWithProviders(<OnboardingsPage />);
 
     // Wait for the row to be rendered and click it

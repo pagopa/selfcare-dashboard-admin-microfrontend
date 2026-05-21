@@ -179,7 +179,7 @@ const ActionCell = ({
               setOpenModal(true);
             }
           }}
-          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+          sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
         >
           {t('adminPage.selectedPartyDetails.backOffice')}
         </ButtonNaked>
@@ -192,7 +192,8 @@ const ActionCell = ({
             history.push(
               resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                 tokenId: params.row.onboardingId,
-              })
+              }),
+              { fromDashboard: true }
             );
           }}
           sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
@@ -285,7 +286,7 @@ export const getOnboardingsColumns = (
   {
     field: 'institutionType',
     headerName: t('onboardingsPage.table.institutionType'),
-    flex: 1,
+    flex: 1.5,
     sortable: false,
     valueGetter: (params) => {
       const raw = params.row?.institutionType;
