@@ -26,6 +26,17 @@ const RemotePage = ({ history, store, i18n, theme, children, CONFIG }: Props) =>
       // eslint-disable-next-line functional/immutable-data
       Object.assign(LOCAL_CONFIG, CONFIG);
 
+      if (ENV.URL_FE.BACKSTAGE) {
+        const onSuccessEncoded = encodeURIComponent(
+          window.location.pathname + window.location.search
+        );
+        // eslint-disable-next-line functional/immutable-data
+        LOCAL_CONFIG.URL_FE.LOGIN = LOCAL_CONFIG.URL_FE.LOGIN.replace(
+          LOCAL_CONFIG.URL_FE.LOGIN,
+          `${ENV.URL_FE.BACKSTAGE}?onSuccess=${onSuccessEncoded}`
+        );
+      }
+
       setLoaded(true);
     }
   }, []);

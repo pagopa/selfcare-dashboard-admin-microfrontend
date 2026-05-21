@@ -71,7 +71,7 @@ export const OnboardingApi = {
     const result = await apiClient.retrieveOnboardingRequestUsingGET({
       onboardingId,
     });
-    return extractResponse(result, 200, onRedirectToLogin);
+    return extractResponse(result, 200, onRedirectToBackstage);
   },
 
   rejectOnboardingRequest: async (onboardingId: string): Promise<OnboardingRequestResource> => {
