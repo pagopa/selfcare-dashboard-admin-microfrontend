@@ -327,12 +327,6 @@ export default function DashboardRequest() {
       </Grid>
     </Grid>
   ) : (
-    <NavigationBar
-      paths={innerPaths}
-      showBackComponent={true}
-      goBack={goBack}
-      backLabel={'Indietro'}
-      color="black"
-    />
+    <></>
   );
 }
