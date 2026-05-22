@@ -15,6 +15,7 @@ import { OnboardingIndexResource } from '../../../../api/generated/party-registr
 import BackofficeNotIntegratedModal from '../../../../components/BackofficeNotIntegratedModal';
 import { useTokenExchange } from '../../../../hooks/useTokenExchange';
 import { Product } from '../../../../model/Product';
+import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../../../utils/constants';
 import { ENV } from '../../../../utils/env';
 
 const STATUS_CHIP_CONFIG: Record<
@@ -155,7 +156,8 @@ const ActionCell = ({
 
   const canAccessAccountPage =
     hasPermission(productId, Actions.ViewAccountPage) ||
-    hasPermission('ALL', Actions.ViewAccountPage);
+    (hasPermission('ALL', Actions.ViewAccountPage) &&
+      STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
 
   const productName = products.find((p) => p.id === productId)?.title || productId;
 
