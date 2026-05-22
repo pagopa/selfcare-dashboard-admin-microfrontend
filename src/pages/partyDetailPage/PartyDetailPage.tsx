@@ -32,6 +32,7 @@ import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { Party } from '../../model/Party';
 import { useAppDispatch } from '../../redux/hooks';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
+import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../utils/constants';
 import { ENV } from '../../utils/env';
 import { useProductFiltering } from '../adminPage/hooks/useProductFiltering';
 import { useProductNavigation } from '../adminPage/hooks/useProductNavigation';
@@ -155,10 +156,11 @@ const PartyDetailPage = () => {
                         Actions.AccessProductBackofficeAdmin
                       );
 
-                      const canAccessAccountPage = hasPermission(
-                        onboardedProduct.productId || '',
-                        Actions.ViewAccountPage
-                      );
+                      const canAccessAccountPage =
+                        hasPermission(onboardedProduct.productId || '', Actions.ViewAccountPage) &&
+                        STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(
+                          onboardedProduct?.productOnBoardingStatus || ''
+                        );
 
                       return (
                         <Fragment key={onboardedProduct?.productId}>
