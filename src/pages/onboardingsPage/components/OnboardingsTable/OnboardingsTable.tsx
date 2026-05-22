@@ -2,7 +2,6 @@ import { Box, MenuItem, Select, styled } from '@mui/material';
 import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui/x-data-grid';
 import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
 import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
-import { useHistory } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { RenderNoRowsOverlay } from './tableColumns';
 
@@ -116,7 +115,6 @@ export const OnboardingsTable = ({
   onPageSizeChange,
   onSortModelChange,
 }: Props) => {
-  const history = useHistory();
   const pageModel: Page = {
     number: page,
     size: pageSize,
