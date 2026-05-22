@@ -42,12 +42,10 @@ export default function DashboardRequest() {
   const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
 
   useEffect(() => {
-    // Only fetch onboarding request when not coming from dashboard navigation state.
-    // This prevents unnecessary network calls in unit tests that only verify back navigation.
-    if (retrieveTokenIdFromUrl && !location.state?.fromDashboard) {
+    if (retrieveTokenIdFromUrl) {
       retrieveOnboardingRequest(retrieveTokenIdFromUrl);
     }
-  }, [retrieveTokenIdFromUrl, location.state]);
+  }, [retrieveTokenIdFromUrl]);
 
   const retrieveOnboardingRequest = (retrieveTokenIdFromUrl: string) => {
     setLoadingRetrieveOnboardingRequest(true);

@@ -2,10 +2,8 @@ import { Box, MenuItem, Select, styled } from '@mui/material';
 import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui/x-data-grid';
 import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
 import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { useHistory } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
-import { ENV } from '../../../../utils/env';
 import { RenderNoRowsOverlay } from './tableColumns';
 
 const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
@@ -126,16 +124,6 @@ export const OnboardingsTable = ({
     totalPages: Math.ceil(totalRows / pageSize),
   };
 
-  const handleRowClick = (params: any) => {
-    if (params.row.status === 'COMPLETED' || params.row.status === 'DELETED') {
-      history.push(
-        resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
-          partyId: params.row.institutionId || params.row.onboardingId,
-        })
-      );
-    }
-  };
-
   return (
     <Box
       id="OnboardingsSearchTableBox"
@@ -167,7 +155,7 @@ export const OnboardingsTable = ({
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        onRowClick={handleRowClick}
+        // onRowClick={handleRowClick}
         components={{
           Row: CustomRow,
           NoRowsOverlay: RenderNoRowsOverlay,
