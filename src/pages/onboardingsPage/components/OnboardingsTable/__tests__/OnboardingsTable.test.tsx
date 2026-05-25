@@ -124,13 +124,6 @@ describe('OnboardingsTable component', () => {
     renderTable();
     expect(await screen.findByText('Ente 1')).toBeInTheDocument();
   });
-  // TODO remove skip after enabling click
-  test.skip('should call onRowClick and navigate', async () => {
-    const { history } = renderTable();
-    const row = await screen.findByText('Ente 1');
-    fireEvent.click(row);
-    expect(history.location.pathname).toContain('/1');
-  });
 
   test('should show pagination controls when totalRows > 10', async () => {
     renderTable({ ...mockProps, totalRows: 15 });

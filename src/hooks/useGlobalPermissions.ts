@@ -1,25 +1,14 @@
 import { useErrorDispatcher } from '@pagopa/selfcare-common-frontend';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
-import { useEffect, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { RootState } from '../redux/store';
-import { getPermissionsListService } from '../services/productService';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../redux/hooks';
+import { getPermissionsListService } from '../services/dashboardService';
 
 export const useGlobalPermissions = () => {
   const dispatch = useAppDispatch();
   const addError = useErrorDispatcher();
 
-  const permissions = useAppSelector((state: RootState) => state.permissions);
-  const hasFetched = useRef(false);
-
   useEffect(() => {
-    const productPermissions = (permissions as any).productPermissions || [];
-    if (productPermissions.length > 0 || hasFetched.current) {
-      return;
-    }
-
-    // eslint-disable-next-line functional/immutable-data
-    hasFetched.current = true;
     getPermissionsListService()
       .then((res) => {
         const payload = (res.items || []).map((p) => ({
@@ -37,5 +26,5 @@ export const useGlobalPermissions = () => {
           error: error as Error,
         });
       });
-  }, [permissions]);
+  }, []);
 };

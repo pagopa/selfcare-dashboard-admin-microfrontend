@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
+import { getPermissionsListService } from '../../../services/dashboardService';
 import { searchOnboardingsService } from '../../../services/partyRegistryProxyService';
-import { fetchProducts, getPermissionsListService } from '../../../services/productService';
+import { fetchProducts } from '../../../services/productService';
 import { renderWithProviders } from '../../../utils/test-utils';
 import OnboardingsPage from '../OnboardingsPage';
 
@@ -13,6 +14,9 @@ vi.mock('../../../services/partyRegistryProxyService', () => ({
 }));
 vi.mock('../../../services/productService', () => ({
   fetchProducts: vi.fn(),
+}));
+
+vi.mock('../../../services/dashboardService', () => ({
   getPermissionsListService: vi.fn(),
 }));
 
@@ -26,6 +30,7 @@ const mockOnboardings = {
   onboardings: [
     {
       onboardingId: 'onb-1',
+      institutionId: 'onb-1',
       description: 'Comune di Test',
       productId: 'prod-1',
       status: 'COMPLETED',
@@ -95,7 +100,7 @@ describe('OnboardingsPage component', () => {
     expect(resetBtn.length).toBeGreaterThan(0);
   });
 
-  test.skip('should navigate to the detail page when a row is clicked', async () => {
+  test('should navigate to the detail page when a row is clicked', async () => {
     const { history } = await renderWithProviders(<OnboardingsPage />);
 
     // Wait for the row to be rendered and click it

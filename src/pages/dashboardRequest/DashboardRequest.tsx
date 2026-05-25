@@ -1,16 +1,22 @@
 import { Alert, Button, Chip, Grid, Typography } from '@mui/material';
-import { useErrorDispatcher, useLoading } from '@pagopa/selfcare-common-frontend/lib';
-import { useEffect, useState } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
-import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
+import {
+  NavigationBar,
+  useErrorDispatcher,
+  useLoading,
+} from '@pagopa/selfcare-common-frontend/lib';
+import { NavigationPath } from '@pagopa/selfcare-common-frontend/lib/components/NavigationBar';
 import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
+import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
+import { ENV } from '../../utils/env';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
-import { ENV } from '../../utils/env';
 import RetrieveTokenErrorPage from './JwtInvalidPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
@@ -20,6 +26,9 @@ export default function DashboardRequest() {
   const { t } = useTranslation();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
   const addError = useErrorDispatcher();
+  const history = useHistory();
+  const location = useLocation<{ fromDashboard?: boolean }>();
+
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
@@ -171,6 +180,16 @@ export default function DashboardRequest() {
     }
   };
 
+  const goBack = () => {
+    if (location.state?.fromDashboard) {
+      history.goBack();
+    } else {
+      history.push(ENV.ROUTES.ADMIN_ONBOARDINGS);
+    }
+  };
+
+  const innerPaths: Array<NavigationPath> = [];
+
   return showRejectPage ? (
     <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
@@ -180,13 +199,22 @@ export default function DashboardRequest() {
   ) : onboardingRequestData ? (
     <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
+        <Grid xs={12} mt={4}>
+          <NavigationBar
+            paths={innerPaths}
+            showBackComponent={true}
+            goBack={goBack}
+            backLabel={'Indietro'}
+            color="black"
+          />
+        </Grid>
         <Grid item xs={12}>
           <Grid
             container
             direction="row"
             justifyContent={isGPU ? undefined : 'space-between'}
             alignItems="center"
-            mt={6}
+            mt={2}
           >
             <Grid item xs={isGPU ? 4 : undefined}>
               <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>

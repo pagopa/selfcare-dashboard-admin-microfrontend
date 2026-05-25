@@ -15,6 +15,7 @@ import { OnboardingIndexResource } from '../../../../api/generated/party-registr
 import BackofficeNotIntegratedModal from '../../../../components/BackofficeNotIntegratedModal';
 import { useTokenExchange } from '../../../../hooks/useTokenExchange';
 import { Product } from '../../../../model/Product';
+import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../../../utils/constants';
 import { ENV } from '../../../../utils/env';
 
 const STATUS_CHIP_CONFIG: Record<
@@ -92,7 +93,7 @@ const renderStatusCell = (params: GridRenderCellParams<string>) => {
 const DescriptionCell = ({ params }: { params: GridRenderCellParams<OnboardingIndexResource> }) => {
   const history = useHistory();
   const text = params.row?.description ?? '';
-  const isClickable = params.row?.status === 'COMPLETED' || params.row?.status === 'DELETED';
+  const isClickable = params.row?.status === 'COMPLETED';
 
   if (!isClickable) {
     return (
@@ -155,7 +156,8 @@ const ActionCell = ({
 
   const canAccessAccountPage =
     hasPermission(productId, Actions.ViewAccountPage) ||
-    hasPermission('ALL', Actions.ViewAccountPage);
+    (hasPermission('ALL', Actions.ViewAccountPage) &&
+      STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
 
   const productName = products.find((p) => p.id === productId)?.title || productId;
 
@@ -179,7 +181,7 @@ const ActionCell = ({
               setOpenModal(true);
             }
           }}
-          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+          sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
         >
           {t('adminPage.selectedPartyDetails.backOffice')}
         </ButtonNaked>
@@ -192,7 +194,8 @@ const ActionCell = ({
             history.push(
               resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                 tokenId: params.row.onboardingId,
-              })
+              }),
+              { fromDashboard: true }
             );
           }}
           sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
@@ -250,69 +253,69 @@ export const getOnboardingsColumns = (
   products: Array<Product>,
   hasBackofficeAdmin: boolean
 ): Array<GridColDef<OnboardingIndexResource>> => [
-  {
-    field: 'description',
-    headerName: t('onboardingsPage.table.institutionName'),
-    flex: 2,
-    sortable: false,
-    valueGetter: (params) => {
-      const description = params.row?.description;
-      const parentDescription = params.row?.parentDescription;
-      return description && parentDescription
-        ? `${description} - ${parentDescription}`
-        : description || '';
+    {
+      field: 'description',
+      headerName: t('onboardingsPage.table.institutionName'),
+      flex: 2,
+      sortable: false,
+      valueGetter: (params) => {
+        const description = params.row?.description;
+        const parentDescription = params.row?.parentDescription;
+        return description && parentDescription
+          ? `${description} - ${parentDescription}`
+          : description || '';
+      },
+      renderCell: (params) => <DescriptionCell params={params} />,
     },
-    renderCell: (params) => <DescriptionCell params={params} />,
-  },
-  {
-    field: 'productId',
-    headerName: t('onboardingsPage.table.product'),
-    flex: 1,
-    sortable: false,
-    valueGetter: (params) => {
-      const productId = params.row?.productId;
+    {
+      field: 'productId',
+      headerName: t('onboardingsPage.table.product'),
+      flex: 1,
+      sortable: false,
+      valueGetter: (params) => {
+        const productId = params.row?.productId;
 
-      const subProduct = products
-        .flatMap((p) => p.subProducts ?? [])
-        .find((sp) => sp.id === productId);
+        const subProduct = products
+          .flatMap((p) => p.subProducts ?? [])
+          .find((sp) => sp.id === productId);
 
-      const product = products.find((p) => p.id === productId);
+        const product = products.find((p) => p.id === productId);
 
-      return subProduct?.title ?? product?.title ?? productId ?? '';
+        return subProduct?.title ?? product?.title ?? productId ?? '';
+      },
+      renderCell: renderCellWithTooltip,
     },
-    renderCell: renderCellWithTooltip,
-  },
-  {
-    field: 'institutionType',
-    headerName: t('onboardingsPage.table.institutionType'),
-    flex: 1,
-    sortable: false,
-    valueGetter: (params) => {
-      const raw = params.row?.institutionType;
-      if (!raw) {
-        return '';
-      }
-      const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
-      const translated = t(key);
-      return translated === key ? raw : translated;
+    {
+      field: 'institutionType',
+      headerName: t('onboardingsPage.table.institutionType'),
+      flex: 1.5,
+      sortable: false,
+      valueGetter: (params) => {
+        const raw = params.row?.institutionType;
+        if (!raw) {
+          return '';
+        }
+        const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
+        const translated = t(key);
+        return translated === key ? raw : translated;
+      },
+      renderCell: renderCellWithTooltip,
     },
-    renderCell: renderCellWithTooltip,
-  },
-  {
-    field: 'status',
-    headerName: t('onboardingsPage.table.status'),
-    flex: 1,
-    sortable: false,
-    renderCell: renderStatusCell,
-  },
-  {
-    field: 'actions',
-    headerName: '',
-    width: hasBackofficeAdmin ? 160 : 56,
-    sortable: false,
-    disableColumnMenu: true,
-    align: 'right',
-    headerAlign: 'right',
-    renderCell: (params) => <ActionCell params={params} products={products} />,
-  },
-];
+    {
+      field: 'status',
+      headerName: t('onboardingsPage.table.status'),
+      flex: 1,
+      sortable: false,
+      renderCell: renderStatusCell,
+    },
+    {
+      field: 'actions',
+      headerName: '',
+      width: hasBackofficeAdmin ? 160 : 56,
+      sortable: false,
+      disableColumnMenu: true,
+      align: 'right',
+      headerAlign: 'right',
+      renderCell: (params) => <ActionCell params={params} products={products} />,
+    },
+  ];
