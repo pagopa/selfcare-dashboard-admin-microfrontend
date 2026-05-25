@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
+import { getPermissionsListService } from '../../../services/dashboardService';
 import { searchOnboardingsService } from '../../../services/partyRegistryProxyService';
-import { fetchProducts, getPermissionsListService } from '../../../services/productService';
+import { fetchProducts } from '../../../services/productService';
 import { renderWithProviders } from '../../../utils/test-utils';
 import OnboardingsPage from '../OnboardingsPage';
 
@@ -13,6 +14,9 @@ vi.mock('../../../services/partyRegistryProxyService', () => ({
 }));
 vi.mock('../../../services/productService', () => ({
   fetchProducts: vi.fn(),
+}));
+
+vi.mock('../../../services/dashboardService', () => ({
   getPermissionsListService: vi.fn(),
 }));
 
