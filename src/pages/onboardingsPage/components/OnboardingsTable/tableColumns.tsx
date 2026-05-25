@@ -93,7 +93,7 @@ const renderStatusCell = (params: GridRenderCellParams<string>) => {
 const DescriptionCell = ({ params }: { params: GridRenderCellParams<OnboardingIndexResource> }) => {
   const history = useHistory();
   const text = params.row?.description ?? '';
-  const isClickable = params.row?.status === 'COMPLETED' || params.row?.status === 'DELETED';
+  const isClickable = params.row?.status === 'COMPLETED';
 
   if (!isClickable) {
     return (
@@ -253,69 +253,69 @@ export const getOnboardingsColumns = (
   products: Array<Product>,
   hasBackofficeAdmin: boolean
 ): Array<GridColDef<OnboardingIndexResource>> => [
-  {
-    field: 'description',
-    headerName: t('onboardingsPage.table.institutionName'),
-    flex: 2,
-    sortable: false,
-    valueGetter: (params) => {
-      const description = params.row?.description;
-      const parentDescription = params.row?.parentDescription;
-      return description && parentDescription
-        ? `${description} - ${parentDescription}`
-        : description || '';
+    {
+      field: 'description',
+      headerName: t('onboardingsPage.table.institutionName'),
+      flex: 2,
+      sortable: false,
+      valueGetter: (params) => {
+        const description = params.row?.description;
+        const parentDescription = params.row?.parentDescription;
+        return description && parentDescription
+          ? `${description} - ${parentDescription}`
+          : description || '';
+      },
+      renderCell: (params) => <DescriptionCell params={params} />,
     },
-    renderCell: (params) => <DescriptionCell params={params} />,
-  },
-  {
-    field: 'productId',
-    headerName: t('onboardingsPage.table.product'),
-    flex: 1,
-    sortable: false,
-    valueGetter: (params) => {
-      const productId = params.row?.productId;
+    {
+      field: 'productId',
+      headerName: t('onboardingsPage.table.product'),
+      flex: 1,
+      sortable: false,
+      valueGetter: (params) => {
+        const productId = params.row?.productId;
 
-      const subProduct = products
-        .flatMap((p) => p.subProducts ?? [])
-        .find((sp) => sp.id === productId);
+        const subProduct = products
+          .flatMap((p) => p.subProducts ?? [])
+          .find((sp) => sp.id === productId);
 
-      const product = products.find((p) => p.id === productId);
+        const product = products.find((p) => p.id === productId);
 
-      return subProduct?.title ?? product?.title ?? productId ?? '';
+        return subProduct?.title ?? product?.title ?? productId ?? '';
+      },
+      renderCell: renderCellWithTooltip,
     },
-    renderCell: renderCellWithTooltip,
-  },
-  {
-    field: 'institutionType',
-    headerName: t('onboardingsPage.table.institutionType'),
-    flex: 1.5,
-    sortable: false,
-    valueGetter: (params) => {
-      const raw = params.row?.institutionType;
-      if (!raw) {
-        return '';
-      }
-      const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
-      const translated = t(key);
-      return translated === key ? raw : translated;
+    {
+      field: 'institutionType',
+      headerName: t('onboardingsPage.table.institutionType'),
+      flex: 1.5,
+      sortable: false,
+      valueGetter: (params) => {
+        const raw = params.row?.institutionType;
+        if (!raw) {
+          return '';
+        }
+        const key = `common.institutionType.descriptions.${raw.toLowerCase()}`;
+        const translated = t(key);
+        return translated === key ? raw : translated;
+      },
+      renderCell: renderCellWithTooltip,
     },
-    renderCell: renderCellWithTooltip,
-  },
-  {
-    field: 'status',
-    headerName: t('onboardingsPage.table.status'),
-    flex: 1,
-    sortable: false,
-    renderCell: renderStatusCell,
-  },
-  {
-    field: 'actions',
-    headerName: '',
-    width: hasBackofficeAdmin ? 160 : 56,
-    sortable: false,
-    disableColumnMenu: true,
-    align: 'right',
-    headerAlign: 'right',
-    renderCell: (params) => <ActionCell params={params} products={products} />,
-  },
-];
+    {
+      field: 'status',
+      headerName: t('onboardingsPage.table.status'),
+      flex: 1,
+      sortable: false,
+      renderCell: renderStatusCell,
+    },
+    {
+      field: 'actions',
+      headerName: '',
+      width: hasBackofficeAdmin ? 160 : 56,
+      sortable: false,
+      disableColumnMenu: true,
+      align: 'right',
+      headerAlign: 'right',
+      renderCell: (params) => <ActionCell params={params} products={products} />,
+    },
+  ];

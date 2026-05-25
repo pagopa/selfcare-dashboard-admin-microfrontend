@@ -110,7 +110,13 @@ const AdminPage = () => {
               party_id: newValue?.id || 'id_undefined',
             });
             setOpen(false);
+            if (!newValue) {
+              storageOpsBuilder('selectedInstitution', 'object', false).delete();
+              setSelectedInstitution(null);
+              return;
+            }
             if (newValue) {
+              storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
               history.push(
                 resolvePathVariables(ENV.ROUTES.ADMIN_SEARCH_DETAIL, {
                   partyId: newValue?.id || '',
