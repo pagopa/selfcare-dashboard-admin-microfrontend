@@ -21,7 +21,10 @@ const onSuccessEncoded = encodeURIComponent(location.pathname + location.search)
 // eslint-disable-next-line functional/immutable-data
 CONFIG.MOCKS.MOCK_USER = MOCK_USER;
 // eslint-disable-next-line functional/immutable-data
-CONFIG.URL_FE.LOGIN = `${ENV.URL_FE.LOGIN || ENV.URL_FE.BACKSTAGE}?onSuccess=` + onSuccessEncoded;
+const backstageOrLogin = ENV.URL_FE.BACKSTAGE || ENV.URL_FE.LOGIN_GOOGLE || ENV.URL_FE.LOGIN;
+const loginSeparator = backstageOrLogin.includes('?') ? '&' : '?';
+// eslint-disable-next-line functional/immutable-data
+CONFIG.URL_FE.LOGIN = `${backstageOrLogin}${loginSeparator}onSuccess=${onSuccessEncoded}`;
 // eslint-disable-next-line functional/immutable-data
 CONFIG.URL_FE.LOGOUT = ENV.URL_FE.LOGOUT;
 // eslint-disable-next-line functional/immutable-data

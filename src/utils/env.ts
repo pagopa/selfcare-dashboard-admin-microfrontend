@@ -28,6 +28,7 @@ export const ENV = {
     LANDING: import.meta.env.VITE_URL_FE_LANDING,
     ASSISTANCE: import.meta.env.VITE_URL_FE_ASSISTANCE,
     BACKSTAGE: import.meta.env.VITE_URL_FE_BACKSTAGE,
+    LOGIN_GOOGLE: import.meta.env.VITE_GOOGLE_LOGIN_URL || '/auth/google',
   },
 
   URL_DOCUMENTATION: 'https://docs.pagopa.it/area-riservata/',

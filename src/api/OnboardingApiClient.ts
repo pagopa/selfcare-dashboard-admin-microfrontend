@@ -30,6 +30,7 @@ const buildRedirectUrl = (baseUrl: string) => {
   const [urlWithoutHash, hashFragment] = baseUrl.split('#');
   const separator = urlWithoutHash.includes('?') ? '&' : '?';
   const onSuccess = encodeURIComponent(buildOnSuccess());
+  // eslint-disable-next-line sonarjs/no-nested-template-literals
   return `${urlWithoutHash}${separator}onSuccess=${onSuccess}${hashFragment ? `#${hashFragment}` : ''}`;
 };
 
@@ -52,8 +53,7 @@ const onRedirectToLogin = () => {
 };
 
 const onRedirectToBackstage = () => {
-  const fallbackLoginUrl = ENV.URL_FE.LOGIN;
-  const redirectBaseUrl = ENV.URL_FE.BACKSTAGE || fallbackLoginUrl;
+  const redirectBaseUrl = ENV.URL_FE.LOGIN_GOOGLE || ENV.URL_FE.LOGIN;
   const redirectUrl = buildRedirectUrl(redirectBaseUrl);
 
   window.location.assign(redirectUrl);
