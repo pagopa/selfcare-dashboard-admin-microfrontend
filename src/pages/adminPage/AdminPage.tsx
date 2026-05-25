@@ -4,7 +4,6 @@ import { PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,9 +18,6 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<Array<SearchServiceInstitution>>([]);
-  const [selectedInstitution, setSelectedInstitution] = useState<SearchServiceInstitution | null>(
-    null
-  );
 
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
@@ -71,17 +67,6 @@ const AdminPage = () => {
     [debouncedSearch]
   );
 
-  useEffect(() => {
-    const storedInstitution = storageOpsBuilder(
-      'selectedInstitution',
-      'object',
-      false
-    ).read() as SearchServiceInstitution | null;
-    if (storedInstitution) {
-      setSelectedInstitution(storedInstitution);
-    }
-  }, []);
-
   return (
     <Grid px={3} mt={3} sx={{ width: '100%' }}>
       <Grid item xs={12}>
@@ -104,19 +89,12 @@ const AdminPage = () => {
           id="search-institutions-autocomplete"
           forcePopupIcon={false}
           open={open}
-          value={selectedInstitution}
           onChange={(_, newValue) => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
             });
             setOpen(false);
-            if (!newValue) {
-              storageOpsBuilder('selectedInstitution', 'object', false).delete();
-              setSelectedInstitution(null);
-              return;
-            }
             if (newValue) {
-              storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
               history.push(
                 resolvePathVariables(ENV.ROUTES.ADMIN_SEARCH_DETAIL, {
                   partyId: newValue?.id || '',
