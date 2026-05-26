@@ -30,8 +30,9 @@ const buildRedirectUrl = (baseUrl: string) => {
   const [urlWithoutHash, hashFragment] = baseUrl.split('#');
   const separator = urlWithoutHash.includes('?') ? '&' : '?';
   const onSuccess = encodeURIComponent(buildOnSuccess());
+  const hash = hashFragment ? `#${hashFragment}` : '';
   // eslint-disable-next-line sonarjs/no-nested-template-literals
-  return `${urlWithoutHash}${separator}onSuccess=${onSuccess}${hashFragment ? `#${hashFragment}` : ''}`;
+  return `${urlWithoutHash}${separator}onSuccess=${onSuccess}${hash}`;
 };
 
 const onRedirectToLogin = () => {
