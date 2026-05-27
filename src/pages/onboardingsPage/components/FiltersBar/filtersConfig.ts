@@ -67,6 +67,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
       { label: t('onboardingsPage.filters.statusOptions.failed'), value: 'FAILED' },
       { label: t('onboardingsPage.filters.statusOptions.rejected'), value: 'REJECTED' },
       { label: t('onboardingsPage.filters.statusOptions.deleted'), value: 'DELETED' },
+      { label: t('onboardingsPage.filters.statusOptions.expired'), value: 'EXPIRED' },
     ],
   },
 ];

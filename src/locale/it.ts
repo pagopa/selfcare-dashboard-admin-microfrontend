@@ -70,6 +70,7 @@ export default {
         failed: 'In errore',
         rejected: 'Rifiutato',
         deleted: 'Disattivo',
+        expired: 'Scaduta',
       },
     },
     table: {
