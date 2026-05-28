@@ -22,8 +22,8 @@ export const searchOnboardingsService = async (
   institutionTypes: Array<string>,
   statuses: Array<string>,
   page: number,
-  pageSize: number
-  // orderBy: string
+  pageSize: number,
+  orderBy?: string
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
@@ -33,8 +33,8 @@ export const searchOnboardingsService = async (
       institutionTypes,
       statuses,
       page,
-      pageSize
-      // orderBy
+      pageSize,
+      orderBy
     );
   } else {
     return PartyRegisrtyApi.searchOnboardings(
@@ -43,8 +43,8 @@ export const searchOnboardingsService = async (
       institutionTypes,
       statuses,
       page,
-      pageSize
-      // orderBy
+      pageSize,
+      orderBy
     );
   }
 };

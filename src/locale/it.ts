@@ -77,6 +77,7 @@ export default {
       institutionName: 'Ente',
       product: 'Prodotto',
       institutionType: 'Tipologia ente',
+      requestDate: 'Data di richiesta',
       status: "Stato dell'accordo",
       loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
       noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',

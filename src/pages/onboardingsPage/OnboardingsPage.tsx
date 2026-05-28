@@ -16,6 +16,10 @@ import { parseFilters, serializeFilters } from './components/FiltersBar/filtersU
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/tableColumns';
 
+const SORT_FIELD_MAP: Record<string, string> = {
+  requestDate: 'createdAt',
+};
+
 const OnboardingsPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -46,6 +50,11 @@ const OnboardingsPage = () => {
   const columns = getOnboardingsColumns(t, products, hasBackofficeAdmin);
 
   useEffect(() => {
+    const sortItem = sortModel[0];
+    const orderBy = sortItem
+      ? `${SORT_FIELD_MAP[sortItem.field] ?? sortItem.field} ${sortItem.sort}`
+      : undefined;
+
     setLoading(true);
     searchOnboardingsService(
       filters.search,
@@ -53,7 +62,8 @@ const OnboardingsPage = () => {
       filters.institutionTypeIds,
       filters.stateIds,
       filters.page,
-      filters.size
+      filters.size,
+      orderBy
     )
       .then((response) => {
         setRows([...(response.onboardings ?? [])]);
@@ -86,11 +96,6 @@ const OnboardingsPage = () => {
 
   const handleSortModelChange = (model: GridSortModel) => {
     setSortModel(model);
-    const newFilters = { ...filters, page: 0 };
-    history.push({
-      pathname: location.pathname,
-      search: serializeFilters(newFilters),
-    });
   };
 
   return (

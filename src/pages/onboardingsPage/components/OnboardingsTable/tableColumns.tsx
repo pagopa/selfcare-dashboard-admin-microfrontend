@@ -81,6 +81,16 @@ const renderCellWithTooltip = (params: GridRenderCellParams) => {
   );
 };
 
+const renderUpdatedAtCell = (params: GridRenderCellParams<Date>) => {
+  const date = params.value;
+  const text = date ? date.toLocaleDateString() : '-';
+  return (
+    <Tooltip title={text} arrow enterDelay={300}>
+      <Box sx={truncatedCellSx}>{text}</Box>
+    </Tooltip>
+  );
+};
+
 const renderStatusCell = (params: GridRenderCellParams<string>) => {
   const value = params.value ?? '';
   const config = STATUS_CHIP_CONFIG[value] ?? {
@@ -305,6 +315,17 @@ export const getOnboardingsColumns = (
       return translated === key ? raw : translated;
     },
     renderCell: renderCellWithTooltip,
+  },
+  {
+    field: 'requestDate',
+    headerName: t('onboardingsPage.table.requestDate'),
+    flex: 1,
+    sortable: true,
+    valueGetter: (params) => {
+      const date = params.row?.createdAt;
+      return date ? new Date(date) : null;
+    },
+    renderCell: renderUpdatedAtCell,
   },
   {
     field: 'status',
