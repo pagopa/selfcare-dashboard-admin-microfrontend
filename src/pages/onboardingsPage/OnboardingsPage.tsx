@@ -50,10 +50,10 @@ const OnboardingsPage = () => {
   const columns = getOnboardingsColumns(t, products, hasBackofficeAdmin);
 
   useEffect(() => {
-    const sortItem = sortModel[0];
-    const orderBy = sortItem
-      ? `${SORT_FIELD_MAP[sortItem.field] ?? sortItem.field} ${sortItem.sort}`
-      : undefined;
+    const orderBy =
+      sortModel.length > 0
+        ? sortModel.map((item) => `${SORT_FIELD_MAP[item.field] ?? item.field} ${item.sort}`)
+        : undefined;
 
     setLoading(true);
     searchOnboardingsService(

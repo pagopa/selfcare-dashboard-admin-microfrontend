@@ -23,7 +23,7 @@ export const searchOnboardingsService = async (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  orderBy?: string
+  orderBy?: Array<string>
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {

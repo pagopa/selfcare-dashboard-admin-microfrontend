@@ -868,11 +868,14 @@
             "type": "integer"
           },
           {
-            "default": "description asc",
+            "collectionFormat": "multi",
             "in": "query",
+            "items": {
+              "type": "string"
+            },
             "name": "orderBy",
             "required": false,
-            "type": "string"
+            "type": "array"
           }
         ],
         "responses": {

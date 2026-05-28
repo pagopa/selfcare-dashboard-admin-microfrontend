@@ -53,7 +53,7 @@ export const PartyRegisrtyApi = {
     statuses: Array<string>,
     page: number,
     pageSize: number,
-    orderBy?: string
+    orderBy?: Array<string>
   ): Promise<OnboardingIndexSearchResource> => {
     const result = await apiClient.searchOnboardings({
       searchText,

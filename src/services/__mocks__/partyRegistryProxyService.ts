@@ -194,32 +194,34 @@ const applyFilters = (
 
 const applySort = (
   onboardings: Array<OnboardingIndexResource>,
-  orderBy?: string
+  orderBy?: Array<string>
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Array<OnboardingIndexResource> => {
-  if (!orderBy) {
+  if (!orderBy?.length) {
     return onboardings;
   }
 
-  const [field, direction] = orderBy.split(' ');
-  const dir = direction === 'desc' ? -1 : 1;
-
   return [...onboardings].sort((a, b) => {
-    const aVal = a[field as keyof typeof a];
-    const bVal = b[field as keyof typeof b];
-    if (aVal == null && bVal == null) {
-      return 0;
-    }
-    if (aVal == null) {
-      return 1;
-    }
-    if (bVal == null) {
-      return -1;
-    }
-    if (aVal < bVal) {
-      return -1 * dir;
-    }
-    if (aVal > bVal) {
-      return 1 * dir;
+    for (const clause of orderBy) {
+      const [field, direction] = clause.split(' ');
+      const dir = direction === 'desc' ? -1 : 1;
+      const aVal = a[field as keyof typeof a];
+      const bVal = b[field as keyof typeof b];
+      if (aVal == null && bVal == null) {
+        continue;
+      }
+      if (aVal == null) {
+        return 1;
+      }
+      if (bVal == null) {
+        return -1;
+      }
+      if (aVal < bVal) {
+        return -1 * dir;
+      }
+      if (aVal > bVal) {
+        return 1 * dir;
+      }
     }
     return 0;
   });
@@ -241,7 +243,7 @@ export const mockedSearchOnboardingsService = (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  orderBy?: string
+  orderBy?: Array<string>
 ): Promise<OnboardingIndexSearchResource> => {
   console.log('Mocked search onboardings with', {
     searchText,
