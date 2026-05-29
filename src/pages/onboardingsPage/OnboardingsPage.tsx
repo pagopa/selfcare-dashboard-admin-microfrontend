@@ -52,7 +52,7 @@ const OnboardingsPage = () => {
   useEffect(() => {
     const orderBy =
       sortModel.length > 0
-        ? sortModel.map((item) => `${SORT_FIELD_MAP[item.field] ?? item.field} ${item.sort}`)
+        ? sortModel.map((item) => `${SORT_FIELD_MAP[item.field] ?? item.field}_${item.sort?.toUpperCase()}`)
         : undefined;
 
     setLoading(true);
