@@ -11,6 +11,7 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
@@ -28,6 +29,7 @@ export default function DashboardRequest() {
   const addError = useErrorDispatcher();
   const history = useHistory();
   const location = useLocation<{ fromDashboard?: boolean }>();
+  useGlobalPermissions();
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
@@ -135,9 +137,8 @@ export default function DashboardRequest() {
     const nameParam = new URLSearchParams({
       name: attatchmentName ?? '',
     });
-    const url = `${
-      ENV.URL_API.API_ONBOARDING_V2
-    }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
+    const url = `${ENV.URL_API.API_ONBOARDING_V2
+      }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
     if (retrieveTokenIdFromUrl) {
       fetch(url, {
         headers: {
