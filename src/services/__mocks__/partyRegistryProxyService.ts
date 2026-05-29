@@ -97,6 +97,13 @@ export const mockedSearchInstitutionsService = (
   }
 };
 
+const DATES = [
+  new Date(2025, 0, 10),
+  new Date(2025, 1, 15),
+  new Date(2025, 2, 20),
+  new Date(2025, 3, 25),
+  new Date(2025, 4, 30),
+];
 const STATUSES = [
   'PENDING',
   'TOBEVALIDATED',
@@ -145,32 +152,29 @@ export const mockedOnboardings: Array<OnboardingIndexResource> = Array.from(
     parentDescription: PARENT_NAMES[i % PARENT_NAMES.length],
     productId: PRODUCTS[i % PRODUCTS.length],
     institutionType: INSTITUTION_TYPES[i % INSTITUTION_TYPES.length],
+    createdAt: DATES[i % DATES.length],
     status: STATUSES[i % STATUSES.length],
     institutionId: `inst-${String(i + 1).padStart(5, '0')}`,
     taxCode: `${80000000000 + i}`,
-    createdAt: new Date(2025, 0 + (i % 12), 10 + (i % 20)),
     updatedAt: new Date(2025, 1 + (i % 11), 5 + (i % 15)),
   })
 );
 
-export const mockedSearchOnboardingsService = (
+const applyFilters = (
+  onboardings: Array<OnboardingIndexResource>,
   searchText: string,
   products: Array<string>,
   institutionTypes: Array<string>,
-  statuses: Array<string>,
-  page: number,
-  pageSize: number
-  // _orderBy: string
-): Promise<OnboardingIndexSearchResource> => {
+  statuses: Array<string>
+): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
-  let filtered = [...mockedOnboardings];
+  let filtered = [...onboardings];
 
   if (searchText) {
-    const lowerSearch = searchText.toLowerCase();
+    const lower = searchText.toLowerCase();
     filtered = filtered.filter(
       (o) =>
-        o.description?.toLowerCase().includes(lowerSearch) ||
-        o.taxCode?.toLowerCase().includes(lowerSearch)
+        o.description?.toLowerCase().includes(lower) || o.taxCode?.toLowerCase().includes(lower)
     );
   }
   if (products.length > 0) {
@@ -185,16 +189,82 @@ export const mockedSearchOnboardingsService = (
     filtered = filtered.filter((o) => o.status && statuses.includes(o.status));
   }
 
-  const totalElements = filtered.length;
-  const totalPages = Math.ceil(totalElements / pageSize);
+  return filtered;
+};
+
+const applySort = (
+  onboardings: Array<OnboardingIndexResource>,
+  orderBy?: Array<string>
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+): Array<OnboardingIndexResource> => {
+  if (!orderBy?.length) {
+    return onboardings;
+  }
+
+  return [...onboardings].sort((a, b) => {
+    for (const clause of orderBy) {
+      const [field, direction] = clause.split(' ');
+      const dir = direction === 'desc' ? -1 : 1;
+      const aVal = a[field as keyof typeof a];
+      const bVal = b[field as keyof typeof b];
+      if (aVal == null && bVal == null) {
+        continue;
+      }
+      if (aVal == null) {
+        return 1;
+      }
+      if (bVal == null) {
+        return -1;
+      }
+      if (aVal < bVal) {
+        return -1 * dir;
+      }
+      if (aVal > bVal) {
+        return 1 * dir;
+      }
+    }
+    return 0;
+  });
+};
+
+const applyPagination = (
+  onboardings: Array<OnboardingIndexResource>,
+  page: number,
+  pageSize: number
+) => {
   const start = page * pageSize;
-  const paged = filtered.slice(start, start + pageSize);
+  return onboardings.slice(start, start + pageSize);
+};
+
+export const mockedSearchOnboardingsService = (
+  searchText: string,
+  products: Array<string>,
+  institutionTypes: Array<string>,
+  statuses: Array<string>,
+  page: number,
+  pageSize: number,
+  orderBy?: Array<string>
+): Promise<OnboardingIndexSearchResource> => {
+  console.log('Mocked search onboardings with', {
+    searchText,
+    products,
+    orderBy,
+  });
+  const filtered = applyFilters(
+    mockedOnboardings,
+    searchText,
+    products,
+    institutionTypes,
+    statuses
+  );
+  const sorted = applySort(filtered, orderBy);
+  const paged = applyPagination(sorted, page, pageSize);
 
   return Promise.resolve({
     onboardings: paged,
     page,
     pageSize,
-    totalElements,
-    totalPages,
+    totalElements: filtered.length,
+    totalPages: Math.ceil(filtered.length / pageSize),
   } as OnboardingIndexSearchResource);
 };

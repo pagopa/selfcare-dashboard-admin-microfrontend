@@ -64,97 +64,103 @@
     }
   ],
   "paths": {
-    "/visura-infocamere-pdnd/institutions" : {
-      "get" : {
-        "tags" : [ "pdnd-visura-info-camere-controller" ],
-        "summary" : "Get institutions detail by institution rea",
-        "description" : "Get the company represented by rea of the institution passed as a parameter",
-        "operationId" : "institutionsPdndByReaGET",
-        "parameters" : [ {
-          "name" : "rea",
-          "in" : "query",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
+    "/visura-infocamere-pdnd/institutions": {
+      "get": {
+        "tags": ["pdnd-visura-info-camere-controller"],
+        "summary": "Get institutions detail by institution rea",
+        "description": "Get the company represented by rea of the institution passed as a parameter",
+        "operationId": "institutionsPdndByReaGET",
+        "parameters": [
+          {
+            "name": "rea",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PDNDBusinessResource"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PDNDBusinessResource"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Bad Request"
+          "400": {
+            "description": "Bad Request"
           },
-          "401" : {
-            "description" : "Unauthorized"
+          "401": {
+            "description": "Unauthorized"
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         },
-        "security" : [ {
-          "bearerAuth" : [ "global" ]
-        } ]
+        "security": [
+          {
+            "bearerAuth": ["global"]
+          }
+        ]
       }
     },
-    "/visura-infocamere-pdnd/institutions/{taxCode}" : {
-      "get" : {
-        "tags" : [ "pdnd-visura-info-camere-controller" ],
-        "summary" : "Get institution by institution taxCode",
-        "description" : "Get the company represented by taxCode of the institution passed as a parameter",
-        "operationId" : "institutionVisuraPdndByTaxCodeUsingGET",
-        "parameters" : [ {
-          "name" : "taxCode",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
+    "/visura-infocamere-pdnd/institutions/{taxCode}": {
+      "get": {
+        "tags": ["pdnd-visura-info-camere-controller"],
+        "summary": "Get institution by institution taxCode",
+        "description": "Get the company represented by taxCode of the institution passed as a parameter",
+        "operationId": "institutionVisuraPdndByTaxCodeUsingGET",
+        "parameters": [
+          {
+            "name": "taxCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PDNDBusinessResource"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PDNDBusinessResource"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Bad Request"
+          "400": {
+            "description": "Bad Request"
           },
-          "401" : {
-            "description" : "Unauthorized"
+          "401": {
+            "description": "Unauthorized"
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         },
-        "security" : [ {
-          "bearerAuth" : [ "global" ]
-        } ]
+        "security": [
+          {
+            "bearerAuth": ["global"]
+          }
+        ]
       }
     },
     "/infocamere-pdnd/institution/{taxCode}": {
       "get": {
-        "tags": [
-          "infocamere PDND"
-        ],
+        "tags": ["infocamere PDND"],
         "summary": "Get institution by institution taxCode",
         "description": "Get the company represented by taxCode of the institution passed as a parameter",
         "operationId": "institutionPdndByTaxCodeUsingGET",
@@ -224,18 +230,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/aoo": {
       "get": {
-        "tags": [
-          "aoo"
-        ],
+        "tags": ["aoo"],
         "summary": "Retrieve all AOO from IPA",
         "description": "Returns the AOO list",
         "operationId": "findAllUsingGET",
@@ -317,18 +319,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/aoo/{codiceUniAoo}": {
       "get": {
-        "tags": [
-          "aoo"
-        ],
+        "tags": ["aoo"],
         "summary": "Retrieve an AOO given its code",
         "description": "Returns an AOO",
         "operationId": "findByUnicodeUsingGET",
@@ -409,206 +407,223 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
-    "/search/onboardings" : {
-      "get" : {
-        "tags" : [ "search-controller" ],
-        "operationId" : "searchOnboardings",
-        "parameters" : [ {
-          "name" : "searchText",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "products",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+    "/search/onboardings": {
+      "get": {
+        "tags": ["search-controller"],
+        "operationId": "searchOnboardings",
+        "parameters": [
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "products",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "institutionTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 15
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
-        }, {
-          "name" : "institutionTypes",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "statuses",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "page",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 0
-          }
-        }, {
-          "name" : "pageSize",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 15
-          }
-        }, {
-          "name" : "orderBy",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "description asc"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/OnboardingIndexSearchResource"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingIndexSearchResource"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Bad Request"
+          "400": {
+            "description": "Bad Request"
           },
-          "401" : {
-            "description" : "Unauthorized"
+          "401": {
+            "description": "Unauthorized"
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         },
-        "security" : [ {
-          "bearerAuth" : [ "global" ]
-        } ]
+        "security": [
+          {
+            "bearerAuth": ["global"]
+          }
+        ]
       }
     },
-    "/search/institutions" : {
-      "get" : {
-        "tags" : [ "search-controller" ],
-        "operationId" : "searchInstitutions",
-        "parameters" : [ {
-          "name" : "products",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+    "/search/institutions": {
+      "get": {
+        "tags": ["search-controller"],
+        "operationId": "searchInstitutions",
+        "parameters": [
+          {
+            "name": "products",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "institutionTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "taxCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "*"
+            }
+          },
+          {
+            "name": "top",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
             }
           }
-        }, {
-          "name" : "institutionTypes",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "taxCode",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "searchText",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "*"
-          }
-        }, {
-          "name" : "top",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 50
-          }
-        }, {
-          "name" : "skip",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/SearchServiceInstitution"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchServiceInstitution"
                   }
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Bad Request"
+          "400": {
+            "description": "Bad Request"
           },
-          "401" : {
-            "description" : "Unauthorized"
+          "401": {
+            "description": "Unauthorized"
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         },
-        "security" : [ {
-          "bearerAuth" : [ "global" ]
-        } ]
+        "security": [
+          {
+            "bearerAuth": ["global"]
+          }
+        ]
       }
     },
     "/geotaxonomies": {
       "get": {
-        "tags": [
-          "GeographicTaxonomies"
-        ],
+        "tags": ["GeographicTaxonomies"],
         "summary": "retrieves the geographic taxonomies by description",
         "description": "retrieves the geographic taxonomies by description",
         "operationId": "retrieveGeoTaxonomiesByDescriptionUsingGET",
@@ -703,18 +718,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/geotaxonomies/{geotaxId}": {
       "get": {
-        "tags": [
-          "GeographicTaxonomies"
-        ],
+        "tags": ["GeographicTaxonomies"],
         "summary": "retrieves the geographic taxonomy by code",
         "description": "retrieves the geographic taxonomy by code",
         "operationId": "retrieveGeoTaxonomiesByCodeUsingGET",
@@ -784,18 +795,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/institutions": {
       "get": {
-        "tags": [
-          "institution"
-        ],
+        "tags": ["institution"],
         "summary": "Search institutions",
         "description": "Returns a list of Institutions.",
         "operationId": "searchUsingGET",
@@ -897,18 +904,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/institutions/{id}": {
       "get": {
-        "tags": [
-          "institution"
-        ],
+        "tags": ["institution"],
         "summary": "Find institution by ID",
         "description": "Returns a single institution. If 'origin' param is filled, the ID to find is treated as 'originId' ($ref: '#/components/schemas/Institution'); otherwise is treated as 'id' ($ref: '#/components/schemas/Institution') ",
         "operationId": "findInstitutionUsingGET",
@@ -931,13 +934,7 @@
             "style": "form",
             "schema": {
               "type": "string",
-              "enum": [
-                "ANAC",
-                "INFOCAMERE",
-                "IPA",
-                "IVASS",
-                "static"
-              ]
+              "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
             }
           },
           {
@@ -1005,18 +1002,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/insurance-companies/origin/{originId}": {
       "get": {
-        "tags": [
-          "insurance-companies"
-        ],
+        "tags": ["insurance-companies"],
         "summary": "Search insurance company by its taxCode",
         "description": "Returns only one insurance company.",
         "operationId": "searchByOriginIdUsingGET",
@@ -1086,18 +1079,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/insurance-companies": {
       "get": {
-        "tags": [
-          "insurance-companies"
-        ],
+        "tags": ["insurance-companies"],
         "summary": "Search insurance company",
         "description": "Returns a list of insurance companies",
         "operationId": "searchUsingGET_1",
@@ -1189,18 +1178,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/insurance-companies/{taxId}": {
       "get": {
-        "tags": [
-          "insurance-companies"
-        ],
+        "tags": ["insurance-companies"],
         "summary": "Search insurance company by its taxCode",
         "description": "Returns only one insurance company.",
         "operationId": "searchByTaxCodeUsingGET",
@@ -1270,18 +1255,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/stations": {
       "get": {
-        "tags": [
-          "stations"
-        ],
+        "tags": ["stations"],
         "summary": "Search station",
         "description": "Returns a list of station.",
         "operationId": "searchUsingGET_2",
@@ -1373,18 +1354,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/stations/{taxId}": {
       "get": {
-        "tags": [
-          "stations"
-        ],
+        "tags": ["stations"],
         "summary": "Search station by its taxCode",
         "description": "Returns only one station.",
         "operationId": "searchByTaxCodeUsingGET_1",
@@ -1454,18 +1431,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/uo": {
       "get": {
-        "tags": [
-          "uo"
-        ],
+        "tags": ["uo"],
         "summary": "Retrieve all UO from IPA",
         "description": "Returns the UO list",
         "operationId": "findAllUsingGET_1",
@@ -1547,18 +1520,14 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
     },
     "/uo/{codiceUniAoo}": {
       "get": {
-        "tags": [
-          "uo"
-        ],
+        "tags": ["uo"],
         "summary": "Retrieve a UO given its code",
         "description": "Returns a UO",
         "operationId": "findByUnicodeUsingGET_1",
@@ -1639,9 +1608,7 @@
         },
         "security": [
           {
-            "bearerAuth": [
-              "global"
-            ]
+            "bearerAuth": ["global"]
           }
         ]
       }
@@ -1725,13 +1692,7 @@
           "origin": {
             "type": "string",
             "description": "{swagger.model.*.origin}",
-            "enum": [
-              "ANAC",
-              "INFOCAMERE",
-              "IPA",
-              "IVASS",
-              "static"
-            ]
+            "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
           },
           "protocolloInformatico": {
             "type": "string",
@@ -1755,10 +1716,7 @@
       },
       "AOOsResource": {
         "title": "AOOsResource",
-        "required": [
-          "count",
-          "items"
-        ],
+        "required": ["count", "items"],
         "type": "object",
         "properties": {
           "count": {
@@ -1857,13 +1815,7 @@
           "origin": {
             "type": "string",
             "description": "Describes which is the source of data",
-            "enum": [
-              "ANAC",
-              "INFOCAMERE",
-              "IPA",
-              "IVASS",
-              "static"
-            ]
+            "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
           },
           "originId": {
             "type": "string",
@@ -1885,10 +1837,7 @@
       },
       "InstitutionsResource": {
         "title": "InstitutionsResource",
-        "required": [
-          "count",
-          "items"
-        ],
+        "required": ["count", "items"],
         "type": "object",
         "properties": {
           "count": {
@@ -1905,10 +1854,7 @@
       },
       "InsuranceCompaniesResource": {
         "title": "InsuranceCompaniesResource",
-        "required": [
-          "count",
-          "items"
-        ],
+        "required": ["count", "items"],
         "type": "object",
         "properties": {
           "count": {
@@ -1948,13 +1894,7 @@
           "origin": {
             "type": "string",
             "description": "Describes which is the source of data",
-            "enum": [
-              "ANAC",
-              "INFOCAMERE",
-              "IPA",
-              "IVASS",
-              "static"
-            ]
+            "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
           },
           "originId": {
             "type": "string",
@@ -1976,10 +1916,7 @@
       },
       "InvalidParam": {
         "title": "InvalidParam",
-        "required": [
-          "name",
-          "reason"
-        ],
+        "required": ["name", "reason"],
         "type": "object",
         "properties": {
           "name": {
@@ -1992,124 +1929,121 @@
           }
         }
       },
-      "OnboardingIndexResource" : {
-        "required" : [ "onboardingId" ],
-        "type" : "object",
-        "properties" : {
-          "onboardingId" : {
-            "type" : "string"
+      "OnboardingIndexResource": {
+        "required": ["onboardingId"],
+        "type": "object",
+        "properties": {
+          "onboardingId": {
+            "type": "string"
           },
-          "institutionId" : {
-            "type" : "string"
+          "institutionId": {
+            "type": "string"
           },
-          "description" : {
-            "type" : "string"
+          "description": {
+            "type": "string"
           },
-          "parentDescription" : {
-            "type" : "string"
+          "parentDescription": {
+            "type": "string"
           },
-          "taxCode" : {
-            "type" : "string"
+          "taxCode": {
+            "type": "string"
           },
-          "subunitCode" : {
-            "type" : "string"
+          "subunitCode": {
+            "type": "string"
           },
-          "subunitType" : {
-            "type" : "string"
+          "subunitType": {
+            "type": "string"
           },
-          "productId" : {
-            "type" : "string"
+          "productId": {
+            "type": "string"
           },
-          "institutionType" : {
-            "type" : "string"
+          "institutionType": {
+            "type": "string"
           },
-          "status" : {
-            "type" : "string"
+          "status": {
+            "type": "string"
           },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           },
-          "activatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "activatedAt": {
+            "type": "string",
+            "format": "date-time"
           },
-          "expiringDate" : {
-            "type" : "string",
-            "format" : "date-time"
+          "expiringDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
-      "OnboardingIndexSearchResource" : {
-        "type" : "object",
-        "properties" : {
-          "onboardings" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/OnboardingIndexResource"
+      "OnboardingIndexSearchResource": {
+        "type": "object",
+        "properties": {
+          "onboardings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OnboardingIndexResource"
             }
           },
-          "pageSize" : {
-            "type" : "integer",
-            "format" : "int64"
+          "pageSize": {
+            "type": "integer",
+            "format": "int64"
           },
-          "page" : {
-            "type" : "integer",
-            "format" : "int64"
+          "page": {
+            "type": "integer",
+            "format": "int64"
           },
-          "totalElements" : {
-            "type" : "integer",
-            "format" : "int64"
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
           },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int64"
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
-      "SearchServiceInstitution" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
+      "SearchServiceInstitution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           },
-          "description" : {
-            "type" : "string"
+          "description": {
+            "type": "string"
           },
-          "parentDescription" : {
-            "type" : "string"
+          "parentDescription": {
+            "type": "string"
           },
-          "taxCode" : {
-            "type" : "string"
+          "taxCode": {
+            "type": "string"
           },
-          "products" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "institutionTypes" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "institutionTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "lastModified" : {
-            "type" : "string",
-            "format" : "date-time"
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
       "Problem": {
         "title": "Problem",
-        "required": [
-          "status",
-          "title"
-        ],
+        "required": ["status", "title"],
         "type": "object",
         "properties": {
           "detail": {
@@ -2173,13 +2107,7 @@
           "origin": {
             "type": "string",
             "description": "Describes which is the source of data",
-            "enum": [
-              "ANAC",
-              "INFOCAMERE",
-              "IPA",
-              "IVASS",
-              "static"
-            ]
+            "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
           },
           "originId": {
             "type": "string",
@@ -2193,10 +2121,7 @@
       },
       "StationsResource": {
         "title": "StationsResource",
-        "required": [
-          "count",
-          "items"
-        ],
+        "required": ["count", "items"],
         "type": "object",
         "properties": {
           "count": {
@@ -2293,13 +2218,7 @@
           "origin": {
             "type": "string",
             "description": "Describes which is the source of data",
-            "enum": [
-              "ANAC",
-              "INFOCAMERE",
-              "IPA",
-              "IVASS",
-              "static"
-            ]
+            "enum": ["ANAC", "INFOCAMERE", "IPA", "IVASS", "static"]
           },
           "telefono": {
             "type": "string",
@@ -2320,10 +2239,7 @@
       },
       "UOsResource": {
         "title": "UOsResource",
-        "required": [
-          "count",
-          "items"
-        ],
+        "required": ["count", "items"],
         "type": "object",
         "properties": {
           "count": {

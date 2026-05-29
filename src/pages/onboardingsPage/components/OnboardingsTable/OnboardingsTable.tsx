@@ -88,6 +88,12 @@ const CustomDataGrid = styled(DataGrid)({
       backgroundColor: `#0B50F7 !important`,
     },
   },
+  '& .MuiDataGrid-sortIcon': {
+    color: 'black',
+  },
+  '& .MuiDataGrid-iconButtonContainer .MuiIconButton-root': {
+    color: 'black',
+  },
 });
 
 type Props = {
