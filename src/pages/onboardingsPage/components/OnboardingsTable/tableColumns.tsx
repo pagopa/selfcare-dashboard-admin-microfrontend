@@ -1,7 +1,7 @@
 import { ArrowForward } from '@mui/icons-material';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
-import { GridColDef, GridColumnHeaderParams, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
+import { GridColDef, GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
