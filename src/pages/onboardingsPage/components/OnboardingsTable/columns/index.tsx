@@ -13,7 +13,7 @@ export const getOnboardingsColumns = (
   t: TFunction,
   products: Array<Product>,
   hasBackofficeAdmin: boolean,
-  setModalState: (state: ModalState) => void,
+  onOpenBackofficeModal: (row: OnboardingIndexResource) => void,
 ): Array<GridColDef<OnboardingIndexResource>> => [
     {
       field: 'description',
@@ -93,6 +93,6 @@ export const getOnboardingsColumns = (
       disableColumnMenu: true,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params) => <ActionCell params={params} products={products} onOpenModal={setModalState} />,
+      renderCell: (params) => <ActionCell params={params} products={products} onOpenBackofficeModal={onOpenBackofficeModal} />,
     },
   ];

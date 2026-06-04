@@ -5,15 +5,18 @@ import { GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
-import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
-import { ModalState } from '.';
 import { OnboardingIndexResource } from '../../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
+import GenericEnvProductModal from '../../../../../components/GenericEnvProductModal';
+import SessionModalInteropProduct from '../../../../../components/SessionModalInteropProduct';
 import { Product } from '../../../../../model/Product';
 import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../../../../utils/constants';
 import { ENV } from '../../../../../utils/env';
+import { useProductNavigation } from '../../../../adminPage/hooks/useProductNavigation';
+import { isProductAllowed } from '../../../../adminPage/utils/utils';
 import { STATUS_CHIP_CONFIG } from './statusConfig';
 
 const truncatedCellSx = {
@@ -112,16 +115,17 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
 export const ActionCell = ({
     params,
     products,
-    onOpenModal,
+    onOpenBackofficeModal,
 }: {
     params: GridRenderCellParams<OnboardingIndexResource>;
     products: Array<Product>;
-    onOpenModal: (state: ModalState) => void;
+    onOpenBackofficeModal: (row: OnboardingIndexResource) => void;
 }) => {
     const { t } = useTranslation();
     const history = useHistory();
     const { hasPermission } = usePermissions();
     const partyDetail = params.row;
+    const hasMoreThanOneInteropEnv = true;
 
     const productId = params.row?.productId || '';
     const status = params.row?.status;
@@ -135,6 +139,18 @@ export const ActionCell = ({
         (hasPermission('ALL', Actions.ViewAccountPage) &&
             STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
 
+    const {
+        activeProduct,
+        interopProduction,
+        openInteropModal,
+        openGenericEnvModal,
+        handleOnboardedProductClick,
+        handleInteropConfirm,
+        handleGenericEnvConfirm,
+        closeInteropModal,
+        closeGenericEnvModal,
+    } = useProductNavigation({ products, partyDetail, hasMoreThanOneInteropEnv });
+
     return (
         <>
             {status === 'COMPLETED' && canAccessBackofficeAdmin && (
@@ -146,10 +162,10 @@ export const ActionCell = ({
                         if (isProductAllowed(productId)) {
                             const productFromConfiguration = products.find((p) => p.id === productId);
                             if (productFromConfiguration) {
-                                onOpenModal({ type: 'product', row: partyDetail });
+                                handleOnboardedProductClick(productFromConfiguration);
                             }
                         } else {
-                            onOpenModal({ type: 'backoffice', row: partyDetail });
+                            onOpenBackofficeModal(partyDetail);
                         }
                     }}
                     sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
@@ -172,6 +188,48 @@ export const ActionCell = ({
                     sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
                 />
             )}
+            <SessionModalInteropProduct
+                open={openInteropModal}
+                title={t('overview.activeProducts.activeProductsEnvModal.title')}
+                message={
+                    <Trans
+                        i18nKey="overview.activeProducts.activeProductsEnvModal.message"
+                        values={{
+                            productTitle: activeProduct?.id?.startsWith('prod-interop')
+                                ? interopProduction?.title
+                                : activeProduct?.title,
+                        }}
+                        components={{ 1: <strong /> }}
+                    >
+                        {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
+                    </Trans>
+                }
+                onConfirmLabel={t('overview.activeProducts.activeProductsEnvModal.enterButton')}
+                onCloseLabel={t('overview.activeProducts.activeProductsEnvModal.backButton')}
+                onConfirm={handleInteropConfirm}
+                handleClose={closeInteropModal}
+                authorizedInteropProducts={['prod-interop', 'prod-interop-coll', 'prod-interop-atst']}
+                products={products}
+                party={partyDetail}
+            />
+            <GenericEnvProductModal
+                open={openGenericEnvModal}
+                title={t('overview.activeProducts.activeProductsEnvModal.title')}
+                message={
+                    <Trans
+                        i18nKey="overview.activeProducts.activeProductsEnvModal.message"
+                        values={{ productTitle: activeProduct?.title }}
+                        components={{ 1: <strong /> }}
+                    >
+                        {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
+                    </Trans>
+                }
+                onConfirmLabel={t('overview.activeProducts.activeProductsEnvModal.enterButton')}
+                onCloseLabel={t('overview.activeProducts.activeProductsEnvModal.backButton')}
+                onConfirm={(e) => handleGenericEnvConfirm((e.target as HTMLInputElement).value)}
+                handleClose={closeGenericEnvModal}
+                productEnvironments={activeProduct?.backOfficeEnvironmentConfigurations as any}
+            />
         </>
     );
 };
