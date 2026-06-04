@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui
 import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
 import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
-import { RenderNoRowsOverlay } from './tableColumns';
+import { RenderNoRowsOverlay } from './columns/cells';
 
 const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
 

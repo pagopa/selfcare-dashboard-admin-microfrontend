@@ -15,6 +15,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { TFunction } from 'i18next';
 import * as React from 'react';
 import { withTranslation } from 'react-i18next';
+import { OnboardingIndexResource } from '../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { useTokenExchange } from '../hooks/useTokenExchange';
 import { Party } from '../model/Party';
 import { Product } from '../model/Product';
@@ -52,7 +53,7 @@ type Props = {
   /** party products */
   products?: Array<Product>;
   /** party detail */
-  party?: Party;
+  party: Party | OnboardingIndexResource | null;
 };
 
 /** Selfcare's popup */
