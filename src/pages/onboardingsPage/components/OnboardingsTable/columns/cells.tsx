@@ -7,19 +7,14 @@ import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions, isProductAllowed } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ModalState } from '.';
 import { OnboardingIndexResource } from '../../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
-import BackofficeNotIntegratedModal from '../../../../../components/BackofficeNotIntegratedModal';
-import GenericEnvProductModal from '../../../../../components/GenericEnvProductModal';
-import SessionModalInteropProduct from '../../../../../components/SessionModalInteropProduct';
 import { Product } from '../../../../../model/Product';
 import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../../../../utils/constants';
 import { ENV } from '../../../../../utils/env';
-import { useProductNavigation } from '../../../../adminPage/hooks/useProductNavigation';
 import { STATUS_CHIP_CONFIG } from './statusConfig';
-import { ModalState } from '.';
 
 const truncatedCellSx = {
     overflow: 'hidden',
@@ -115,70 +110,70 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
 };
 
 export const ActionCell = ({
-  params,
-  products,
-  onOpenModal,
+    params,
+    products,
+    onOpenModal,
 }: {
-  params: GridRenderCellParams<OnboardingIndexResource>;
-  products: Array<Product>;
-  onOpenModal: (state: ModalState) => void;
+    params: GridRenderCellParams<OnboardingIndexResource>;
+    products: Array<Product>;
+    onOpenModal: (state: ModalState) => void;
 }) => {
-  const { t } = useTranslation();
-  const history = useHistory();
-  const { hasPermission } = usePermissions();
-  const partyDetail = params.row;
+    const { t } = useTranslation();
+    const history = useHistory();
+    const { hasPermission } = usePermissions();
+    const partyDetail = params.row;
 
-  const productId = params.row?.productId || '';
-  const status = params.row?.status;
+    const productId = params.row?.productId || '';
+    const status = params.row?.status;
 
-  const canAccessBackofficeAdmin =
-    hasPermission(productId, Actions.AccessProductBackofficeAdmin) ||
-    hasPermission('ALL', Actions.AccessProductBackofficeAdmin);
+    const canAccessBackofficeAdmin =
+        hasPermission(productId, Actions.AccessProductBackofficeAdmin) ||
+        hasPermission('ALL', Actions.AccessProductBackofficeAdmin);
 
-  const canAccessAccountPage =
-    hasPermission(productId, Actions.ViewAccountPage) ||
-    (hasPermission('ALL', Actions.ViewAccountPage) &&
-      STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
+    const canAccessAccountPage =
+        hasPermission(productId, Actions.ViewAccountPage) ||
+        (hasPermission('ALL', Actions.ViewAccountPage) &&
+            STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
 
-  return (
-    <>
-      {status === 'COMPLETED' && canAccessBackofficeAdmin && (
-        <ButtonNaked
-          component="button"
-          endIcon={<ArrowForward />}
-          onClick={() => {
-            trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', { product_id: productId });
-            if (isProductAllowed(productId)) {
-              const productFromConfiguration = products.find((p) => p.id === productId);
-              if (productFromConfiguration) {
-                onOpenModal({ type: 'product', row: partyDetail });
-              }
-            } else {
-              onOpenModal({ type: 'backoffice', row: partyDetail });
-            }
-          }}
-          sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
-        >
-          {t('adminPage.selectedPartyDetails.backOffice')}
-        </ButtonNaked>
-      )}
-      {!canAccessBackofficeAdmin && canAccessAccountPage && (
-        <ButtonNaked
-          component="button"
-          endIcon={<ArrowForward />}
-          onClick={() => {
-            history.push(
-              resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                tokenId: params.row.onboardingId,
-              }),
-              { fromDashboard: true }
-            );
-          }}
-          sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
-        />
-      )}
-    </>
-  );
+    return (
+        <>
+            {status === 'COMPLETED' && canAccessBackofficeAdmin && (
+                <ButtonNaked
+                    component="button"
+                    endIcon={<ArrowForward />}
+                    onClick={() => {
+                        trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', { product_id: productId });
+                        if (isProductAllowed(productId)) {
+                            const productFromConfiguration = products.find((p) => p.id === productId);
+                            if (productFromConfiguration) {
+                                onOpenModal({ type: 'product', row: partyDetail });
+                            }
+                        } else {
+                            onOpenModal({ type: 'backoffice', row: partyDetail });
+                        }
+                    }}
+                    sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
+                >
+                    {t('adminPage.selectedPartyDetails.backOffice')}
+                </ButtonNaked>
+            )}
+            {!canAccessBackofficeAdmin && canAccessAccountPage && (
+                <ButtonNaked
+                    component="button"
+                    endIcon={<ArrowForward />}
+                    onClick={() => {
+                        history.push(
+                            resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
+                                tokenId: params.row.onboardingId,
+                            }),
+                            { fromDashboard: true }
+                        );
+                    }}
+                    sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
+                />
+            )}
+        </>
+    );
 };
 
 export const RenderNoRowsOverlay = () => {

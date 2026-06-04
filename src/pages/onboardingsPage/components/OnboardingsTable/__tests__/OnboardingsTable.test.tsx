@@ -2,7 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { OnboardingsTable } from '../OnboardingsTable';
-import { getOnboardingsColumns, RenderNoRowsOverlay } from '../tableColumns';
+import { getOnboardingsColumns } from '../columns';
+import { RenderNoRowsOverlay } from '../columns/cells';
 
 vi.mock('react-i18next', async () => {
   const actual = await vi.importActual('react-i18next');
@@ -91,7 +92,9 @@ const mockRows = [
   },
 ];
 
-const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any, true).map((c) => ({
+const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any, true, () => { }
+
+).map((c) => ({
   ...c,
   width: 200,
 }));
