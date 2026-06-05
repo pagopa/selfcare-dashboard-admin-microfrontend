@@ -728,32 +728,6 @@
         ],
         "parameters": [
           {
-            "collectionFormat": "multi",
-            "in": "query",
-            "items": {
-              "type": "string"
-            },
-            "name": "products",
-            "required": false,
-            "type": "array"
-          },
-          {
-            "collectionFormat": "multi",
-            "in": "query",
-            "items": {
-              "type": "string"
-            },
-            "name": "institutionTypes",
-            "required": false,
-            "type": "array"
-          },
-          {
-            "in": "query",
-            "name": "taxCode",
-            "required": false,
-            "type": "string"
-          },
-          {
             "default": "*",
             "in": "query",
             "name": "searchText",
@@ -762,17 +736,9 @@
           },
           {
             "default": 50,
-            "format": "int32",
+            "format": "int64",
             "in": "query",
             "name": "top",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "default": 0,
-            "format": "int32",
-            "in": "query",
-            "name": "skip",
             "required": false,
             "type": "integer"
           }
@@ -849,6 +815,20 @@
             "name": "statuses",
             "required": false,
             "type": "array"
+          },
+          {
+            "format": "date-time",
+            "in": "query",
+            "name": "createdFromDate",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "in": "query",
+            "name": "createdToDate",
+            "required": false,
+            "type": "string"
           },
           {
             "default": 0,
@@ -1638,6 +1618,15 @@
           "format": "date-time",
           "type": "string"
         },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
         "createdAt": {
           "format": "date-time",
           "type": "string"
@@ -1654,6 +1643,9 @@
         },
         "institutionType": {
           "type": "string"
+        },
+        "isTest": {
+          "type": "boolean"
         },
         "onboardingId": {
           "type": "string"
@@ -1803,24 +1795,12 @@
         "id": {
           "type": "string"
         },
-        "institutionTypes": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "lastModified": {
           "format": "date-time",
           "type": "string"
         },
         "parentDescription": {
           "type": "string"
-        },
-        "products": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         },
         "taxCode": {
           "type": "string"
