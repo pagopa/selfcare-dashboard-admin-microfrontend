@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useTokenExchange } from '../../../hooks/useTokenExchange';
 import { Party } from '../../../model/Party';
 import { Product } from '../../../model/Product';
+import { OnboardingIndexResource } from '../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 
 type UseProductNavigationProps = {
   products: Array<Product>;
-  partyDetail: Party | null;
+  partyDetail: Party | OnboardingIndexResource | null;
   hasMoreThanOneInteropEnv: boolean;
 };
 

@@ -8,13 +8,14 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../api/generated/party-registry-proxy/OnboardingIndexResource';
+import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
 import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { FiltersBar } from './components/FiltersBar/FiltersBar';
 import { parseFilters, serializeFilters } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
-import { getOnboardingsColumns } from './components/OnboardingsTable/tableColumns';
+import { getOnboardingsColumns } from './components/OnboardingsTable/columns';
 
 const SORT_FIELD_MAP: Record<string, string> = {
   requestDate: 'createdAt',
@@ -33,6 +34,7 @@ const OnboardingsPage = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
   const [loading, setLoading] = useState(false);
+  const [backofficeModalRow, setBackofficeModalRow] = useState<OnboardingIndexResource | null>(null);
 
   useEffect(() => {
     trackEvent('BACKSTAGE_ONBOARDINGS');
@@ -47,12 +49,14 @@ const OnboardingsPage = () => {
         hasPermission('ALL', Actions.AccessProductBackofficeAdmin))
   );
 
-  const columns = getOnboardingsColumns(t, products, hasBackofficeAdmin);
+  const columns = getOnboardingsColumns(t, products, hasBackofficeAdmin, setBackofficeModalRow);
 
   useEffect(() => {
     const orderBy =
       sortModel.length > 0
-        ? sortModel.map((item) => `${SORT_FIELD_MAP[item.field] ?? item.field}_${item.sort?.toUpperCase()}`)
+        ? sortModel.map(
+            (item) => `${SORT_FIELD_MAP[item.field] ?? item.field}_${item.sort?.toUpperCase()}`
+          )
         : undefined;
 
     setLoading(true);
@@ -79,24 +83,17 @@ const OnboardingsPage = () => {
   }, [location.search, sortModel]);
 
   const handlePageSizeChange = (newSize: number) => {
-    const newFilters = { ...filters, size: newSize, page: 0 };
-    history.push({
-      pathname: location.pathname,
-      search: serializeFilters(newFilters),
-    });
+    history.push({ pathname: location.pathname, search: serializeFilters({ ...filters, size: newSize, page: 0 }) });
   };
 
   const handlePageChange = (newPage: number) => {
-    const newFilters = { ...filters, page: newPage };
-    history.push({
-      pathname: location.pathname,
-      search: serializeFilters(newFilters),
-    });
+    history.push({ pathname: location.pathname, search: serializeFilters({ ...filters, page: newPage }) });
   };
 
-  const handleSortModelChange = (model: GridSortModel) => {
-    setSortModel(model);
-  };
+  const productName =
+    products.find((p) => p.id === backofficeModalRow?.productId)?.title ??
+    backofficeModalRow?.productId ??
+    '';
 
   return (
     <Grid container px={3} mt={3} sx={{ width: '100%' }} bgcolor={'#F4F5F8'}>
@@ -124,9 +121,14 @@ const OnboardingsPage = () => {
           sortModel={sortModel}
           loading={loading}
           onPageChange={handlePageChange}
-          onSortModelChange={handleSortModelChange}
+          onSortModelChange={setSortModel}
         />
       </Grid>
+      <BackofficeNotIntegratedModal
+        open={!!backofficeModalRow}
+        productName={productName}
+        onClose={() => setBackofficeModalRow(null)}
+      />
     </Grid>
   );
 };
