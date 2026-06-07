@@ -1,6 +1,9 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
-import { useRef } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/it';
+import { useState } from 'react';
 
 type Props = {
   label: string;
@@ -12,68 +15,73 @@ type Props = {
 };
 
 export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const displayValue = value ? new Date(`${value}T00:00:00`).toLocaleDateString() : '';
+  const [open, setOpen] = useState(false);
+  const parsedValue = value ? dayjs(value) : null;
 
-  const openPicker = () => {
-    const input = inputRef.current;
-    if (!input) {
-      return;
-    }
-    if ('showPicker' in input && typeof input.showPicker === 'function') {
-      input.showPicker();
-    } else {
-      input.focus();
-      input.click();
-    }
+  const handleChange = (newValue: Dayjs | null) => {
+    onChange(newValue?.isValid() ? newValue.format('YYYY-MM-DD') : '');
   };
 
   return (
-    <FormControl
-      size="small"
-      sx={{
-        flexGrow: grow,
-        flexShrink: 1,
-        flexBasis: 0,
-        minWidth: 0,
-        borderRadius: '8px',
-        backgroundColor: '#FFFFFF',
-        position: 'relative',
-      }}
-    >
-      <InputLabel shrink={!!value}>{label}</InputLabel>
-      <OutlinedInput
-        label={label}
-        readOnly
-        value={displayValue}
-        onClick={openPicker}
-        endAdornment={
-          <ArrowDropDownIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', pointerEvents: 'none' }} />
-        }
-        sx={{
-          cursor: 'pointer',
-          '& input': { cursor: 'pointer' },
-        }}
-      />
-      <input
-        ref={inputRef}
-        type="date"
-        value={value}
-        min={min}
-        max={max}
-        onChange={(e) => onChange(e.target.value)}
-        tabIndex={-1}
-        aria-hidden
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          height: 0,
-          opacity: 0,
-          pointerEvents: 'none',
-        }}
-      />
-    </FormControl>
+    <DatePicker
+      label={label}
+      value={parsedValue}
+      onChange={handleChange}
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      inputFormat="DD/MM/YYYY"
+      minDate={min ? dayjs(min) : undefined}
+      maxDate={max ? dayjs(max) : undefined}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          size="small"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setOpen(true);
+          }}
+          InputLabelProps={{
+            ...params.InputLabelProps,
+            shrink: !!value || open,
+          }}
+          inputProps={{
+            ...params.inputProps,
+            readOnly: true,
+            tabIndex: -1,
+          }}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <InputAdornment position="end" sx={{ marginRight: '7px' }}>
+                <ArrowDropDownIcon
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.54)',
+                    fontSize: '1.5rem',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            flexGrow: grow,
+            flexShrink: 1,
+            flexBasis: 0,
+            minWidth: 0,
+            borderRadius: '8px',
+            backgroundColor: '#FFFFFF',
+            cursor: 'pointer',
+            '& .MuiInputBase-root': {
+              cursor: 'pointer',
+            },
+            '& .MuiInputBase-input': {
+              cursor: 'pointer',
+              paddingRight: '32px !important',
+            },
+          }}
+        />
+      )}
+    />
   );
 };

@@ -11,7 +11,10 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import 'dayjs/locale/it';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -83,17 +86,18 @@ export const FiltersBar = ({ products }: Props) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '10px',
-        width: '100%', // stretch to available width
-        height: '48px',
-      }}
-    >
-      {filtersConfig.map((filter) => {
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="it">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '10px',
+          width: '100%', // stretch to available width
+          height: '48px',
+        }}
+      >
+        {filtersConfig.map((filter) => {
         const flexGrow = filter.grow ?? 1;
 
         if (filter.type === 'text') {
@@ -253,22 +257,23 @@ export const FiltersBar = ({ products }: Props) => {
         return null;
       })}
 
-      <Button
-        variant="contained"
-        onClick={applyFilters}
-        size="small"
-        sx={{ flexShrink: 0, backgroundColor: '#0B3EE3', borderRadius: '8px' }}
-      >
-        {t('onboardingsPage.filters.filtersButton')}
-      </Button>
-      <ButtonNaked
-        onClick={resetFilters}
-        color="primary"
-        size="small"
-        sx={{ flexShrink: 0, color: '#0B3EE3' }}
-      >
-        {t('onboardingsPage.filters.resetButton')}
-      </ButtonNaked>
-    </Box>
+        <Button
+          variant="contained"
+          onClick={applyFilters}
+          size="small"
+          sx={{ flexShrink: 0, backgroundColor: '#0B3EE3', borderRadius: '8px' }}
+        >
+          {t('onboardingsPage.filters.filtersButton')}
+        </Button>
+        <ButtonNaked
+          onClick={resetFilters}
+          color="primary"
+          size="small"
+          sx={{ flexShrink: 0, color: '#0B3EE3' }}
+        >
+          {t('onboardingsPage.filters.resetButton')}
+        </ButtonNaked>
+      </Box>
+    </LocalizationProvider>
   );
 };
