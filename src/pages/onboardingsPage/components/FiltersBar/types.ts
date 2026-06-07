@@ -1,6 +1,8 @@
 export type Filters = {
   search: string;
   productIds: Array<string>;
+  createdFromDate: string;
+  createdToDate: string;
   institutionTypeIds: Array<string>;
   stateIds: Array<string>;
   page: number;
@@ -21,5 +23,11 @@ export type FilterConfig =
 
       options: Array<{ label: string; value: string }>;
       multiple: boolean;
+      grow?: number;
+    }
+  | {
+      type: 'date';
+      key: 'createdFromDate' | 'createdToDate';
+      label: string;
       grow?: number;
     };

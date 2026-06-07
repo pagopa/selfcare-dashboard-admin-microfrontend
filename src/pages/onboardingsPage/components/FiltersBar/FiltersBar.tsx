@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Product } from '../../../../model/Product';
+import { DateFilterField } from './DateFilterField';
 import { getFiltersConfig } from './filtersConfig';
 import { parseFilters, serializeFilters } from './filtersUtils';
 import { Filters } from './types';
@@ -65,6 +66,8 @@ export const FiltersBar = ({ products }: Props) => {
     const empty: Filters = {
       search: '',
       productIds: [],
+      createdFromDate: '',
+      createdToDate: '',
       institutionTypeIds: [],
       stateIds: [],
       page: 0,
@@ -114,6 +117,20 @@ export const FiltersBar = ({ products }: Props) => {
                 borderRadius: '8px',
                 backgroundColor: '#FFFFFF',
               }}
+            />
+          );
+        }
+
+        if (filter.type === 'date') {
+          return (
+            <DateFilterField
+              key={filter.key}
+              label={filter.label}
+              value={draftFilters[filter.key]}
+              onChange={(value) => handleFilterChange(filter.key, value)}
+              min={filter.key === 'createdToDate' ? draftFilters.createdFromDate : undefined}
+              max={filter.key === 'createdFromDate' ? draftFilters.createdToDate : undefined}
+              grow={flexGrow}
             />
           );
         }

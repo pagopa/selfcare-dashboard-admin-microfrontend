@@ -58,6 +58,8 @@ export default {
     filters: {
       search: 'Nome ente o Codice Fiscale',
       products: 'Prodotto',
+      createdFromDate: 'Data da',
+      createdToDate: 'Data a',
       institutionTypes: 'Tipologia ente',
       status: 'Stato dell’accordo',
       filtersButton: 'Filtra',

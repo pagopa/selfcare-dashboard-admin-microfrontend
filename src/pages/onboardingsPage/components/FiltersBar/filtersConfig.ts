@@ -32,6 +32,18 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     options: getProductOptions(products),
   },
   {
+    type: 'date',
+    key: 'createdFromDate',
+    label: t('onboardingsPage.filters.createdFromDate'),
+    grow: 0.8,
+  },
+  {
+    type: 'date',
+    key: 'createdToDate',
+    label: t('onboardingsPage.filters.createdToDate'),
+    grow: 0.8,
+  },
+  {
     type: 'select',
     key: 'institutionTypeIds',
     label: t('onboardingsPage.filters.institutionTypes'),
