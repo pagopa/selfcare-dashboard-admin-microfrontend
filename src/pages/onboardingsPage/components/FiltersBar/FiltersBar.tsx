@@ -25,11 +25,11 @@ import { getFiltersConfig } from './filtersConfig';
 import { parseFilters, serializeFilters } from './filtersUtils';
 import { Filters } from './types';
 
-// Patch Italian locale: start week on Sunday + 3-letter day abbreviations (Dom Lun Mar...)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const itLocale = dayjs.Ls['it'] as any;
-itLocale.weekStart = 0;
-itLocale.weekdaysMin = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+dayjs.locale({
+  ...dayjs.Ls.it,
+  weekStart: 0,
+  weekdaysMin: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+});
 
 type Props = {
   products: Array<Product>;
