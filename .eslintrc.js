@@ -81,7 +81,13 @@ module.exports = {
     'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
     'react-hooks/rules-of-hooks': 'warn',
     'functional/no-let': 'error',
-    'functional/immutable-data': 'error',
+    'functional/immutable-data': [
+      'error',
+      {
+        // Ignore refs and module exports as they are not really mutable data but references to mutable data
+        ignorePattern: ['^.*Ref\\.current$', '^module\\.exports$'],
+      },
+    ],
     'sonarjs/no-small-switch': 'off',
     'sonarjs/no-duplicate-string': 'off',
     'sonarjs/no-nested-template-literals': 'warn',
