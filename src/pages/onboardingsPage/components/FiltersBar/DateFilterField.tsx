@@ -19,7 +19,7 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
   const parsedValue = value ? dayjs(value) : null;
 
   const handleChange = (newValue: Dayjs | null) => {
-    onChange(newValue?.isValid() ? newValue.format('YYYY-MM-DD') : '');
+    onChange(newValue?.isValid() ? newValue.toISOString() : '');
   };
 
   return (
@@ -30,16 +30,23 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      inputFormat="DD/MM/YYYY"
+      inputFormat=""
       minDate={min ? dayjs(min) : undefined}
       maxDate={max ? dayjs(max) : undefined}
+      PaperProps={{
+        sx: {
+          '& .MuiPickersCalendarHeader-label': {
+            textTransform: 'capitalize',
+          },
+        },
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
           size="small"
           onMouseDown={(e) => {
             e.preventDefault();
-            setOpen(true);
+            setOpen((prev) => !prev);
           }}
           InputLabelProps={{
             ...params.InputLabelProps,
@@ -47,18 +54,21 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
           }}
           inputProps={{
             ...params.inputProps,
+            value: parsedValue?.isValid() ? parsedValue.format('DD/MM/YYYY') : '',
             readOnly: true,
             tabIndex: -1,
           }}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
-              <InputAdornment position="end" sx={{ marginRight: '7px' }}>
+              <InputAdornment position="end">
                 <ArrowDropDownIcon
                   sx={{
                     color: 'rgba(0, 0, 0, 0.54)',
                     fontSize: '1.5rem',
                     pointerEvents: 'none',
+                    transition: 'transform 0.2s ease',
+                    transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}
                 />
               </InputAdornment>
@@ -77,7 +87,6 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
             },
             '& .MuiInputBase-input': {
               cursor: 'pointer',
-              paddingRight: '32px !important',
             },
           }}
         />

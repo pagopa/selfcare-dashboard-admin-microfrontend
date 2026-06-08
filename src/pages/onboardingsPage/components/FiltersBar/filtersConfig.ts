@@ -48,7 +48,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     key: 'institutionTypeIds',
     label: t('onboardingsPage.filters.institutionTypes'),
     multiple: true,
-    grow: 1.3,
+    grow: 1,
     options: [
       { label: t('common.institutionType.descriptions.pa'), value: 'PA' },
       { label: t('common.institutionType.descriptions.gsp'), value: 'GSP' },
@@ -71,7 +71,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     key: 'stateIds',
     label: t('onboardingsPage.filters.status'),
     multiple: true,
-    grow: 0.7,
+    grow: 0.8,
     options: [
       { label: t('onboardingsPage.filters.statusOptions.toBeValidated'), value: 'TOBEVALIDATED' },
       { label: t('onboardingsPage.filters.statusOptions.pending'), value: 'PENDING' },
