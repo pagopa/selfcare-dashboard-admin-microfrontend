@@ -53,7 +53,9 @@ export const PartyRegisrtyApi = {
     statuses: Array<string>,
     page: number,
     pageSize: number,
-    orderBy?: Array<string>
+    orderBy?: Array<string>,
+    createdFromDate?: string,
+    createdToDate?: string
   ): Promise<OnboardingIndexSearchResource> => {
     const result = await apiClient.searchOnboardings({
       searchText,
@@ -63,6 +65,8 @@ export const PartyRegisrtyApi = {
       page,
       pageSize,
       orderBy,
+      createdFromDate,
+      createdToDate,
     });
     return extractResponse(result, 200, onRedirectToLogin);
   },

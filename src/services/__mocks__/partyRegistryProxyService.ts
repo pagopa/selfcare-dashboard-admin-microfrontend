@@ -7,8 +7,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
     id: '3',
     description:
       'Istituzione 1asdsad adsad asbdas sad adas dasdas das adasd asdasdsa , adsa dsad a,as,d asd asd asdas,a asdas sadasd asd asdas,das dad,asa,d sa asd asdsad asdsa dsadas dsadasd sad sadasdsad asdasdasdsa dsadasdasdasd sadasd asd sad sad asd asd nasdkjbasjkdfhsakjfdbakjsbdkjsabjkdj asd asd ,sa ,d asd ',
-    institutionTypes: ['PA'],
-    products: ['prod-io', 'prod-pagopa'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -16,8 +14,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654321',
     description: 'Istituzione 2',
-    institutionTypes: ['PA'],
-    products: ['prod-interop', 'prod-interop-atst'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -25,8 +21,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654322',
     description: 'Istituzione 3',
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -34,8 +28,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654322',
     description: 'Istituzione 3',
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -43,8 +35,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654322',
     description: 'Istituzione 4',
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -52,8 +42,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654322',
     description: 'Istituzione 5',
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -61,8 +49,6 @@ export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
   {
     id: '10987654322',
     description: 'Istituzione 6',
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
     taxCode: '12345678901',
     parentDescription: 'Ente di appartenenza',
     lastModified: new Date(),
@@ -165,7 +151,9 @@ const applyFilters = (
   searchText: string,
   products: Array<string>,
   institutionTypes: Array<string>,
-  statuses: Array<string>
+  statuses: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
   let filtered = [...onboardings];
@@ -187,6 +175,14 @@ const applyFilters = (
   }
   if (statuses.length > 0) {
     filtered = filtered.filter((o) => o.status && statuses.includes(o.status));
+  }
+  if (createdFromDate) {
+    const from = new Date(createdFromDate);
+    filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) >= from);
+  }
+  if (createdToDate) {
+    const to = new Date(createdToDate);
+    filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
   }
 
   return filtered;
@@ -243,19 +239,25 @@ export const mockedSearchOnboardingsService = (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  orderBy?: Array<string>
+  orderBy?: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Promise<OnboardingIndexSearchResource> => {
   console.log('Mocked search onboardings with', {
     searchText,
     products,
     orderBy,
+    createdFromDate,
+    createdToDate,
   });
   const filtered = applyFilters(
     mockedOnboardings,
     searchText,
     products,
     institutionTypes,
-    statuses
+    statuses,
+    createdFromDate,
+    createdToDate
   );
   const sorted = applySort(filtered, orderBy);
   const paged = applyPagination(sorted, page, pageSize);
