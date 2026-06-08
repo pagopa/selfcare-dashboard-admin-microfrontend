@@ -19,7 +19,7 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
   const parsedValue = value ? dayjs(value) : null;
 
   const handleChange = (newValue: Dayjs | null) => {
-    onChange(newValue?.isValid() ? newValue.toISOString() : '');
+    onChange(newValue?.isValid() ? newValue.format('YYYY-MM-DD') : '');
   };
 
   return (
