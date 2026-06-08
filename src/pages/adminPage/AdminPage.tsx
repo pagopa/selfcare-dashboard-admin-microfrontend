@@ -72,7 +72,8 @@ const AdminPage = () => {
             return;
           }
           setLoading(false);
-          setOpen(true);
+          setOpen(true);      // force close
+          setTimeout(() => setOpen(true), 0);
         });
     };
 
