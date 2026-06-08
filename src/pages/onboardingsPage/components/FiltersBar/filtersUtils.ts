@@ -4,7 +4,7 @@ export const toApiDateTime = (date: string, endOfDay = false): string | undefine
   if (!date) {
     return undefined;
   }
-  return endOfDay ? `${date}T23:59:59` : `${date}T00:00:00`;
+  return endOfDay ? `${date}T23:59:59Z` : `${date}T00:00:00Z`;
 };
 
 export const parseFilters = (search: string): Filters => {
