@@ -120,7 +120,9 @@ const applyFilters = (
   searchText: string,
   products: Array<string>,
   institutionTypes: Array<string>,
-  statuses: Array<string>
+  statuses: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
   let filtered = [...onboardings];
@@ -142,6 +144,14 @@ const applyFilters = (
   }
   if (statuses.length > 0) {
     filtered = filtered.filter((o) => o.status && statuses.includes(o.status));
+  }
+  if (createdFromDate) {
+    const from = new Date(createdFromDate);
+    filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) >= from);
+  }
+  if (createdToDate) {
+    const to = new Date(createdToDate);
+    filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
   }
 
   return filtered;
@@ -198,14 +208,18 @@ export const mockedSearchOnboardingsService = (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  orderBy?: Array<string>
+  orderBy?: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Promise<OnboardingIndexSearchResource> => {
   const filtered = applyFilters(
     mockedOnboardings,
     searchText,
     products,
     institutionTypes,
-    statuses
+    statuses,
+    createdFromDate,
+    createdToDate
   );
   const sorted = applySort(filtered, orderBy);
   const paged = applyPagination(sorted, page, pageSize);

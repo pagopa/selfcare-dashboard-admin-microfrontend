@@ -13,7 +13,7 @@ import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { FiltersBar } from './components/FiltersBar/FiltersBar';
-import { parseFilters, serializeFilters } from './components/FiltersBar/filtersUtils';
+import { parseFilters, serializeFilters, toApiDateTime } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/columns';
 
@@ -67,7 +67,9 @@ const OnboardingsPage = () => {
       filters.stateIds,
       filters.page,
       filters.size,
-      orderBy
+      orderBy,
+      toApiDateTime(filters.createdFromDate),
+      toApiDateTime(filters.createdToDate, true)
     )
       .then((response) => {
         setRows([...(response.onboardings ?? [])]);

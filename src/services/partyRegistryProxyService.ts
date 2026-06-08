@@ -23,7 +23,9 @@ export const searchOnboardingsService = async (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  orderBy?: Array<string>
+  orderBy?: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
@@ -34,7 +36,9 @@ export const searchOnboardingsService = async (
       statuses,
       page,
       pageSize,
-      orderBy
+      orderBy,
+      createdFromDate,
+      createdToDate
     );
   } else {
     return PartyRegisrtyApi.searchOnboardings(
@@ -44,7 +48,9 @@ export const searchOnboardingsService = async (
       statuses,
       page,
       pageSize,
-      orderBy
+      orderBy,
+      createdFromDate,
+      createdToDate
     );
   }
 };
