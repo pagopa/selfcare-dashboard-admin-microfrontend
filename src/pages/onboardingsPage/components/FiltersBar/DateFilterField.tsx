@@ -33,10 +33,28 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
       inputFormat=""
       minDate={min ? dayjs(min) : undefined}
       maxDate={max ? dayjs(max) : undefined}
+      dayOfWeekFormatter={(day) => {
+        const map: Record<string, string> = {
+          Do: 'Dom', Lu: 'Lun', Ma: 'Mar', Me: 'Mer', Gi: 'Gio', Ve: 'Ven', Sa: 'Sab',
+        };
+        return map[day] ?? day;
+      }}
       PaperProps={{
         sx: {
           '& .MuiPickersCalendarHeader-label': {
             textTransform: 'capitalize',
+          },
+          '& .MuiPickersDay-root.Mui-selected': {
+            backgroundColor: '#0B3EE3 !important',
+            '&:hover': {
+              backgroundColor: '#0B3EE3',
+            },
+          },
+          '& .MuiPickersArrowSwitcher-button': {
+            color: '#0B3EE3',
+          },
+          '& .MuiPickersCalendarHeader-switchViewButton': {
+            color: 'rgba(0, 0, 0, 0.87)',
           },
         },
       }}
@@ -87,6 +105,13 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
             },
             '& .MuiInputBase-input': {
               cursor: 'pointer',
+            },
+            '& .MuiInputAdornment-positionEnd': {
+              marginLeft: '2px',
+              width: '20px',
+              minWidth: '20px',
+              maxWidth: '20px',
+              flexShrink: 0,
             },
           }}
         />
