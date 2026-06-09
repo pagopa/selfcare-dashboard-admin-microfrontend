@@ -4,8 +4,8 @@ import { PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { debounce, DebouncedFunc } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
@@ -17,55 +17,72 @@ import { commonStyles, CustomListbox } from './utils/styles';
 const AdminPage = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<SearchServiceInstitution>>([]);
+  const requestIdRef = useRef(0);
+  const debouncedSearchRef = useRef<DebouncedFunc<(searchText: string) => void> | null>(null);
 
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
+  const addErrorRef = useRef(addError);
   const history = useHistory();
+
+  addErrorRef.current = addError;
 
   useEffect(() => {
     trackEvent('BACKSTAGE_DASHBOARD');
   }, []);
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((searchText: string) => {
-        if (searchText.length < 3) {
+  useEffect(() => {
+    const searchInstitutions = (searchText: string) => {
+      const requestId = ++requestIdRef.current;
+
+      if (searchText.length < 3) {
+        setOptions([]);
+        setLoading(false);
+        setOpen(false);
+        return;
+      }
+
+      setLoading(true);
+
+      searchInstitutionsService(searchText)
+        .then((results) => {
+          if (requestId !== requestIdRef.current) {
+            return;
+          }
+          setOptions(results);
+        })
+        .catch((error) => {
+          if (requestId !== requestIdRef.current) {
+            return;
+          }
           setOptions([]);
-          return;
-        }
-        setLoading(true);
 
-        searchInstitutionsService(searchText)
-          .then((results) => {
-            setOptions(results);
-          })
-          .catch((error) => {
-            setOptions([]);
-
-            addError({
-              id: `searchInstitutions-${searchText}-api-error`,
-              blocking: false,
-              techDescription: `Search institutions with text: ${searchText} not found`,
-              toNotify: false,
-              error: error as Error,
-            });
-          })
-          .finally(() => {
-            setLoading(false);
-            setOpen(true);
+          addErrorRef.current({
+            id: `searchInstitutions-${searchText}-api-error`,
+            blocking: false,
+            techDescription: `Search institutions with text: ${searchText} not found`,
+            toNotify: false,
+            error: error as Error,
           });
-      }, 400),
+        })
+        .finally(() => {
+          if (requestId !== requestIdRef.current) {
+            return;
+          }
+          setLoading(false);
+          setOpen(false);      // force close
+          setTimeout(() => setOpen(true), 0);
+        });
+    };
 
-    []
-  );
+    debouncedSearchRef.current = debounce(searchInstitutions, 400);
 
-  useEffect(
-    () => () => {
-      debouncedSearch.cancel();
-    },
-    [debouncedSearch]
-  );
+    return () => {
+      debouncedSearchRef.current?.cancel();
+    };
+  }, []);
 
   return (
     <Grid px={3} mt={3} sx={{ width: '100%' }}>
@@ -89,6 +106,9 @@ const AdminPage = () => {
           id="search-institutions-autocomplete"
           forcePopupIcon={false}
           open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          inputValue={inputValue}
           onChange={(_, newValue) => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
@@ -103,12 +123,13 @@ const AdminPage = () => {
             }
           }}
           onInputChange={(_, newInputValue, reason) => {
+            setInputValue(newInputValue);
             if (reason === 'input') {
-              debouncedSearch(newInputValue);
+              debouncedSearchRef.current?.(newInputValue);
             }
           }}
-          onBlur={() => setOpen(false)}
           options={options}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           getOptionLabel={(option) => option.description || ''}
           noOptionsText={
             open && !loading ? (

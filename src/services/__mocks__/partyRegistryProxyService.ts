@@ -2,105 +2,6 @@ import { OnboardingIndexResource } from '../../api/generated/party-registry-prox
 import { OnboardingIndexSearchResource } from '../../api/generated/party-registry-proxy/OnboardingIndexSearchResource';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
 
-export const mockedSearchInstitutions: Array<SearchServiceInstitution> = [
-  {
-    id: '3',
-    description:
-      'Istituzione 1asdsad adsad asbdas sad adas dasdas das adasd asdasdsa , adsa dsad a,as,d asd asd asdas,a asdas sadasd asd asdas,das dad,asa,d sa asd asdsad asdsa dsadas dsadasd sad sadasdsad asdasdasdsa dsadasdasdasd sadasd asd sad sad asd asd nasdkjbasjkdfhsakjfdbakjsbdkjsabjkdj asd asd ,sa ,d asd ',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654321',
-    description: 'Istituzione 2',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654322',
-    description: 'Istituzione 3',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654322',
-    description: 'Istituzione 3',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654322',
-    description: 'Istituzione 4',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654322',
-    description: 'Istituzione 5',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-  {
-    id: '10987654322',
-    description: 'Istituzione 6',
-    taxCode: '12345678901',
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  },
-];
-
-export const mockedEmptySearchInstitutions: Array<SearchServiceInstitution> = [];
-
-export const mockedLongSearchInstitutions: Array<SearchServiceInstitution> = Array.from(
-  { length: 100 },
-  (_, i) => ({
-    id: `1234567890${i}`,
-    description: `Istituzione ${i}`,
-    institutionTypes: ['PA'],
-    products: ['PRODOTTO_1', 'PRODOTTO_2'],
-    taxCode: `1234567890${i}`,
-    parentDescription: 'Ente di appartenenza',
-    lastModified: new Date(),
-  })
-);
-
-export const mockedSearchInstitutionsService = (
-  searchText: string
-): Promise<Array<SearchServiceInstitution>> => {
-  const selectedInstitution = mockedSearchInstitutions.filter((inst) =>
-    inst.description?.includes(searchText)
-  );
-  if (selectedInstitution) {
-    return Promise.resolve(selectedInstitution);
-  } else {
-    return Promise.reject(new Error('Institution not found!'));
-  }
-};
-
-const DATES = [
-  new Date(2025, 0, 10),
-  new Date(2025, 1, 15),
-  new Date(2025, 2, 20),
-  new Date(2025, 3, 25),
-  new Date(2025, 4, 30),
-];
-const STATUSES = [
-  'PENDING',
-  'TOBEVALIDATED',
-  'COMPLETED',
-  'SUSPENDED',
-  'REJECTED',
-  'DELETED',
-  'FAILED',
-] as const;
-const PRODUCTS = ['prod-io', 'prod-pagopa', 'prod-interop', 'prod-pn', 'prod-cgn'] as const;
-const INSTITUTION_TYPES = ['PA', 'GSP', 'PSP', 'PT', 'SCP', 'SA'] as const;
 const INSTITUTION_NAMES = [
   'Comune di Roma',
   'Comune di Milano',
@@ -129,6 +30,74 @@ const INSTITUTION_NAMES = [
   'Comune di Trieste',
 ] as const;
 const PARENT_NAMES = ['Ente di appartenenza 1', 'Ente di appartenenza 2'] as const;
+
+const MOCK_SEARCH_DELAY_MS = 500;
+
+export const mockedSearchInstitutions: Array<SearchServiceInstitution> = INSTITUTION_NAMES.map(
+  (name, i) => ({
+    id: `inst-${String(i + 1).padStart(5, '0')}`,
+    description: name,
+    taxCode: `${80000000000 + i}`,
+    parentDescription: PARENT_NAMES[i % PARENT_NAMES.length],
+    lastModified: new Date(2025, i % 12, 1 + (i % 28)),
+  })
+);
+
+export const mockedEmptySearchInstitutions: Array<SearchServiceInstitution> = [];
+
+export const mockedLongSearchInstitutions: Array<SearchServiceInstitution> = Array.from(
+  { length: 100 },
+  (_, i) => ({
+    id: `1234567890${i}`,
+    description: `Istituzione ${i}`,
+    institutionTypes: ['PA'],
+    products: ['PRODOTTO_1', 'PRODOTTO_2'],
+    taxCode: `1234567890${i}`,
+    parentDescription: 'Ente di appartenenza',
+    lastModified: new Date(),
+  })
+);
+
+const matchesInstitutionSearch = (
+  institution: SearchServiceInstitution,
+  searchText: string
+): boolean => {
+  const lower = searchText.toLowerCase();
+  return [institution.description, institution.parentDescription, institution.taxCode, institution.id]
+    .filter(Boolean)
+    .some((field) => field!.toLowerCase().includes(lower));
+};
+
+export const mockedSearchInstitutionsService = (
+  searchText: string
+): Promise<Array<SearchServiceInstitution>> => {
+  const results = mockedSearchInstitutions.filter((institution) =>
+    matchesInstitutionSearch(institution, searchText)
+  );
+
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(results), MOCK_SEARCH_DELAY_MS);
+  });
+};
+
+const DATES = [
+  new Date(2025, 0, 10),
+  new Date(2025, 1, 15),
+  new Date(2025, 2, 20),
+  new Date(2025, 3, 25),
+  new Date(2025, 4, 30),
+];
+const STATUSES = [
+  'PENDING',
+  'TOBEVALIDATED',
+  'COMPLETED',
+  'SUSPENDED',
+  'REJECTED',
+  'DELETED',
+  'FAILED',
+] as const;
+const PRODUCTS = ['prod-io', 'prod-pagopa', 'prod-interop', 'prod-pn', 'prod-cgn'] as const;
+const INSTITUTION_TYPES = ['PA', 'GSP', 'PSP', 'PT', 'SCP', 'SA'] as const;
 
 export const mockedOnboardings: Array<OnboardingIndexResource> = Array.from(
   { length: 25 },
@@ -243,13 +212,6 @@ export const mockedSearchOnboardingsService = (
   createdFromDate?: string,
   createdToDate?: string
 ): Promise<OnboardingIndexSearchResource> => {
-  console.log('Mocked search onboardings with', {
-    searchText,
-    products,
-    orderBy,
-    createdFromDate,
-    createdToDate,
-  });
   const filtered = applyFilters(
     mockedOnboardings,
     searchText,
