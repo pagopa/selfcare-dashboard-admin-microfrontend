@@ -56,13 +56,17 @@ export default {
     subtitle:
       'Qui puoi controllare i dettagli delle adesioni ai prodotti PagoPA da parte dei diversi enti.',
     filters: {
+      title: 'Filtra',
       search: 'Nome ente o Codice Fiscale',
       products: 'Prodotto',
+      requestDate: 'DATA DI RICHIESTA',
+      requestDateTooltip: 'Data in cui l’ente ha fatto la richiesta di adesione al prodotto',
       createdFromDate: 'Dal',
       createdToDate: 'Al',
       institutionTypes: 'Tipologia ente',
       status: 'Stato dell’accordo',
       filtersButton: 'Filtra',
+      cancelFiltersButton: 'Annulla filtri',
       resetButton: 'Rimuovi filtri',
       statusOptions: {
         request: 'Richiesta ricevuta',

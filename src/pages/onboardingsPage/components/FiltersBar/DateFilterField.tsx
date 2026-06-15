@@ -1,4 +1,4 @@
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { InputAdornment, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
@@ -80,7 +80,7 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
             ...params.InputProps,
             endAdornment: (
               <InputAdornment position="end">
-                <ArrowDropDownIcon
+                <KeyboardArrowDownIcon
                   sx={{
                     color: 'rgba(0, 0, 0, 0.54)',
                     fontSize: '1.5rem',
