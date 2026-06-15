@@ -1,7 +1,10 @@
 import { OnboardingIndexSearchResource } from '../api/generated/party-registry-proxy/OnboardingIndexSearchResource';
 import { SearchServiceInstitution } from '../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { PartyRegisrtyApi } from '../api/PartyRegistryProxyApiClient';
-import { mockedSearchInstitutionsService, mockedSearchOnboardingsService } from './__mocks__/partyRegistryProxyService';
+import {
+  mockedSearchInstitutionsService,
+  mockedSearchOnboardingsService,
+} from './__mocks__/partyRegistryProxyService';
 
 export const searchInstitutionsService = async (
   searchText: string
@@ -20,7 +23,9 @@ export const searchOnboardingsService = async (
   statuses: Array<string>,
   page: number,
   pageSize: number,
-  // orderBy: string
+  orderBy?: Array<string>,
+  createdFromDate?: string,
+  createdToDate?: string
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
   if (import.meta.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
@@ -31,7 +36,9 @@ export const searchOnboardingsService = async (
       statuses,
       page,
       pageSize,
-      // orderBy
+      orderBy,
+      createdFromDate,
+      createdToDate
     );
   } else {
     return PartyRegisrtyApi.searchOnboardings(
@@ -41,7 +48,9 @@ export const searchOnboardingsService = async (
       statuses,
       page,
       pageSize,
-      // orderBy
+      orderBy,
+      createdFromDate,
+      createdToDate
     );
   }
 };

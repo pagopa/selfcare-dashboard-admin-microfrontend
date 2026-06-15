@@ -12,13 +12,17 @@ export default {
         as: 'Società di assicurazione',
         pg: 'Azienda',
         prv: 'Privato',
+        prv_pf: 'Ditte individuali',
         gpu: 'Gestore di pubblica utilità e/o di interesse generale',
         scec: 'Società in conto economico consolidato',
+        rec: 'Recapitista',
+        con: 'Consolidatore',
+        oth: 'Altro',
       },
     },
   },
   adminPage: {
-    title: 'Panoramica enti',
+    title: 'Dashboard',
     subtitle:
       'Visualizza e gestisci gli enti aderenti ai prodotti PagoPA. Per operare su uno di questi clicca sul nome in tabella.',
     searchInstitutions: {
@@ -39,6 +43,12 @@ export default {
       agreementStatus: "Stato dell'accordo",
       activeStatus: 'Attivo',
       backOffice: 'Vedi Back-office',
+      accountPage: 'Dettaglio adesione',
+    },
+    backofficeNotIntegratedModal: {
+      title: 'Il back-office non è ancora integrato in Area Riservata Backstage.',
+      description: 'Ci dispiace, <1>{{productName}}</1> non è disponibile al momento.',
+      close: 'Chiudi',
     },
   },
   onboardingsPage: {
@@ -48,6 +58,8 @@ export default {
     filters: {
       search: 'Nome ente o Codice Fiscale',
       products: 'Prodotto',
+      createdFromDate: 'Dal',
+      createdToDate: 'Al',
       institutionTypes: 'Tipologia ente',
       status: 'Stato dell’accordo',
       filtersButton: 'Filtra',
@@ -60,12 +72,16 @@ export default {
         failed: 'In errore',
         rejected: 'Rifiutato',
         deleted: 'Disattivo',
+        expired: 'Scaduta',
       },
     },
     table: {
       institutionName: 'Ente',
       product: 'Prodotto',
       institutionType: 'Tipologia ente',
+      institutionTypeTooltip: 'Tipologia con cui gli enti sono autodichiarati nella richiesta di adesione',
+      requestDate: 'Data di richiesta',
+      requestDateTooltip: 'Data in cui l\'ente ha fatto la richiesta di adesione al prodotto',
       status: "Stato dell'accordo",
       loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
       noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',

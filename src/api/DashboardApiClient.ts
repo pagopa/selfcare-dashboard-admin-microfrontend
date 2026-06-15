@@ -9,14 +9,16 @@ import { store } from '../redux/store';
 import { ENV } from '../utils/env';
 import { WithDefaultsT, createClient } from './generated/b4f-dashboard/client';
 import { InstitutionResource } from './generated/b4f-dashboard/InstitutionResource';
+import { ProductRolePermissionsList } from './generated/b4f-dashboard/ProductRolePermissionsList';
 import { ProductsResource } from './generated/b4f-dashboard/ProductsResource';
 
-const MOCK_BEARER_TOKEN = storageTokenOps.read();
-
-const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => wrappedOperation({
-  ...params,
-  bearerAuth: `Bearer ${MOCK_BEARER_TOKEN}`,
-});
+const withBearerAndPartyId: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
+  const token = storageTokenOps.read();
+  return wrappedOperation({
+    ...params,
+    bearerAuth: `Bearer ${token}`,
+  });
+};
 
 const apiClient = createClient({
   baseUrl: ENV.URL_API.API_DASHBOARD,
@@ -46,6 +48,13 @@ export const DashboardApi = {
     return extractResponse(result, 200, onRedirectToLogin);
   },
 
+  getAllInstituionById: async (institutionId: string): Promise<InstitutionResource> => {
+    const result = await apiClient.v2GetAllInstitution({
+      institutionId,
+    });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
   getProducts: async (): Promise<Array<ProductsResource>> => {
     const result = await apiClient.getProductsTreeUsingGET({});
     return extractResponse(result, 200, onRedirectToLogin);
@@ -63,6 +72,11 @@ export const DashboardApi = {
       environment,
       lang,
     });
+    return extractResponse(result, 200, onRedirectToLogin);
+  },
+
+  permissionsList: async (): Promise<ProductRolePermissionsList> => {
+    const result = await apiClient.getMyPermissions({});
     return extractResponse(result, 200, onRedirectToLogin);
   },
 };

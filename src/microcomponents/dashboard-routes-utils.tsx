@@ -40,14 +40,16 @@ const reduceDecorators = (
     (WrappedComponent: React.ComponentType<any>) => WrappedComponent
   );
 
-export const buildRoutes = (decorators: DashboardDecoratorsType, rs: RoutesObject) =>
+export const buildRoutes = (decorators: DashboardDecoratorsType | undefined, rs: RoutesObject) =>
   Object.values(rs).map((route, i) => {
     const { path, exact, component: Component, subRoutes } = route;
-    const safeDecorators = decorators ?? ({
-      withProductRolesMap: (WrappedComponent) => WrappedComponent,
-      withSelectedProduct: (WrappedComponent) => WrappedComponent,
-      withSelectedProductRoles: (WrappedComponent) => WrappedComponent,
-    } as DashboardDecoratorsType);
+    const safeDecorators =
+      decorators ??
+      ({
+        withProductRolesMap: (WrappedComponent) => WrappedComponent,
+        withSelectedProduct: (WrappedComponent) => WrappedComponent,
+        withSelectedProductRoles: (WrappedComponent) => WrappedComponent,
+      } as DashboardDecoratorsType);
     const decoratorResult = useMemo(
       () => (Component ? reduceDecorators(safeDecorators, route) : undefined),
       [Component, route, safeDecorators]
@@ -59,7 +61,7 @@ export const buildRoutes = (decorators: DashboardDecoratorsType, rs: RoutesObjec
     return (
       <Route path={path} exact={exact} key={i}>
         {WrappedComponent && <WrappedComponent />}
-        {subRoutes && <Switch>{buildRoutes(decorators, subRoutes)}</Switch>}
+        {subRoutes && <Switch>{buildRoutes(safeDecorators, subRoutes)}</Switch>}
       </Route>
     );
   });

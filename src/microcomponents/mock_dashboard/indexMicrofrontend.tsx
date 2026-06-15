@@ -11,8 +11,8 @@ import '../../locale';
 import AdminPage from '../../pages/adminPage/AdminPage';
 import ContractEditorPage from '../../pages/contractPage/ContractEditorPage';
 import ContractPage from '../../pages/contractPage/ContractPage';
+import OnboardingsPage from '../../pages/onboardingsPage/OnboardingsPage';
 import { store } from '../../redux/store';
-import reportWebVitals from '../../reportWebVitals';
 import { MOCK_USER } from '../../utils/constants';
 import { ENV } from '../../utils/env';
 import App from './App';
@@ -22,7 +22,10 @@ const onSuccessEncoded = encodeURIComponent(location.pathname + location.search)
 // eslint-disable-next-line functional/immutable-data
 CONFIG.MOCKS.MOCK_USER = MOCK_USER;
 // eslint-disable-next-line functional/immutable-data
-CONFIG.URL_FE.LOGIN = `${ENV.URL_FE.LOGIN}?onSuccess=` + onSuccessEncoded;
+const backstageOrLogin = ENV.URL_FE.BACKSTAGE || ENV.URL_FE.LOGIN_GOOGLE || ENV.URL_FE.LOGIN;
+const loginSeparator = backstageOrLogin.includes('?') ? '&' : '?';
+// eslint-disable-next-line functional/immutable-data
+CONFIG.URL_FE.LOGIN = `${backstageOrLogin}${loginSeparator}onSuccess=${onSuccessEncoded}`;
 // eslint-disable-next-line functional/immutable-data
 CONFIG.URL_FE.LOGOUT = ENV.URL_FE.LOGOUT;
 // eslint-disable-next-line functional/immutable-data
@@ -39,7 +42,10 @@ root.render(
             <Route path={ENV.ROUTES.ADMIN_SEARCH} exact={true}>
               <AdminPage />
             </Route>
-            <Route path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
+            <Route path={ENV.ROUTES.ADMIN_ONBOARDINGS} exact={true}>
+              <OnboardingsPage />
+            </Route>
+            <Route path={ENV.ROUTES.ADMIN_REQUEST_DETAIL} exact={false}>
               <App AppRouting={(window as any).AppRouting} store={store} />
             </Route>
             <Route path={ENV.ROUTES.ADMIN_CONTRACT} exact render={() => <ContractPage />} />
@@ -55,7 +61,7 @@ root.render(
             />
             <Route path="*">
               <Redirect
-                to={resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
+                to={resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
                   tokenId: 'tokenId01',
                 })}
               />
@@ -66,8 +72,3 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

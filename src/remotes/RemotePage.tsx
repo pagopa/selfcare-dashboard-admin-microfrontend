@@ -26,6 +26,16 @@ const RemotePage = ({ history, store, i18n, theme, children, CONFIG }: Props) =>
       // eslint-disable-next-line functional/immutable-data
       Object.assign(LOCAL_CONFIG, CONFIG);
 
+      const authUrl = ENV.URL_FE.BACKSTAGE || ENV.URL_FE.LOGIN_GOOGLE;
+      if (authUrl) {
+        const onSuccessEncoded = encodeURIComponent(
+          window.location.pathname + window.location.search
+        );
+        const separator = authUrl.includes('?') ? '&' : '?';
+        // eslint-disable-next-line functional/immutable-data
+        LOCAL_CONFIG.URL_FE.LOGIN = `${authUrl}${separator}onSuccess=${onSuccessEncoded}`;
+      }
+
       setLoaded(true);
     }
   }, []);

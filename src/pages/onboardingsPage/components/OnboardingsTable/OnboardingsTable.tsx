@@ -2,11 +2,8 @@ import { Box, MenuItem, Select, styled } from '@mui/material';
 import { DataGrid, GridColDef, GridRow, GridRowProps, GridSortModel } from '@mui/x-data-grid';
 import CustomPagination from '@pagopa/selfcare-common-frontend/lib/components/CustomPagination';
 import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
-import { useHistory } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
-import { ENV } from '../../../../utils/env';
-import { RenderNoRowsOverlay } from './tableColumns';
+import { RenderNoRowsOverlay } from './columns/cells';
 
 const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
 
@@ -91,6 +88,12 @@ const CustomDataGrid = styled(DataGrid)({
       backgroundColor: `#0B50F7 !important`,
     },
   },
+  '& .MuiDataGrid-sortIcon': {
+    color: 'black',
+  },
+  '& .MuiDataGrid-iconButtonContainer .MuiIconButton-root': {
+    color: 'black',
+  },
 });
 
 type Props = {
@@ -118,24 +121,11 @@ export const OnboardingsTable = ({
   onPageSizeChange,
   onSortModelChange,
 }: Props) => {
-  const history = useHistory();
-
   const pageModel: Page = {
     number: page,
     size: pageSize,
     totalElements: totalRows,
     totalPages: Math.ceil(totalRows / pageSize),
-  };
-
-  const handleRowClick = (params: { row: OnboardingIndexResource }) => {
-    const { onboardingId } = params.row;
-    if (onboardingId) {
-      history.push(
-        resolvePathVariables(ENV.ROUTES.ADMIN_PARTY_DETAIL, {
-          tokenId: onboardingId,
-        })
-      );
-    }
   };
 
   return (
@@ -152,7 +142,7 @@ export const OnboardingsTable = ({
     >
       <CustomDataGrid
         autoHeight
-        rows={rows as Array<OnboardingIndexResource>}
+        rows={rows}
         columns={columns}
         getRowId={(row) => row.onboardingId}
         paginationMode="server"
@@ -169,7 +159,7 @@ export const OnboardingsTable = ({
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        onRowClick={handleRowClick}
+        // onRowClick={handleRowClick}
         components={{
           Row: CustomRow,
           NoRowsOverlay: RenderNoRowsOverlay,

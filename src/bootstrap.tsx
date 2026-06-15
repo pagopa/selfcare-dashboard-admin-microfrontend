@@ -7,7 +7,7 @@ import { DashboardMicrofrontendPageProps } from './microcomponents/dashboard-rou
 if (import.meta.env.DEV) {
   // eslint-disable-next-line functional/immutable-data
   (window as any).AppRouting = (props: DashboardMicrofrontendPageProps) => [
-    <Route key="RoutingAdmin" path={ENV.ROUTES.ADMIN_PARTY_DETAIL} exact={false}>
+    <Route key="RoutingAdmin" path={ENV.ROUTES.ADMIN_REQUEST_DETAIL} exact={false}>
       <RoutingAdmin {...props} />
     </Route>,
   ];

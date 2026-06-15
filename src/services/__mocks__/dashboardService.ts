@@ -117,7 +117,7 @@ export const mockedParties: Array<Party> = [
     urlLogo: 'image',
     partyId: '3',
     digitalAddress: 'comune.roma@pec.it',
-    fiscalCode: 'fiscalCodeRoma',
+    fiscalCode: 'DNTCRL65S67M126L',
     category: 'Comuni e loro Consorzi e Associazioni',
     registeredOffice: 'Piazza della Scala, 2',
     zipCode: '20121',

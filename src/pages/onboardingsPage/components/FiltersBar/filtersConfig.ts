@@ -3,7 +3,7 @@ import { Product } from '../../../../model/Product';
 import { FilterConfig } from './types';
 
 const getProductOptions = (products: Array<Product>): Array<{ label: string; value: string }> => {
-  const activeProducts = products.filter((p) => p.status === 'ACTIVE');
+  const activeProducts = products.filter((p) => p.status === 'ACTIVE' || p.status === 'TESTING');
 
   return activeProducts.flatMap((p) => {
     const productOption = { label: p.title, value: p.id };
@@ -21,7 +21,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     type: 'text',
     key: 'search',
     label: t('onboardingsPage.filters.search'),
-    grow: 2,
+    grow: 1.5,
   },
   {
     type: 'select',
@@ -30,6 +30,18 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     multiple: true,
     grow: 1,
     options: getProductOptions(products),
+  },
+  {
+    type: 'date',
+    key: 'createdFromDate',
+    label: t('onboardingsPage.filters.createdFromDate'),
+    grow: 0.8,
+  },
+  {
+    type: 'date',
+    key: 'createdToDate',
+    label: t('onboardingsPage.filters.createdToDate'),
+    grow: 0.8,
   },
   {
     type: 'select',
@@ -47,8 +59,11 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
       { label: t('common.institutionType.descriptions.as'), value: 'AS' },
       { label: t('common.institutionType.descriptions.pg'), value: 'PG' },
       { label: t('common.institutionType.descriptions.prv'), value: 'PRV' },
+      { label: t('common.institutionType.descriptions.prv_pf'), value: 'PRV_PF' },
       { label: t('common.institutionType.descriptions.gpu'), value: 'GPU' },
       { label: t('common.institutionType.descriptions.scec'), value: 'SCEC' },
+      { label: t('common.institutionType.descriptions.rec'), value: 'REC' },
+      { label: t('common.institutionType.descriptions.con'), value: 'CON' },
     ],
   },
   {
@@ -56,7 +71,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
     key: 'stateIds',
     label: t('onboardingsPage.filters.status'),
     multiple: true,
-    grow: 1,
+    grow: 0.8,
     options: [
       { label: t('onboardingsPage.filters.statusOptions.toBeValidated'), value: 'TOBEVALIDATED' },
       { label: t('onboardingsPage.filters.statusOptions.pending'), value: 'PENDING' },
@@ -64,6 +79,7 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
       { label: t('onboardingsPage.filters.statusOptions.failed'), value: 'FAILED' },
       { label: t('onboardingsPage.filters.statusOptions.rejected'), value: 'REJECTED' },
       { label: t('onboardingsPage.filters.statusOptions.deleted'), value: 'DELETED' },
+      { label: t('onboardingsPage.filters.statusOptions.expired'), value: 'EXPIRED' },
     ],
   },
 ];

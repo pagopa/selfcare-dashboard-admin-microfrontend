@@ -1,18 +1,19 @@
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { useState } from 'react';
-import { SearchServiceInstitution } from '../../../api/generated/party-registry-proxy/SearchServiceInstitution';
 import { useTokenExchange } from '../../../hooks/useTokenExchange';
+import { Party } from '../../../model/Party';
 import { Product } from '../../../model/Product';
+import { OnboardingIndexResource } from '../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 
 type UseProductNavigationProps = {
   products: Array<Product>;
-  selectedInstitution: SearchServiceInstitution | null;
+  partyDetail: Party | OnboardingIndexResource | null;
   hasMoreThanOneInteropEnv: boolean;
 };
 
 export const useProductNavigation = ({
   products,
-  selectedInstitution,
+  partyDetail,
   hasMoreThanOneInteropEnv,
 }: UseProductNavigationProps) => {
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
@@ -45,30 +46,15 @@ export const useProductNavigation = ({
       return;
     }
 
-    void invokeProductBo(
-      productFromConfiguration,
-      selectedInstitution as SearchServiceInstitution,
-      undefined,
-      lang
-    );
+    void invokeProductBo(productFromConfiguration, partyDetail, undefined, lang);
   };
 
   const handleInteropConfirm = () => {
-    void invokeProductBo(
-      interopProduction as Product,
-      selectedInstitution as SearchServiceInstitution,
-      undefined,
-      lang
-    );
+    void invokeProductBo(interopProduction as Product, partyDetail, undefined, lang);
   };
 
   const handleGenericEnvConfirm = (envValue: string) => {
-    void invokeProductBo(
-      activeProduct as Product,
-      selectedInstitution as SearchServiceInstitution,
-      envValue,
-      lang
-    );
+    void invokeProductBo(activeProduct as Product, partyDetail, envValue, lang);
   };
 
   return {

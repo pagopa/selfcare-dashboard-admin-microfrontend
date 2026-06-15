@@ -12,9 +12,6 @@ const requiredEnv = (name: string, value: string | undefined): string => {
 const optionalStringEnv = (value: string | undefined, defaultValue: string): string =>
   value ?? defaultValue;
 
-const optionalBoolEnv = (value: string | undefined, defaultValue = 'false'): boolean =>
-  (value ?? defaultValue) === 'true';
-
 const PUBLIC_URL_INNER = import.meta.env.VITE_PUBLIC_URL || '/dashboard';
 
 export const ENV = {
@@ -22,13 +19,18 @@ export const ENV = {
   i18n: {} as i18n,
   ENV: requiredEnv('VITE_ENV', import.meta.env.VITE_ENV),
   PUBLIC_URL: PUBLIC_URL_INNER,
+  ALLOWED_PREFIXES: optionalStringEnv(import.meta.env.VITE_ALLOWED_PRODUCTS_BACKSTAGE, ''),
 
   ROUTES: {
     ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
+    ADMIN_REQUEST_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
     ADMIN_SEARCH: `${PUBLIC_URL_INNER}/admin/search`,
     ADMIN_PARTY_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
     ADMIN_CONTRACT: `${PUBLIC_URL_INNER}/admin/contract`,
     ADMIN_CONTRACT_EDITOR: `${PUBLIC_URL_INNER}/admin/contract/editor`,
+    ADMIN_SEARCH_DETAIL: `${PUBLIC_URL_INNER}/admin/search/:partyId`,
+    ADMIN_ONBOARDINGS: `${PUBLIC_URL_INNER}/admin/onboardings`,
+    ADMIN_ONBOARDINGS_DETAIL: `${PUBLIC_URL_INNER}/admin/onboardings/:partyId`,
   },
 
   DASHBOARD_ROUTES: {
@@ -41,6 +43,8 @@ export const ENV = {
     ONBOARDING: requiredEnv('VITE_URL_FE_ONBOARDING', import.meta.env.VITE_URL_FE_ONBOARDING),
     LANDING: requiredEnv('VITE_URL_FE_LANDING', import.meta.env.VITE_URL_FE_LANDING),
     ASSISTANCE: requiredEnv('VITE_URL_FE_ASSISTANCE', import.meta.env.VITE_URL_FE_ASSISTANCE),
+    BACKSTAGE: import.meta.env.VITE_URL_FE_BACKSTAGE,
+    LOGIN_GOOGLE: import.meta.env.VITE_GOOGLE_LOGIN_URL || '/auth/google',
   },
 
   URL_DOCUMENTATION: 'https://docs.pagopa.it/area-riservata/',

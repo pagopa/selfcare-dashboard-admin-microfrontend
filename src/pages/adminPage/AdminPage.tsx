@@ -1,175 +1,88 @@
-import { ArrowForward } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  Autocomplete,
-  Chip,
-  CircularProgress,
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { ButtonNaked, PartyAccountItemButton } from '@pagopa/mui-italia';
+import { Autocomplete, CircularProgress, Grid, TextField, Typography } from '@mui/material';
+import { PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
-import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
-import { storageOpsBuilder } from '@pagopa/selfcare-common-frontend/lib/utils/storage-utils';
-import { debounce } from 'lodash';
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
+import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { debounce, DebouncedFunc } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
-import { Party } from '../../model/Party';
-import { Product } from '../../model/Product';
-import { useAppDispatch } from '../../redux/hooks';
-import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
-import { fetchProducts } from '../../services/productService';
+import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
-import AdminPartyInfo from './components/AdminPartyInfo';
-import GenericEnvProductModal from './components/GenericEnvProductModal';
-import ProductAvatarCell from './components/ProductAvatarCell';
-import SessionModalInteropProduct from './components/SessionModalInteropProduct';
-import { useProductFiltering } from './hooks/useProductFiltering';
-import { useProductNavigation } from './hooks/useProductNavigation';
 import { commonStyles, CustomListbox } from './utils/styles';
-import { isProductAllowed } from './utils/utils';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<SearchServiceInstitution>>([]);
-  const [selectedInstitution, setSelectedInstitution] = useState<SearchServiceInstitution | null>(
-    null
-  );
-  const [partyDetail, setPartyDetail] = useState<Party | null>(null);
-  const [products, setProducts] = useState<Array<Product>>([]);
+  const requestIdRef = useRef(0);
+  const debouncedSearchRef = useRef<DebouncedFunc<(searchText: string) => void> | null>(null);
 
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
-  const dispatch = useAppDispatch();
+  const addErrorRef = useRef(addError);
+  const history = useHistory();
 
-  const {
-    productsToShow,
-    interopProductsList,
-    hasMoreThanOneInteropEnv,
-    getProductTitle,
-    getActiveSubProduct,
-  } = useProductFiltering({ partyDetail, products });
-
-  const {
-    activeProduct,
-    interopProduction,
-    openInteropModal,
-    openGenericEnvModal,
-    handleOnboardedProductClick,
-    handleInteropConfirm,
-    handleGenericEnvConfirm,
-    closeInteropModal,
-    closeGenericEnvModal,
-  } = useProductNavigation({ products, selectedInstitution, hasMoreThanOneInteropEnv });
-  
-  useEffect(() => {
-    fetchProducts()
-      .then((products) => {
-        setProducts(products);
-      })
-      .catch((error) => {
-        addError({
-          id: 'fetchProducts-api-error',
-          blocking: false,
-          techDescription: 'Fetch products failed',
-          toNotify: false,
-          error: error as Error,
-        });
-      });
-  }, []);
-
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((searchText: string) => {
-        if (searchText.length < 3) {
-          setOptions([]);
-          return;
-        }
-        setLoading(true);
-
-        searchInstitutionsService(searchText)
-          .then((results) => {
-            setOptions(results);
-          })
-          .catch((error) => {
-            setOptions([]);
-
-            addError({
-              id: `searchInstitutions-${searchText}-api-error`,
-              blocking: false,
-              techDescription: `Search institutions with text: ${searchText} not found`,
-              toNotify: false,
-              error: error as Error,
-            });
-          })
-          .finally(() => {
-            setLoading(false);
-            setOpen(true);
-          });
-      }, 400),
-
-    []
-  );
-
-  useEffect(
-    () => () => {
-      debouncedSearch.cancel();
-    },
-    [debouncedSearch]
-  );
+  addErrorRef.current = addError;
 
   useEffect(() => {
-    const storedInstitution = storageOpsBuilder(
-      'selectedInstitution',
-      'object',
-      false
-    ).read() as SearchServiceInstitution | null;
-    if (storedInstitution) {
-      setSelectedInstitution(storedInstitution);
-    }
+    trackEvent('BACKSTAGE_DASHBOARD');
   }, []);
 
   useEffect(() => {
-    if (selectedInstitution?.id) {
-      fetchPartyDetailsService(selectedInstitution.id)
-        .then((party) => {
-          if (party) {
-            setPartyDetail(party);
-            const productPermissions = [...party.products]
-              .filter((product) => product.productOnBoardingStatus === 'ACTIVE')
-              .map((product) => ({
-                productId: product.productId ?? '',
-                actions: product.userProductActions ? [...product.userProductActions] : [],
-              }));
+    const searchInstitutions = (searchText: string) => {
+      const requestId = ++requestIdRef.current;
 
-            dispatch(setProductPermissions(productPermissions));
+      if (searchText.length < 3) {
+        setOptions([]);
+        setLoading(false);
+        setOpen(false);
+        return;
+      }
+
+      setLoading(true);
+
+      searchInstitutionsService(searchText)
+        .then((results) => {
+          if (requestId !== requestIdRef.current) {
+            return;
           }
+          setOptions(results);
         })
         .catch((error) => {
-          storageOpsBuilder('selectedInstitution', 'object', false).delete();
-          setSelectedInstitution(null);
+          if (requestId !== requestIdRef.current) {
+            return;
+          }
+          setOptions([]);
 
-          addError({
-            id: `fetchPartyDetails-${selectedInstitution.id}-api-error`,
+          addErrorRef.current({
+            id: `searchInstitutions-${searchText}-api-error`,
             blocking: false,
-            techDescription: `Fetch party details for institution id: ${selectedInstitution.id} failed`,
+            techDescription: `Search institutions with text: ${searchText} not found`,
             toNotify: false,
             error: error as Error,
           });
+        })
+        .finally(() => {
+          if (requestId !== requestIdRef.current) {
+            return;
+          }
+          setLoading(false);
+          setOpen(false);      // force close
+          setTimeout(() => setOpen(true), 0);
         });
-    }
-  }, [selectedInstitution]);
+    };
+
+    debouncedSearchRef.current = debounce(searchInstitutions, 400);
+
+    return () => {
+      debouncedSearchRef.current?.cancel();
+    };
+  }, []);
 
   return (
     <Grid px={3} mt={3} sx={{ width: '100%' }}>
@@ -193,23 +106,30 @@ const AdminPage = () => {
           id="search-institutions-autocomplete"
           forcePopupIcon={false}
           open={open}
-          value={selectedInstitution}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          inputValue={inputValue}
           onChange={(_, newValue) => {
-            setSelectedInstitution(newValue);
-            if (newValue) {
-              storageOpsBuilder('selectedInstitution', 'object', false).write(newValue);
-            } else {
-              storageOpsBuilder('selectedInstitution', 'object', false).delete();
-            }
+            trackEvent('BACKSTAGE_PARTY_SELECTION', {
+              party_id: newValue?.id || 'id_undefined',
+            });
             setOpen(false);
+            if (newValue) {
+              history.push(
+                resolvePathVariables(ENV.ROUTES.ADMIN_SEARCH_DETAIL, {
+                  partyId: newValue?.id || '',
+                })
+              );
+            }
           }}
           onInputChange={(_, newInputValue, reason) => {
+            setInputValue(newInputValue);
             if (reason === 'input') {
-              debouncedSearch(newInputValue);
+              debouncedSearchRef.current?.(newInputValue);
             }
           }}
-          onBlur={() => setOpen(false)}
           options={options}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           getOptionLabel={(option) => option.description || ''}
           noOptionsText={
             open && !loading ? (
@@ -274,139 +194,6 @@ const AdminPage = () => {
           }}
         />
       </Grid>
-
-      {partyDetail && selectedInstitution && (
-        <Grid item xs={12} sx={commonStyles}>
-          <AdminPartyInfo partyDetail={partyDetail} selectedInstitution={selectedInstitution} />
-          <Divider sx={{ my: 3 }} />
-
-          {productsToShow && productsToShow.length > 0 && (
-            <>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        {t('adminPage.selectedPartyDetails.product')}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        {t('adminPage.selectedPartyDetails.subscriptionDate')}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        {t('adminPage.selectedPartyDetails.agreementStatus')}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        {t('adminPage.selectedPartyDetails.institutionType')}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }} align="right"></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {productsToShow?.map((onboardedProduct) => {
-                      const productFromConfiguration = products.find(
-                        (p) => p.id === onboardedProduct?.productId
-                      );
-
-                      if (!productFromConfiguration) {
-                        return null;
-                      }
-
-                      return (
-                        <Fragment key={onboardedProduct?.productId}>
-                          <TableRow hover>
-                            <TableCell>
-                              <ProductAvatarCell
-                                onboardedProduct={onboardedProduct}
-                                productFromConfiguration={productFromConfiguration}
-                                getActiveSubProduct={getActiveSubProduct}
-                                getProductTitle={getProductTitle}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              {onboardedProduct?.createdAt
-                                ? new Date(onboardedProduct.createdAt).toLocaleDateString()
-                                : '-'}
-                            </TableCell>
-                            <TableCell>
-                              <Chip
-                                label={t('adminPage.selectedPartyDetails.activeStatus')}
-                                size="small"
-                                color="success"
-                                sx={{ backgroundColor: 'success.light', color: 'success.main' }}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              {t(
-                                `common.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
-                              ) || '-'}
-                            </TableCell>
-                            {isProductAllowed(onboardedProduct.productId || '') && (
-                              <TableCell align="right">
-                                <ButtonNaked
-                                  component="button"
-                                  endIcon={<ArrowForward />}
-                                  onClick={() =>
-                                    handleOnboardedProductClick(productFromConfiguration)
-                                  }
-                                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                                >
-                                  {t('adminPage.selectedPartyDetails.backOffice')}
-                                </ButtonNaked>
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        </Fragment>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <SessionModalInteropProduct
-                open={openInteropModal}
-                title={t('overview.activeProducts.activeProductsEnvModal.title')}
-                message={
-                  <Trans
-                    i18nKey="overview.activeProducts.activeProductsEnvModal.message"
-                    values={{
-                      productTitle: activeProduct?.id?.startsWith('prod-interop')
-                        ? interopProduction?.title
-                        : activeProduct?.title,
-                    }}
-                    components={{ 1: <strong /> }}
-                  >
-                    {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
-                  </Trans>
-                }
-                onConfirmLabel={t('overview.activeProducts.activeProductsEnvModal.enterButton')}
-                onCloseLabel={t('overview.activeProducts.activeProductsEnvModal.backButton')}
-                onConfirm={handleInteropConfirm}
-                handleClose={closeInteropModal}
-                authorizedInteropProducts={interopProductsList?.map((p) => p.productId || '')}
-                products={products}
-                party={selectedInstitution}
-              />
-              <GenericEnvProductModal
-                open={openGenericEnvModal}
-                title={t('overview.activeProducts.activeProductsEnvModal.title')}
-                message={
-                  <Trans
-                    i18nKey="overview.activeProducts.activeProductsEnvModal.message"
-                    values={{ productTitle: activeProduct?.title }}
-                    components={{ 1: <strong /> }}
-                  >
-                    {`Sei stato abilitato ad operare negli ambienti riportati di seguito per il prodotto <1>{{productTitle}}</1>.`}
-                  </Trans>
-                }
-                onConfirmLabel={t('overview.activeProducts.activeProductsEnvModal.enterButton')}
-                onCloseLabel={t('overview.activeProducts.activeProductsEnvModal.backButton')}
-                onConfirm={(e) => handleGenericEnvConfirm((e.target as HTMLInputElement).value)}
-                handleClose={closeGenericEnvModal}
-                productEnvironments={activeProduct?.backOfficeEnvironmentConfigurations as any}
-              />
-            </>
-          )}
-        </Grid>
-      )}
     </Grid>
   );
 };

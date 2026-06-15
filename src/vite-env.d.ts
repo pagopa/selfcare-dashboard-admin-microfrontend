@@ -1,6 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  readonly VITE_ALLOWED_PRODUCTS_BACKSTAGE: string;
+  readonly VITE_URL_FE_BACKSTAGE: string;
+  readonly VITE_GOOGLE_LOGIN_URL?: string;
   readonly NODE_ENV: 'development' | 'uat' | 'production';
   readonly VITE_ENV: string;
   readonly VITE_PUBLIC_URL?: string;

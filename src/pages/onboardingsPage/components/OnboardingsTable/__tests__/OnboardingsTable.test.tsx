@@ -2,7 +2,23 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { OnboardingsTable } from '../OnboardingsTable';
-import { getOnboardingsColumns } from '../tableColumns';
+import { getOnboardingsColumns } from '../columns';
+import { RenderNoRowsOverlay } from '../columns/cells';
+
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next');
+  return {
+    ...actual,
+    useTranslation: () => ({
+      t: (key: string) => {
+        if (key === 'adminPage.selectedPartyDetails.backOffice') return 'Back Office';
+        if (key === 'common.institutionType.descriptions.pa') return 'Pubblica Amministrazione';
+        return key;
+      },
+    }),
+    Trans: ({ children }: any) => children,
+  };
+});
 
 vi.mock('@pagopa/selfcare-common-frontend/lib/components/CustomPagination', () => ({
   __esModule: true,
@@ -39,8 +55,26 @@ vi.mock('@mui/x-data-grid', async () => {
   };
 });
 
+vi.mock('@pagopa/selfcare-common-frontend/lib', async () => {
+  const actual = await vi.importActual('@pagopa/selfcare-common-frontend/lib');
+  return {
+    ...actual,
+    usePermissions: () => ({
+      hasPermission: () => true,
+      getAllProductsWithPermission: () => [],
+    }),
+  };
+});
+
+vi.mock('../../../../../hooks/useTokenExchange', () => ({
+  useTokenExchange: () => ({
+    invokeProductBo: vi.fn(),
+  }),
+}));
+
 const tMock = vi.fn((key: string) => {
   if (key === 'common.institutionType.descriptions.pa') return 'Pubblica Amministrazione';
+  if (key === 'adminPage.selectedPartyDetails.backOffice') return 'Back Office';
   return key;
 });
 
@@ -49,16 +83,21 @@ const mockProducts = [
 ];
 
 const mockRows = [
-  { 
-    onboardingId: '1', 
-    description: 'Ente 1', 
-    productId: 'prod-1', 
+  {
+    onboardingId: '1',
+    description: 'Ente 1',
+    productId: 'prod-1',
     status: 'COMPLETED',
-    institutionType: 'PA'
-  }
+    institutionType: 'PA',
+  },
 ];
 
-const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any).map(c => ({...c, width: 200}));
+const realColumns = getOnboardingsColumns(tMock as any, mockProducts as any, true, () => { }
+
+).map((c) => ({
+  ...c,
+  width: 200,
+}));
 
 const mockProps = {
   rows: mockRows,
@@ -89,13 +128,6 @@ describe('OnboardingsTable component', () => {
     expect(await screen.findByText('Ente 1')).toBeInTheDocument();
   });
 
-  test('should call onRowClick and navigate', async () => {
-    const { history } = renderTable();
-    const row = await screen.findByText('Ente 1');
-    fireEvent.click(row);
-    expect(history.location.pathname).toContain('/1');
-  });
-
   test('should show pagination controls when totalRows > 10', async () => {
     renderTable({ ...mockProps, totalRows: 15 });
     expect(screen.getByTestId('mock-pagination')).toBeInTheDocument();
@@ -114,8 +146,8 @@ describe('OnboardingsTable component', () => {
 
 describe('tableColumns rendering logic', () => {
   test('valueGetter for products should resolve product and subproduct titles', () => {
-    const productColumn = realColumns.find(c => c.field === 'productId');
-    
+    const productColumn = realColumns.find((c) => c.field === 'productId');
+
     // Test product resolution
     const res1 = productColumn?.valueGetter!({ row: { productId: 'prod-1' } } as any);
     expect(res1).toBe('Product 1');
@@ -148,14 +180,15 @@ describe('tableColumns rendering logic', () => {
     expect(getByText('Attivo')).toBeInTheDocument();
   });
 
-  test('renderActionCell should render icon', () => {
+  test('renderActionCell should render button', () => {
     const actionColumn = realColumns.find((c) => c.field === 'actions');
-    const { container } = render(<>{actionColumn?.renderCell!({} as any)}</>);
-    expect(container.querySelector('svg')).toBeInTheDocument();
+    const { getByRole } = render(
+      <>{actionColumn?.renderCell!({ row: { status: 'COMPLETED', productId: 'prod-1' } } as any)}</>
+    );
+    expect(getByRole('button', { name: /back office/i })).toBeInTheDocument();
   });
 });
 
-import { RenderNoRowsOverlay } from '../tableColumns';
 describe('RenderNoRowsOverlay', () => {
   test('should render reset button and call history.push on click', () => {
     const history = createMemoryHistory();

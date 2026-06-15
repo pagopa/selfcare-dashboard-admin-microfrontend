@@ -2,12 +2,13 @@ import { appStateReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slic
 import { permissionsReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
 import { userReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { configureStore } from '@reduxjs/toolkit';
+import { Store } from 'redux';
 import logger from 'redux-logger';
 import { LOG_REDUX_ACTIONS } from '../utils/constants';
 
 const additionalMiddlewares = [LOG_REDUX_ACTIONS ? logger : undefined];
 
-export const createStore = () =>
+export const createStore = (): Store<any, any> =>
   configureStore({
     reducer: {
       user: userReducer,

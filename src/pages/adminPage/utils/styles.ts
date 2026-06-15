@@ -1,4 +1,5 @@
 import { styled } from '@mui/material';
+import * as React from 'react';
 
 export const commonStyles = {
   backgroundColor: 'background.paper',
@@ -7,7 +8,9 @@ export const commonStyles = {
   marginBottom: 5,
 };
 
-export const CustomListbox = styled('ul')({
+export const CustomListbox: React.ComponentType<React.HTMLAttributes<HTMLUListElement>> = styled(
+  'ul'
+)({
   '&::-webkit-scrollbar': {
     width: 4,
   },
