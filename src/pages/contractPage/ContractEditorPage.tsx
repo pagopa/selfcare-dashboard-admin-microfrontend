@@ -14,7 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { TitleBox } from '@pagopa/selfcare-common-frontend/lib';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type RouteComponentProps } from 'react-router-dom';
 import { uploadContractTemplate } from '../../services/contractService';
@@ -54,28 +54,22 @@ export default function ContractEditorPage({ location, history }: Props) {
   const products: Array<Product> = state?.products ?? [];
 
   const [selectedProductId, setSelectedProductId] = useState<string>(state?.productId ?? '');
-  const [selectedName, setSelectedName] = useState<string>(state?.name ?? "");
-  const [selectedVersion, setSelectedVersion] = useState<string>(state?.version ?? "");
-  const [contractHtml] = useState<string>(state?.contractHtml ?? "");
-
-  useEffect(() => {
-    if (contractHtml) {
-      const el = document.querySelector(".pell-content") as HTMLDivElement | null;
-      if (el) {
-        // eslint-disable-next-line functional/immutable-data
-        el.innerHTML = contractHtml;
-      }
-    }
-  }, [contractHtml]);
+  const [selectedName, setSelectedName] = useState<string>(state?.name ?? '');
+  const [selectedVersion, setSelectedVersion] = useState<string>(state?.version ?? '');
+  const [contractHtml] = useState<string>(state?.contractHtml ?? '');
+  const [contractContent, setContractContent] = useState<string>(contractHtml);
 
   const handleBack = () => {
     history.push(ENV.ROUTES.ADMIN_CONTRACT);
   };
 
+  const handleContractChange = useCallback((html: string) => {
+    setContractContent(html);
+  }, []);
+
   const handleSave = async () => {
-    const el = document.querySelector('.pell-content') as HTMLDivElement | null;
-    if (el && selectedProductId && selectedName && selectedVersion) {
-      uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, el.innerHTML)
+    if (safeSelectedProductId && selectedName && selectedVersion) {
+      uploadContractTemplate(safeSelectedProductId, selectedName, selectedVersion, contractContent)
         .then(() => {
           alert('Template del contratto salvato con successo');
           handleBack();
@@ -159,21 +153,25 @@ export default function ContractEditorPage({ location, history }: Props) {
                 }),
             }}
           >
-            <ContractEditor productId={safeSelectedProductId} />
+            <ContractEditor
+              productId={safeSelectedProductId}
+              initialHtml={contractHtml}
+              onChange={handleContractChange}
+            />
           </Paper>
 
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
             <Button variant="outlined" size="small" onClick={handleBack}>
-              Indietro
+              {t('contractPage.contractEditor.back')}
             </Button>
 
             <Button
               variant="contained"
               size="small"
               onClick={handleSave}
-              disabled={!selectedName || !selectedVersion || !selectedProductId}
+              disabled={!selectedName || !selectedVersion || !safeSelectedProductId}
             >
-              Salva
+              {t('contractPage.contractEditor.save')}
             </Button>
           </Stack>
         </Grid>
@@ -195,7 +193,7 @@ export default function ContractEditorPage({ location, history }: Props) {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="subtitle1">Informazioni contratto</Typography>
+          <Typography variant="subtitle1">{t('contractPage.contractEditor.infoTitle')}</Typography>
         </Box>
 
         <Stack spacing={2}>
@@ -237,7 +235,7 @@ export default function ContractEditorPage({ location, history }: Props) {
 
           {products.length === 0 && (
             <Typography variant="body2" color="textSecondary">
-              Nessun prodotto disponibile
+              {t('contractPage.noProducts')}
             </Typography>
           )}
         </Stack>

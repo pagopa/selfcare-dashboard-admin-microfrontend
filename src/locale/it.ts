@@ -229,6 +229,9 @@ export default {
     contractEditor: {
       title: 'Gestione template contratti',
       subtitle: 'Crea e modifica i template dei contratti per i tuoi prodotti',
+      back: 'Indietro',
+      save: 'Salva',
+      infoTitle: 'Informazioni contratto',
       placeholder:
         'Qui verrà montato il componente di editor per la creazione e modifica del contratto',
     },

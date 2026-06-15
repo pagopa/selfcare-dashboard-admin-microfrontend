@@ -25,13 +25,12 @@ export const EditButton = ({ contractId, productId, fileName, disabled, name, ve
   const handleEdit = async () => {
     const contractHtml = await downloadContractToEdit(contractId, productId, fileName, addError);
     if (contractHtml) {
-      console.log(contractHtml);
       history.push(ENV.ROUTES.ADMIN_CONTRACT_EDITOR, {
         products,
         productId,
         name,
         version,
-        contractHtml
+        contractHtml,
       });
     }
   };

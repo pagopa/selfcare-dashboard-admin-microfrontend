@@ -41,26 +41,26 @@
     float: right;
 }
 
-:global(#contracteditor .pell-content) {
+.contractEditor :global(.pell-content) {
     margin-top: 5mm;
     min-height: 50px;
 }
 
-:global(#contracteditor .pell-actionbar) {
+.contractEditor :global(.pell-actionbar) {
     border-bottom: 1px solid rgb(203 203 203);
 }
 
-:global(#contracteditor .pell-button) {
+.contractEditor :global(.pell-button) {
     min-width: 20pt;
     height: 20pt;
     margin-right: 5px;
 }
 
-:global(#contracteditor .pell-button:hover) {
+.contractEditor :global(.pell-button:hover) {
     background-color: #f0f0f0;
 }
 
-:global(#contracteditor .pell-button-selected) {
+.contractEditor :global(.pell-button-selected) {
     background-color: #f0f0f0;
 }
 

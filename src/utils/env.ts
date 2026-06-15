@@ -19,6 +19,7 @@ export const ENV = {
   i18n: {} as i18n,
   ENV: requiredEnv('VITE_ENV', import.meta.env.VITE_ENV),
   PUBLIC_URL: PUBLIC_URL_INNER,
+  URL_CDN: optionalStringEnv(import.meta.env.VITE_URL_CDN, ''),
   ALLOWED_PREFIXES: optionalStringEnv(import.meta.env.VITE_ALLOWED_PRODUCTS_BACKSTAGE, ''),
 
   ROUTES: {

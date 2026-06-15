@@ -1,34 +1,42 @@
 /* eslint-disable functional/immutable-data */
 import { useEffect, useRef } from 'react';
 import pell from 'pell';
+import { ENV } from '../../../utils/env';
 import styles from '../utils/contractEditor.module.css';
 
 type Props = {
   productId: string;
+  initialHtml?: string;
+  onChange: (html: string) => void;
 };
 
-export const ContractEditor = ({ productId }: Props) => {
+const cdnAsset = (path: string): string =>
+  ENV.URL_CDN ? `${ENV.URL_CDN.replace(/\/$/, '')}${path}` : path;
+
+export const ContractEditor = ({ productId, initialHtml = '', onChange }: Props) => {
   const initialized = useRef(false);
+  const editorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (initialized.current) {
       return;
     }
 
-    const element = document.getElementById('contracteditor');
+    const element = editorRef.current;
     if (element) {
       const editor = pell.init({
         element,
         defaultParagraphSeparator: 'p',
         actions: ['bold', 'italic', 'underline', 'ulist', 'link'],
-        onChange: (html: string) => html,
+        onChange,
       });
-      editor.content.innerHTML = ``;
+      editor.content.innerHTML = initialHtml;
+      onChange(initialHtml);
       editor.content.focus();
 
-      const actionBar = document.querySelector('.pell-actionbar');
+      const actionBar = element.querySelector('.pell-actionbar');
       if (actionBar) {
-        const handleSelctChange = (e: Event) => {
+        const handleSelectChange = (e: Event) => {
           const select = e.target as HTMLSelectElement;
           const value = select.value;
           editor.content.focus();
@@ -37,7 +45,7 @@ export const ContractEditor = ({ productId }: Props) => {
         };
 
         const placeholderSelect = document.createElement('select');
-        placeholderSelect.id = 'placeholder';
+        placeholderSelect.id = 'contract-placeholder';
         placeholderSelect.innerHTML = `
                     <option value="" disabled selected>Inserisci segnaposto</option>
                     <option value="\${taxCode}">Codice fiscale</option>
@@ -45,10 +53,10 @@ export const ContractEditor = ({ productId }: Props) => {
                     <option value="\${firstName}">Nome</option>
                     <option value="\${lastName}">Cognome</option>
                 `;
-        placeholderSelect.onchange = (e) => handleSelctChange(e);
+        placeholderSelect.onchange = (e) => handleSelectChange(e);
 
         const headingSelect = document.createElement('select');
-        headingSelect.id = 'placeholder';
+        headingSelect.id = 'contract-heading';
         headingSelect.innerHTML = `
                     <option value="" disabled selected>Inserisci titolo</option>
                     <option value="<h1>Titolo 1</h1>">Titolo 1</option>
@@ -58,7 +66,7 @@ export const ContractEditor = ({ productId }: Props) => {
                     <option value="<h5>Titolo 5</h5>">Titolo 5</option>
                     <option value="<h6>Titolo 6</h6>">Titolo 6</option>
                 `;
-        headingSelect.onchange = (e) => handleSelctChange(e);
+        headingSelect.onchange = (e) => handleSelectChange(e);
 
         actionBar.appendChild(headingSelect);
         actionBar.appendChild(placeholderSelect);
@@ -66,27 +74,34 @@ export const ContractEditor = ({ productId }: Props) => {
 
       initialized.current = true;
     }
-  }, []);
+  }, [initialHtml, onChange]);
+
+  const pagopaHeaderLogo = cdnAsset('/assets/logo_pagopacorp.png');
+  const pagopaFooterLogo = cdnAsset('/assets/icon_pagopacorp_rounded_primary.png');
+  const productLogo = productId
+    ? cdnAsset(`/resources/products/${productId}/logo.png`)
+    : pagopaFooterLogo;
 
   return (
     <div className={styles.contractEditorContainer}>
       <div style={{ overflow: 'auto' }}>
         <img
           className={styles.pagopaHeaderLogo}
-          src="https://selfcare.pagopa.it/assets/logo_pagopacorp.png"
+          src={pagopaHeaderLogo}
+          alt="PagoPA"
         />
         <img
           className={styles.productHeaderLogo}
-          src={`https://selfcare.pagopa.it/resources/products/${productId}/logo.png`}
+          src={productLogo}
+          alt=""
           onError={(e) => {
             (e.target as HTMLImageElement).onerror = null;
-            (e.target as HTMLImageElement).src =
-              'https://www.freeiconspng.com/thumbs/cat-png/baby-cat-png-12.png';
+            (e.target as HTMLImageElement).src = pagopaFooterLogo;
           }}
         />
       </div>
       <div>
-        <div id="contracteditor" className={styles.contractEditor} />
+        <div ref={editorRef} className={styles.contractEditor} />
       </div>
       <div>
         <p className={styles.pagopaFooterInfo}>
@@ -103,7 +118,8 @@ export const ContractEditor = ({ productId }: Props) => {
         </p>
         <img
           className={styles.pagopaFooterLogo}
-          src="https://selfcare.pagopa.it/assets/icon_pagopacorp_rounded_primary.png"
+          src={pagopaFooterLogo}
+          alt=""
         />
       </div>
     </div>
