@@ -33,6 +33,7 @@ const CustomDataGrid = styled(DataGrid)({
     },
   },
   '.MuiDataGrid-columnSeparator': { display: 'none' },
+  '.MuiDataGrid-columnHeaderTitle': { fontWeight: 500 },
   '.MuiDataGrid-cell ': { padding: '0px', borderBottom: 'none' },
   '.MuiDataGrid-columnHeaders': { borderBottom: 'none' },
   '.MuiDataGrid-row': {
