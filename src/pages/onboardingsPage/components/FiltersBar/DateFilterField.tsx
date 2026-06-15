@@ -1,6 +1,7 @@
+import EventIcon from '@mui/icons-material/Event';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { InputAdornment, TextField } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/it';
 import { useState } from 'react';
@@ -23,7 +24,7 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
   };
 
   return (
-    <DatePicker
+    <DesktopDatePicker
       label={label}
       value={parsedValue}
       onChange={handleChange}
@@ -69,6 +70,11 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
           InputLabelProps={{
             ...params.InputLabelProps,
             shrink: !!value || open,
+            sx: {
+              '&:not(.MuiInputLabel-shrink)': {
+                transform: 'translate(46px, 9px) scale(1)',
+              },
+            },
           }}
           inputProps={{
             ...params.inputProps,
@@ -78,6 +84,11 @@ export const DateFilterField = ({ label, value, onChange, min, max, grow = 1 }: 
           }}
           InputProps={{
             ...params.InputProps,
+            startAdornment: (
+              <InputAdornment position="start" sx={{ mr: 0.5 }}>
+                <EventIcon sx={{ color: '#BBC2D6', fontSize: '1.25rem', pointerEvents: 'none' }} />
+              </InputAdornment>
+            ),
             endAdornment: (
               <InputAdornment position="end">
                 <KeyboardArrowDownIcon

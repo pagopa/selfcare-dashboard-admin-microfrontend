@@ -38,7 +38,7 @@ export const renderCellWithTooltip = (params: GridRenderCellParams) => {
 
 export const renderUpdatedAtCell = (params: GridRenderCellParams<Date>) => {
     const date = params.value;
-    const text = date ? date.toLocaleDateString() : '-';
+    const text = date ? date.toLocaleDateString('it-IT') : '-';
     return (
         <Tooltip title={text} arrow enterDelay={300}>
             <Box sx={truncatedCellSx}>{text}</Box>
@@ -62,7 +62,7 @@ export const renderStatusCell = (params: GridRenderCellParams<string>) => {
 
 export const renderHeaderWithTooltip = (params: any) => (
     <Tooltip title={params.colDef.description || params.colDef.headerName} arrow enterDelay={300}>
-        <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+        <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', fontWeight: 500 }}>
             {params.colDef.headerName}
         </Box>
     </Tooltip>
@@ -173,7 +173,7 @@ export const ActionCell = ({
                     {t('adminPage.selectedPartyDetails.backOffice')}
                 </ButtonNaked>
             )}
-            {!canAccessBackofficeAdmin && canAccessAccountPage && (
+            {status !== 'COMPLETED' && canAccessAccountPage && (
                 <ButtonNaked
                     component="button"
                     endIcon={<ArrowForward />}
