@@ -43,7 +43,7 @@ type Props = {
   products: Array<Product>;
 };
 
-export const FiltersBar = ({ products }: Props) => {
+export const FilterDrawer = ({ products }: Props) => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();

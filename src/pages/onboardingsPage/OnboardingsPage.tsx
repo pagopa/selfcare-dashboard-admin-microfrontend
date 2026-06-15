@@ -12,7 +12,7 @@ import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegrat
 import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
-import { FiltersBar } from './components/FiltersBar/FiltersBar';
+import { FilterDrawer } from './components/FiltersBar/FilterDrawer';
 import { parseFilters, serializeFilters, toApiDateTime } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/columns';
@@ -55,8 +55,8 @@ const OnboardingsPage = () => {
     const orderBy =
       sortModel.length > 0
         ? sortModel.map(
-            (item) => `${SORT_FIELD_MAP[item.field] ?? item.field}_${item.sort?.toUpperCase()}`
-          )
+          (item) => `${SORT_FIELD_MAP[item.field] ?? item.field}_${item.sort?.toUpperCase()}`
+        )
         : undefined;
 
     setLoading(true);
@@ -110,7 +110,7 @@ const OnboardingsPage = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <FiltersBar products={products} />
+        <FilterDrawer products={products} />
       </Grid>
       <Grid item xs={12} mt={3} bgcolor={grey[100]}>
         <OnboardingsTable
