@@ -260,9 +260,9 @@ export const FilterDrawer = ({ products }: Props) => {
               <Box sx={{ mt: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
                   <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
-                    DATA DI RICHIESTA
+                    {t('onboardingsPage.filters.requestDate')}
                   </Typography>
-                  <Tooltip title="Informazioni sulla data di richiesta" placement="top">
+                  <Tooltip title={t('onboardingsPage.filters.requestDateTooltip')} placement="top">
                     <IconButton size="small" sx={{ p: 0 }}>
                       <InfoOutlinedIcon fontSize="small" sx={{ color: '#0B3EE3' }} />
                     </IconButton>

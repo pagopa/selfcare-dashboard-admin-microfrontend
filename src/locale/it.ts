@@ -59,6 +59,8 @@ export default {
       title: 'Filtra',
       search: 'Nome ente o Codice Fiscale',
       products: 'Prodotto',
+      requestDate: 'DATA DI RICHIESTA',
+      requestDateTooltip: 'Data in cui l’ente ha fatto la richiesta di adesione al prodotto',
       createdFromDate: 'Dal',
       createdToDate: 'Al',
       institutionTypes: 'Tipologia ente',
