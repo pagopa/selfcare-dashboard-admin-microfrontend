@@ -102,12 +102,13 @@ export const FilterDrawer = ({ products }: Props) => {
   };
 
   const currentFilters = parseFilters(location.search);
+  // eslint-disable-next-line functional/no-let
   let activeCount = 0;
-  if (currentFilters.search) activeCount++;
-  if (currentFilters.productIds.length > 0) activeCount++;
-  if (currentFilters.institutionTypeIds.length > 0) activeCount++;
-  if (currentFilters.stateIds.length > 0) activeCount++;
-  if (currentFilters.createdFromDate || currentFilters.createdToDate) activeCount++;
+  if (currentFilters.search) { activeCount++; }
+  if (currentFilters.productIds.length > 0) { activeCount++; }
+  if (currentFilters.institutionTypeIds.length > 0) { activeCount++; }
+  if (currentFilters.stateIds.length > 0) { activeCount++; }
+  if (currentFilters.createdFromDate || currentFilters.createdToDate) { activeCount++; }
 
   const textFilters = filtersConfig.filter((f) => f.type === 'text') as Array<Extract<FilterConfig, { type: 'text' }>>;
   const selectFiltersBeforeDate = filtersConfig.filter((f) => f.type === 'select' && f.key !== 'stateIds') as Array<Extract<FilterConfig, { type: 'select' }>>;
