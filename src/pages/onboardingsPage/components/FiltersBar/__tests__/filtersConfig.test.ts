@@ -1,38 +1,65 @@
-import { describe, it, expect, vi } from 'vitest';
+import { TFunction } from 'i18next';
+import { describe, expect, it, vi } from 'vitest';
+import { StatusEnum } from '../../../../../api/generated/b4f-dashboard/ProductsResource';
+import { Product } from '../../../../../model/Product';
 import { getFiltersConfig } from '../filtersConfig';
 
-const mockProduct1 = {
+const mockProduct1: Product = {
   id: 'prod1',
   title: 'Product 1',
-  status: 'ACTIVE',
+  status: StatusEnum.ACTIVE,
   subProducts: [],
+  description: '',
+  logo: '',
+  urlBO: '',
+  imageUrl: '',
+  delegable: false,
+  invoiceable: false
 };
 
-const mockProduct2 = {
+const mockProduct2: Product = {
   id: 'prod2',
   title: 'Product 2',
-  status: 'ACTIVE',
+  status: StatusEnum.ACTIVE,
   subProducts: [
-    { id: 'subprod1', title: 'Sub Product 1', status: 'ACTIVE' },
-    { id: 'subprod2', title: 'Sub Product 2', status: 'INACTIVE' }, // Should be excluded
+    { id: 'subprod1', title: 'Sub Product 1', status: StatusEnum.ACTIVE },
+    { id: 'subprod2', title: 'Sub Product 2', status: StatusEnum.INACTIVE }, // Should be excluded
   ],
+  description: '',
+  logo: '',
+  urlBO: '',
+  imageUrl: '',
+  delegable: false,
+  invoiceable: false
 };
 
-const mockProduct3 = {
+const mockProduct3: Product = {
   id: 'prod3',
   title: 'Testing Product',
-  status: 'TESTING',
+  status: StatusEnum.TESTING,
   subProducts: [],
+  description: '',
+  logo: '',
+  urlBO: '',
+  imageUrl: '',
+  delegable: false,
+  invoiceable: false
 };
 
-const mockProduct4 = {
+const mockProduct4: Product = {
   id: 'prod4',
   title: 'Inactive Product',
-  status: 'INACTIVE',
+  status: StatusEnum.INACTIVE,
   subProducts: [],
+  description: '',
+  logo: '',
+  urlBO: '',
+  imageUrl: '',
+  delegable: false,
+  invoiceable: false
 };
 
-const mockT = (key: string) => key;
+const mockT = vi.fn((key: string) => key) as unknown as TFunction<'translation', undefined>;
 
 describe('filtersConfig', () => {
   describe('getFiltersConfig', () => {
