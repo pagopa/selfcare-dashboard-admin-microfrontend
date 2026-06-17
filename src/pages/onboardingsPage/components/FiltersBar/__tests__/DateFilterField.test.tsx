@@ -101,7 +101,7 @@ describe('DateFilterField', () => {
 
   it('should render with custom grow prop', () => {
     const mockOnChange = vi.fn();
-    const { container } = renderWithLocalization(
+    renderWithLocalization(
       <DateFilterField
         label="Custom Growth"
         value=""
