@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Drawer,
   FormControl,
   IconButton,
@@ -62,6 +63,14 @@ export const FilterDrawer = ({ products }: Props) => {
       ...prev,
       [key]: value,
     }));
+  };
+
+  const handleDeleteChip = (key: keyof typeof draftFilters, valToDelete: string) => {
+    const currentValues = draftFilters[key];
+    if (Array.isArray(currentValues)) {
+      const newValues = currentValues.filter((v) => v !== valToDelete);
+      handleFilterChange(key, newValues);
+    }
   };
 
   const applyFilters = () => {
@@ -214,13 +223,33 @@ export const FilterDrawer = ({ products }: Props) => {
                       },
                     },
                   }}
-                  renderValue={(selected) => (
-                    <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {(selected as Array<string>)
-                        .map((val) => filter.options?.find((o) => o.value === val)?.label ?? val)
-                        .join(', ')}
-                    </Box>
-                  )}
+                  renderValue={(selected) => {
+                    const selectedArray = selected as Array<string>;
+                    if (selectedArray.length === 0) {
+                      return null;
+                    }
+                    const firstVal = selectedArray[0];
+                    const firstLabel = filter.options?.find((o) => o.value === firstVal)?.label ?? firstVal;
+                    return (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                        <Chip
+                          key={firstVal}
+                          label={firstLabel}
+                          size="small"
+                          onDelete={() => handleDeleteChip(filter.key as keyof typeof draftFilters, firstVal)}
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                        {selectedArray.length > 1 && (
+                          <Chip
+                            label={`+${selectedArray.length - 1}`}
+                            size="small"
+                          />
+                        )}
+                      </Box>
+                    );
+                  }}
                 >
                   {filter.options?.map((option) => {
                     const isSelected = Array.isArray(draftFilters[filter.key as keyof typeof draftFilters])
@@ -319,13 +348,33 @@ export const FilterDrawer = ({ products }: Props) => {
                       },
                     },
                   }}
-                  renderValue={(selected) => (
-                    <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {(selected as Array<string>)
-                        .map((val) => stateFilter.options?.find((o) => o.value === val)?.label ?? val)
-                        .join(', ')}
-                    </Box>
-                  )}
+                  renderValue={(selected) => {
+                    const selectedArray = selected as Array<string>;
+                    if (selectedArray.length === 0) {
+                      return null;
+                    }
+                    const firstVal = selectedArray[0];
+                    const firstLabel = stateFilter.options?.find((o) => o.value === firstVal)?.label ?? firstVal;
+                    return (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                        <Chip
+                          key={firstVal}
+                          label={firstLabel}
+                          size="small"
+                          onDelete={() => handleDeleteChip(stateFilter.key as keyof typeof draftFilters, firstVal)}
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                        {selectedArray.length > 1 && (
+                          <Chip
+                            label={`+${selectedArray.length - 1}`}
+                            size="small"
+                          />
+                        )}
+                      </Box>
+                    );
+                  }}
                 >
                   {stateFilter.options?.map((option) => {
                     const isSelected = Array.isArray(draftFilters[stateFilter.key as keyof typeof draftFilters])
