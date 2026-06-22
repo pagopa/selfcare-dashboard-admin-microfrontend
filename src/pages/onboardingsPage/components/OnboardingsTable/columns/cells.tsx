@@ -153,7 +153,7 @@ export const ActionCell = ({
 
     return (
         <>
-            {status === 'COMPLETED' && canAccessBackofficeAdmin && (
+            {status === 'COMPLETED' && canAccessBackofficeAdmin ? (
                 <ButtonNaked
                     component="button"
                     endIcon={<ArrowForward />}
@@ -172,22 +172,24 @@ export const ActionCell = ({
                 >
                     {t('adminPage.selectedPartyDetails.backOffice')}
                 </ButtonNaked>
-            )}
-            {status !== 'COMPLETED' && canAccessAccountPage && (
-                <ButtonNaked
-                    component="button"
-                    endIcon={<ArrowForward />}
-                    onClick={() => {
-                        history.push(
-                            resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                                tokenId: params.row.onboardingId,
-                            }),
-                            { fromDashboard: true }
-                        );
-                    }}
-                    sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
-                />
-            )}
+            )
+                :
+                canAccessAccountPage ? (
+                    <ButtonNaked
+                        component="button"
+                        endIcon={<ArrowForward />}
+                        onClick={() => {
+                            history.push(
+                                resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
+                                    tokenId: params.row.onboardingId,
+                                }),
+                                { fromDashboard: true }
+                            );
+                        }}
+                        sx={{ color: 'primary.main', fontWeight: 'bold', mr: 2 }}
+                    />
+                ) : null}
+
             <SessionModalInteropProduct
                 open={openInteropModal}
                 title={t('overview.activeProducts.activeProductsEnvModal.title')}
