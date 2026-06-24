@@ -5,6 +5,7 @@ export type Filters = {
   createdToDate: string;
   institutionTypeIds: Array<string>;
   stateIds: Array<string>;
+  includeTest: string;
   page: number;
   size: number;
 };

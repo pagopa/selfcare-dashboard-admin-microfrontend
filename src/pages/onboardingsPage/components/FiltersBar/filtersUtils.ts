@@ -17,6 +17,7 @@ export const parseFilters = (search: string): Filters => {
     createdToDate: params.get('createdToDate') || '',
     institutionTypeIds: params.get('institutionTypeIds')?.split(',') || [],
     stateIds: params.get('stateIds')?.split(',') || [],
+    includeTest: params.get('includeTest') || 'false',
     page: Number(params.get('page')) || 0,
     size: Number(params.get('size')) || 10,
   };
@@ -42,6 +43,9 @@ export const serializeFilters = (filters: Filters): string => {
   }
   if (filters.stateIds.length) {
     params.set('stateIds', filters.stateIds.join(','));
+  }
+  if (filters.includeTest && filters.includeTest !== 'false') {
+    params.set('includeTest', filters.includeTest);
   }
 
   params.set('page', filters.page.toString());

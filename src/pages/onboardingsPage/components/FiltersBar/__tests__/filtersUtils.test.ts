@@ -13,6 +13,7 @@ describe('filtersUtils', () => {
         createdToDate: '',
         institutionTypeIds: [],
         stateIds: [],
+        includeTest: 'false',
         page: 0,
         size: 10,
       });
@@ -68,6 +69,7 @@ describe('filtersUtils', () => {
       expect(result.createdToDate).toBe('2024-12-31');
       expect(result.institutionTypeIds).toEqual(['PA']);
       expect(result.stateIds).toEqual(['COMPLETED']);
+      expect(result.includeTest).toBe('false');
       expect(result.page).toBe(2);
       expect(result.size).toBe(20);
     });
@@ -89,6 +91,7 @@ describe('filtersUtils', () => {
         createdToDate: '2024-12-31',
         institutionTypeIds: ['PA', 'GSP'],
         stateIds: ['COMPLETED'],
+        includeTest: 'true',
         page: 1,
         size: 20,
       };
@@ -97,6 +100,7 @@ describe('filtersUtils', () => {
 
       expect(result).toContain('search=test');
       expect(result).toContain('productIds=prod1%2Cprod2');
+      expect(result).toContain('includeTest=true');
       expect(result).toContain('page=1');
       expect(result).toContain('size=20');
     });
@@ -109,6 +113,7 @@ describe('filtersUtils', () => {
         createdToDate: '',
         institutionTypeIds: [],
         stateIds: [],
+        includeTest: 'false',
         page: 0,
         size: 10,
       };
@@ -129,6 +134,7 @@ describe('filtersUtils', () => {
         createdToDate: '',
         institutionTypeIds: [],
         stateIds: [],
+        includeTest: 'false',
         page: 0,
         size: 10,
       };
@@ -147,6 +153,7 @@ describe('filtersUtils', () => {
         createdToDate: '',
         institutionTypeIds: [],
         stateIds: ['COMPLETED'],
+        includeTest: 'false',
         page: 0,
         size: 10,
       };
@@ -165,6 +172,7 @@ describe('filtersUtils', () => {
         createdToDate: '2024-12-31',
         institutionTypeIds: ['PA'],
         stateIds: ['COMPLETED', 'PENDING'],
+        includeTest: 'true',
         page: 1,
         size: 20,
       };

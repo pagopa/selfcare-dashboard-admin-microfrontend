@@ -68,6 +68,17 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
   },
   {
     type: 'select',
+    key: 'includeTest',
+    label: 'Enti di test',
+    multiple: false,
+    grow: 1,
+    options: [
+      { label: 'Si', value: 'true' },
+      { label: 'No', value: 'false' },
+    ],
+  },
+  {
+    type: 'select',
     key: 'stateIds',
     label: t('onboardingsPage.filters.status'),
     multiple: true,

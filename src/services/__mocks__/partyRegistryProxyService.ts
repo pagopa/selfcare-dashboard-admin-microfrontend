@@ -210,7 +210,8 @@ export const mockedSearchOnboardingsService = (
   pageSize: number,
   orderBy?: Array<string>,
   createdFromDate?: string,
-  createdToDate?: string
+  createdToDate?: string,
+  includeTest?: boolean
 ): Promise<OnboardingIndexSearchResource> => {
   const filtered = applyFilters(
     mockedOnboardings,
