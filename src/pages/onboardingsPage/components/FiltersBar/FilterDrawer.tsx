@@ -97,6 +97,7 @@ export const FilterDrawer = ({ products }: Props) => {
       createdToDate: '',
       institutionTypeIds: [],
       stateIds: [],
+      includeTest: 'false',
       page: 0,
       size: 10,
     };
@@ -117,6 +118,7 @@ export const FilterDrawer = ({ products }: Props) => {
   if (currentFilters.productIds.length > 0) { activeCount++; }
   if (currentFilters.institutionTypeIds.length > 0) { activeCount++; }
   if (currentFilters.stateIds.length > 0) { activeCount++; }
+  if (currentFilters.includeTest === 'true') { activeCount++; }
   if (currentFilters.createdFromDate || currentFilters.createdToDate) { activeCount++; }
 
   const textFilters = filtersConfig.filter((f) => f.type === 'text') as Array<Extract<FilterConfig, { type: 'text' }>>;
@@ -202,8 +204,8 @@ export const FilterDrawer = ({ products }: Props) => {
                 <InputLabel>{filter.label}</InputLabel>
                 <Select
                   multiple={filter.multiple}
-                  value={draftFilters[filter.key as keyof typeof draftFilters] as Array<string>}
-                  onChange={(e) => handleFilterChange(filter.key, e.target.value)}
+                  value={draftFilters[filter.key as keyof typeof draftFilters] as any}
+                  onChange={(e) => handleFilterChange(filter.key, e.target.value as any)}
                   IconComponent={KeyboardArrowDownIcon}
                   input={<OutlinedInput label={filter.label} />}
                   MenuProps={{
@@ -224,6 +226,13 @@ export const FilterDrawer = ({ products }: Props) => {
                     },
                   }}
                   renderValue={(selected) => {
+                    if (!filter.multiple) {
+                      const val = selected as string;
+                      if (!val) return null;
+                      const option = filter.options?.find((o) => o.value === val);
+                      return <span>{option?.label ?? val}</span>;
+                    }
+
                     const selectedArray = selected as Array<string>;
                     if (selectedArray.length === 0) {
                       return null;
@@ -252,9 +261,10 @@ export const FilterDrawer = ({ products }: Props) => {
                   }}
                 >
                   {filter.options?.map((option) => {
-                    const isSelected = Array.isArray(draftFilters[filter.key as keyof typeof draftFilters])
-                      ? (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
-                      : false;
+                    const isSelected = filter.multiple
+                      ? Array.isArray(draftFilters[filter.key as keyof typeof draftFilters]) &&
+                        (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
+                      : draftFilters[filter.key as keyof typeof draftFilters] === option.value;
                     return (
                       <MenuItem
                         key={option.value}
@@ -271,13 +281,15 @@ export const FilterDrawer = ({ products }: Props) => {
                         }}
                       >
                         <span>{option.label}</span>
-                        <Checkbox
-                          checked={isSelected}
-                          icon={<CheckBoxOutlineBlankIcon fontSize="small" sx={{ color: '#0E0F13' }} />}
-                          checkedIcon={<CheckBoxIcon fontSize="small" sx={{ color: '#0B3EE3' }} />}
-                          disableRipple
-                          sx={{ padding: 0 }}
-                        />
+                        {filter.multiple && (
+                          <Checkbox
+                            checked={isSelected}
+                            icon={<CheckBoxOutlineBlankIcon fontSize="small" sx={{ color: '#0E0F13' }} />}
+                            checkedIcon={<CheckBoxIcon fontSize="small" sx={{ color: '#0B3EE3' }} />}
+                            disableRipple
+                            sx={{ padding: 0 }}
+                          />
+                        )}
                       </MenuItem>
                     );
                   })}
@@ -313,7 +325,7 @@ export const FilterDrawer = ({ products }: Props) => {
               </Box>
             )}
 
-            {/* State Filter After Date */}
+            {/* State Filter */}
             {stateFilter && (
               <FormControl
                 key={stateFilter.key}

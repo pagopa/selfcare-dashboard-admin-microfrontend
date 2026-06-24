@@ -69,7 +69,8 @@ const OnboardingsPage = () => {
       filters.size,
       orderBy,
       toApiDateTime(filters.createdFromDate),
-      toApiDateTime(filters.createdToDate, true)
+      toApiDateTime(filters.createdToDate, true),
+      filters.includeTest === 'true'
     )
       .then((response) => {
         setRows([...(response.onboardings ?? [])]);
