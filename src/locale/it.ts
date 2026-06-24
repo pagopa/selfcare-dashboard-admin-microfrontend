@@ -64,6 +64,11 @@ export default {
       createdFromDate: 'Dal',
       createdToDate: 'Al',
       institutionTypes: 'Tipologia ente',
+      includeTest: 'Enti di test',
+      includeTestOptions: {
+        yes: 'Si',
+        no: 'No',
+      },
       status: 'Stato dell’accordo',
       filtersButton: 'Filtra',
       cancelFiltersButton: 'Annulla filtri',

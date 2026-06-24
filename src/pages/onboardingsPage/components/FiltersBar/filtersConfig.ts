@@ -69,12 +69,12 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
   {
     type: 'select',
     key: 'includeTest',
-    label: 'Enti di test',
+    label: t('onboardingsPage.filters.includeTest'),
     multiple: false,
     grow: 1,
     options: [
-      { label: 'Si', value: 'true' },
-      { label: 'No', value: 'false' },
+      { label: t('onboardingsPage.filters.includeTestOptions.yes'), value: 'true' },
+      { label: t('onboardingsPage.filters.includeTestOptions.no'), value: 'false' },
     ],
   },
   {
