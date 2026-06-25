@@ -20,6 +20,7 @@ import {
 } from '../dashboard-routes-utils';
 import Layout from './Layout';
 import { mockedPartyProducts, mockedProductRoles } from './data/product';
+import { isEmpty } from 'lodash';
 
 type UrlParams = {
   tokenId: string;
