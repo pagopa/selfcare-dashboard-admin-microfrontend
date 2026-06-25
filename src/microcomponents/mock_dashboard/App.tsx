@@ -7,6 +7,7 @@ import {
 } from '@pagopa/selfcare-common-frontend/lib';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
 import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
+import { isEmpty } from 'lodash';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Route, Switch, useHistory, useParams } from 'react-router-dom';
@@ -20,7 +21,7 @@ import {
 } from '../dashboard-routes-utils';
 import Layout from './Layout';
 import { mockedPartyProducts, mockedProductRoles } from './data/product';
-import { isEmpty } from 'lodash';
+
 
 type UrlParams = {
   tokenId: string;
