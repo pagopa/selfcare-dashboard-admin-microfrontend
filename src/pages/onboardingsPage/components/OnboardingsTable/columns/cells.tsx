@@ -1,5 +1,7 @@
 import { ArrowForward } from '@mui/icons-material';
+// import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { GridOverlay, GridRenderCellParams } from '@mui/x-data-grid';
 import { ButtonNaked } from '@pagopa/mui-italia';
@@ -72,18 +74,39 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
     const history = useHistory();
     const text = params.row?.description ?? '';
     const isClickable = params.row?.status === 'COMPLETED';
+    const isTest = (params.row as any)?.isTest;
+    const useIconVariant = true;
+    const { t } = useTranslation();
+
+    const indicator = isTest && (
+        useIconVariant ? (
+            <Tooltip title={t('onboardingsPage.table.isTest')} arrow enterDelay={300}>
+                <Box component="span" sx={{ display: 'inline-flex', verticalAlign: 'middle', mr: 1 }}>
+                    <InfoOutlinedIcon fontSize="small" sx={{ color: '#0B3EE3' }} />
+                </Box>
+            </Tooltip>
+        ) : (
+            <Chip label="Test" size="small" sx={{ mr: 1, height: 20, fontSize: '0.75rem', fontWeight: 'bold' }} color="info" />
+        )
+    );
 
     if (!isClickable) {
         return (
-            <Tooltip title={text} arrow enterDelay={300}>
-                <Box sx={truncatedCellSx}>{text}</Box>
-            </Tooltip>
+            <Box sx={{ width: '100%', pl: 1, display: 'flex', alignItems: 'center' }}>
+                {indicator}
+                <Tooltip title={text} arrow enterDelay={300}>
+                    <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {text}
+                    </Box>
+                </Tooltip>
+            </Box>
         );
     }
 
     return (
-        <Tooltip title={text} arrow enterDelay={300}>
-            <Box sx={truncatedCellSx}>
+        <Box sx={{ width: '100%', pl: 1, display: 'flex', alignItems: 'center' }}>
+            {indicator}
+            <Tooltip title={text} arrow enterDelay={300}>
                 <ButtonNaked
                     color="primary"
                     component="button"
@@ -107,8 +130,8 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
                 >
                     {text}
                 </ButtonNaked>
-            </Box>
-        </Tooltip>
+            </Tooltip>
+        </Box>
     );
 };
 
