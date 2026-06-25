@@ -156,7 +156,8 @@ const applyFilters = (
     filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
   }
   if (!includeTest) {
-    filtered = filtered.filter((o) => !o.isTest);
+    console.log('includeTest', includeTest);
+    // filtered = filtered.filter((o) => !o.isTest);
   }
 
   return filtered;
