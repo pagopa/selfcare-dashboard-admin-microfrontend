@@ -7,7 +7,6 @@
     "@mui/lab": "^5.0.0-alpha.80",
     "@mui/material": "^5.8.2",
     "@mui/x-data-grid": "^5.0.1",
-    "@mui/x-data-grid-generator": "^5.0.1",
     "@mui/x-date-pickers": "^5.0.20",
     "@pagopa/mui-italia": "^2.4.1",
     "@pagopa/selfcare-common-frontend": "^1.36.0",
@@ -15,7 +14,6 @@
     "@types/react-dom": "^18.2.7",
     "@types/react-router-dom": "^5.3.3",
     "dayjs": "^1.11.21",
-    "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4"
@@ -83,6 +81,7 @@
     "json-schema-ref-parser": "^7.1.0",
     "z-schema": "^4.2.4",
     "undici": "^7.28.0",
-    "form-data": "^2.5.4"
+    "form-data": "^2.5.4",
+    "mixpanel-browser": "2.75.0"
   }
 }
