@@ -13,7 +13,7 @@ export default defineConfig({
     exclude: ['**/node_modules/**', 'src/api/**', 'src/locale/**', 'src/services/__mocks__/**'],
     coverage: {
       provider: 'v8',
-      exclude: ['src/index.js', 'src/api/**', 'src/locale/**', 'src/services/__mocks__/**'],
+      exclude: ['src/index.ts', 'src/api/**', 'src/locale/**', 'src/services/__mocks__/**'],
     },
   },
 });
