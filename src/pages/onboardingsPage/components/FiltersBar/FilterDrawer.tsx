@@ -228,7 +228,7 @@ export const FilterDrawer = ({ products }: Props) => {
                   renderValue={(selected) => {
                     if (!filter.multiple) {
                       const val = selected as string;
-                      if (!val) { return null };
+                      if (!val) { return null; };
                       const option = filter.options?.find((o) => o.value === val);
                       return <span>{option?.label ?? val}</span>;
                     }

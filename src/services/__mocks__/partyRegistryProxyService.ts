@@ -124,7 +124,7 @@ const applyFilters = (
   statuses: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
-  _includeTest?: boolean
+  includeTest?: boolean
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
   let filtered = [...onboardings];
@@ -154,6 +154,9 @@ const applyFilters = (
   if (createdToDate) {
     const to = new Date(createdToDate);
     filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
+  }
+  if (!includeTest) {
+    filtered = filtered.filter((o) => !o.isTest);
   }
 
   return filtered;

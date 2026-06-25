@@ -106,8 +106,10 @@ export const mockedProductResources: Array<ProductsResource> = [
 ];
 
 export const DashboardApi = {
-  getInstitution: async (_partyId: string): Promise<InstitutionResource> =>
-    mockedInstitutionResources[0],
+  getInstitution: async (partyId: string): Promise<InstitutionResource> => {
+    console.log('partyId', partyId);
+    return mockedInstitutionResources[0];
+  },
 
   getProducts: async (): Promise<Array<ProductsResource>> => mockedProductResources,
 };
