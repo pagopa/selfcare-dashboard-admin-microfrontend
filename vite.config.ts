@@ -89,10 +89,6 @@ export default defineConfig(({ mode, command }) => {
             singleton: true,
             requiredVersion: dependencies['@mui/x-data-grid'],
           },
-          '@mui/x-data-grid-generator': {
-            singleton: true,
-            requiredVersion: dependencies['@mui/x-data-grid-generator'],
-          },
           i18next: {
             singleton: true,
             requiredVersion: dependencies.i18next,
