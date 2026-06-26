@@ -38,8 +38,8 @@ module.exports = {
     'guard-for-in': 'error',
     complexity: 'error',
     'arrow-body-style': 'error',
-    'import/order': 'error',
-    '@typescript-eslint/no-unused-vars': 'off',
+    'import/order': 'warn',
+    '@typescript-eslint/no-unused-vars': ['warn', { vars: 'all', args: 'after-used', ignoreRestSiblings: true }],
     // Enable if we want to enforce the return type for all the functions
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',

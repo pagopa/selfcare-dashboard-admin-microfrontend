@@ -94,6 +94,7 @@ export default {
       status: "Stato dell'accordo",
       loadError: 'Impossibile caricare le adesioni. Riprova più tardi.',
       noResults: 'I filtri che hai applicato non hanno dato nessun risultato.',
+      isTest: 'Ente di test',
     },
   },
   onboardingRequestPage: {

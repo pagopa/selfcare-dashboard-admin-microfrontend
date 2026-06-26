@@ -44,7 +44,8 @@ export const serializeFilters = (filters: Filters): string => {
   if (filters.stateIds.length) {
     params.set('stateIds', filters.stateIds.join(','));
   }
-  if (filters.includeTest && filters.includeTest !== 'false') {
+
+  if (filters.includeTest) {
     params.set('includeTest', filters.includeTest);
   }
 

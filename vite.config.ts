@@ -89,10 +89,6 @@ export default defineConfig(({ mode, command }) => {
             singleton: true,
             requiredVersion: dependencies['@mui/x-data-grid'],
           },
-          '@mui/x-data-grid-generator': {
-            singleton: true,
-            requiredVersion: dependencies['@mui/x-data-grid-generator'],
-          },
           i18next: {
             singleton: true,
             requiredVersion: dependencies.i18next,
@@ -100,10 +96,6 @@ export default defineConfig(({ mode, command }) => {
           'react-i18next': {
             singleton: true,
             requiredVersion: dependencies['react-i18next'],
-          },
-          'core-js': {
-            singleton: true,
-            requiredVersion: dependencies['core-js'],
           },
           'mixpanel-browser': {
             singleton: true,

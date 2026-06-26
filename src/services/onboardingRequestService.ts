@@ -18,7 +18,7 @@ export const fetchOnboardingRequest = (tokenId: string): Promise<OnboardingReque
 
 export const rejectOnboardingRequest = (
   tokenId: string,
-  _reason?: string
+  reason?: string
 ): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
@@ -26,6 +26,7 @@ export const rejectOnboardingRequest = (
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
     } else {
+      console.log("reason", reason);
       return Promise.reject('Onboarding request not found!');
     }
   } else {

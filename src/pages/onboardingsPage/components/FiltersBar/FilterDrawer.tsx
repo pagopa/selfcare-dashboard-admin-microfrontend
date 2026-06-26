@@ -228,7 +228,7 @@ export const FilterDrawer = ({ products }: Props) => {
                   renderValue={(selected) => {
                     if (!filter.multiple) {
                       const val = selected as string;
-                      if (!val) return null;
+                      if (!val) { return null; };
                       const option = filter.options?.find((o) => o.value === val);
                       return <span>{option?.label ?? val}</span>;
                     }
@@ -263,7 +263,7 @@ export const FilterDrawer = ({ products }: Props) => {
                   {filter.options?.map((option) => {
                     const isSelected = filter.multiple
                       ? Array.isArray(draftFilters[filter.key as keyof typeof draftFilters]) &&
-                        (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
+                      (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
                       : draftFilters[filter.key as keyof typeof draftFilters] === option.value;
                     return (
                       <MenuItem
