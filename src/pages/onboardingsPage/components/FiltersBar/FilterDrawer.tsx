@@ -95,6 +95,8 @@ export const FilterDrawer = ({ products }: Props) => {
       productIds: [],
       createdFromDate: '',
       createdToDate: '',
+      updatedFromDate: '',
+      updatedToDate: '',
       institutionTypeIds: [],
       stateIds: [],
       includeTest: 'false',
@@ -123,7 +125,8 @@ export const FilterDrawer = ({ products }: Props) => {
 
   const textFilters = filtersConfig.filter((f) => f.type === 'text') as Array<Extract<FilterConfig, { type: 'text' }>>;
   const selectFiltersBeforeDate = filtersConfig.filter((f) => f.type === 'select' && f.key !== 'stateIds') as Array<Extract<FilterConfig, { type: 'select' }>>;
-  const dateFilters = filtersConfig.filter((f) => f.type === 'date') as Array<Extract<FilterConfig, { type: 'date' }>>;
+  const createdDateFilters = filtersConfig.filter((f) => f.type === 'date' && f.group === 'created') as Array<Extract<FilterConfig, { type: 'date' }>>;
+  const updatedDateFilters = filtersConfig.filter((f) => f.type === 'date' && f.group === 'updated') as Array<Extract<FilterConfig, { type: 'date' }>>;
   const stateFilter = filtersConfig.find((f) => f.key === 'stateIds') as Extract<FilterConfig, { type: 'select' }> | undefined;
 
   return (
@@ -263,7 +266,7 @@ export const FilterDrawer = ({ products }: Props) => {
                   {filter.options?.map((option) => {
                     const isSelected = filter.multiple
                       ? Array.isArray(draftFilters[filter.key as keyof typeof draftFilters]) &&
-                        (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
+                      (draftFilters[filter.key as keyof typeof draftFilters] as Array<string>).includes(option.value)
                       : draftFilters[filter.key as keyof typeof draftFilters] === option.value;
                     return (
                       <MenuItem
@@ -297,8 +300,8 @@ export const FilterDrawer = ({ products }: Props) => {
               </FormControl>
             ))}
 
-            {/* Date Filters Group */}
-            {dateFilters.length > 0 && (
+            {/* Created Date Filters Group */}
+            {createdDateFilters.length > 0 && (
               <Box sx={{ mt: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
                   <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
@@ -311,7 +314,7 @@ export const FilterDrawer = ({ products }: Props) => {
                   </Tooltip>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  {dateFilters.map((filter) => (
+                  {createdDateFilters.map((filter) => (
                     <DateFilterField
                       key={filter.key}
                       label={filter.label}
@@ -319,6 +322,34 @@ export const FilterDrawer = ({ products }: Props) => {
                       onChange={(value) => handleFilterChange(filter.key, value)}
                       min={filter.key === 'createdToDate' ? draftFilters.createdFromDate as string : undefined}
                       max={filter.key === 'createdFromDate' ? draftFilters.createdToDate as string : undefined}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            )}
+
+            {/* Updated Date Filters Group */}
+            {updatedDateFilters.length > 0 && (
+              <Box sx={{ mt: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+                    {t('onboardingsPage.filters.updateDate')}
+                  </Typography>
+                  <Tooltip title={t('onboardingsPage.filters.updateDateTooltip')} placement="top">
+                    <IconButton size="small" sx={{ p: 0 }}>
+                      <InfoOutlinedIcon fontSize="small" sx={{ color: '#0B3EE3' }} />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {updatedDateFilters.map((filter) => (
+                    <DateFilterField
+                      key={filter.key}
+                      label={filter.label}
+                      value={draftFilters[filter.key as keyof typeof draftFilters] as string}
+                      onChange={(value) => handleFilterChange(filter.key, value)}
+                      min={filter.key === 'updatedToDate' ? draftFilters.updatedFromDate as string : undefined}
+                      max={filter.key === 'updatedFromDate' ? draftFilters.updatedToDate as string : undefined}
                     />
                   ))}
                 </Box>

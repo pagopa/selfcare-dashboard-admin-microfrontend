@@ -8,27 +8,30 @@ export type Filters = {
   includeTest: string;
   page: number;
   size: number;
+  updatedFromDate: string;
+  updatedToDate: string;
 };
 
 export type FilterConfig =
   | {
-      type: 'text';
-      key: keyof Filters;
-      label: string;
-      grow?: number;
-    }
+    type: 'text';
+    key: keyof Filters;
+    label: string;
+    grow?: number;
+  }
   | {
-      type: 'select';
-      key: keyof Filters;
-      label: string;
+    type: 'select';
+    key: keyof Filters;
+    label: string;
 
-      options: Array<{ label: string; value: string }>;
-      multiple: boolean;
-      grow?: number;
-    }
+    options: Array<{ label: string; value: string }>;
+    multiple: boolean;
+    grow?: number;
+  }
   | {
-      type: 'date';
-      key: 'createdFromDate' | 'createdToDate';
-      label: string;
-      grow?: number;
-    };
+    type: 'date';
+    key: 'createdFromDate' | 'createdToDate' | 'updatedFromDate' | 'updatedToDate';
+    label: string;
+    grow?: number;
+    group?: 'created' | 'updated';
+  }; 
