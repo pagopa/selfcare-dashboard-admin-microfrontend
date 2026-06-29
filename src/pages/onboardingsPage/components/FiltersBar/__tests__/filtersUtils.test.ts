@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parseFilters, serializeFilters, toApiDateTime } from '../filtersUtils';
 
 describe('filtersUtils', () => {
@@ -11,6 +11,8 @@ describe('filtersUtils', () => {
         productIds: [],
         createdFromDate: '',
         createdToDate: '',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: [],
         stateIds: [],
         includeTest: 'false',
@@ -89,6 +91,8 @@ describe('filtersUtils', () => {
         productIds: ['prod1', 'prod2'],
         createdFromDate: '2024-01-01',
         createdToDate: '2024-12-31',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: ['PA', 'GSP'],
         stateIds: ['COMPLETED'],
         includeTest: 'true',
@@ -111,6 +115,8 @@ describe('filtersUtils', () => {
         productIds: [],
         createdFromDate: '',
         createdToDate: '',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: [],
         stateIds: [],
         includeTest: 'false',
@@ -132,6 +138,8 @@ describe('filtersUtils', () => {
         productIds: [],
         createdFromDate: '',
         createdToDate: '',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: [],
         stateIds: [],
         includeTest: 'false',
@@ -151,6 +159,8 @@ describe('filtersUtils', () => {
         productIds: ['prod1'],
         createdFromDate: '',
         createdToDate: '',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: [],
         stateIds: ['COMPLETED'],
         includeTest: 'false',
@@ -170,6 +180,8 @@ describe('filtersUtils', () => {
         productIds: ['prod1', 'prod2'],
         createdFromDate: '2024-01-01',
         createdToDate: '2024-12-31',
+        updatedFromDate: '',
+        updatedToDate: '',
         institutionTypeIds: ['PA'],
         stateIds: ['COMPLETED', 'PENDING'],
         includeTest: 'true',
