@@ -1,180 +1,200 @@
-import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, act } from '@testing-library/react';
+import React from 'react';
 import { validateUrlBO, useTokenExchange } from '../useTokenExchange';
 
-// ── mock heavy deps ──────────────────────────────────────────────────────────
-const addErrorMock = vi.fn();
-const setLoadingMock = vi.fn();
-const getTokenExchangeAdminServiceMock = vi.fn();
-const trackEventMock = vi.fn();
+// ── Mock external dependencies ──────────────────────────────────────────────
+const mockAddError = vi.fn();
+const mockSetLoading = vi.fn();
+const mockTrackEvent = vi.fn((_event: any, _props: any, callback?: () => void) => callback?.());
 
 vi.mock('@pagopa/selfcare-common-frontend/lib/hooks/useErrorDispatcher', () => ({
-  default: () => addErrorMock,
+  default: () => mockAddError,
 }));
-
 vi.mock('@pagopa/selfcare-common-frontend/lib/hooks/useLoading', () => ({
-  default: () => setLoadingMock,
+  default: () => mockSetLoading,
 }));
-
 vi.mock('@pagopa/selfcare-common-frontend/lib/services/analyticsService', () => ({
-  trackEvent: (...args: any[]) => trackEventMock(...args),
+  trackEvent: (event: any, props: any, callback?: () => void) => mockTrackEvent(event, props, callback),
 }));
-
 vi.mock('../../services/dashboardService', () => ({
-  getTokenExchangeAdminService: (...args: any[]) =>
-    getTokenExchangeAdminServiceMock(...args),
+  getTokenExchangeAdminService: vi.fn(),
 }));
-
 vi.mock('../../utils/utils', () => ({
-  getAppArea: () => 'admin',
+  getAppArea: () => 'area_riservata',
 }));
 
-// ── helpers ──────────────────────────────────────────────────────────────────
-const mockProduct = (overrides: any = {}) => ({
-  id: 'prod-io',
+import { getTokenExchangeAdminService } from '../../services/dashboardService';
+const mockGetTokenExchange = getTokenExchangeAdminService as ReturnType<typeof vi.fn>;
+
+// ── Hook wrapper — v12 compatible substitute for renderHook ──────────────────
+type HookRef = ReturnType<typeof useTokenExchange>;
+
+const HookWrapper = React.forwardRef<HookRef>((_props, ref) => {
+  const hook = useTokenExchange();
+  React.useImperativeHandle(ref, () => hook, [hook]);
+  return null;
+});
+HookWrapper.displayName = 'HookWrapper';
+
+const renderUseTokenExchange = (): React.RefObject<HookRef> => {
+  const ref = React.createRef<HookRef>();
+  render(<HookWrapper ref={ref} />);
+  return ref;
+};
+
+// ── Shared fixtures ──────────────────────────────────────────────────────────
+const baseProduct = {
+  id: 'prod-test',
   urlBO: 'https://backoffice.example.com/path',
-  backOfficeEnvironmentConfigurations: undefined as any,
-  ...overrides,
+  description: '',
+  logo: '',
+  title: '',
+  status: 'ACTIVE' as any,
+  imageUrl: '',
+  delegable: false,
+  invoiceable: false,
+};
+
+const baseParty = { partyId: 'party-123' } as any;
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.stubGlobal('location', { assign: vi.fn(), hostname: 'selfcare.pagopa.it' });
 });
 
-const mockParty = () => ({ partyId: 'party-123' });
-
-// ── validateUrlBO ─────────────────────────────────────────────────────────────
+// ── validateUrlBO (pure function) ────────────────────────────────────────────
 describe('validateUrlBO', () => {
-  it('returns the hostname for a valid https URL', () => {
-    expect(validateUrlBO('https://backoffice.example.com/some/path')).toBe(
-      'backoffice.example.com'
-    );
-  });
-
   it('returns the hostname for a valid http URL', () => {
-    expect(validateUrlBO('http://api.test.it')).toBe('api.test.it');
+    expect(validateUrlBO('http://example.com/path')).toBe('example.com');
   });
 
-  it('returns an Error when the URL has no http/https scheme', () => {
+  it('returns the hostname for a valid https URL', () => {
+    expect(validateUrlBO('https://backoffice.selfcare.it/test')).toBe('backoffice.selfcare.it');
+  });
+
+  it('returns an Error for an invalid URL without scheme', () => {
     const result = validateUrlBO('not-a-url');
     expect(result).toBeInstanceOf(Error);
     expect((result as Error).message).toContain('Cannot extract hostname from URL');
   });
 
   it('returns an Error for an empty string', () => {
-    expect(validateUrlBO('')).toBeInstanceOf(Error);
+    const result = validateUrlBO('');
+    expect(result).toBeInstanceOf(Error);
   });
 });
 
-// ── useTokenExchange ─────────────────────────────────────────────────────────
-describe('useTokenExchange', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    getTokenExchangeAdminServiceMock.mockResolvedValue('https://redirected.example.com');
-    // invoke the redirect callback immediately so window.location.assign is called
-    trackEventMock.mockImplementation((_name: string, _props: any, cb?: () => void) => cb?.());
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: { assign: vi.fn() },
-    });
-  });
-
-  it('adds a validation error and skips service call when urlBO is invalid', async () => {
-    const { result } = renderHook(() => useTokenExchange());
-    const product = mockProduct({ urlBO: 'not-a-url' });
+// ── useTokenExchange hook ────────────────────────────────────────────────────
+describe('useTokenExchange — invokeProductBo', () => {
+  it('calls addError and returns early when urlBO is invalid', async () => {
+    const product = { ...baseProduct, urlBO: 'bad-url' };
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(product, mockParty() as any);
+      await hook.current!.invokeProductBo(product, baseParty);
     });
 
-    expect(addErrorMock).toHaveBeenCalledWith(
+    expect(mockAddError).toHaveBeenCalledWith(
       expect.objectContaining({ id: `ValidationUrlError-${product.id}` })
     );
-    expect(getTokenExchangeAdminServiceMock).not.toHaveBeenCalled();
+    expect(mockGetTokenExchange).not.toHaveBeenCalled();
   });
 
-  it('calls service without environment when none is provided', async () => {
-    const { result } = renderHook(() => useTokenExchange());
+  it('calls getTokenExchangeAdminService without environment and tracks event on success', async () => {
+    mockGetTokenExchange.mockResolvedValue('https://product-bo.example.com');
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(mockProduct(), mockParty() as any);
+      await hook.current!.invokeProductBo(baseProduct, baseParty);
     });
 
-    expect(setLoadingMock).toHaveBeenCalledWith(true);
-    expect(getTokenExchangeAdminServiceMock).toHaveBeenCalledWith(
-      'party-123', 'prod-io', undefined, undefined
+    expect(mockSetLoading).toHaveBeenCalledWith(true);
+    expect(mockGetTokenExchange).toHaveBeenCalledWith('party-123', 'prod-test', undefined, undefined);
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      'DASHBOARD_OPEN_PRODUCT',
+      expect.objectContaining({ product_id: 'prod-test', target: 'prod' }),
+      expect.any(Function)
     );
-    expect(setLoadingMock).toHaveBeenCalledWith(false);
+    expect(mockSetLoading).toHaveBeenCalledWith(false);
   });
 
-  it('calls service with selectedEnvironment and lang when provided', async () => {
-    const { result } = renderHook(() => useTokenExchange());
-    const product = mockProduct({
+  it('calls getTokenExchangeAdminService with selectedEnvironment when provided', async () => {
+    mockGetTokenExchange.mockResolvedValue('https://product-bo.example.com');
+    const product = {
+      ...baseProduct,
       backOfficeEnvironmentConfigurations: [
-        { environment: 'coll', url: 'https://coll.example.com' },
+        { environment: 'test', url: 'https://test-bo.example.com' },
       ],
-    });
+    };
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(product, mockParty() as any, 'coll', 'it');
+      await hook.current!.invokeProductBo(product, baseParty, 'test', 'it');
     });
 
-    expect(getTokenExchangeAdminServiceMock).toHaveBeenCalledWith(
-      'party-123', 'prod-io', 'coll', 'it'
+    expect(mockGetTokenExchange).toHaveBeenCalledWith('party-123', 'prod-test', 'test', 'it');
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      'DASHBOARD_OPEN_PRODUCT',
+      expect.objectContaining({ target: 'test' }),
+      expect.any(Function)
     );
   });
 
-  it('dispatches a TokenExchangeError and resets loading when service rejects (no environment)', async () => {
-    getTokenExchangeAdminServiceMock.mockRejectedValue(new Error('network error'));
-    const { result } = renderHook(() => useTokenExchange());
+  it('calls addError when getTokenExchangeAdminService rejects', async () => {
+    mockGetTokenExchange.mockRejectedValue(new Error('network error'));
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(mockProduct(), mockParty() as any);
+      await hook.current!.invokeProductBo(baseProduct, baseParty);
     });
 
-    expect(addErrorMock).toHaveBeenCalledWith(
-      expect.objectContaining({ id: `TokenExchangeError-prod-io` })
+    expect(mockAddError).toHaveBeenCalledWith(
+      expect.objectContaining({ id: `TokenExchangeError-${baseProduct.id}` })
     );
-    expect(setLoadingMock).toHaveBeenCalledWith(false);
+    expect(mockSetLoading).toHaveBeenCalledWith(false);
   });
 
-  it('dispatches a TokenExchangeError and resets loading when service rejects (with environment)', async () => {
-    getTokenExchangeAdminServiceMock.mockRejectedValue(new Error('network error'));
-    const { result } = renderHook(() => useTokenExchange());
-    const product = mockProduct({
-      backOfficeEnvironmentConfigurations: [
-        { environment: 'coll', url: 'https://coll.example.com' },
-      ],
-    });
+  it('derives partyId from institutionId when party has onboardingId', async () => {
+    mockGetTokenExchange.mockResolvedValue('https://product-bo.example.com');
+    const onboardingParty = { onboardingId: 'onb-1', institutionId: 'inst-456' } as any;
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(product, mockParty() as any, 'coll');
+      await hook.current!.invokeProductBo(baseProduct, onboardingParty);
     });
 
-    expect(addErrorMock).toHaveBeenCalledWith(
-      expect.objectContaining({ id: `TokenExchangeError-prod-io` })
-    );
-    expect(setLoadingMock).toHaveBeenCalledWith(false);
-  });
-
-  it('uses institutionId when selectedParty has onboardingId shape', async () => {
-    const { result } = renderHook(() => useTokenExchange());
-    const party = { onboardingId: 'onb-1', institutionId: 'inst-456' };
-
-    await act(async () => {
-      await result.current.invokeProductBo(mockProduct(), party as any);
-    });
-
-    expect(getTokenExchangeAdminServiceMock).toHaveBeenCalledWith(
-      'inst-456', 'prod-io', undefined, undefined
-    );
+    expect(mockGetTokenExchange).toHaveBeenCalledWith('inst-456', 'prod-test', undefined, undefined);
   });
 
   it('uses empty string as partyId when selectedParty is null', async () => {
-    const { result } = renderHook(() => useTokenExchange());
+    mockGetTokenExchange.mockResolvedValue('https://product-bo.example.com');
+    const hook = renderUseTokenExchange();
 
     await act(async () => {
-      await result.current.invokeProductBo(mockProduct(), null);
+      await hook.current!.invokeProductBo(baseProduct, null);
     });
 
-    expect(getTokenExchangeAdminServiceMock).toHaveBeenCalledWith(
-      '', 'prod-io', undefined, undefined
+    expect(mockGetTokenExchange).toHaveBeenCalledWith('', 'prod-test', undefined, undefined);
+  });
+
+  it('uses selectedEnvironmentUrl from backOfficeEnvironmentConfigurations when available', async () => {
+    // If the env URL is invalid the error path fires — proving that branch was used
+    const product = {
+      ...baseProduct,
+      urlBO: 'https://valid-bo.example.com',
+      backOfficeEnvironmentConfigurations: [
+        { environment: 'staging', url: 'bad-url' },
+      ],
+    };
+    const hook = renderUseTokenExchange();
+
+    await act(async () => {
+      await hook.current!.invokeProductBo(product, baseParty, 'staging');
+    });
+
+    expect(mockAddError).toHaveBeenCalledWith(
+      expect.objectContaining({ id: `ValidationUrlError-${product.id}` })
     );
   });
 });

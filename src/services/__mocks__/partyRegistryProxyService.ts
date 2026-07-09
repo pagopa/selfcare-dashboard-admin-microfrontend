@@ -238,5 +238,6 @@ export const mockedSearchOnboardingsService = (
     pageSize,
     totalElements: filtered.length,
     totalPages: Math.ceil(filtered.length / pageSize),
+    includeTest: includeTest ?? false,
   } as OnboardingIndexSearchResource);
 };
