@@ -72,18 +72,33 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
     const history = useHistory();
     const text = params.row?.description ?? '';
     const isClickable = params.row?.status === 'COMPLETED';
+    const isTest = (params.row as any)?.isTest;
+    const { t } = useTranslation();
+
+    const indicator = isTest && (
+        <Tooltip title={t('onboardingsPage.table.isTest')} arrow enterDelay={300}>
+            <Chip label="Test" size="small" sx={{ mr: 1, height: 20, fontSize: '0.75rem', fontWeight: 'bold' }} color="warning" />
+        </Tooltip>
+
+    );
 
     if (!isClickable) {
         return (
-            <Tooltip title={text} arrow enterDelay={300}>
-                <Box sx={truncatedCellSx}>{text}</Box>
-            </Tooltip>
+            <Box sx={{ width: '100%', pl: 1, display: 'flex', alignItems: 'center' }}>
+                {indicator}
+                <Tooltip title={text} arrow enterDelay={300}>
+                    <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {text}
+                    </Box>
+                </Tooltip>
+            </Box>
         );
     }
 
     return (
-        <Tooltip title={text} arrow enterDelay={300}>
-            <Box sx={truncatedCellSx}>
+        <Box sx={{ width: '100%', pl: 1, display: 'flex', alignItems: 'center' }}>
+            {indicator}
+            <Tooltip title={text} arrow enterDelay={300}>
                 <ButtonNaked
                     color="primary"
                     component="button"
@@ -107,8 +122,8 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
                 >
                     {text}
                 </ButtonNaked>
-            </Box>
-        </Tooltip>
+            </Tooltip>
+        </Box>
     );
 };
 

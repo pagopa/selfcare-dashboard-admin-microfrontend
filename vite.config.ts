@@ -1,6 +1,6 @@
-import { createRequire } from 'module';
 import { federation } from '@module-federation/vite';
 import react from '@vitejs/plugin-react';
+import { createRequire } from 'module';
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -100,10 +100,6 @@ export default defineConfig(({ mode, command }) => {
           'react-i18next': {
             singleton: true,
             requiredVersion: dependencies['react-i18next'],
-          },
-          'core-js': {
-            singleton: true,
-            requiredVersion: dependencies['core-js'],
           },
           'mixpanel-browser': {
             singleton: true,

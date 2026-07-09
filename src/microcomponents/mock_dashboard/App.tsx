@@ -1,27 +1,27 @@
+import { Box, Grid, useTheme } from '@mui/material';
 import {
   ErrorBoundary,
   LoadingOverlay,
   UnloadEventHandler,
   UserNotifyHandle,
 } from '@pagopa/selfcare-common-frontend/lib';
-import { useTranslation } from 'react-i18next';
-import { useParams, Route, Switch, useHistory } from 'react-router-dom';
-import { isEmpty } from 'lodash';
-import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
-import { Box, Grid, useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Fragment } from 'react';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
+import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
+import { isEmpty } from 'lodash';
+import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, Route, Switch, useHistory, useParams } from 'react-router-dom';
+import { Product } from '../../model/Product';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
 import { createStore } from '../../redux/store';
+import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
 import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
 } from '../dashboard-routes-utils';
-import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
-import { Product } from '../../model/Product';
 import Layout from './Layout';
 import { mockedPartyProducts, mockedProductRoles } from './data/product';
+
 
 type UrlParams = {
   tokenId: string;
@@ -46,8 +46,8 @@ const reduceRouteConfig = (key: string, routes: RoutesObject): any =>
     innerkey === 'SUBPATH_DEFAULT'
       ? undefined
       : route.subRoutes && !isEmpty(route.subRoutes)
-      ? reduceRouteConfig(`${key}${innerkey}.`, route.subRoutes)
-      : { [`${key}${innerkey}`]: route.path }
+        ? reduceRouteConfig(`${key}${innerkey}.`, route.subRoutes)
+        : { [`${key}${innerkey}`]: route.path }
   );
 
 const App = ({
@@ -67,12 +67,12 @@ const App = ({
   const products = onboardingRequest ? mockedPartyProducts : undefined;
   const productsRolesMap = onboardingRequest
     ? products?.reduce((acc: ProductsRolesMap, p: Product) => {
-        // eslint-disable-next-line functional/immutable-data
-        acc[p.id] = productRoles2ProductRolesList(
-          mockedProductRoles.map((r) => ({ ...r, productId: p.id }))
-        );
-        return acc;
-      }, {} as ProductsRolesMap)
+      // eslint-disable-next-line functional/immutable-data
+      acc[p.id] = productRoles2ProductRolesList(
+        mockedProductRoles.map((r) => ({ ...r, productId: p.id }))
+      );
+      return acc;
+    }, {} as ProductsRolesMap)
     : undefined;
 
   const availableTokenIds = mockedOnboardingRequests.map((r) => r.tokenId).join(', ');
@@ -105,8 +105,8 @@ const App = ({
           decorators: DashboardDecoratorsType;
         }>
       ) =>
-      (props: any) =>
-        <WrappedComponent productsRolesMap={productsRolesMap} {...props} />,
+        (props: any) =>
+          <WrappedComponent productsRolesMap={productsRolesMap} {...props} />,
 
     withSelectedProductRoles: (WrappedComponent: React.ComponentType<any>) => (props: any) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks

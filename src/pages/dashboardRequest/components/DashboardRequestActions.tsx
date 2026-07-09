@@ -51,7 +51,7 @@ export default function DashboardRequestActions({
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
   const { getAllProductsWithPermission } = usePermissions();
 
-  const [_openRejectModal, setOpenRejectModal] = useState<boolean>(false);
+  const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
 
   const approveOnboarding = () => {
@@ -144,7 +144,7 @@ export default function DashboardRequestActions({
       )}
 
       <SessionModal
-        open={false}
+        open={openRejectModal}
         title={t('onboardingRequestPage.actions.decline.modal.title')}
         message={
           <Grid container xs={12} spacing={2} mb={2}>

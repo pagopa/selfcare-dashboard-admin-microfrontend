@@ -109,6 +109,7 @@ export const mockedOnboardings: Array<OnboardingIndexResource> = Array.from(
     institutionType: INSTITUTION_TYPES[i % INSTITUTION_TYPES.length],
     createdAt: DATES[i % DATES.length],
     status: STATUSES[i % STATUSES.length],
+    isTest: i % 2 === 0,
     institutionId: `inst-${String(i + 1).padStart(5, '0')}`,
     taxCode: `${80000000000 + i}`,
     updatedAt: new Date(2025, 1 + (i % 11), 5 + (i % 15)),
@@ -122,7 +123,8 @@ const applyFilters = (
   institutionTypes: Array<string>,
   statuses: Array<string>,
   createdFromDate?: string,
-  createdToDate?: string
+  createdToDate?: string,
+  includeTest?: boolean
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
   let filtered = [...onboardings];
@@ -152,6 +154,10 @@ const applyFilters = (
   if (createdToDate) {
     const to = new Date(createdToDate);
     filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
+  }
+  if (!includeTest) {
+    console.log('includeTest', includeTest);
+    // filtered = filtered.filter((o) => !o.isTest);
   }
 
   return filtered;
@@ -220,7 +226,8 @@ export const mockedSearchOnboardingsService = (
     institutionTypes,
     statuses,
     createdFromDate,
-    createdToDate
+    createdToDate,
+    includeTest,
   );
   const sorted = applySort(filtered, orderBy);
   const paged = applyPagination(sorted, page, pageSize);
