@@ -211,7 +211,8 @@ export const mockedSearchOnboardingsService = (
   orderBy?: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
-  includeTest?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _includeTest?: boolean
 ): Promise<OnboardingIndexSearchResource> => {
   const filtered = applyFilters(
     mockedOnboardings,

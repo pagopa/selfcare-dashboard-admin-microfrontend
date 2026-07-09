@@ -15,7 +15,7 @@ vi.mock('@pagopa/selfcare-common-frontend/lib/hooks/useLoading', () => ({
   default: () => mockSetLoading,
 }));
 vi.mock('@pagopa/selfcare-common-frontend/lib/services/analyticsService', () => ({
-  trackEvent: (...args: any[]) => mockTrackEvent(...args),
+  trackEvent: (event: any, props: any, callback?: () => void) => mockTrackEvent(event, props, callback),
 }));
 vi.mock('../../services/dashboardService', () => ({
   getTokenExchangeAdminService: vi.fn(),
