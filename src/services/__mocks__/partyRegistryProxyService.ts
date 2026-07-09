@@ -211,8 +211,7 @@ export const mockedSearchOnboardingsService = (
   orderBy?: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _includeTest?: boolean
+  includeTest?: boolean
 ): Promise<OnboardingIndexSearchResource> => {
   const filtered = applyFilters(
     mockedOnboardings,
@@ -232,5 +231,6 @@ export const mockedSearchOnboardingsService = (
     pageSize,
     totalElements: filtered.length,
     totalPages: Math.ceil(filtered.length / pageSize),
+    includeTest: includeTest ?? false,
   } as OnboardingIndexSearchResource);
 };
