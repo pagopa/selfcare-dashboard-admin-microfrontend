@@ -63,6 +63,10 @@ export default {
       requestDateTooltip: 'Data in cui l’ente ha fatto la richiesta di adesione al prodotto',
       createdFromDate: 'Dal',
       createdToDate: 'Al',
+      updateDate: "DATA DI AGGIORNAMENTO DELL'ADESIONE",
+      updateDateTooltip: 'Data in cui il prodotto è stato attivato o disattivato',
+      updatedFromDate: 'Dal',
+      updatedToDate: 'Al',
       institutionTypes: 'Tipologia ente',
       includeTest: 'Enti di test',
       includeTestOptions: {
