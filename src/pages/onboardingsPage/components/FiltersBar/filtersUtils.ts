@@ -15,8 +15,8 @@ export const parseFilters = (search: string): Filters => {
     productIds: params.get('productIds')?.split(',') || [],
     createdFromDate: params.get('createdFromDate') || '',
     createdToDate: params.get('createdToDate') || '',
-    updatedFromDate: params.get('updatedFromDate') || '',
-    updatedToDate: params.get('updatedToDate') || '',
+    statusUpdatedFromDate: params.get('statusUpdatedFromDate') || '',
+    statusUpdatedToDate: params.get('statusUpdatedToDate') || '',
     institutionTypeIds: params.get('institutionTypeIds')?.split(',') || [],
     stateIds: params.get('stateIds')?.split(',') || [],
     includeTest: params.get('includeTest') || 'false',
@@ -40,11 +40,11 @@ export const serializeFilters = (filters: Filters): string => {
   if (filters.createdToDate) {
     params.set('createdToDate', filters.createdToDate);
   }
-  if (filters.updatedFromDate) {
-    params.set('updatedFromDate', filters.updatedFromDate);
+  if (filters.statusUpdatedFromDate) {
+    params.set('statusUpdatedFromDate', filters.statusUpdatedFromDate);
   }
-  if (filters.updatedToDate) {
-    params.set('updatedToDate', filters.updatedToDate);
+  if (filters.statusUpdatedToDate) {
+    params.set('statusUpdatedToDate', filters.statusUpdatedToDate);
   }
   if (filters.institutionTypeIds.length) {
     params.set('institutionTypeIds', filters.institutionTypeIds.join(','));

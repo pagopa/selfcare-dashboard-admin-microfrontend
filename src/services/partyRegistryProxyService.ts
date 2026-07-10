@@ -26,6 +26,8 @@ export const searchOnboardingsService = async (
   orderBy?: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
+  statusUpdatedFromDate?: string,
+  statusUpdatedToDate?: string,
   includeTest?: boolean
 ): Promise<OnboardingIndexSearchResource> => {
   /* istanbul ignore if */
@@ -40,6 +42,8 @@ export const searchOnboardingsService = async (
       orderBy,
       createdFromDate,
       createdToDate,
+      statusUpdatedFromDate,
+      statusUpdatedToDate,
       includeTest
     );
   } else {
@@ -53,6 +57,8 @@ export const searchOnboardingsService = async (
       orderBy,
       createdFromDate,
       createdToDate,
+      statusUpdatedFromDate,
+      statusUpdatedToDate,
       includeTest
     );
   }

@@ -124,6 +124,8 @@ const applyFilters = (
   statuses: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
+  statusUpdatedFromDate?: string,
+  statusUpdatedToDate?: string,
   includeTest?: boolean
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
@@ -156,8 +158,15 @@ const applyFilters = (
     filtered = filtered.filter((o) => o.createdAt && new Date(o.createdAt) <= to);
   }
   if (!includeTest) {
-    console.log('includeTest', includeTest);
-    // filtered = filtered.filter((o) => !o.isTest);
+    filtered = filtered.filter((o) => !o.isTest);
+  }
+  if (statusUpdatedFromDate) {
+    const from = new Date(statusUpdatedFromDate);
+    filtered = filtered.filter((o) => o.updatedAt && new Date(o.updatedAt) >= from);
+  }
+  if (statusUpdatedToDate) {
+    const to = new Date(statusUpdatedToDate);
+    filtered = filtered.filter((o) => o.updatedAt && new Date(o.updatedAt) <= to);
   }
 
   return filtered;
@@ -217,6 +226,8 @@ export const mockedSearchOnboardingsService = (
   orderBy?: Array<string>,
   createdFromDate?: string,
   createdToDate?: string,
+  statusUpdatedFromDate?: string,
+  statusUpdatedToDate?: string,
   includeTest?: boolean
 ): Promise<OnboardingIndexSearchResource> => {
   const filtered = applyFilters(
@@ -227,6 +238,8 @@ export const mockedSearchOnboardingsService = (
     statuses,
     createdFromDate,
     createdToDate,
+    statusUpdatedFromDate,
+    statusUpdatedToDate,
     includeTest,
   );
   const sorted = applySort(filtered, orderBy);

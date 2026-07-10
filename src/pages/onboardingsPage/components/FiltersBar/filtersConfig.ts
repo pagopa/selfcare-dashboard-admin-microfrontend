@@ -47,14 +47,14 @@ export const getFiltersConfig = (t: TFunction, products: Array<Product>): Array<
   },
   {
     type: 'date',
-    key: 'updatedFromDate',
+    key: 'statusUpdatedFromDate',
     label: t('onboardingsPage.filters.updatedFromDate'),
     grow: 1,
     group: 'updated',
   },
   {
     type: 'date',
-    key: 'updatedToDate',
+    key: 'statusUpdatedToDate',
     label: t('onboardingsPage.filters.updatedToDate'),
     grow: 1,
     group: 'updated',

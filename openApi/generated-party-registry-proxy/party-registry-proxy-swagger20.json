@@ -831,6 +831,20 @@
             "type": "string"
           },
           {
+            "format": "date-time",
+            "in": "query",
+            "name": "statusUpdatedFromDate",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "in": "query",
+            "name": "statusUpdatedToDate",
+            "required": false,
+            "type": "string"
+          },
+          {
             "default": 0,
             "format": "int64",
             "in": "query",
@@ -1645,6 +1659,10 @@
           "format": "date-time",
           "type": "string"
         },
+        "deletedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
         "description": {
           "type": "string"
         },
@@ -1671,6 +1689,10 @@
           "type": "string"
         },
         "status": {
+          "type": "string"
+        },
+        "statusUpdatedAt": {
+          "format": "date-time",
           "type": "string"
         },
         "subunitCode": {
