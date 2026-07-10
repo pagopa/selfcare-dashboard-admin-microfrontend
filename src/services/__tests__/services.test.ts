@@ -216,7 +216,7 @@ describe('partyRegistryProxyService', () => {
 
       const result = await searchOnboardingsService('q', ['prod-1'], ['PA'], ['ACTIVE'], 0, 10);
 
-      expect(mockSearchOnboardings).toHaveBeenCalledWith('q', ['prod-1'], ['PA'], ['ACTIVE'], 0, 10, undefined, undefined, undefined, undefined);
+      expect(mockSearchOnboardings).toHaveBeenCalledWith('q', ['prod-1'], ['PA'], ['ACTIVE'], 0, 10, undefined, undefined, undefined, undefined, undefined, undefined);
       expect(result).toEqual(mockResp);
     });
   });
