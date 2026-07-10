@@ -122,6 +122,7 @@ export const FilterDrawer = ({ products }: Props) => {
   if (currentFilters.stateIds.length > 0) { activeCount++; }
   if (currentFilters.includeTest === 'true') { activeCount++; }
   if (currentFilters.createdFromDate || currentFilters.createdToDate) { activeCount++; }
+  if (currentFilters.statusUpdatedFromDate || currentFilters.statusUpdatedToDate) { activeCount++; }
 
   const textFilters = filtersConfig.filter((f) => f.type === 'text') as Array<Extract<FilterConfig, { type: 'text' }>>;
   const selectFiltersBeforeDate = filtersConfig.filter((f) => f.type === 'select' && f.key !== 'stateIds') as Array<Extract<FilterConfig, { type: 'select' }>>;
