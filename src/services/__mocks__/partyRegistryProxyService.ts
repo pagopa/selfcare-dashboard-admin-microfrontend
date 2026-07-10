@@ -113,6 +113,7 @@ export const mockedOnboardings: Array<OnboardingIndexResource> = Array.from(
     institutionId: `inst-${String(i + 1).padStart(5, '0')}`,
     taxCode: `${80000000000 + i}`,
     updatedAt: new Date(2025, 1 + (i % 11), 5 + (i % 15)),
+    statusUpdatedAt: new Date(2025, 1 + (i % 11), 10 + (i % 15)),
   })
 );
 
@@ -162,11 +163,11 @@ const applyFilters = (
   }
   if (statusUpdatedFromDate) {
     const from = new Date(statusUpdatedFromDate);
-    filtered = filtered.filter((o) => o.updatedAt && new Date(o.updatedAt) >= from);
+    filtered = filtered.filter((o) => o.statusUpdatedAt && new Date(o.statusUpdatedAt) >= from);
   }
   if (statusUpdatedToDate) {
     const to = new Date(statusUpdatedToDate);
-    filtered = filtered.filter((o) => o.updatedAt && new Date(o.updatedAt) <= to);
+    filtered = filtered.filter((o) => o.statusUpdatedAt && new Date(o.statusUpdatedAt) <= to);
   }
 
   return filtered;
