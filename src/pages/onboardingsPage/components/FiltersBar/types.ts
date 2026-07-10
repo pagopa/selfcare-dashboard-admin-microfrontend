@@ -8,8 +8,8 @@ export type Filters = {
   includeTest: string;
   page: number;
   size: number;
-  updatedFromDate: string;
-  updatedToDate: string;
+  statusUpdatedFromDate: string;
+  statusUpdatedToDate: string;
 };
 
 export type FilterConfig =
@@ -30,7 +30,7 @@ export type FilterConfig =
   }
   | {
     type: 'date';
-    key: 'createdFromDate' | 'createdToDate' | 'updatedFromDate' | 'updatedToDate';
+    key: 'createdFromDate' | 'createdToDate' | 'statusUpdatedFromDate' | 'statusUpdatedToDate';
     label: string;
     grow?: number;
     group?: 'created' | 'updated';

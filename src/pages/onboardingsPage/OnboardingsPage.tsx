@@ -60,7 +60,7 @@ const OnboardingsPage = () => {
         : undefined;
 
     setLoading(true);
-    // TODO add updatedFromDate and updatedToDate to the searchOnboardingsService when the API is ready
+
     searchOnboardingsService(
       filters.search,
       filters.productIds,
@@ -71,6 +71,8 @@ const OnboardingsPage = () => {
       orderBy,
       toApiDateTime(filters.createdFromDate),
       toApiDateTime(filters.createdToDate, true),
+      toApiDateTime(filters.statusUpdatedFromDate),
+      toApiDateTime(filters.statusUpdatedToDate, true),
       filters.includeTest === 'true'
     )
       .then((response) => {

@@ -117,8 +117,8 @@ describe('filtersConfig', () => {
       expect(dateFilters).toHaveLength(4);
       expect(dateFilters[0].key).toBe('createdFromDate');
       expect(dateFilters[1].key).toBe('createdToDate');
-      expect(dateFilters[2].key).toBe('updatedFromDate');
-      expect(dateFilters[3].key).toBe('updatedToDate');
+      expect(dateFilters[2].key).toBe('statusUpdatedFromDate');
+      expect(dateFilters[3].key).toBe('statusUpdatedToDate');
     });
 
     it('should include institution type select filter with all options', () => {

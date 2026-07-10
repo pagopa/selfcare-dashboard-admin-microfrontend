@@ -95,8 +95,8 @@ export const FilterDrawer = ({ products }: Props) => {
       productIds: [],
       createdFromDate: '',
       createdToDate: '',
-      updatedFromDate: '',
-      updatedToDate: '',
+      statusUpdatedFromDate: '',
+      statusUpdatedToDate: '',
       institutionTypeIds: [],
       stateIds: [],
       includeTest: 'false',
@@ -122,11 +122,12 @@ export const FilterDrawer = ({ products }: Props) => {
   if (currentFilters.stateIds.length > 0) { activeCount++; }
   if (currentFilters.includeTest === 'true') { activeCount++; }
   if (currentFilters.createdFromDate || currentFilters.createdToDate) { activeCount++; }
+  if (currentFilters.statusUpdatedFromDate || currentFilters.statusUpdatedToDate) { activeCount++; }
 
   const textFilters = filtersConfig.filter((f) => f.type === 'text') as Array<Extract<FilterConfig, { type: 'text' }>>;
   const selectFiltersBeforeDate = filtersConfig.filter((f) => f.type === 'select' && f.key !== 'stateIds') as Array<Extract<FilterConfig, { type: 'select' }>>;
   const createdDateFilters = filtersConfig.filter((f) => f.type === 'date' && f.group === 'created') as Array<Extract<FilterConfig, { type: 'date' }>>;
-  const updatedDateFilters = filtersConfig.filter((f) => f.type === 'date' && f.group === 'updated') as Array<Extract<FilterConfig, { type: 'date' }>>;
+  const statusUpdatedDateFilters = filtersConfig.filter((f) => f.type === 'date' && f.group === 'updated') as Array<Extract<FilterConfig, { type: 'date' }>>;
   const stateFilter = filtersConfig.find((f) => f.key === 'stateIds') as Extract<FilterConfig, { type: 'select' }> | undefined;
 
   return (
@@ -331,7 +332,7 @@ export const FilterDrawer = ({ products }: Props) => {
             )}
 
             {/* Updated Date Filters Group */}
-            {updatedDateFilters.length > 0 && (
+            {statusUpdatedDateFilters.length > 0 && (
               <Box sx={{ mt: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
                   <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
@@ -344,14 +345,14 @@ export const FilterDrawer = ({ products }: Props) => {
                   </Tooltip>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  {updatedDateFilters.map((filter) => (
+                  {statusUpdatedDateFilters.map((filter) => (
                     <DateFilterField
                       key={filter.key}
                       label={filter.label}
                       value={draftFilters[filter.key as keyof typeof draftFilters] as string}
                       onChange={(value) => handleFilterChange(filter.key, value)}
-                      min={filter.key === 'updatedToDate' ? draftFilters.updatedFromDate as string : undefined}
-                      max={filter.key === 'updatedFromDate' ? draftFilters.updatedToDate as string : undefined}
+                      min={filter.key === 'statusUpdatedToDate' ? draftFilters.statusUpdatedFromDate as string : undefined}
+                      max={filter.key === 'statusUpdatedFromDate' ? draftFilters.statusUpdatedToDate as string : undefined}
                     />
                   ))}
                 </Box>
