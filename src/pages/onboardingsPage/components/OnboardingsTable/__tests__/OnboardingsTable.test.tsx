@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { OnboardingsTable } from '../OnboardingsTable';
-import { getOnboardingsColumns } from '../columns';
-import { RenderNoRowsOverlay } from '../columns/cells';
+import { getOnboardingsColumns } from '../columns/tableConfig';
+import { RenderNoRowsOverlay } from '../columns/cellsRender';
 
 vi.mock('react-i18next', async () => {
   const actual = await vi.importActual('react-i18next');
