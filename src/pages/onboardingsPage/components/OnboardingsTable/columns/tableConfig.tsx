@@ -2,7 +2,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { TFunction } from 'i18next';
 import { OnboardingIndexResource } from "../../../../../api/generated/party-registry-proxy/OnboardingIndexResource";
 import { Product } from "../../../../../model/Product";
-import { ActionCell, DescriptionCell, renderCellWithTooltip, renderHeaderWithTooltip, renderStatusCell, renderUpdatedAtCell } from "./cells";
+import { ActionCell, DescriptionCell, renderCellWithTooltip, renderDateCell, renderHeaderWithTooltip, renderStatusCell } from "./cellsRender";
 
 export type ModalState = {
   type: 'backoffice' | 'product' | null;
@@ -76,7 +76,22 @@ export const getOnboardingsColumns = (
         const date = params.row?.createdAt;
         return date ? new Date(date) : null;
       },
-      renderCell: renderUpdatedAtCell,
+      renderCell: renderDateCell,
+    },
+    {
+      field: 'statusUpdatedAt',
+      headerName: t('onboardingsPage.table.statusUpdatedAt'),
+      flex: 1,
+      sortable: true,
+      valueGetter: (params) => {
+        const date = params.row?.statusUpdatedAt;
+        const status = params.row?.status;
+        if ((status === 'COMPLETED' || status === 'DELETED') && date) {
+          return new Date(date);
+        }
+        return null;
+      },
+      renderCell: renderDateCell,
     },
     {
       field: 'status',

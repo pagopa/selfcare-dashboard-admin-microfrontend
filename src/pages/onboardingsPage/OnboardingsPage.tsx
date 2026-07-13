@@ -15,7 +15,7 @@ import { searchOnboardingsService } from '../../services/partyRegistryProxyServi
 import { FilterDrawer } from './components/FiltersBar/FilterDrawer';
 import { parseFilters, serializeFilters, toApiDateTime } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
-import { getOnboardingsColumns } from './components/OnboardingsTable/columns';
+import { getOnboardingsColumns } from './components/OnboardingsTable/columns/tableConfig';
 
 const SORT_FIELD_MAP: Record<string, string> = {
   requestDate: 'createdAt',

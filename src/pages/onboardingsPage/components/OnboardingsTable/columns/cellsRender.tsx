@@ -36,7 +36,7 @@ export const renderCellWithTooltip = (params: GridRenderCellParams) => {
     );
 };
 
-export const renderUpdatedAtCell = (params: GridRenderCellParams<Date>) => {
+export const renderDateCell = (params: GridRenderCellParams<Date>) => {
     const date = params.value;
     const text = date ? date.toLocaleDateString('it-IT') : '-';
     return (
