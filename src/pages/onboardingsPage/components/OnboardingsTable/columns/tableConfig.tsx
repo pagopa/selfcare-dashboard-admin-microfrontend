@@ -71,7 +71,6 @@ export const getOnboardingsColumns = (
       description: t('onboardingsPage.table.requestDateTooltip'),
       flex: 1,
       sortable: true,
-      renderHeader: renderHeaderWithTooltip,
       valueGetter: (params) => {
         const date = params.row?.createdAt;
         return date ? new Date(date) : null;
@@ -81,6 +80,7 @@ export const getOnboardingsColumns = (
     {
       field: 'statusUpdatedAt',
       headerName: t('onboardingsPage.table.statusUpdatedAt'),
+      description: t('onboardingsPage.filters.updateDateTooltip'),
       flex: 1,
       sortable: true,
       valueGetter: (params) => {
