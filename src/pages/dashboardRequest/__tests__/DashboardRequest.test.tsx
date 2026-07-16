@@ -80,7 +80,7 @@ describe('DashboardRequest — error / loading states', () => {
 
     await renderWithProviders(<DashboardRequest />);
 
-    expect(screen.queryByText(/Richiesta di adesione/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Dettaglio adesione/i)).not.toBeInTheDocument();
   });
 });
 
@@ -94,7 +94,7 @@ describe('DashboardRequest — TOBEVALIDATED (PSP)', () => {
     await renderWithProviders(<DashboardRequest />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Richiesta di adesione/i)).toBeInTheDocument()
+      expect(screen.getByText(/Dettaglio adesione/i)).toBeInTheDocument()
     );
 
     // info-alert only shown for TOBEVALIDATED status
@@ -114,7 +114,7 @@ describe('DashboardRequest — COMPLETED status', () => {
 
     // requestState returns the "approvedDataChip" label for COMPLETED
     await waitFor(() =>
-      expect(screen.getByText(/Richiesta di adesione/i)).toBeInTheDocument()
+      expect(screen.getByText(/Dettaglio adesione/i)).toBeInTheDocument()
     );
     // No info alert for COMPLETED
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
@@ -144,7 +144,7 @@ describe('DashboardRequest — PENDING status', () => {
     await renderWithProviders(<DashboardRequest />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Richiesta di adesione/i)).toBeInTheDocument()
+      expect(screen.getByText(/Dettaglio adesione/i)).toBeInTheDocument()
     );
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
@@ -211,7 +211,7 @@ describe('DashboardRequest — goBack navigation', () => {
     // simulate navigation with fromDashboard state
     history.push(`/admin/request/${completedRequest.tokenId}`, { fromDashboard: true });
 
-    await waitFor(() => screen.getByText(/Richiesta di adesione/i));
+    await waitFor(() => screen.getByText(/Dettaglio adesione/i));
 
     const backBtn = screen.getByText('Indietro');
     const goBackSpy = vi.spyOn(history, 'goBack');
@@ -227,7 +227,7 @@ describe('DashboardRequest — goBack navigation', () => {
     const { history } = await renderWithProviders(<DashboardRequest />);
     history.push(`/admin/request/${completedRequest.tokenId}`);
 
-    await waitFor(() => screen.getByText(/Richiesta di adesione/i));
+    await waitFor(() => screen.getByText(/Dettaglio adesione/i));
 
     const backBtn = screen.getByText('Indietro');
     const pushSpy = vi.spyOn(history, 'push');

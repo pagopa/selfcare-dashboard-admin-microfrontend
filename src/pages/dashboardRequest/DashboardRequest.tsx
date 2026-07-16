@@ -1,4 +1,4 @@
-import { Alert, Button, Chip, Grid, Typography } from '@mui/material';
+import { Alert, Button, Grid, Typography } from '@mui/material';
 import {
   NavigationBar,
   useErrorDispatcher,
@@ -61,38 +61,6 @@ export default function DashboardRequest() {
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
   };
 
-  const requestState = (
-    requestStatus: string | undefined,
-    isChipLabelState: boolean,
-    isBgColorChipState: boolean
-  ) => {
-    if (isChipLabelState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'PENDING':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'REJECTED':
-          return t('onboardingRequestPage.rejectedDataChip');
-        default:
-          return t('onboardingRequestPage.validationDataChip');
-      }
-    }
-    if (isBgColorChipState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return 'success.light';
-        case 'PENDING':
-          return 'success.light';
-        case 'REJECTED':
-          return 'warning.main';
-        default:
-          return 'info.main';
-      }
-    }
-    return undefined;
-  };
-
   const fromISO2ITA = (date?: string) => {
     const dateFormat = new Date(date as string);
     const day = dateFormat.getDate();
@@ -137,8 +105,9 @@ export default function DashboardRequest() {
     const nameParam = new URLSearchParams({
       name: attatchmentName ?? '',
     });
-    const url = `${ENV.URL_API.API_ONBOARDING_V2
-      }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
+    const url = `${
+      ENV.URL_API.API_ONBOARDING_V2
+    }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
     if (retrieveTokenIdFromUrl) {
       fetch(url, {
         headers: {
@@ -213,24 +182,18 @@ export default function DashboardRequest() {
           <Grid
             container
             direction="row"
-            justifyContent={isGPU ? undefined : 'space-between'}
-            alignItems="center"
+            justifyContent="space-between"
+            alignItems="flex-start"
             mt={2}
           >
-            <Grid item xs={isGPU ? 4 : undefined}>
-              <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
-            </Grid>
-            <Grid xs={isGPU ? 2 : undefined}>
-              <Chip
-                sx={{
-                  backgroundColor: requestState(onboardingRequestData?.status, false, true),
-                  height: '30px',
-                }}
-                label={requestState(onboardingRequestData?.status, true, false)}
-              />
+            <Grid item xs={isGPU ? 8 : 12}>
+              <Typography variant="h4">{t('onboardingRequestPage.detailTitle')}</Typography>
+              <Typography sx={{ mt: 1, color: 'text.secondary' }}>
+                {t('onboardingRequestPage.detailSubtitle')}
+              </Typography>
             </Grid>
             {isGPU && (
-              <Grid item xs={6} textAlign={'right'}>
+              <Grid item xs={4} textAlign={'right'}>
                 <Button
                   variant="contained"
                   onClick={() =>
@@ -248,71 +211,64 @@ export default function DashboardRequest() {
               </Grid>
             )}
           </Grid>
-          {onboardingRequestData?.status === 'TOBEVALIDATED' ? (
+          {onboardingRequestData?.status === 'REJECTED' && (
             <Grid item xs={12} width="100%" mt={5}>
               <Alert
-                severity="info"
+                severity="warning"
                 sx={{
                   fontSize: 'fontSize',
-                  height: '53px',
+                  height: '74px',
                   alignItems: 'center',
                   color: 'colorTextPrimary',
                   borderLeft: 'solid',
-                  borderLeftColor: 'info.main',
+                  borderLeftColor: 'warning.main',
                   borderLeftWidth: '4px',
                   width: '100%',
                 }}
               >
-                {t('onboardingRequestPage.checkPartyInfoAlert')}
+                {onboardingRequestData?.reasonForReject ? (
+                  <Trans
+                    i18nKey={
+                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                    }
+                    components={{
+                      1: <strong style={{ fontWeight: '600' }} />,
+                      3: <br />,
+                    }}
+                  >
+                    {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                      onboardingRequestData?.updatedAt
+                    )}. </1> <3/>Motivo del rifiuto: â€œ${onboardingRequestData?.reasonForReject}â€œ`}
+                  </Trans>
+                ) : (
+                  <Trans
+                    i18nKey={
+                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                    }
+                    components={{
+                      1: <strong style={{ fontWeight: '600' }} />,
+                    }}
+                  >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                    onboardingRequestData?.updatedAt
+                  )}. </1>`}</Trans>
+                )}
               </Alert>
             </Grid>
-          ) : (
-            onboardingRequestData?.status === 'REJECTED' && (
-              <Grid item xs={12} width="100%" mt={5}>
-                <Alert
-                  severity="warning"
-                  sx={{
-                    fontSize: 'fontSize',
-                    height: '74px',
-                    alignItems: 'center',
-                    color: 'colorTextPrimary',
-                    borderLeft: 'solid',
-                    borderLeftColor: 'warning.main',
-                    borderLeftWidth: '4px',
-                    width: '100%',
-                  }}
-                >
-                  {onboardingRequestData?.reasonForReject ? (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                        3: <br />,
-                      }}
-                    >
-                      {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                        onboardingRequestData?.updatedAt
-                      )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
-                    </Trans>
-                  ) : (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                      }}
-                    >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                      onboardingRequestData?.updatedAt
-                    )}. </1>`}</Trans>
-                  )}
-                </Alert>
-              </Grid>
-            )
           )}
-          <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
+          <DashboardRequestFields
+            onboardingRequestData={onboardingRequestData}
+            isPSP={isPSP}
+            fromISO2ITA={fromISO2ITA}
+            onDownloadDocument={(attachmentName) =>
+              downloadAttachment(
+                setLoadingRetrieveOnboardingRequest,
+                addError,
+                undefined,
+                retrieveTokenIdFromUrl,
+                attachmentName
+              )
+            }
+          />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             partyName={onboardingRequestData?.institutionInfo.name}

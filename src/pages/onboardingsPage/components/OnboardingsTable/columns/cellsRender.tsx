@@ -17,7 +17,7 @@ import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../../../../utils/constants
 import { ENV } from '../../../../../utils/env';
 import { useProductNavigation } from '../../../../adminPage/hooks/useProductNavigation';
 import { isProductAllowed } from '../../../../adminPage/utils/utils';
-import { STATUS_CHIP_CONFIG } from './statusConfig';
+import { STATUS_CHIP_CONFIG } from '../../../../../utils/statusChipConfig';
 
 const truncatedCellSx = {
     overflow: 'hidden',

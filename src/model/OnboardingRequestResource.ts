@@ -6,7 +6,10 @@ export type OnboardingRequestResource = {
   institutionInfo: InstitutionInfo;
   manager?: UserInfo;
   status: 'COMPLETED' | 'DELETED' | 'PENDING' | 'REJECTED' | 'SUSPENDED' | 'TOBEVALIDATED';
+  createdAt?: string;
   updatedAt?: string;
+  activatedAt?: string;
+  deletedAt?: string;
   expiringDate?: string;
   reasonForReject?: string;
 };

@@ -1,19 +1,90 @@
-import { Collapse, Divider, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { theme } from '@pagopa/mui-italia';
-import { useRef, useState } from 'react';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import {
+  Avatar,
+  Box,
+  Chip,
+  Collapse,
+  Grid,
+  IconButton,
+  Link,
+  Paper,
+  Stack,
+  Typography
+} from '@mui/material';
+import { theme } from '@pagopa/mui-italia';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
+import { ReactNode, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
+import { buildUrlLog } from '../../../utils/helper';
+import { STATUS_CHIP_CONFIG } from '../../../utils/statusChipConfig';
 
 type Props = {
   onboardingRequestData: OnboardingRequestResource | undefined;
   isPSP: boolean;
+  fromISO2ITA: (date?: string) => string;
+  onDownloadDocument: (attachmentName: string) => void;
 };
 
+const DetailField = ({
+  label,
+  value,
+  avatar,
+}: {
+  label: string;
+  value?: ReactNode;
+  avatar?: ReactNode;
+}) => (
+  <Grid item xs={12} className="detail-field" sx={{ py: 1.5 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      {avatar}
+      <Box sx={{ minWidth: 0 }}>
+        <Typography sx={{ fontSize: '14px', color: 'text.secondary' }} variant="caption">
+          {label}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: 'fontWeightMedium',
+            mt: 0.5,
+            wordBreak: 'break-word',
+          }}
+        >
+          {value}
+        </Typography>
+      </Box>
+    </Box>
+  </Grid>
+);
+
+const SectionSubHeading = ({ label }: { label: string }) => (
+  <Grid item xs={12} sx={{ mt: 3 }}>
+    <Typography
+      sx={{
+        fontSize: '14px',
+        fontWeight: 'fontWeightBold',
+        color: '#555C70',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+      }}
+    >
+      {label}
+    </Typography>
+  </Grid>
+);
+
 // eslint-disable-next-line complexity, sonarjs/cognitive-complexity
-export default function DashboardRequestFields({ onboardingRequestData, isPSP }: Props) {
+export default function DashboardRequestFields({
+  onboardingRequestData,
+  isPSP,
+  fromISO2ITA,
+  onDownloadDocument,
+}: Props) {
   const { t } = useTranslation();
 
   const [expanded, setExpanded] = useState<{ [index: string]: boolean }>({ ['1']: true });
@@ -35,7 +106,7 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
   const getInstitutionTypeDescription = (institutionType: string) =>
     ({
       institutionType: t(`common.institutionType.descriptions.${institutionType.toLowerCase()}`),
-    }.institutionType);
+    }).institutionType;
 
   const boolean2response = (value?: boolean) =>
     t(
@@ -44,819 +115,435 @@ export default function DashboardRequestFields({ onboardingRequestData, isPSP }:
         : 'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.possibleChoice.no'
     );
 
+  const CollapsibleSection = ({
+    index,
+    icon,
+    title,
+    children,
+  }: {
+    index: string;
+    icon?: ReactNode;
+    title: string;
+    children: ReactNode;
+  }) => (
+    <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
+      <Grid
+        item
+        xs={12}
+        ml={4}
+        my={3}
+        mr={2}
+        display="flex"
+        alignItems="center"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        <Box display="flex" alignItems="center" gap={1}>
+          {icon}
+          <Typography variant="h6">{title}</Typography>
+        </Box>
+        <IconButton
+          onClick={() => handleExpandClick(index)}
+          sx={{
+            '&:hover': {
+              background: 'none',
+            },
+          }}
+          value={index}
+          data-testid={`arrow-icon-${index}`}
+        >
+          {expanded[index] ? (
+            <KeyboardArrowUpIcon color="primary" />
+          ) : (
+            <KeyboardArrowDownIcon color="primary" />
+          )}
+        </IconButton>
+      </Grid>
+      <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
+        <Grid
+          container
+          mt={1}
+          mb={4}
+          sx={{
+            px: 4,
+            '& .detail-field + .detail-field': {
+              borderTop: '1px solid',
+              borderColor: 'divider',
+            },
+          }}
+        >
+          {children}
+        </Grid>
+      </Collapse>
+    </Paper>
+  );
+
+  const billingLabel = (field: string) =>
+    t(
+      `onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.${field}`
+    );
+  const additionalLabel = (field: string) =>
+    t(
+      `onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.${field}`
+    );
+
+  const attachments = onboardingRequestData?.attachments ?? [];
+
+  const statusConfig = onboardingRequestData?.status
+    ? STATUS_CHIP_CONFIG[onboardingRequestData.status]
+    : undefined;
+
   return (
     <Stack spacing={4} mt={4} mb={5} sx={{ width: '100%' }}>
-      <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
+      {/* header card: product + status, institution type, request date */}
+      <Paper elevation={4} sx={{ borderRadius: theme.spacing(1) }}>
         <Grid
-          item
+          container
           xs={12}
-          ml={4}
-          my={3}
-          mr={2}
+          sx={{ px: 4, py: 3 }}
           display="flex"
           alignItems="center"
           flexDirection="row"
           justifyContent="space-between"
         >
-          <Typography variant="h6">
-            {t('onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.title')}
-          </Typography>
-          <IconButton
-            onClick={(e) => handleExpandClick(e.currentTarget.value)}
-            sx={{
-              '&:hover': {
-                background: 'none',
-              },
-            }}
-            value={'1'}
-            data-testid={'arrow-icon-1'}
-          >
-            {expanded['1'] ? (
-              <KeyboardArrowUpIcon color="primary" />
-            ) : (
-              <KeyboardArrowDownIcon color="primary" />
+          <Grid item xs={1}>
+            <Avatar variant="rounded" sx={{ backgroundColor: '#F5F5F5', width: 48, height: 48 }}>
+              <AccountBalanceOutlinedIcon color="primary" />
+            </Avatar>
+          </Grid>
+          <Grid item xs={4}>
+            {onboardingRequestData?.productId && (
+              <Typography sx={{ fontSize: '18px', fontWeight: 'fontWeightBold' }}>
+                {productId2ProductTitle(onboardingRequestData.productId)}
+              </Typography>
             )}
-          </IconButton>
-        </Grid>
-        <Collapse in={expanded['1']} timeout="auto" unmountOnExit>
-          <Divider sx={{ mx: 4 }} />
-          <Grid container spacing={2} mt={2} mb={4} mx={2}>
-            {/* productTitle */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.product'
-                  )}
-                </Typography>
-              </Grid>
-              {onboardingRequestData?.productId && (
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {productId2ProductTitle(onboardingRequestData?.productId)}
-                  </Typography>
-                </Grid>
-              )}
-            </Grid>
-
-            {/* institutionType */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'common.institutionType.title'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {getInstitutionTypeDescription(
-                    onboardingRequestData?.institutionInfo.institutionType ?? ''
-                  )}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* businessName */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.businessName'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'} sx={{ pr: 4 }}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.name}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* registeredOffice */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registeredOffice'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.address}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* zipCode */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.zipCode'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.zipCode}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* mailPEC */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.mailPEC'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.mailAddress.toLocaleLowerCase()}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* taxcode */}
-            <Grid container item alignItems={'center'}>
-              <Grid item xs={3}>
-                <Typography sx={{ fontSize: 'fontSize' }}>
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.taxCode'
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={9} display="flex" alignItems={'center'}>
-                <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                  {onboardingRequestData?.institutionInfo.fiscalCode}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            {/* vatNumber */}
-            {onboardingRequestData?.institutionInfo?.vatNumber && (
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.vatNumber'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo?.vatNumber}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-
-            {/* fields visible only for PSP */}
-            {isPSP && (
-              <>
-                {/* isGroupPIVA */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.title'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.pspData?.vatNumberGroup
-                        ? t(
-                            'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.yes'
-                          )
-                        : t(
-                            'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.isGroupPIVA.no'
-                          )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* commercialRegisterNumber */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.commercialRegisterNumber'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.pspData?.businessRegisterNumber}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* registrationInRegister */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registrationInRegister'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.pspData?.legalRegisterName}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* registerNumber */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.registerNumber'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.pspData?.legalRegisterNumber}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* abiCode */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.abiCode'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.pspData?.abiCode}
-                    </Typography>
-                  </Grid>
-                </Grid>{' '}
-              </>
-            )}
-            {/* recipientCode */}
-            {!isTechPartner && onboardingRequestData?.institutionInfo.recipientCode && (
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.recipientCode'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData?.institutionInfo.recipientCode}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-            {/* fields visible only for PSP */}
-            {isPSP && (
-              <>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontWeight: 'fontWeightMedium',
-                    marginTop: 4,
-                    marginBottom: 2,
-                  }}
-                  ml={1}
-                >
-                  {t(
-                    'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.title'
-                  )}
-                </Typography>
-
-                {/* protectionOfficerAddress */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.address'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.dpoData?.address}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* protectionOfficerMailPEC */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mailPEC'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.dpoData?.pec.toLocaleLowerCase()}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* protectionOfficerMail */}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.billingDataInfoSummary.protectionOfficerDetailData.mail'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {onboardingRequestData?.institutionInfo.dpoData?.email.toLocaleLowerCase()}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </>
+            {statusConfig && (
+              <Box mt={1}>
+                <Chip label={statusConfig.label} color={statusConfig.color} size="small" />
+              </Box>
             )}
           </Grid>
-        </Collapse>
+
+          <Grid item xs={4}>
+            <Typography sx={{ fontSize: '14px', color: 'text.secondary' }}>
+              {t('onboardingRequestPage.headerInfo.institutionType')}
+            </Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: 'fontWeightMedium', mt: 0.5 }}>
+              {getInstitutionTypeDescription(
+                onboardingRequestData?.institutionInfo.institutionType ?? ''
+              )}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={3}>
+            <Typography sx={{ fontSize: '14px', color: 'text.secondary' }}>
+              {t('onboardingRequestPage.headerInfo.requestDate')}
+            </Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: 'fontWeightMedium', mt: 0.5 }}>
+              {onboardingRequestData?.updatedAt ? fromISO2ITA(onboardingRequestData.updatedAt) : ''}
+            </Typography>
+          </Grid>
+        </Grid>
       </Paper>
 
-      {onboardingRequestData?.institutionInfo.institutionType === 'GSP' &&
-        onboardingRequestData.productId === 'prod-pagopa' && (
-          <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
-            <Grid
-              item
-              xs={12}
-              ml={4}
-              my={3}
-              mr={2}
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography variant="h6">
-                {t('onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.title')}
-              </Typography>
-              <IconButton
-                onClick={(e) => handleExpandClick(e.currentTarget.value)}
-                sx={{
-                  '&:hover': {
-                    background: 'none',
-                  },
-                }}
-                value={'2'}
-                data-testid={'arrow-icon-2'}
+      {/* Dati dell'ente */}
+      <CollapsibleSection
+        index="1"
+        icon={<AccountBalanceOutlinedIcon color="disabled" />}
+        title={t('onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.title')}
+      >
+        <SectionSubHeading
+          label={t(
+            'onboardingRequestPage.summaryStepSection.billingDataInfoSummarySection.descriptionSubtitle'
+          )}
+        />
+        <DetailField
+          label={billingLabel('businessName')}
+          value={onboardingRequestData?.institutionInfo.name}
+          avatar={
+            onboardingRequestData?.institutionInfo.name ? (
+              <Avatar
+                variant="rounded"
+                src={
+                  onboardingRequestData?.institutionInfo.id
+                    ? buildUrlLog(onboardingRequestData.institutionInfo.id)
+                    : undefined
+                }
+                sx={{ backgroundColor: '#F5F5F5', width: 40, height: 40 }}
               >
-                {expanded['2'] ? (
-                  <KeyboardArrowUpIcon color="primary" />
-                ) : (
-                  <KeyboardArrowDownIcon color="primary" />
-                )}
-              </IconButton>
-            </Grid>
-            <Collapse in={expanded['2']} timeout="auto" unmountOnExit>
-              <Divider sx={{ mx: 4 }} />
-              <Grid container spacing={2} mt={2} mb={4} mx={2}>
-                {/* establishedByRegulatoryProvision */}
-                <Grid container item>
-                  <Grid item xs={3} display="flex">
-                    <Typography
-                      sx={{
-                        fontSize: 'fontSize',
-                        display: 'inline-block',
-                        maxWidth: '22ch',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvision'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {boolean2response(
-                        onboardingRequestData?.institutionInfo.additionalInformations
-                          ?.establishedByRegulatoryProvision
-                      )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* establishedByRegulatoryProvisionNote */}
-                {onboardingRequestData.institutionInfo.additionalInformations
-                  ?.establishedByRegulatoryProvisionNote && (
-                  <Grid container item>
-                    <Grid item xs={3} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize' }}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.establishedByRegulatoryProvisionNote'
-                        )}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                        {
-                          onboardingRequestData?.institutionInfo.additionalInformations
-                            ?.establishedByRegulatoryProvisionNote
-                        }
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-
-                {/* belongRegulatedMarket */}
-                <Grid container item>
-                  <Grid item xs={3} display="flex">
-                    <Typography
-                      sx={{
-                        fontSize: 'fontSize',
-                        display: 'inline-block',
-                        maxWidth: '22ch',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarket'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {boolean2response(
-                        onboardingRequestData?.institutionInfo.additionalInformations
-                          ?.belongRegulatedMarket
-                      )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {onboardingRequestData.institutionInfo.additionalInformations
-                  ?.regulatedMarketNote && (
-                  <Grid container item>
-                    <Grid item xs={3} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize' }}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.belongRegulatedMarketNote'
-                        )}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                        {
-                          onboardingRequestData?.institutionInfo.additionalInformations
-                            ?.regulatedMarketNote
-                        }
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-
-                {/* ipa */}
-                <Grid container item>
-                  <Grid item xs={3} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipa'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {boolean2response(
-                        onboardingRequestData?.institutionInfo.additionalInformations?.ipa
-                      )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* ipaCode */}
-                {onboardingRequestData.institutionInfo.additionalInformations?.ipaCode && (
-                  <Grid container item>
-                    <Grid item xs={3} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize' }}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.ipaCode'
-                        )}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                        {onboardingRequestData?.institutionInfo.additionalInformations?.ipaCode}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-
-                {/* agentOfPublicService */}
-                <Grid container item>
-                  <Grid item xs={3} display="flex">
-                    <Typography
-                      sx={{
-                        fontSize: 'fontSize',
-                        display: 'inline-block',
-                        maxWidth: '22ch',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicService'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {boolean2response(
-                        onboardingRequestData?.institutionInfo.additionalInformations
-                          ?.agentOfPublicService
-                      )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* agentOfPublicServiceNote */}
-                {onboardingRequestData.institutionInfo.additionalInformations
-                  ?.agentOfPublicServiceNote && (
-                  <Grid container item>
-                    <Grid item xs={3} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize' }}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.agentOfPublicServiceNote'
-                        )}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                        {
-                          onboardingRequestData?.institutionInfo.additionalInformations
-                            ?.agentOfPublicServiceNote
-                        }
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-
-                {/* other */}
-                <Grid container item>
-                  <Grid item xs={3} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.other'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex">
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {boolean2response(
-                        !!onboardingRequestData?.institutionInfo.additionalInformations?.otherNote
-                      )}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* otherNote */}
-                {onboardingRequestData.institutionInfo.additionalInformations?.otherNote && (
-                  <Grid container item>
-                    <Grid item xs={3} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize' }}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.otherNote'
-                        )}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9} display="flex">
-                      <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                        {onboardingRequestData?.institutionInfo.additionalInformations?.otherNote}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-              </Grid>
-            </Collapse>
-          </Paper>
+                <AccountBalanceOutlinedIcon color="primary" />
+              </Avatar>
+            ) : undefined
+          }
+        />
+        <DetailField
+          label={billingLabel('registeredOffice')}
+          value={onboardingRequestData?.institutionInfo.address}
+        />
+        <DetailField
+          label={billingLabel('zipCode')}
+          value={onboardingRequestData?.institutionInfo.zipCode}
+        />
+        <DetailField
+          label={billingLabel('mailPEC')}
+          value={onboardingRequestData?.institutionInfo.mailAddress.toLocaleLowerCase()}
+        />
+        <DetailField
+          label={billingLabel('taxCode')}
+          value={onboardingRequestData?.institutionInfo.fiscalCode}
+        />
+        {onboardingRequestData?.institutionInfo?.vatNumber && (
+          <DetailField
+            label={billingLabel('vatNumber')}
+            value={onboardingRequestData?.institutionInfo?.vatNumber}
+          />
         )}
 
-      {!isTechPartner && onboardingRequestData?.manager && (
-        <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
-          <Grid
-            item
-            xs={12}
-            ml={4}
-            my={3}
-            mr={2}
-            display="flex"
-            alignItems="center"
-            flexDirection="row"
-            justifyContent="space-between"
+        {isPSP && (
+          <>
+            <DetailField
+              label={billingLabel('isGroupPIVA.title')}
+              value={
+                onboardingRequestData?.institutionInfo.pspData?.vatNumberGroup
+                  ? billingLabel('isGroupPIVA.yes')
+                  : billingLabel('isGroupPIVA.no')
+              }
+            />
+            <DetailField
+              label={billingLabel('commercialRegisterNumber')}
+              value={onboardingRequestData?.institutionInfo.pspData?.businessRegisterNumber}
+            />
+            <DetailField
+              label={billingLabel('registrationInRegister')}
+              value={onboardingRequestData?.institutionInfo.pspData?.legalRegisterName}
+            />
+            <DetailField
+              label={billingLabel('registerNumber')}
+              value={onboardingRequestData?.institutionInfo.pspData?.legalRegisterNumber}
+            />
+            <DetailField
+              label={billingLabel('abiCode')}
+              value={onboardingRequestData?.institutionInfo.pspData?.abiCode}
+            />
+          </>
+        )}
+
+        {!isTechPartner && onboardingRequestData?.institutionInfo.recipientCode && (
+          <DetailField
+            label={billingLabel('recipientCode')}
+            value={onboardingRequestData?.institutionInfo.recipientCode}
+          />
+        )}
+
+        {onboardingRequestData?.institutionInfo.dpoData && (
+          <>
+            <SectionSubHeading label={billingLabel('protectionOfficerDetailData.title')} />
+            <DetailField
+              label={billingLabel('protectionOfficerDetailData.address')}
+              value={onboardingRequestData?.institutionInfo.dpoData?.address}
+            />
+            <DetailField
+              label={billingLabel('protectionOfficerDetailData.mailPEC')}
+              value={onboardingRequestData?.institutionInfo.dpoData?.pec.toLocaleLowerCase()}
+            />
+            <DetailField
+              label={billingLabel('protectionOfficerDetailData.mail')}
+              value={onboardingRequestData?.institutionInfo.dpoData?.email.toLocaleLowerCase()}
+            />
+          </>
+        )}
+      </CollapsibleSection>
+
+      {/* Informazioni aggiuntive (GSP / prod-pagopa) */}
+      {onboardingRequestData?.institutionInfo.institutionType === 'GSP' &&
+        onboardingRequestData.productId === 'prod-pagopa' && (
+          <CollapsibleSection
+            index="2"
+            title={t('onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.title')}
           >
-            <Typography variant="h6">
-              {t('onboardingRequestPage.summaryStepSection.managerInfoSummarySection.title')}
-            </Typography>
-            <IconButton
-              onClick={(e) => handleExpandClick(e.currentTarget.value)}
-              sx={{
-                '&:hover': {
-                  background: 'none',
-                },
-              }}
-              value={'3'}
-              data-testid={'arrow-icon-3'}
-            >
-              {expanded['3'] ? (
-                <KeyboardArrowUpIcon color="primary" />
-              ) : (
-                <KeyboardArrowDownIcon color="primary" />
+            <DetailField
+              label={additionalLabel('establishedByRegulatoryProvision')}
+              value={boolean2response(
+                onboardingRequestData?.institutionInfo.additionalInformations
+                  ?.establishedByRegulatoryProvision
               )}
-            </IconButton>
-          </Grid>
-          <Collapse in={expanded['3']} timeout="auto" unmountOnExit>
-            <Divider sx={{ mx: 4 }} />
-            <Grid container spacing={2} mt={2} mb={4} mx={2}>
-              {/* name */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.name'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData.manager.name}
-                  </Typography>
-                </Grid>
-              </Grid>
+            />
+            {onboardingRequestData.institutionInfo.additionalInformations
+              ?.establishedByRegulatoryProvisionNote && (
+              <DetailField
+                label={additionalLabel('establishedByRegulatoryProvisionNote')}
+                value={
+                  onboardingRequestData?.institutionInfo.additionalInformations
+                    ?.establishedByRegulatoryProvisionNote
+                }
+              />
+            )}
+            <DetailField
+              label={additionalLabel('belongRegulatedMarket')}
+              value={boolean2response(
+                onboardingRequestData?.institutionInfo.additionalInformations?.belongRegulatedMarket
+              )}
+            />
+            {onboardingRequestData.institutionInfo.additionalInformations?.regulatedMarketNote && (
+              <DetailField
+                label={additionalLabel('belongRegulatedMarketNote')}
+                value={
+                  onboardingRequestData?.institutionInfo.additionalInformations?.regulatedMarketNote
+                }
+              />
+            )}
+            <DetailField
+              label={additionalLabel('ipa')}
+              value={boolean2response(
+                onboardingRequestData?.institutionInfo.additionalInformations?.ipa
+              )}
+            />
+            {onboardingRequestData.institutionInfo.additionalInformations?.ipaCode && (
+              <DetailField
+                label={additionalLabel('ipaCode')}
+                value={onboardingRequestData?.institutionInfo.additionalInformations?.ipaCode}
+              />
+            )}
+            <DetailField
+              label={additionalLabel('agentOfPublicService')}
+              value={boolean2response(
+                onboardingRequestData?.institutionInfo.additionalInformations?.agentOfPublicService
+              )}
+            />
+            {onboardingRequestData.institutionInfo.additionalInformations
+              ?.agentOfPublicServiceNote && (
+              <DetailField
+                label={additionalLabel('agentOfPublicServiceNote')}
+                value={
+                  onboardingRequestData?.institutionInfo.additionalInformations
+                    ?.agentOfPublicServiceNote
+                }
+              />
+            )}
+            <DetailField
+              label={additionalLabel('other')}
+              value={boolean2response(
+                !!onboardingRequestData?.institutionInfo.additionalInformations?.otherNote
+              )}
+            />
+            {onboardingRequestData.institutionInfo.additionalInformations?.otherNote && (
+              <DetailField
+                label={additionalLabel('otherNote')}
+                value={onboardingRequestData?.institutionInfo.additionalInformations?.otherNote}
+              />
+            )}
+          </CollapsibleSection>
+        )}
 
-              {/* surname */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.surname'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData.manager.surname}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* taxCode */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.taxCode'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData.manager.fiscalCode}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              {/* mailPEC */}
-              <Grid container item alignItems={'center'}>
-                <Grid item xs={3}>
-                  <Typography sx={{ fontSize: 'fontSize' }}>
-                    {t(
-                      'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.mailPEC'
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item xs={9} display="flex" alignItems={'center'}>
-                  <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                    {onboardingRequestData.manager.email.toLocaleLowerCase()}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Collapse>
-        </Paper>
+      {/* Dati del Legale Rappresentante */}
+      {!isTechPartner && onboardingRequestData?.manager && (
+        <CollapsibleSection
+          index="3"
+          icon={<PersonOutlineIcon color="disabled" />}
+          title={t('onboardingRequestPage.summaryStepSection.managerInfoSummarySection.title')}
+        >
+          <DetailField
+            label={t(
+              'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.name'
+            )}
+            value={onboardingRequestData.manager.name}
+          />
+          <DetailField
+            label={t(
+              'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.surname'
+            )}
+            value={onboardingRequestData.manager.surname}
+          />
+          <DetailField
+            label={t(
+              'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.taxCode'
+            )}
+            value={onboardingRequestData.manager.fiscalCode}
+          />
+          <DetailField
+            label={t(
+              'onboardingRequestPage.summaryStepSection.managerInfoSummarySection.managerInfoSummary.mailPEC'
+            )}
+            value={onboardingRequestData.manager.email.toLocaleLowerCase()}
+          />
+        </CollapsibleSection>
       )}
 
+      {/* Dati dell'Amministratore */}
       {onboardingRequestData?.admins && onboardingRequestData?.admins?.length > 0 && (
-        <Paper elevation={8} sx={{ borderRadius: theme.spacing(2) }}>
-          <Grid
-            item
-            xs={12}
-            ml={4}
-            my={3}
-            mr={2}
-            display="flex"
-            alignItems="center"
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Typography variant="h6">
-              {t('onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.title')}
-            </Typography>
-            <IconButton
-              onClick={(e) => handleExpandClick(e.currentTarget.value)}
-              sx={{
-                '&:hover': {
-                  background: 'none',
-                },
-              }}
-              value={'4'}
-              data-testid={'arrow-icon-4'}
-            >
-              {expanded['4'] ? (
-                <KeyboardArrowUpIcon color="primary" />
-              ) : (
-                <KeyboardArrowDownIcon color="primary" />
-              )}
-            </IconButton>
-          </Grid>
-          <Collapse in={expanded['4']} timeout="auto" unmountOnExit>
-            <Divider sx={{ mx: 4 }} />
-            {onboardingRequestData?.admins.map((admin, index) => (
-              <Grid container spacing={2} key={index} m={2} mb={4}>
-                {onboardingRequestData?.admins &&
-                  onboardingRequestData?.admins.length > 1 &&
-                  index + 1 !== 1 && (
-                    <Grid item>
-                      <Typography variant="body1" sx={{ fontWeight: 'fontWeightMedium' }} mt={3}>
-                        {t(
-                          'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.moreOfOneAdmin'
-                        )}
-                        {`${index + 1}`}
-                      </Typography>
-                    </Grid>
-                  )}
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.name'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {admin.name}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.surname'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {admin.surname}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.taxCode'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {admin.fiscalCode}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item alignItems={'center'}>
-                  <Grid item xs={3}>
-                    <Typography sx={{ fontSize: 'fontSize' }}>
-                      {t(
-                        'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.mailPEC'
-                      )}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9} display="flex" alignItems={'center'}>
-                    <Typography sx={{ fontSize: 'fontSize', fontWeight: 'fontWeightMedium' }}>
-                      {admin.email.toLocaleLowerCase()}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Collapse>
-        </Paper>
+        <CollapsibleSection
+          index="4"
+          icon={<PersonOutlineIcon color="disabled" />}
+          title={t('onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.title')}
+        >
+          {onboardingRequestData?.admins.map((admin, index) => (
+            <Grid container item xs={12} key={index}>
+              {onboardingRequestData?.admins &&
+                onboardingRequestData?.admins.length > 1 &&
+                index + 1 !== 1 && (
+                  <SectionSubHeading
+                    label={`${t(
+                      'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.moreOfOneAdmin'
+                    )}${index + 1}`}
+                  />
+                )}
+              <DetailField
+                label={t(
+                  'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.name'
+                )}
+                value={admin.name}
+              />
+              <DetailField
+                label={t(
+                  'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.surname'
+                )}
+                value={admin.surname}
+              />
+              <DetailField
+                label={t(
+                  'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.taxCode'
+                )}
+                value={admin.fiscalCode}
+              />
+              <DetailField
+                label={t(
+                  'onboardingRequestPage.summaryStepSection.delegatesInfoSummarySection.delegatesInfoSummary.mailPEC'
+                )}
+                value={admin.email.toLocaleLowerCase()}
+              />
+            </Grid>
+          ))}
+        </CollapsibleSection>
+      )}
+
+      {/* Documenti */}
+      {attachments.length > 0 && (
+        <CollapsibleSection
+          index="5"
+          icon={<DescriptionOutlinedIcon color="disabled" />}
+          title={t('onboardingRequestPage.documentsSection.title')}
+        >
+          {attachments.map((attachmentName, index) => (
+            <Grid item xs={12} key={index} className="detail-field" sx={{ py: 1.5 }}>
+              <Link
+                component="button"
+                onClick={() => onDownloadDocument(attachmentName)}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  textDecoration: 'none',
+                }}
+              >
+                <Typography sx={{ fontSize: '16px', color: 'primary.main', textAlign: 'left' }}>
+                  {attachmentName}
+                </Typography>
+                <LaunchOutlinedIcon color="primary" fontSize="small" />
+              </Link>
+            </Grid>
+          ))}
+        </CollapsibleSection>
       )}
     </Stack>
   );

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "${openapi_title}",
+    "title": "BFF Onboarding API",
     "description": "Self Care OnBoarding API documentation",
     "contact": {
       "name": "PagoPA",
@@ -29,6 +29,82 @@
     }
   ],
   "paths": {
+    "/v2/institutions/{onboardingId}": {
+      "put": {
+        "tags": [
+          "institution-v-2-controller"
+        ],
+        "summary": "Trigger onboarding request",
+        "description": "Idempotent trigger invoked after each document upload. If all mandatory documents are present, triggers orchestration to advance the onboarding from REQUEST to PENDING.",
+        "operationId": "triggerOnboardingRequest",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/v2/tokens/{onboardingId}/verify": {
       "post": {
         "tags": [
@@ -218,7 +294,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "required": [
                   "contract"
@@ -386,7 +462,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "required": [
                   "contract"
@@ -394,6 +470,207 @@
                 "type": "object",
                 "properties": {
                   "contract": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/tokens/{onboardingId}/attachment": {
+      "get": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Service to download a specific onboarding attachment",
+        "description": "Service to download a specific onboarding attachment",
+        "operationId": "getAttachmentUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Upload a signed attachment",
+        "description": "Upload a signed attachment",
+        "operationId": "uploadAttachmentUsingPOST",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachmentName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "attachment"
+                ],
+                "type": "object",
+                "properties": {
+                  "attachmentId": {
+                    "type": "string"
+                  },
+                  "attachmentDescription": {
+                    "type": "string"
+                  },
+                  "attachment": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -565,6 +842,16 @@
               }
             }
           },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "201": {
             "description": "Created"
           },
@@ -725,7 +1012,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "required": [
                   "aggregates"
@@ -1586,6 +1873,95 @@
       }
     },
     "/v1/institutions/onboarding": {
+      "get": {
+        "tags": [
+          "institution-controller"
+        ],
+        "summary": "The service retrieves the institutions Manager and institution informations",
+        "description": "The service retrieves the institutions Manager and institution informations",
+        "operationId": "getInstitutionOnboardingInfoUsingGET",
+        "parameters": [
+          {
+            "name": "institutionId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionOnboardingInfoResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      },
       "post": {
         "tags": [
           "institution-controller"
@@ -1727,11 +2103,11 @@
             }
           },
           {
-            "name": "soleTrader",
+            "name": "institutionType",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "string"
             }
           },
           {
@@ -1846,6 +2222,172 @@
           },
           "201": {
             "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/tokens/{onboardingId}/attachment/status": {
+      "get": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Service to check the existence of a specific onboarding attachment",
+        "description": "Service to check the existence of a specific onboarding attachment",
+        "operationId": "getAttachmentStatusUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      },
+      "head": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Service to check the existence of a specific onboarding attachment",
+        "description": "Service to check the existence of a specific onboarding attachment",
+        "operationId": "headAttachmentUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2078,6 +2620,101 @@
         ]
       }
     },
+    "/v2/tokens/{onboardingId}/template-attachment": {
+      "get": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Service to download a specific template attachment",
+        "description": "Service to download a specific template attachment",
+        "operationId": "getTemplateAttachmentUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachmentName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/v2/tokens/{onboardingId}/products/{productId}/aggregates-csv": {
       "get": {
         "tags": [
@@ -2143,6 +2780,128 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/tokens/{onboardingId}/download": {
+      "get": {
+        "tags": [
+          "token-v-2-controller"
+        ],
+        "summary": "Download a document (signed contract or attachment) for the given onboarding",
+        "description": "When type=CONTRACT_SIGNED downloads the signed contract; when type=ATTACHMENT the 'name' query parameter is required.",
+        "operationId": "downloadDocumentUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Type of document to download.",
+              "enum": [
+                "CONTRACT_SIGNED",
+                "ATTACHMENT"
+              ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - user does not have permission to view account documents",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2260,14 +3019,14 @@
         ]
       }
     },
-    "/v2/tokens/{onboardingId}/attachment": {
+    "/v2/tokens/{onboardingId}/available-documents": {
       "get": {
         "tags": [
           "token-v-2-controller"
         ],
-        "summary": "Service to download a specific onboarding attachment",
-        "description": "Service to download a specific onboarding attachment",
-        "operationId": "getAttachmentUsingGET",
+        "summary": "Retrieve the list of documents available for download for the given onboarding",
+        "description": "Returns the list of attachment names and, if present, the filename of the signed contract associated with the onboarding.",
+        "operationId": "getAvailableDocumentsUsingGET",
         "parameters": [
           {
             "name": "onboardingId",
@@ -2276,9 +3035,94 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableDocumentsResource"
+                }
+              }
+            }
           },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - user does not have permission to view account documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableDocumentsResource"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
           {
-            "name": "name",
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/product": {
+      "get": {
+        "tags": [
+          "product-v-2-controller"
+        ],
+        "summary": "Get product origins by productId",
+        "description": "Retrieve the list of institution origins for the given product.",
+        "operationId": "getOrigins",
+        "parameters": [
+          {
+            "name": "productId",
             "in": "query",
             "required": true,
             "schema": {
@@ -2290,13 +3134,210 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OriginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/product/{productId}/required-documents": {
+      "get": {
+        "tags": [
+          "product-v-2-controller"
+        ],
+        "summary": "Get required documents for a product",
+        "description": "Returns the list of required documents for the given product, institutionType and origin.",
+        "operationId": "getRequiredDocuments",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "institutionType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string",
-                    "format": "byte"
+                    "$ref": "#/components/schemas/RequiredDocumentModel"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/product/{productId}/required-documents/enabled": {
+      "get": {
+        "tags": [
+          "product-v-2-controller"
+        ],
+        "summary": "Check if required documents are enabled for a product",
+        "description": "Returns an object with the boolean flag requiredDocumentsEnabled = true when required documents are configured for the given product, institutionType and origin.",
+        "operationId": "isRequiredDocumentsEnabled",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "institutionType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequiredDocumentsEnabledResource"
                 }
               }
             }
@@ -2424,6 +3465,100 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/InstitutionResource"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/institutions/onboardings": {
+      "get": {
+        "tags": [
+          "institution-v-2-controller"
+        ],
+        "summary": "Retrieve onboarding information for an institution filtered by tax code and status",
+        "description": "Returns a list of onboarding processes associated with the institution identified by the provided tax code. The results can be filtered by the onboarding status. Each item in the response contains key details such as the onboarding ID, related product, and current status.",
+        "operationId": "getOnboardingInfo",
+        "parameters": [
+          {
+            "name": "taxCode",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OnboardingResult"
                   }
                 }
               }
@@ -2777,7 +3912,7 @@
     "/v1/products": {
       "get": {
         "tags": [
-          "product-controller"
+          "product-v-1-controller"
         ],
         "summary": "The service retrieves all products",
         "description": "The service retrieves all products",
@@ -2853,7 +3988,7 @@
     "/v1/products/admin": {
       "get": {
         "tags": [
-          "product-controller"
+          "product-v-1-controller"
         ],
         "summary": "The service retrieves all products for the addition administration functionality",
         "description": "The service retrieves all products for the addition administration functionality",
@@ -2929,7 +4064,7 @@
     "/v1/product/{id}": {
       "get": {
         "tags": [
-          "product-controller"
+          "product-v-1-controller"
         ],
         "summary": "The service retrieves the product given its internal id",
         "description": "The service retrieves the product given its internal id",
@@ -3119,99 +4254,7 @@
         ]
       }
     },
-    "/v1/institutions/{externalInstitutionId}/products/{productId}/onboarded-institution-info": {
-      "get": {
-        "tags": [
-          "institution-controller"
-        ],
-        "summary": "The service retrieves the institutions Manager and institution informations",
-        "description": "The service retrieves the institutions Manager and institution informations",
-        "operationId": "getInstitutionOnboardingInfoUsingGET_1",
-        "parameters": [
-          {
-            "name": "externalInstitutionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "productId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstitutionOnboardingInfoResource"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Generic problem response"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Generic problem response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Generic problem response"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Generic problem response"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true,
-        "security": [
-          {
-            "bearerAuth": [
-              "global"
-            ]
-          }
-        ]
-      }
-    },
-    "/v1/institutions/{externalInstitutionId}/geographicTaxonomy": {
+    "/v1/institutions/{externalInstitutionId}/geographic-taxonomy": {
       "get": {
         "tags": [
           "institution-controller"
@@ -3297,19 +4340,27 @@
         ]
       }
     },
-    "/v1/institutions/onboarding/": {
+    "/v1/institutions/onboarding/verify": {
       "get": {
         "tags": [
           "institution-controller"
         ],
-        "summary": "The service retrieves the institutions Manager and institution informations",
-        "description": "The service retrieves the institutions Manager and institution informations",
-        "operationId": "getInstitutionOnboardingInfoUsingGET",
+        "summary": "Checks if the specified institution has been onboarded on the specified product.",
+        "description": "Checks if the specified institution has been onboarded on the specified product.",
+        "operationId": "verifyOnboardingUsingGET",
         "parameters": [
           {
-            "name": "institutionId",
+            "name": "taxCode",
             "in": "query",
-            "required": true,
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subunitCode",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -3321,18 +4372,65 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "originId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vatNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "institutionType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verifyType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INTERNAL",
+                "EXTERNAL"
+              ]
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "403": {
+            "description": "Forbidden",
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstitutionOnboardingInfoResource"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
+          },
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -3388,7 +4486,7 @@
         ]
       }
     },
-    "/v1/institutions/geographicTaxonomies": {
+    "/v1/institutions/geographic-taxonomies": {
       "get": {
         "tags": [
           "institution-controller"
@@ -3943,8 +5041,8 @@
           "payment": {
             "$ref": "#/components/schemas/PaymentDto"
           },
-          "soleTrader": {
-            "type": "boolean"
+          "userRequester": {
+            "$ref": "#/components/schemas/UserRequestDto"
           }
         }
       },
@@ -4022,6 +5120,25 @@
             "type": "string"
           },
           "productRole": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRequestDto": {
+        "required": [
+          "email",
+          "name",
+          "surname"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         }
@@ -4261,7 +5378,6 @@
         "required": [
           "businessName",
           "certified",
-          "digitalAddress",
           "taxCode"
         ],
         "type": "object",
@@ -4412,6 +5528,9 @@
           },
           "subunitCode": {
             "type": "string"
+          },
+          "toAddOnAggregates": {
+            "type": "boolean"
           }
         }
       },
@@ -4729,6 +5848,116 @@
           }
         }
       },
+      "AvailableDocumentsResource": {
+        "type": "object",
+        "properties": {
+          "attachments": {
+            "type": "array",
+            "description": "Names of the attachments available for the onboarding. Empty list if none.",
+            "items": {
+              "type": "string",
+              "description": "Names of the attachments available for the onboarding. Empty list if none."
+            }
+          },
+          "contractFilename": {
+            "type": "string",
+            "description": "Filename of the signed contract available for download. Null when the onboarding has no signed contract yet (e.g. state TOBEVALIDATED)."
+          }
+        },
+        "description": "Aggregated list of documents available for download for a given onboarding."
+      },
+      "OriginEntry": {
+        "type": "object",
+        "properties": {
+          "institutionType": {
+            "type": "string",
+            "enum": [
+              "PA",
+              "PG",
+              "GSP",
+              "SA",
+              "PT",
+              "SCP",
+              "PSP",
+              "AS",
+              "REC",
+              "CON",
+              "PRV",
+              "PRV_PF",
+              "GPU",
+              "SCEC",
+              "DEFAULT"
+            ]
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "MOCK",
+              "IPA",
+              "SELC",
+              "ANAC",
+              "UNKNOWN",
+              "ADE",
+              "INFOCAMERE",
+              "IVASS",
+              "PDND_INFOCAMERE"
+            ]
+          },
+          "labelKey": {
+            "type": "string"
+          }
+        }
+      },
+      "OriginResponse": {
+        "type": "object",
+        "properties": {
+          "origins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OriginEntry"
+            }
+          }
+        }
+      },
+      "RequiredDocumentModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "labelKey": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "maxDocumentsRequired": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "storageOrigin": {
+            "type": "string",
+            "enum": [
+              "SYSTEM",
+              "USER"
+            ]
+          }
+        }
+      },
+      "RequiredDocumentsEnabledResource": {
+        "type": "object",
+        "properties": {
+          "requiredDocumentsEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
       "InstitutionResource": {
         "type": "object",
         "properties": {
@@ -4782,6 +6011,20 @@
               "LIMITED",
               "ADMIN_EA"
             ]
+          }
+        }
+      },
+      "OnboardingResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
           }
         }
       },
@@ -4894,6 +6137,17 @@
           }
         }
       },
+      "GeographicTaxonomyResource": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          }
+        }
+      },
       "AssistanceContactsResource": {
         "type": "object",
         "properties": {
@@ -4965,17 +6219,6 @@
           }
         }
       },
-      "GeographicTaxonomyResource": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          }
-        }
-      },
       "InstitutionData": {
         "type": "object",
         "properties": {
@@ -4996,8 +6239,8 @@
               "REC",
               "CON",
               "PRV",
-              "GPU",
               "PRV_PF",
+              "GPU",
               "SCEC"
             ]
           },

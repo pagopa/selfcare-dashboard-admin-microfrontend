@@ -98,7 +98,7 @@ export default function DashboardRequestActions({
   return (
     <>
       {isToBeValidatedRequest && isAccountUser && (
-        <Stack direction="row" justifyContent="space-between" alignItems="center" py={4}>
+        <Stack direction="row" justifyContent="flex-end" alignItems="center" py={4}>
           <Stack>
             <Button
               variant="outlined"
