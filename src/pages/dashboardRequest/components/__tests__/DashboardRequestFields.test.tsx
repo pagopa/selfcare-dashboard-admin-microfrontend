@@ -22,9 +22,6 @@ test('should render component with PSP and group PIVA should not be visible', as
     />
   );
 
-  const expandPartyData = screen.getByTestId('arrow-icon-1');
-  fireEvent.click(expandPartyData);
-
   expect(screen.getByText('La partita IVA è di gruppo')).toBeInTheDocument();
 
   const expandManagerData = screen.getByTestId('arrow-icon-3');
@@ -41,9 +38,6 @@ test('should render component with PSP and group vatNumberGroup should not be vi
       {...commonProps}
     />
   );
-
-  const expandPartyData = screen.getByTestId('arrow-icon-1');
-  fireEvent.click(expandPartyData);
 
   expect(screen.getByText('La partita IVA è di gruppo')).toBeInTheDocument();
   expect(screen.getByText('No')).toBeInTheDocument();

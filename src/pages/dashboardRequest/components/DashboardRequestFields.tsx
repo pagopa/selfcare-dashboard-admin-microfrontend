@@ -20,15 +20,17 @@ import { theme } from '@pagopa/mui-italia';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
 import { ReactNode, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AvailableDocumentsResource } from '../../../api/generated/onboarding/AvailableDocumentsResource';
 import { OnboardingRequestResource } from '../../../model/OnboardingRequestResource';
 import { buildUrlLog } from '../../../utils/helper';
 import { STATUS_CHIP_CONFIG } from '../../../utils/statusChipConfig';
 
 type Props = {
   onboardingRequestData: OnboardingRequestResource | undefined;
+  availableDocuments?: AvailableDocumentsResource;
   isPSP: boolean;
   fromISO2ITA: (date?: string) => string;
-  onDownloadDocument: (attachmentName: string) => void;
+  onDownloadDocument: (attachmentName: string, documentType: string) => void;
 };
 
 const DetailField = ({
@@ -81,6 +83,7 @@ const SectionSubHeading = ({ label }: { label: string }) => (
 // eslint-disable-next-line complexity, sonarjs/cognitive-complexity
 export default function DashboardRequestFields({
   onboardingRequestData,
+  availableDocuments,
   isPSP,
   fromISO2ITA,
   onDownloadDocument,
@@ -187,7 +190,8 @@ export default function DashboardRequestFields({
       `onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.${field}`
     );
 
-  const attachments = onboardingRequestData?.attachments ?? [];
+  const attachments = availableDocuments?.attachments ?? onboardingRequestData?.attachments ?? [];
+  const signedContractFilename = availableDocuments?.contractFilename;
 
   const statusConfig = onboardingRequestData?.status
     ? STATUS_CHIP_CONFIG[onboardingRequestData.status]
@@ -517,7 +521,7 @@ export default function DashboardRequestFields({
       )}
 
       {/* Documenti */}
-      {attachments.length > 0 && (
+      {(attachments.length > 0 || signedContractFilename) && (
         <CollapsibleSection
           index="5"
           icon={<DescriptionOutlinedIcon color="disabled" />}
@@ -527,7 +531,7 @@ export default function DashboardRequestFields({
             <Grid item xs={12} key={index} className="detail-field" sx={{ py: 1.5 }}>
               <Link
                 component="button"
-                onClick={() => onDownloadDocument(attachmentName)}
+                onClick={() => onDownloadDocument(attachmentName, 'ATTACHMENT')}
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -543,6 +547,26 @@ export default function DashboardRequestFields({
               </Link>
             </Grid>
           ))}
+          {signedContractFilename && (
+            <Grid item xs={12} className="detail-field" sx={{ py: 1.5 }}>
+              <Link
+                component="button"
+                onClick={() => onDownloadDocument(signedContractFilename, 'CONTRACT_SIGNED')}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  textDecoration: 'none',
+                }}
+              >
+                <Typography sx={{ fontSize: '16px', color: 'primary.main', textAlign: 'left' }}>
+                  {signedContractFilename}
+                </Typography>
+                <LaunchOutlinedIcon color="primary" fontSize="small" />
+              </Link>
+            </Grid>
+          )}
         </CollapsibleSection>
       )}
     </Stack>

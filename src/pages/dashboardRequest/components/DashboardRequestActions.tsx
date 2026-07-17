@@ -33,6 +33,7 @@ type Props = {
   partyName?: string;
   productTitle?: string;
   attatchmentName?: string;
+  variant?: 'top' | 'bottom';
 };
 
 export default function DashboardRequestActions({
@@ -45,6 +46,7 @@ export default function DashboardRequestActions({
   partyName,
   productTitle,
   attatchmentName,
+  variant = 'bottom',
 }: Readonly<Props>) {
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
@@ -95,51 +97,65 @@ export default function DashboardRequestActions({
 
   const isAccountUser = getAllProductsWithPermission(Actions.ManageAccountPage).length > 0;
 
+  const actionButtons = (
+    <>
+      <Stack>
+        <Button
+          variant="outlined"
+          color="error"
+          style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
+          onClick={rejectOnboarding}
+        >
+          {t('onboardingRequestPage.actions.decline.button')}
+        </Button>
+      </Stack>
+
+      {isGPU ? (
+        <Stack direction={'row'}>
+          <Button
+            variant="naked"
+            sx={{ marginLeft: 3 }}
+            startIcon={<FileDownloadIcon />}
+            onClick={() =>
+              downloadAttachment &&
+              downloadAttachment(
+                setLoadingRetrieveOnboardingRequest,
+                addError,
+                reason,
+                retrieveTokenIdFromUrl,
+                attatchmentName
+              )
+            }
+          >
+            {t('onboardingRequestPage.actions.downloadButton')}
+          </Button>
+          <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+            {t('onboardingRequestPage.actions.approveButton')}
+          </Button>
+        </Stack>
+      ) : (
+        <Stack>
+          <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
+            {t('onboardingRequestPage.actions.approveButton')}
+          </Button>
+        </Stack>
+      )}
+    </>
+  );
+
+  if (variant === 'top') {
+    return isToBeValidatedRequest && isAccountUser ? (
+      <Stack direction="row" justifyContent="flex-end" alignItems="center">
+        {actionButtons}
+      </Stack>
+    ) : null;
+  }
+
   return (
     <>
       {isToBeValidatedRequest && isAccountUser && (
         <Stack direction="row" justifyContent="flex-end" alignItems="center" py={4}>
-          <Stack>
-            <Button
-              variant="outlined"
-              color="error"
-              style={{ color: theme.palette.error.dark, borderColor: theme.palette.error.dark }}
-              onClick={rejectOnboarding}
-            >
-              {t('onboardingRequestPage.actions.decline.button')}
-            </Button>
-          </Stack>
-
-          {isGPU ? (
-            <Stack direction={'row'}>
-              <Button
-                variant="naked"
-                sx={{ marginLeft: 3 }}
-                startIcon={<FileDownloadIcon />}
-                onClick={() =>
-                  downloadAttachment &&
-                  downloadAttachment(
-                    setLoadingRetrieveOnboardingRequest,
-                    addError,
-                    reason,
-                    retrieveTokenIdFromUrl,
-                    attatchmentName
-                  )
-                }
-              >
-                {t('onboardingRequestPage.actions.downloadButton')}
-              </Button>
-              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
-                {t('onboardingRequestPage.actions.approveButton')}
-              </Button>
-            </Stack>
-          ) : (
-            <Stack>
-              <Button variant="contained" sx={{ marginLeft: 3 }} onClick={approveOnboarding}>
-                {t('onboardingRequestPage.actions.approveButton')}
-              </Button>
-            </Stack>
-          )}
+          {actionButtons}
         </Stack>
       )}
 

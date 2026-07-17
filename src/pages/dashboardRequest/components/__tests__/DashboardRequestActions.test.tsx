@@ -198,7 +198,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
     OnboardingApi,
     'downloadOnboardingAttachments'
   );
-  mockedDownloadOnboardingAttachments.mockResolvedValueOnce(mockedOnboardingRequests[7]);
+  mockedDownloadOnboardingAttachments.mockResolvedValueOnce(new Response());
 
   await renderWithPermissions(
     <DashboardRequestActions

@@ -1,3 +1,4 @@
+import { AvailableDocumentsResource } from '../../api/generated/onboarding/AvailableDocumentsResource';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 
 export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
@@ -521,6 +522,11 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
     deletedAt: '2026-04-10T08:00:00.000',
   },
 ];
+
+export const mockedAvailableDocuments: AvailableDocumentsResource = {
+  attachments: ['dummy.pdf'],
+  contractFilename: 'contratto_adesione.pdf',
+};
 
 export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);

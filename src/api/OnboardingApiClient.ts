@@ -7,6 +7,7 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import { ENV } from '../utils/env';
 import { createClient, WithDefaultsT } from './generated/onboarding/client';
+import { AvailableDocumentsResource } from './generated/onboarding/AvailableDocumentsResource';
 
 const withBearerAndInstitutionId: WithDefaultsT<'bearerAuth'> =
   (wrappedOperation) => (params: any) => {
@@ -33,24 +34,6 @@ const buildRedirectUrl = (baseUrl: string) => {
   const hash = hashFragment ? `#${hashFragment}` : '';
   // eslint-disable-next-line sonarjs/no-nested-template-literals
   return `${urlWithoutHash}${separator}onSuccess=${onSuccess}${hash}`;
-};
-
-const onRedirectToLogin = () => {
-  const redirectUrl = buildRedirectUrl(ENV.URL_FE.LOGIN);
-
-  window.location.assign(redirectUrl);
-
-  ENV.STORE.dispatch(
-    appStateActions.addError({
-      id: 'tokenNotValid',
-      error: new Error(),
-      techDescription: 'token expired or not valid',
-      toNotify: false,
-      blocking: false,
-      displayableTitle: ENV.i18n.t('session.expired.title'),
-      displayableDescription: ENV.i18n.t('session.expired.message'),
-    })
-  );
 };
 
 const onRedirectToBackstage = () => {
@@ -97,11 +80,34 @@ export const OnboardingApi = {
     return extractResponse(result, 200, onRedirectToBackstage);
   },
 
-  downloadOnboardingAttachments: async (onboardingId: string, name: string): Promise<any> => {
-    const result = await apiClient.getAttachmentUsingGET({
+  downloadOnboardingAttachments: (
+    onboardingId: string,
+    type: string,
+    name?: string
+  ): Promise<Response> => {
+    const token = storageTokenOps.read();
+    const params = new URLSearchParams({ type });
+    if (name) {
+      params.append('name', name);
+    }
+    return fetch(
+      `${ENV.URL_API.API_ONBOARDING_V2}/v2/tokens/${onboardingId}/download?${params.toString()}`,
+      {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+      }
+    );
+  },
+
+  getAvailableDocuments: async (onboardingId: string): Promise<AvailableDocumentsResource> => {
+    const result = await apiClient.getAvailableDocumentsUsingGET({
       onboardingId,
-      name,
     });
-    return extractResponse(result, 200, onRedirectToLogin);
+    return extractResponse(result, 200, onRedirectToBackstage);
   },
 };
