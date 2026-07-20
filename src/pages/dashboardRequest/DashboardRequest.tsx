@@ -141,6 +141,7 @@ export default function DashboardRequest() {
         .then((response) => {
           const fileName =
             parseFilename(response.headers.get('content-disposition')) ??
+            attatchmentName ??
             'documento_di_adesione.pdf';
           return response.blob().then((blob) => {
             const reader = blob.stream().getReader();
