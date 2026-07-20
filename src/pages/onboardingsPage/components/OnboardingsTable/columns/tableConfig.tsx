@@ -14,6 +14,7 @@ export const getOnboardingsColumns = (
   products: Array<Product>,
   hasBackofficeAdmin: boolean,
   onOpenBackofficeModal: (row: OnboardingIndexResource) => void,
+// eslint-disable-next-line sonarjs/cognitive-complexity
 ): Array<GridColDef<OnboardingIndexResource>> => [
     {
       field: 'description',

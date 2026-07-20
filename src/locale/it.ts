@@ -105,9 +105,15 @@ export default {
   },
   onboardingRequestPage: {
     title: 'Richiesta di adesione',
-    validationDataChip: 'Da validare',
-    approvedDataChip: 'Approvata',
-    rejectedDataChip: 'Rifiutata',
+    detailTitle: 'Dettaglio adesione',
+    detailSubtitle: 'Ecco i dettagli dell’adesione.',
+    headerInfo: {
+      institutionType: 'Tipologia ente',
+      requestDate: 'Data di richiesta',
+    },
+    documentsSection: {
+      title: 'Documenti',
+    },
     expired: {
       chip: 'Scaduta',
       reason: 'La richiesta di adesione è scaduta perché sono trascorsi più di 30 giorni.',
@@ -120,6 +126,7 @@ export default {
     summaryStepSection: {
       billingDataInfoSummarySection: {
         title: 'Dati dell’ente',
+        descriptionSubtitle: 'Descrizione',
         billingDataInfoSummary: {
           product: 'Prodotto',
           businessName: 'Ragione sociale',

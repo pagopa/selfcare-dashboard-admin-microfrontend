@@ -1,24 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "${openapi_title}",
+    "title": "Dashboard BFF API",
     "description": "Self Care Dashboard API documentation",
     "version": "0.0.1-SNAPSHOT"
   },
   "servers": [
     {
-      "url": "{url}:{port}{basePath}",
-      "variables": {
-        "url": {
-          "default": "http://localhost"
-        },
-        "port": {
-          "default": "80"
-        },
-        "basePath": {
-          "default": ""
-        }
-      }
+      "url": "http://localhost:80"
     }
   ],
   "tags": [
@@ -66,7 +55,9 @@
   "paths": {
     "/v2/users/{id}": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "getUserById",
         "description": "Retrieve the user by internal id",
         "operationId": "v2GetUserByIdUsingGET",
@@ -155,12 +146,16 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       },
       "put": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "updateUser",
         "description": "Update previously added user",
         "operationId": "v2UpdateUserUsingPUT",
@@ -231,14 +226,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/{id}": {
       "get": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "getUserGroupById",
         "description": "Service to get a specific UserGroup entity even if you are not member of it",
         "operationId": "getUserGroupByIdUsingGET",
@@ -307,12 +306,16 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       },
       "put": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "updateUserGroup",
         "description": "Service that allows the modification of a specific occurrence for the UserGroup entity by an Admin user",
         "operationId": "updateUserGroupUsingPUT",
@@ -384,12 +387,16 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       },
       "delete": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "deleteUserGroup",
         "description": "Service that allows the deletion of a specific occurrence for the UserGroup entity by an Admin user",
         "operationId": "deleteUserGroupUsingDELETE",
@@ -441,14 +448,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/products/{productId}/users/{userId}": {
       "put": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "addUserProductRoles",
         "description": "Service to add a new role/product to a specific user",
         "operationId": "v2AddUserProductRole",
@@ -528,14 +539,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/{institutionId}": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getInstitution",
         "description": "Service to get a specific institution related to logged user",
         "operationId": "getInstitutionUsingGET",
@@ -604,12 +619,16 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       },
       "put": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "updateInstitutionDescription",
         "description": "Update institution description",
         "operationId": "updateInstitutionDescriptionUsingPUT",
@@ -678,14 +697,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/{institutionId}/logo": {
       "put": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "saveInstitutionLogo",
         "description": "Service to upload and store the institution's logo",
         "operationId": "saveInstitutionLogoUsingPUT",
@@ -704,7 +727,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": ["logo"],
+                "required": [
+                  "logo"
+                ],
                 "type": "object",
                 "properties": {
                   "logo": {
@@ -761,14 +786,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/{institutionId}/geographic-taxonomy": {
       "put": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "updateInstitutionGeographicTaxonomy",
         "description": "Service to update the geographic taxonomy of an onboarded institution",
         "operationId": "updateInstitutionGeographicTaxonomyUsingPUT",
@@ -830,14 +859,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/{userId}/suspend": {
       "post": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "suspendRelationship",
         "description": "Suspend the relationship",
         "operationId": "v2SuspendRelationshipUsingPOST",
@@ -916,14 +949,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/{userId}/activate": {
       "post": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "activateRelationship",
         "description": "Activate the relationship",
         "operationId": "v2ActivateRelationshipUsingPOST",
@@ -1002,14 +1039,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/search": {
       "post": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "search",
         "description": "Retrieve the user for a given fiscal code",
         "operationId": "v2SearchUserByFiscalCodeUsingPOST",
@@ -1088,14 +1129,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/{id}/suspend": {
       "post": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "suspendUserGroup",
         "description": "Service that allows the suspension of a specific occurrence for the UserGroup entity by an Admin user",
         "operationId": "suspendUserGroupUsingPOST",
@@ -1147,14 +1192,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/{id}/members/{userId}": {
       "post": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "addMemberToUserGroup",
         "description": "Service to add a member to a specific UserGroup entity",
         "operationId": "addMemberToUserGroupUsingPOST",
@@ -1216,14 +1265,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/{id}/activate": {
       "post": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "activateUserGroup",
         "description": "Service that allows the activation of a specific occurrence for the UserGroup entity by an Admin user",
         "operationId": "activateUserGroupUsingPOST",
@@ -1275,14 +1328,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/": {
       "post": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "createUserGroup",
         "description": "Service that allows the insert of a new occurrence for the UserGroup entity",
         "operationId": "createUserGroupUsingPOST",
@@ -1350,14 +1407,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/products/{productId}/users": {
       "post": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "createInstitutionProductUser",
         "description": "Service to Create a user related to a specific pair of institution-product",
         "operationId": "v2PostCreateInstitutionProductUser",
@@ -1435,14 +1496,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/product/{productId}/check-user": {
       "post": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "checkUser",
         "description": "Service to verify if the user is already onboarded on an institution and product given its fiscal code",
         "operationId": "v2CheckUser",
@@ -1520,14 +1585,19 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/support": {
       "post": {
-        "tags": ["external-v2", "support"],
+        "tags": [
+          "external-v2",
+          "support"
+        ],
         "summary": "sendSupportRequest",
         "description": "Service to retrieve Support contact's form",
         "operationId": "sendSupportRequestUsingPOST",
@@ -1585,14 +1655,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/delegations": {
       "post": {
-        "tags": ["delegations"],
+        "tags": [
+          "delegations"
+        ],
         "summary": "createDelegation",
         "description": "Service to create association between institution and technical partner",
         "operationId": "createDelegationUsingPOST",
@@ -1660,14 +1734,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/otp-info": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "getUserOtpEmailInfo",
         "description": "Service to get the otp info for the current user",
         "operationId": "getUserOtpEmailInfoUsingGET",
@@ -1725,14 +1803,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/institution/{institutionId}": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "getUsers",
         "description": "Service to get all the users related to a specific institution",
         "operationId": "v2GetUsersUsingGET",
@@ -1835,14 +1917,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/all/institution/{institutionId}": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "getAllUsers",
         "description": "Service to get all the users related to a specific institution",
         "operationId": "v2GetAllUsersUsingGET",
@@ -1945,14 +2031,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups": {
       "get": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "getUserGroups",
         "description": "Service that allows to get a list of UserGroup entities even if you are not member of it",
         "operationId": "getUserGroupsUsingGET",
@@ -2064,14 +2154,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/me": {
       "get": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "getMyUserGroups",
         "description": "Service that allows to get a list of UserGroup entities but only if you are member of it",
         "operationId": "getMyUserGroupsUsingGET",
@@ -2173,14 +2267,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/me/{id}": {
       "get": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "getMyUserGroupById",
         "description": "Service to get a specific UserGroup entity but only if you are member of it",
         "operationId": "getMyUserGroupByIdUsingGET",
@@ -2249,14 +2347,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/token/exchange": {
       "get": {
-        "tags": ["token"],
+        "tags": [
+          "token"
+        ],
         "summary": "Service create an 'Identity Token' based on a Self Care session token",
         "description": "Service create an 'Identity Token' based on a Self Care session token",
         "operationId": "v2Exchange",
@@ -2343,14 +2445,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/token/exchange/fatturazione": {
       "get": {
-        "tags": ["token"],
+        "tags": [
+          "token"
+        ],
         "summary": "billingToken",
         "description": "Service to create a 'Billing Token' based on a Self Care session token",
         "operationId": "billingTokenUsingGET",
@@ -2438,14 +2544,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/token/exchange/back-office/admin": {
       "get": {
-        "tags": ["token"],
+        "tags": [
+          "token"
+        ],
         "summary": "Service to create an 'Identity Token' based on a Self Care backoffice admin session token",
         "description": "Service to create an 'Identity Token' based on a Self Care backoffice admin session token",
         "operationId": "v2ExchangeBackofficeAdmin",
@@ -2543,14 +2653,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/products/{productId}/back-office": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Service to trigger token exchange and redirect to product's back office URL",
         "description": "Service to trigger token exchange and redirect to product's back office URL",
         "operationId": "v2RetrieveProductBackofficeUsingGET",
@@ -2648,14 +2762,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getInstitutions",
         "description": "Service to get all the institutions related to logged user",
         "operationId": "v2RetrieveUserInstitutions",
@@ -2716,14 +2834,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "Service to get a specific institution related to logged user",
         "description": "Service to get a specific institution related to logged user",
         "operationId": "v2GetInstitution",
@@ -2792,14 +2914,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/users/{userId}": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getInstitutionUser",
         "description": "Service to get the users with the given user id related to a specific institution",
         "operationId": "v2RetrieveInstitutionUser",
@@ -2877,14 +3003,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/products/{productId}/users/count": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getUserCount",
         "description": "Service to get the number of users related to a specific pair of institution-product optionally filtered by role and status",
         "operationId": "v2GetUserCount",
@@ -2984,14 +3114,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/product/{productId}/attachment/status": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "checkAttachmentStatus",
         "description": "Service to verify if the attachment is already uploaded or not",
         "operationId": "v2CheckAttachment",
@@ -3078,14 +3212,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/onboardings-info": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getOnboardingsInfo",
         "description": "Service to get the onboardings info as productId, status and contract availability related to a specific institution optionally filtered by a list of products",
         "operationId": "v2GetOnboardingsInfo",
@@ -3168,14 +3306,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/institutions": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "Retrieve list of delegation using to",
         "description": "Retrieve list of delegation using to",
         "operationId": "getDelegationsUsingToUsingGET_1",
@@ -3214,7 +3356,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["NONE", "ASC", "DESC"]
+              "enum": [
+                "NONE",
+                "ASC",
+                "DESC"
+              ]
             }
           },
           {
@@ -3294,14 +3440,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/{institutionId}/contract": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getContract",
         "description": "Service to get the signed contract of a specific institution and product",
         "operationId": "v2GetContract",
@@ -3380,14 +3530,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/onboardings/{productId}/pending": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getInstitutionOnboardingPending",
         "description": "Returns an institution's onboarding record by its ID only if its status is PENDING or TOBEVALIDATED",
         "operationId": "getInstitutionOnboardingPending",
@@ -3467,14 +3621,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/all/{institutionId}": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "Service to get a specific institution in ARB",
         "description": "Service to get a specific institution in ARB",
         "operationId": "v2GetAllInstitution",
@@ -3543,14 +3701,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/institutions/all/{institutionId}/users/{userId}": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getAllInstitutionUser",
         "description": "Service to get the users with the given user id related to a specific institution even without a role on the institution",
         "operationId": "v2RetrieveAllInstitutionUser",
@@ -3628,14 +3790,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/products/{productId}/roles": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "getProductRoles",
         "description": "Service to get the Product roles",
         "operationId": "getProductRolesUsingGET",
@@ -3716,14 +3882,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/products/{productId}/brokers/{institutionType}": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "getProductBrokers",
         "description": "Service to get list of partners",
         "operationId": "getProductBrokersUsingGET",
@@ -3804,14 +3974,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/products/my-permissions": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Service to retrieve the logged user's permissions for all products",
         "description": "Service to retrieve the logged user's permissions for all products",
         "operationId": "getMyPermissions",
@@ -3869,14 +4043,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/{institutionId}/partners": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "Retrieve institution's delegations",
         "description": "Retrieve institution's delegations",
         "operationId": "getDelegationsUsingFromUsingGET",
@@ -3957,14 +4135,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/{institutionId}/institutions": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "Retrieve list of delegation using to",
         "description": "Retrieve list of delegation using to",
         "operationId": "getDelegationsUsingToUsingGET",
@@ -4003,7 +4185,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["NONE", "ASC", "DESC"]
+              "enum": [
+                "NONE",
+                "ASC",
+                "DESC"
+              ]
             }
           },
           {
@@ -4084,14 +4270,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v1/institutions/products": {
       "get": {
-        "tags": ["institutions"],
+        "tags": [
+          "institutions"
+        ],
         "summary": "getProductsTree",
         "description": "Service to get all the products related to a specific institution",
         "operationId": "getProductsTreeUsingGET",
@@ -4152,14 +4342,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/users/{userId}": {
       "delete": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "deleteRelationshipById",
         "description": "Delete the relationship",
         "operationId": "v2DeleteRelationshipByIdUsingDELETE",
@@ -4238,14 +4432,18 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
     },
     "/v2/user-groups/{userGroupId}/members/{userId}": {
       "delete": {
-        "tags": ["user-groups"],
+        "tags": [
+          "user-groups"
+        ],
         "summary": "deleteMemberFromUserGroup",
         "description": "Service to delete a member from a specific UserGroup entity",
         "operationId": "deleteMemberFromUserGroupUsingDELETE",
@@ -4307,7 +4505,9 @@
         },
         "security": [
           {
-            "bearerAuth": ["global"]
+            "bearerAuth": [
+              "global"
+            ]
           }
         ]
       }
@@ -4338,7 +4538,11 @@
         }
       },
       "UpdateUserGroupDto": {
-        "required": ["description", "members", "name"],
+        "required": [
+          "description",
+          "members",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -4362,7 +4566,9 @@
         }
       },
       "UserProductRoles": {
-        "required": ["productRoles"],
+        "required": [
+          "productRoles"
+        ],
         "type": "object",
         "properties": {
           "role": {
@@ -4552,7 +4758,14 @@
           },
           "status": {
             "type": "string",
-            "enum": ["ACTIVE", "PENDING", "TOBEVALIDATED", "SUSPENDED", "DELETED", "REJECTED"]
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "TOBEVALIDATED",
+              "SUSPENDED",
+              "DELETED",
+              "REJECTED"
+            ]
           },
           "authorized": {
             "type": "boolean"
@@ -4646,7 +4859,10 @@
         }
       },
       "GeographicTaxonomyDto": {
-        "required": ["code", "desc"],
+        "required": [
+          "code",
+          "desc"
+        ],
         "type": "object",
         "properties": {
           "code": {
@@ -4661,7 +4877,9 @@
         "description": "List of institution's geographic taxonomies"
       },
       "GeographicTaxonomyListDto": {
-        "required": ["geographicTaxonomyDtoList"],
+        "required": [
+          "geographicTaxonomyDtoList"
+        ],
         "type": "object",
         "properties": {
           "geographicTaxonomyDtoList": {
@@ -4675,7 +4893,9 @@
         "description": "Institution's geographic taxonomy"
       },
       "SearchUserDto": {
-        "required": ["fiscalCode"],
+        "required": [
+          "fiscalCode"
+        ],
         "type": "object",
         "properties": {
           "fiscalCode": {
@@ -4742,7 +4962,13 @@
         "description": "User's workcontacts, contains the emails associated to every institution the user is assigned to"
       },
       "CreateUserGroupDto": {
-        "required": ["description", "institutionId", "members", "name", "productId"],
+        "required": [
+          "description",
+          "institutionId",
+          "members",
+          "name",
+          "productId"
+        ],
         "type": "object",
         "properties": {
           "institutionId": {
@@ -4774,7 +5000,9 @@
         }
       },
       "UserGroupIdResource": {
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -4784,7 +5012,10 @@
         }
       },
       "CreateUserDto": {
-        "required": ["productRoles", "taxCode"],
+        "required": [
+          "productRoles",
+          "taxCode"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -4842,7 +5073,9 @@
         }
       },
       "SupportRequestDto": {
-        "required": ["email"],
+        "required": [
+          "email"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -4882,7 +5115,13 @@
         }
       },
       "DelegationRequestDto": {
-        "required": ["from", "institutionFromName", "institutionToName", "productId", "to"],
+        "required": [
+          "from",
+          "institutionFromName",
+          "institutionToName",
+          "productId",
+          "to"
+        ],
         "type": "object",
         "properties": {
           "from": {
@@ -4900,7 +5139,12 @@
           "type": {
             "type": "string",
             "description": "Delegation type",
-            "enum": ["PT", "AOO", "UO", "EA"]
+            "enum": [
+              "PT",
+              "AOO",
+              "UO",
+              "EA"
+            ]
           },
           "institutionFromName": {
             "type": "string",
@@ -4977,7 +5221,11 @@
           "selcRole": {
             "type": "string",
             "description": "User's Selfcare role, available values: [ADMIN, ADMIN_EA, LIMITED]",
-            "enum": ["ADMIN", "LIMITED", "ADMIN_EA"]
+            "enum": [
+              "ADMIN",
+              "LIMITED",
+              "ADMIN_EA"
+            ]
           },
           "partyRole": {
             "type": "string",
@@ -5023,7 +5271,11 @@
           "role": {
             "type": "string",
             "description": "User's Selfcare role, available values: [ADMIN, ADMIN_EA, LIMITED]",
-            "enum": ["ADMIN", "LIMITED", "ADMIN_EA"]
+            "enum": [
+              "ADMIN",
+              "LIMITED",
+              "ADMIN_EA"
+            ]
           },
           "product": {
             "$ref": "#/components/schemas/ProductInfoResource"
@@ -5066,7 +5318,13 @@
         }
       },
       "PageUserGroupPlainResource": {
-        "required": ["content", "number", "size", "totalElements", "totalPages"],
+        "required": [
+          "content",
+          "number",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
         "type": "object",
         "properties": {
           "content": {
@@ -5124,7 +5382,11 @@
           "status": {
             "type": "string",
             "description": "Users group's status",
-            "enum": ["ACTIVE", "SUSPENDED", "DELETED"]
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED",
+              "DELETED"
+            ]
           },
           "membersCount": {
             "type": "integer",
@@ -5199,7 +5461,11 @@
           "status": {
             "type": "string",
             "description": "Users group's status",
-            "enum": ["ACTIVE", "SUSPENDED", "DELETED"]
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED",
+              "DELETED"
+            ]
           },
           "members": {
             "type": "array",
@@ -5227,7 +5493,9 @@
         }
       },
       "IdentityTokenResource": {
-        "required": ["token"],
+        "required": [
+          "token"
+        ],
         "type": "object",
         "properties": {
           "token": {
@@ -5455,7 +5723,14 @@
           },
           "productOnBoardingStatus": {
             "type": "string",
-            "enum": ["ACTIVE", "PENDING", "TOBEVALIDATED", "SUSPENDED", "DELETED", "REJECTED"]
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "TOBEVALIDATED",
+              "SUSPENDED",
+              "DELETED",
+              "REJECTED"
+            ]
           }
         },
         "description": "Authorized user products"
@@ -5501,7 +5776,11 @@
           "role": {
             "type": "string",
             "description": "User's role, available values: [MANAGER, DELEGATE, SUB_DELEGATE, OPERATOR, ADMIN_EA]",
-            "enum": ["ADMIN", "LIMITED", "ADMIN_EA"]
+            "enum": [
+              "ADMIN",
+              "LIMITED",
+              "ADMIN_EA"
+            ]
           },
           "status": {
             "type": "string",
@@ -5640,7 +5919,12 @@
           },
           "type": {
             "type": "string",
-            "enum": ["PT", "AOO", "UO", "EA"]
+            "enum": [
+              "PT",
+              "AOO",
+              "UO",
+              "EA"
+            ]
           },
           "createdAt": {
             "type": "string",
@@ -5706,11 +5990,11 @@
           "selcRole": {
             "type": "string",
             "description": "Self Care role",
-            "enum": ["ADMIN", "LIMITED", "ADMIN_EA"]
-          },
-          "multiroleAllowed": {
-            "type": "boolean",
-            "description": "Indicates if an User can have more than one product role"
+            "enum": [
+              "ADMIN",
+              "LIMITED",
+              "ADMIN_EA"
+            ]
           },
           "phasesAdditionAllowed": {
             "type": "array",
@@ -5743,6 +6027,14 @@
           "description": {
             "type": "string",
             "description": "Product role description"
+          },
+          "multiroleGroups": {
+            "type": "array",
+            "description": "Product role groups that allow to assign multiple roles to the same user",
+            "items": {
+              "type": "string",
+              "description": "Product role groups that allow to assign multiple roles to the same user"
+            }
           }
         },
         "description": "Available product roles"
@@ -5787,6 +6079,21 @@
       "ProductRolePermissionsList": {
         "type": "object",
         "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
           "items": {
             "type": "array",
             "items": {
@@ -5815,7 +6122,12 @@
           },
           "type": {
             "type": "string",
-            "enum": ["PT", "AOO", "UO", "EA"]
+            "enum": [
+              "PT",
+              "AOO",
+              "UO",
+              "EA"
+            ]
           },
           "brokerId": {
             "type": "string"
@@ -5876,7 +6188,12 @@
           "status": {
             "type": "string",
             "description": "Product's status",
-            "enum": ["ACTIVE", "TESTING", "PHASE_OUT", "INACTIVE"]
+            "enum": [
+              "ACTIVE",
+              "TESTING",
+              "PHASE_OUT",
+              "INACTIVE"
+            ]
           },
           "delegable": {
             "type": "boolean",
@@ -5916,12 +6233,21 @@
           "productOnBoardingStatus": {
             "type": "string",
             "description": "Product's onBoarding status",
-            "enum": ["ACTIVE", "PENDING", "INACTIVE"]
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "INACTIVE"
+            ]
           },
           "status": {
             "type": "string",
             "description": "Product's status",
-            "enum": ["ACTIVE", "TESTING", "PHASE_OUT", "INACTIVE"]
+            "enum": [
+              "ACTIVE",
+              "TESTING",
+              "PHASE_OUT",
+              "INACTIVE"
+            ]
           },
           "delegable": {
             "type": "boolean",
@@ -5955,7 +6281,10 @@
         "description": "Product's sub products list"
       },
       "Problem": {
-        "required": ["status", "title"],
+        "required": [
+          "status",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "type": {
@@ -5993,7 +6322,10 @@
         "description": "A \"problem detail\" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)"
       },
       "InvalidParam": {
-        "required": ["name", "reason"],
+        "required": [
+          "name",
+          "reason"
+        ],
         "type": "object",
         "properties": {
           "name": {

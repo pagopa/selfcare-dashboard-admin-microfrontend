@@ -2,11 +2,11 @@
   "swagger": "2.0",
   "info": {
     "description": "Self Care Dashboard API documentation",
-    "title": "${openapi_title}",
+    "title": "Dashboard BFF API",
     "version": "0.0.1-SNAPSHOT"
   },
   "host": "localhost:80",
-  "basePath": "%7BbasePath%7D",
+  "basePath": "/",
   "schemes": [
     "http"
   ],
@@ -4612,10 +4612,6 @@
     },
     "ProductRoleMappingsResource": {
       "properties": {
-        "multiroleAllowed": {
-          "description": "Indicates if an User can have more than one product role",
-          "type": "boolean"
-        },
         "partyRole": {
           "description": "Party role, available values: MANAGER, DELEGATE, SUB_DELEGATE, OPERATOR, ADMIN_EA",
           "type": "string"
@@ -4669,11 +4665,26 @@
     },
     "ProductRolePermissionsList": {
       "properties": {
+        "email": {
+          "type": "string"
+        },
+        "familyName": {
+          "type": "string"
+        },
         "items": {
           "items": {
             "$ref": "#/definitions/ProductRolePermissions"
           },
           "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
         }
       },
       "type": "object"
@@ -4692,6 +4703,14 @@
         "label": {
           "description": "Product role label",
           "type": "string"
+        },
+        "multiroleGroups": {
+          "description": "Product role groups that allow to assign multiple roles to the same user",
+          "items": {
+            "description": "Product role groups that allow to assign multiple roles to the same user",
+            "type": "string"
+          },
+          "type": "array"
         }
       },
       "type": "object"

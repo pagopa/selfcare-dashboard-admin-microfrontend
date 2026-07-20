@@ -65,6 +65,7 @@ const matchesInstitutionSearch = (
   const lower = searchText.toLowerCase();
   return [institution.description, institution.parentDescription, institution.taxCode, institution.id]
     .filter(Boolean)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .some((field) => field!.toLowerCase().includes(lower));
 };
 
@@ -128,6 +129,7 @@ const applyFilters = (
   statusUpdatedFromDate?: string,
   statusUpdatedToDate?: string,
   includeTest?: boolean
+// eslint-disable-next-line sonarjs/cognitive-complexity
 ): Array<OnboardingIndexResource> => {
   // eslint-disable-next-line functional/no-let
   let filtered = [...onboardings];

@@ -1,4 +1,4 @@
-import { Alert, Button, Chip, Grid, Typography } from '@mui/material';
+import { Alert, Button, Grid, Typography } from '@mui/material';
 import {
   NavigationBar,
   useErrorDispatcher,
@@ -7,13 +7,17 @@ import {
 import { NavigationPath } from '@pagopa/selfcare-common-frontend/lib/components/NavigationBar';
 import { AppError } from '@pagopa/selfcare-common-frontend/lib/model/AppError';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
+import { AvailableDocumentsResource } from '../../api/generated/onboarding/AvailableDocumentsResource';
 import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
-import { fetchOnboardingRequest } from '../../services/onboardingRequestService';
+import {
+  downloadOnboardingRequestAttachment,
+  fetchOnboardingRequest,
+  getAvailableDocuments,
+} from '../../services/onboardingRequestService';
 import { LOADING_RETRIEVE_ONBOARDING_REQUEST } from '../../utils/constants';
 import { ENV } from '../../utils/env';
 import ConfirmPage from '../confirmPage/ConfirmPage';
@@ -32,6 +36,8 @@ export default function DashboardRequest() {
   useGlobalPermissions();
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
+  const [availableDocuments, setAvailableDocuments] = useState<AvailableDocumentsResource>();
+  const [showDocumentsSection, setShowDocumentsSection] = useState<boolean>(false);
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
@@ -42,6 +48,8 @@ export default function DashboardRequest() {
   const isPSP = onboardingRequestData?.institutionInfo.institutionType === 'PSP';
   const isGPU = onboardingRequestData?.institutionInfo.institutionType === 'GPU';
   const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
+  const primaryAttachmentName =
+    availableDocuments?.attachments?.[0] ?? onboardingRequestData?.attachments?.[0] ?? '';
 
   useEffect(() => {
     if (retrieveTokenIdFromUrl) {
@@ -52,45 +60,22 @@ export default function DashboardRequest() {
   const retrieveOnboardingRequest = (retrieveTokenIdFromUrl: string) => {
     setLoadingRetrieveOnboardingRequest(true);
     fetchOnboardingRequest(retrieveTokenIdFromUrl)
-      .then((r) => {
-        setOnboardingRequestData(r);
+      .then((response) => {
+        setOnboardingRequestData(response);
+        return getAvailableDocuments(retrieveTokenIdFromUrl)
+          .then((documents) => {
+            setAvailableDocuments(documents);
+            setShowDocumentsSection(true);
+          })
+          .catch(() => {
+            setAvailableDocuments(undefined);
+            setShowDocumentsSection(false);
+          });
       })
       .catch(() => {
         setError(true);
       })
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
-  };
-
-  const requestState = (
-    requestStatus: string | undefined,
-    isChipLabelState: boolean,
-    isBgColorChipState: boolean
-  ) => {
-    if (isChipLabelState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'PENDING':
-          return t('onboardingRequestPage.approvedDataChip');
-        case 'REJECTED':
-          return t('onboardingRequestPage.rejectedDataChip');
-        default:
-          return t('onboardingRequestPage.validationDataChip');
-      }
-    }
-    if (isBgColorChipState) {
-      switch (requestStatus) {
-        case 'COMPLETED':
-          return 'success.light';
-        case 'PENDING':
-          return 'success.light';
-        case 'REJECTED':
-          return 'warning.main';
-        default:
-          return 'info.main';
-      }
-    }
-    return undefined;
   };
 
   const fromISO2ITA = (date?: string) => {
@@ -126,34 +111,38 @@ export default function DashboardRequest() {
     return URL.createObjectURL(blob);
   };
 
+  const parseFilename = (header: string | null): string | undefined => {
+    if (!header) {
+      return undefined;
+    }
+    const utf8 = /filename\*=UTF-8''([^;]+)/i.exec(header);
+
+    if (utf8?.[1]) {
+      return decodeURIComponent(utf8[1]);
+    }
+    const plain = /filename="?([^";]+)"?/i.exec(header);
+    return plain?.[1]?.trim();
+  };
+
   const downloadAttachment = (
     setLoadingRetrieveOnboardingRequest: (loading: boolean) => void,
     addError: (error: AppError) => void,
     reason?: string,
     retrieveTokenIdFromUrl?: string,
-    attatchmentName?: string
+    attatchmentName?: string,
+    documentType: string = 'ATTACHMENT'
   ) => {
-    const sessionToken = storageTokenOps.read();
-    const nameParam = new URLSearchParams({
-      name: attatchmentName ?? '',
-    });
-    const url = `${ENV.URL_API.API_ONBOARDING_V2
-      }/v2/tokens/${retrieveTokenIdFromUrl}/attachment?${nameParam.toString()}`;
     if (retrieveTokenIdFromUrl) {
-      fetch(url, {
-        headers: {
-          accept: '*/*',
-          'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
-          authorization: `Bearer ${sessionToken}`,
-          'content-type': 'application/octet-stream',
-        },
-        method: 'GET',
-      })
+      downloadOnboardingRequestAttachment(
+        retrieveTokenIdFromUrl,
+        documentType,
+        attatchmentName ?? ''
+      )
         .then((response) => {
-          const contentDisposition = response.headers.get('content-disposition');
-          const matchedIndex = contentDisposition?.indexOf('=') as number;
           const fileName =
-            contentDisposition?.substring(matchedIndex + 1) ?? 'checklist_adesione_gpu.pdf';
+            parseFilename(response.headers.get('content-disposition')) ??
+            attatchmentName ??
+            'documento_di_adesione.pdf';
           return response.blob().then((blob) => {
             const reader = blob.stream().getReader();
             void fileFromReader(reader).then((url) => {
@@ -213,24 +202,18 @@ export default function DashboardRequest() {
           <Grid
             container
             direction="row"
-            justifyContent={isGPU ? undefined : 'space-between'}
-            alignItems="center"
+            justifyContent="space-between"
+            alignItems="flex-start"
             mt={2}
           >
-            <Grid item xs={isGPU ? 4 : undefined}>
-              <Typography variant="h4"> {t('onboardingRequestPage.title')} </Typography>
+            <Grid item xs>
+              <Typography variant="h4">{t('onboardingRequestPage.detailTitle')}</Typography>
+              <Typography sx={{ mt: 1, color: 'text.secondary' }}>
+                {t('onboardingRequestPage.detailSubtitle')}
+              </Typography>
             </Grid>
-            <Grid xs={isGPU ? 2 : undefined}>
-              <Chip
-                sx={{
-                  backgroundColor: requestState(onboardingRequestData?.status, false, true),
-                  height: '30px',
-                }}
-                label={requestState(onboardingRequestData?.status, true, false)}
-              />
-            </Grid>
-            {isGPU && (
-              <Grid item xs={6} textAlign={'right'}>
+            <Grid item textAlign={'right'}>
+              {isGPU && (
                 <Button
                   variant="contained"
                   onClick={() =>
@@ -239,80 +222,88 @@ export default function DashboardRequest() {
                       addError,
                       undefined,
                       retrieveTokenIdFromUrl,
-                      onboardingRequestData?.attachments?.[0] ?? ''
+                      primaryAttachmentName
                     )
                   }
                 >
                   {t('onboardingRequestPage.actions.downloadDataButton')}
                 </Button>
-              </Grid>
-            )}
+              )}
+              <DashboardRequestActions
+                variant="top"
+                retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
+                partyName={onboardingRequestData?.institutionInfo.name}
+                productTitle={productTitle}
+                setShowRejectPage={setShowRejectPage}
+                setShowConfirmPage={setShowConfirmPage}
+                isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
+                attatchmentName={primaryAttachmentName}
+                downloadAttachment={downloadAttachment}
+                isGPU={isGPU}
+              />
+            </Grid>
           </Grid>
-          {onboardingRequestData?.status === 'TOBEVALIDATED' ? (
+          {onboardingRequestData?.status === 'REJECTED' && (
             <Grid item xs={12} width="100%" mt={5}>
               <Alert
-                severity="info"
+                severity="warning"
                 sx={{
                   fontSize: 'fontSize',
-                  height: '53px',
+                  height: '74px',
                   alignItems: 'center',
                   color: 'colorTextPrimary',
                   borderLeft: 'solid',
-                  borderLeftColor: 'info.main',
+                  borderLeftColor: 'warning.main',
                   borderLeftWidth: '4px',
                   width: '100%',
                 }}
               >
-                {t('onboardingRequestPage.checkPartyInfoAlert')}
+                {onboardingRequestData?.reasonForReject ? (
+                  <Trans
+                    i18nKey={
+                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                    }
+                    components={{
+                      1: <strong style={{ fontWeight: '600' }} />,
+                      3: <br />,
+                    }}
+                  >
+                    {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                      onboardingRequestData?.updatedAt
+                    )}. </1> <3/>Motivo del rifiuto: â€œ${onboardingRequestData?.reasonForReject}â€œ`}
+                  </Trans>
+                ) : (
+                  <Trans
+                    i18nKey={
+                      'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
+                    }
+                    components={{
+                      1: <strong style={{ fontWeight: '600' }} />,
+                    }}
+                  >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
+                    onboardingRequestData?.updatedAt
+                  )}. </1>`}</Trans>
+                )}
               </Alert>
             </Grid>
-          ) : (
-            onboardingRequestData?.status === 'REJECTED' && (
-              <Grid item xs={12} width="100%" mt={5}>
-                <Alert
-                  severity="warning"
-                  sx={{
-                    fontSize: 'fontSize',
-                    height: '74px',
-                    alignItems: 'center',
-                    color: 'colorTextPrimary',
-                    borderLeft: 'solid',
-                    borderLeftColor: 'warning.main',
-                    borderLeftWidth: '4px',
-                    width: '100%',
-                  }}
-                >
-                  {onboardingRequestData?.reasonForReject ? (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                        3: <br />,
-                      }}
-                    >
-                      {`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                        onboardingRequestData?.updatedAt
-                      )}. </1> <3/>Motivo del rifiuto: “${onboardingRequestData?.reasonForReject}“`}
-                    </Trans>
-                  ) : (
-                    <Trans
-                      i18nKey={
-                        'onboardingRequestPage.checkPartyInfoAlert.checkPartyRejectReasonAlert'
-                      }
-                      components={{
-                        1: <strong style={{ fontWeight: '600' }} />,
-                      }}
-                    >{`<1>Hai rifiutato questa richiesta di adesione il ${fromISO2ITA(
-                      onboardingRequestData?.updatedAt
-                    )}. </1>`}</Trans>
-                  )}
-                </Alert>
-              </Grid>
-            )
           )}
-          <DashboardRequestFields onboardingRequestData={onboardingRequestData} isPSP={isPSP} />
+          <DashboardRequestFields
+            onboardingRequestData={onboardingRequestData}
+            availableDocuments={availableDocuments}
+            showAvailableDocuments={showDocumentsSection}
+            isPSP={isPSP}
+            fromISO2ITA={fromISO2ITA}
+            onDownloadDocument={(attachmentName, documentType) =>
+              downloadAttachment(
+                setLoadingRetrieveOnboardingRequest,
+                addError,
+                undefined,
+                retrieveTokenIdFromUrl,
+                attachmentName,
+                documentType
+              )
+            }
+          />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             partyName={onboardingRequestData?.institutionInfo.name}
@@ -320,7 +311,7 @@ export default function DashboardRequest() {
             setShowRejectPage={setShowRejectPage}
             setShowConfirmPage={setShowConfirmPage}
             isToBeValidatedRequest={onboardingRequestData?.status === 'TOBEVALIDATED'}
-            attatchmentName={onboardingRequestData?.attachments?.[0] ?? ''}
+            attatchmentName={primaryAttachmentName}
             downloadAttachment={downloadAttachment}
             isGPU={isGPU}
           />
