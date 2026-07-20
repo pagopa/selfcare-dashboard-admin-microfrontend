@@ -28,6 +28,7 @@ import { STATUS_CHIP_CONFIG } from '../../../utils/statusChipConfig';
 type Props = {
   onboardingRequestData: OnboardingRequestResource | undefined;
   availableDocuments?: AvailableDocumentsResource;
+  showAvailableDocuments: boolean;
   isPSP: boolean;
   fromISO2ITA: (date?: string) => string;
   onDownloadDocument: (attachmentName: string, documentType: string) => void;
@@ -84,6 +85,7 @@ const SectionSubHeading = ({ label }: { label: string }) => (
 export default function DashboardRequestFields({
   onboardingRequestData,
   availableDocuments,
+  showAvailableDocuments,
   isPSP,
   fromISO2ITA,
   onDownloadDocument,
@@ -521,7 +523,7 @@ export default function DashboardRequestFields({
       )}
 
       {/* Documenti */}
-      {(attachments.length > 0 || signedContractFilename) && (
+      {(attachments.length > 0 || signedContractFilename) && showAvailableDocuments && (
         <CollapsibleSection
           index="5"
           icon={<DescriptionOutlinedIcon color="disabled" />}

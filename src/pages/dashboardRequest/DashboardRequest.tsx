@@ -37,6 +37,7 @@ export default function DashboardRequest() {
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [availableDocuments, setAvailableDocuments] = useState<AvailableDocumentsResource>();
+  const [showDocumentsSection, setShowDocumentsSection] = useState<boolean>(false);
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
@@ -64,9 +65,11 @@ export default function DashboardRequest() {
         return getAvailableDocuments(retrieveTokenIdFromUrl)
           .then((documents) => {
             setAvailableDocuments(documents);
+            setShowDocumentsSection(true);
           })
           .catch(() => {
             setAvailableDocuments(undefined);
+            setShowDocumentsSection(false);
           });
       })
       .catch(() => {
@@ -108,6 +111,19 @@ export default function DashboardRequest() {
     return URL.createObjectURL(blob);
   };
 
+  const parseFilename = (header: string | null): string | undefined => {
+    if (!header) {
+      return undefined;
+    }
+    const utf8 = /filename\*=UTF-8''([^;]+)/i.exec(header);
+
+    if (utf8?.[1]) {
+      return decodeURIComponent(utf8[1]);
+    }
+    const plain = /filename="?([^";]+)"?/i.exec(header);
+    return plain?.[1]?.trim();
+  };
+
   const downloadAttachment = (
     setLoadingRetrieveOnboardingRequest: (loading: boolean) => void,
     addError: (error: AppError) => void,
@@ -123,10 +139,9 @@ export default function DashboardRequest() {
         attatchmentName ?? ''
       )
         .then((response) => {
-          const contentDisposition = response.headers.get('content-disposition');
-          const matchedIndex = contentDisposition?.indexOf('=') as number;
           const fileName =
-            contentDisposition?.substring(matchedIndex + 1) ?? 'checklist_adesione_gpu.pdf';
+            parseFilename(response.headers.get('content-disposition')) ??
+            'documento_di_adesione.pdf';
           return response.blob().then((blob) => {
             const reader = blob.stream().getReader();
             void fileFromReader(reader).then((url) => {
@@ -274,6 +289,7 @@ export default function DashboardRequest() {
           <DashboardRequestFields
             onboardingRequestData={onboardingRequestData}
             availableDocuments={availableDocuments}
+            showAvailableDocuments={showDocumentsSection}
             isPSP={isPSP}
             fromISO2ITA={fromISO2ITA}
             onDownloadDocument={(attachmentName, documentType) =>
