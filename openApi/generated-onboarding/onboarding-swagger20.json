@@ -2734,16 +2734,6 @@
             "type": "string"
           },
           {
-            "in": "formData",
-            "name": "attachmentId",
-            "type": "string"
-          },
-          {
-            "in": "formData",
-            "name": "attachmentDescription",
-            "type": "string"
-          },
-          {
             "format": "binary",
             "in": "formData",
             "name": "attachment",
@@ -3656,7 +3646,7 @@
       }
     }
   },
-  "definitions" : {"RequiredDocumentModelArray":{"type": "array", "items": {"$ref": "#/definitions/RequiredDocumentModel"}},"OnboardingResultArray":{"type": "array", "items": {"$ref": "#/definitions/OnboardingResult"}},"InstitutionOnboardingResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionOnboardingResource"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"STRINGWrapper":{"type": "string"},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"STRINGArray":{"type": "array", "items": {"type": "string"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},
+  "definitions" : {"RequiredDocumentModelArray":{"type": "array", "items": {"$ref": "#/definitions/RequiredDocumentModel"}},"OnboardingResultArray":{"type": "array", "items": {"$ref": "#/definitions/OnboardingResult"}},"InstitutionOnboardingResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionOnboardingResource"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"ProductResourceArray":{"type": "array", "items": {"$ref": "#/definitions/ProductResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"GeographicTaxonomyResourceArray":{"type": "array", "items": {"$ref": "#/definitions/GeographicTaxonomyResource"}},"STRINGWrapper":{"type": "string"},"STRINGArray":{"type": "array", "items": {"type": "string"}},"InstitutionResourceArray":{"type": "array", "items": {"$ref": "#/definitions/InstitutionResource"}},
     "AdditionalInformations": {
       "properties": {
         "agentOfPublicService": {
