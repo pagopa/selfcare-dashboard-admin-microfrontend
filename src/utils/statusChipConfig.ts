@@ -40,4 +40,14 @@ export const STATUS_CHIP_CONFIG: Record<string, StatusChipConfig> = {
     tooltipText: "L'ente non risulta più aderente al prodotto.",
     color: 'error',
   },
+  FAILED: {
+    label: 'In errore',
+    tooltipText: 'La richiesta di adesione non è andata a buon fine a causa di un errore tecnico.',
+    color: 'error',
+  },
+  EXPIRED: {
+    label: 'Scaduta',
+    tooltipText: 'La richiesta non è stata completata entro i termini',
+    color: 'error',
+  },
 };
