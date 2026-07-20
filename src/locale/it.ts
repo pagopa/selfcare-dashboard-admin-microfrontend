@@ -79,7 +79,7 @@ export default {
       resetButton: 'Rimuovi filtri',
       statusOptions: {
         request: 'Richiesta ricevuta',
-        toBeValidated: 'In validazione',
+        toBeValidated: 'Da validare',
         pending: 'In attesa',
         completed: 'Attivo',
         failed: 'In errore',
