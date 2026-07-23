@@ -1,5 +1,4 @@
 import { screen, waitFor } from '@testing-library/react';
-import { getPermissionsListService } from '../../../services/dashboardService';
 import { searchOnboardingsService } from '../../../services/partyRegistryProxyService';
 import { fetchProducts } from '../../../services/productService';
 import { renderWithProviders } from '../../../utils/test-utils';
@@ -16,13 +15,9 @@ vi.mock('../../../services/productService', () => ({
   fetchProducts: vi.fn(),
 }));
 
-vi.mock('../../../services/dashboardService', () => ({
-  getPermissionsListService: vi.fn(),
-}));
 
 const mockedSearchOnboardingsService = vi.mocked(searchOnboardingsService);
 const mockedFetchProducts = vi.mocked(fetchProducts);
-const mockedGetPermissionsListService = vi.mocked(getPermissionsListService);
 
 const mockProducts = [{ id: 'prod-1', title: 'App IO', status: 'ACTIVE' }];
 
@@ -44,7 +39,6 @@ describe('OnboardingsPage component', () => {
     vi.clearAllMocks();
     mockedFetchProducts.mockResolvedValue(mockProducts as any);
     mockedSearchOnboardingsService.mockResolvedValue(mockOnboardings as any);
-    mockedGetPermissionsListService.mockResolvedValue({ items: [] } as any);
   });
 
   test('should render the main page title "Adesioni"', async () => {

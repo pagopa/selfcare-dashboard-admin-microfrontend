@@ -6,7 +6,6 @@ vi.mock('../../api/DashboardApiClient', () => ({
     getAllInstituionById: vi.fn(),
     getInstitution: vi.fn(),
     tokenExchangeAdmin: vi.fn(),
-    permissionsList: vi.fn(),
     getProducts: vi.fn(),
   },
 }));
@@ -36,7 +35,6 @@ const mockIsPagoPaUser = isPagoPaUser as ReturnType<typeof vi.fn>;
 const mockGetInstitution = DashboardApi.getInstitution as ReturnType<typeof vi.fn>;
 const mockGetAllInstituionById = DashboardApi.getAllInstituionById as ReturnType<typeof vi.fn>;
 const mockTokenExchangeAdmin = DashboardApi.tokenExchangeAdmin as ReturnType<typeof vi.fn>;
-const mockPermissionsList = DashboardApi.permissionsList as ReturnType<typeof vi.fn>;
 const mockGetProducts = DashboardApi.getProducts as ReturnType<typeof vi.fn>;
 const mockFetchOnboarding = OnboardingApi.fetchOnboardingRequest as ReturnType<typeof vi.fn>;
 const mockRejectOnboarding = OnboardingApi.rejectOnboardingRequest as ReturnType<typeof vi.fn>;
@@ -109,30 +107,6 @@ describe('dashboardService', () => {
 
       expect(mockTokenExchangeAdmin).not.toHaveBeenCalled();
       expect(result).toBe('mocked-token');
-    });
-  });
-
-  describe('getPermissionsListService', () => {
-    it('delegates to DashboardApi.permissionsList in non-mock mode', async () => {
-      vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { getPermissionsListService } = await import('../dashboardService');
-      mockPermissionsList.mockResolvedValue({ items: [] });
-
-      const result = await getPermissionsListService();
-
-      expect(mockPermissionsList).toHaveBeenCalled();
-      expect(result).toEqual({ items: [] });
-    });
-
-    it('returns mocked permissions list in mock mode', async () => {
-      vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'true');
-      const { getPermissionsListService } = await import('../dashboardService');
-
-      const result = await getPermissionsListService();
-
-      expect(mockPermissionsList).not.toHaveBeenCalled();
-      expect(result.items).toBeDefined();
-      expect(result.items!.length).toBeGreaterThan(0);
     });
   });
 });

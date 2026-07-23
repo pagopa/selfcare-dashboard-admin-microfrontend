@@ -29,15 +29,15 @@ const buildRedirectToBasePath = (basePath: string): RoutesObject => ({
   },
 });
 
-export const DASHBOARD_ADMIN_ROUTES = {
+export const DASHBOARD_ADMIN_ROUTES: RoutesObject = {
   DASHBOARD_ADMIN: {
     path: ENV.ROUTES.ADMIN,
     exact: false,
     subRoutes: {
-      DASHBOARD_ONBOARDING_REQUESTS: {
-        path: `${ENV.ROUTES.ADMIN_REQUEST_DETAIL}`,
+      DEFAULT_REDIRECT: {
+        path: ENV.ROUTES.ADMIN,
         exact: true,
-        component: DashboardRequest,
+        component: () => <Redirect to={ENV.ROUTES.ADMIN_SEARCH} />,
       },
       DASHBOARD_ADMIN_SEARCH: {
         path: `${ENV.ROUTES.ADMIN_SEARCH}`,
@@ -49,6 +49,11 @@ export const DASHBOARD_ADMIN_ROUTES = {
         exact: true,
         component: PartyDetailPage,
       },
+      DASHBOARD_ONBOARDING_REQUESTS: {
+        path: `${ENV.ROUTES.ADMIN_REQUEST_DETAIL}`,
+        exact: true,
+        component: DashboardRequest,
+      },
       DASHBOARD_ONBOARDINGS: {
         path: `${ENV.ROUTES.ADMIN_ONBOARDINGS}`,
         exact: true,
@@ -59,7 +64,7 @@ export const DASHBOARD_ADMIN_ROUTES = {
         exact: true,
         component: PartyDetailPage,
       },
-      ...buildRedirectToBasePath(ENV.ROUTES.ADMIN),
+      ...buildRedirectToBasePath(ENV.ROUTES.ADMIN_SEARCH),
     },
   },
 };
