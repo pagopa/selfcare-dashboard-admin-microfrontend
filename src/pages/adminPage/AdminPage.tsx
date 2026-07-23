@@ -32,9 +32,12 @@ const AdminPage = () => {
   addErrorRef.current = addError;
 
   useEffect(() => {
-    trackEvent('BACKSTAGE_DASHBOARD', {
-      product_role: uniqueRoles.length ? uniqueRoles.join(',') : ''
-    });
+    if (uniqueRoles.length > 0) {
+      trackEvent('BACKSTAGE_DASHBOARD', {
+        product_role: uniqueRoles.join(',')
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uniqueRoles]);
 
   useEffect(() => {
