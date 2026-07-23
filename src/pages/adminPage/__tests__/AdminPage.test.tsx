@@ -49,7 +49,9 @@ describe('AdminPage component', () => {
     expect(input).toBeInTheDocument();
     expect((input as HTMLInputElement).value).toBe('');
 
-    expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_DASHBOARD');
+    expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_DASHBOARD', {
+      product_role: '',
+    });
   });
 
   it('should not search if search term length is less than 3', async () => {
@@ -140,6 +142,7 @@ describe('AdminPage component', () => {
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_PARTY_SELECTION', {
         party_id: 'inst-1',
+        product_role: '',
       });
       expect(history.location.pathname).toBe('/dashboard/admin/search/inst-1');
     });

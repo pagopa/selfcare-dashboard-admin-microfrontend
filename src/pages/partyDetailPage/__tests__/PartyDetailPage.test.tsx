@@ -110,6 +110,7 @@ describe('PartyDetailPage component', () => {
 
     expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_BACK_OFFICE_CLICK', {
       product_id: 'prod-pagopa',
+      product_role: '',
     });
   });
 
