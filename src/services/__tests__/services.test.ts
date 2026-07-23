@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ── Mock API clients ──────────────────────────────────────────────────────────
 vi.mock('../../api/DashboardApiClient', () => ({
@@ -6,7 +6,6 @@ vi.mock('../../api/DashboardApiClient', () => ({
     getAllInstituionById: vi.fn(),
     getInstitution: vi.fn(),
     tokenExchangeAdmin: vi.fn(),
-    permissionsList: vi.fn(),
     getProducts: vi.fn(),
   },
 }));
@@ -27,14 +26,13 @@ vi.mock('@pagopa/selfcare-common-frontend/lib/utils/storage', () => ({
   isPagoPaUser: vi.fn(),
 }));
 
+import { isPagoPaUser } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { DashboardApi } from '../../api/DashboardApiClient';
 import { OnboardingApi } from '../../api/OnboardingApiClient';
 import { PartyRegisrtyApi } from '../../api/PartyRegistryProxyApiClient';
-import { isPagoPaUser } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import {
   fetchPartyDetailsService,
-  getPermissionsListService,
-  getTokenExchangeAdminService,
+  getTokenExchangeAdminService
 } from '../dashboardService';
 import {
   approveOnboardingPspRequest,
@@ -48,7 +46,6 @@ const mockIsPagoPaUser = isPagoPaUser as ReturnType<typeof vi.fn>;
 const mockGetInstitution = DashboardApi.getInstitution as ReturnType<typeof vi.fn>;
 const mockGetAllInstituionById = DashboardApi.getAllInstituionById as ReturnType<typeof vi.fn>;
 const mockTokenExchangeAdmin = DashboardApi.tokenExchangeAdmin as ReturnType<typeof vi.fn>;
-const mockPermissionsList = DashboardApi.permissionsList as ReturnType<typeof vi.fn>;
 const mockGetProducts = DashboardApi.getProducts as ReturnType<typeof vi.fn>;
 const mockFetchOnboarding = OnboardingApi.fetchOnboardingRequest as ReturnType<typeof vi.fn>;
 const mockRejectOnboarding = OnboardingApi.rejectOnboardingRequest as ReturnType<typeof vi.fn>;
@@ -115,28 +112,6 @@ describe('dashboardService', () => {
 
       expect(mockTokenExchangeAdmin).not.toHaveBeenCalled();
       expect(result).toBe('mocked-token');
-    });
-  });
-
-  describe('getPermissionsListService', () => {
-    it('delegates to DashboardApi.permissionsList in non-mock mode', async () => {
-      vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      mockPermissionsList.mockResolvedValue({ items: [] });
-
-      const result = await getPermissionsListService();
-
-      expect(mockPermissionsList).toHaveBeenCalled();
-      expect(result).toEqual({ items: [] });
-    });
-
-    it('returns mocked permissions list in mock mode', async () => {
-      vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'true');
-
-      const result = await getPermissionsListService();
-
-      expect(mockPermissionsList).not.toHaveBeenCalled();
-      expect(result.items).toBeDefined();
-      expect(result.items!.length).toBeGreaterThan(0);
     });
   });
 });

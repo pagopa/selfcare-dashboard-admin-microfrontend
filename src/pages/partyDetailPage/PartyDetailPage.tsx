@@ -30,7 +30,7 @@ import ProductAvatarCell from '../../components/ProductAvatarCell';
 import SessionModalInteropProduct from '../../components/SessionModalInteropProduct';
 import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { Party } from '../../model/Party';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
 import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../utils/constants';
 import { ENV } from '../../utils/env';
@@ -46,6 +46,7 @@ const PartyDetailPage = () => {
 
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const uniqueRoles = useAppSelector((s: any) => s.adminRoles?.uniqueRoles ?? []);
   const addError = useErrorDispatcher();
 
   const { t } = useTranslation();
@@ -201,6 +202,7 @@ const PartyDetailPage = () => {
                                     onClick={() => {
                                       trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
                                         product_id: onboardedProduct.productId || '',
+                                        product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
                                       });
                                       if (isProductAllowed(onboardedProduct.productId || '')) {
                                         handleOnboardedProductClick(productFromConfiguration);

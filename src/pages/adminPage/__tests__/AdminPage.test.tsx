@@ -1,6 +1,7 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderWithProviders } from '../../../utils/test-utils';
+import { createStore } from '../../../redux/store';
 import AdminPage from '../AdminPage';
 import { searchInstitutionsService } from '../../../services/partyRegistryProxyService';
 
@@ -39,7 +40,13 @@ describe('AdminPage component', () => {
   });
 
   it('should render the AdminPage component correctly and track mount event', async () => {
-    await renderWithProviders(<AdminPage />);
+    const store = createStore();
+    store.dispatch({
+      type: 'adminRoles/setAdminProductRoles',
+      payload: [{ productId: 'prod-1', role: 'admin' }],
+    });
+
+    await renderWithProviders(<AdminPage />, store);
 
     expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
     expect(screen.getByText(/Visualizza e gestisci gli enti/i)).toBeInTheDocument();
@@ -49,7 +56,9 @@ describe('AdminPage component', () => {
     expect(input).toBeInTheDocument();
     expect((input as HTMLInputElement).value).toBe('');
 
-    expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_DASHBOARD');
+    expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_DASHBOARD', {
+      product_role: 'admin',
+    });
   });
 
   it('should not search if search term length is less than 3', async () => {
@@ -140,6 +149,7 @@ describe('AdminPage component', () => {
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_PARTY_SELECTION', {
         party_id: 'inst-1',
+        product_role: '',
       });
       expect(history.location.pathname).toBe('/dashboard/admin/search/inst-1');
     });

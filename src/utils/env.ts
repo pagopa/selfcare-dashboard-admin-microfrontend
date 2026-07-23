@@ -9,7 +9,7 @@ export const ENV = {
   PUBLIC_URL: PUBLIC_URL_INNER,
 
   ROUTES: {
-    ADMIN: `${PUBLIC_URL_INNER}/admin/onboarding`,
+    ADMIN: `${PUBLIC_URL_INNER}/admin`,
     ADMIN_REQUEST_DETAIL: `${PUBLIC_URL_INNER}/admin/onboarding/:tokenId`,
     ADMIN_SEARCH: `${PUBLIC_URL_INNER}/admin/search`,
     ADMIN_SEARCH_DETAIL: `${PUBLIC_URL_INNER}/admin/search/:partyId`,

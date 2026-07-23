@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../../../../redux/store';
 import { OnboardingsTable } from '../OnboardingsTable';
 import { getOnboardingsColumns } from '../columns/tableConfig';
 import { RenderNoRowsOverlay } from '../columns/cellsRender';
@@ -183,7 +185,9 @@ describe('tableColumns rendering logic', () => {
   test('renderActionCell should render button', () => {
     const actionColumn = realColumns.find((c) => c.field === 'actions');
     const { getByRole } = render(
-      <>{actionColumn?.renderCell!({ row: { status: 'COMPLETED', productId: 'prod-1' } } as any)}</>
+      <Provider store={store}>
+        <>{actionColumn?.renderCell!({ row: { status: 'COMPLETED', productId: 'prod-1' } } as any)}</>
+      </Provider>
     );
     expect(getByRole('button', { name: /back office/i })).toBeInTheDocument();
   });

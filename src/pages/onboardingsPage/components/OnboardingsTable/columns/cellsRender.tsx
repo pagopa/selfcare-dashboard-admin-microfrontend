@@ -18,6 +18,7 @@ import { ENV } from '../../../../../utils/env';
 import { useProductNavigation } from '../../../../adminPage/hooks/useProductNavigation';
 import { isProductAllowed } from '../../../../adminPage/utils/utils';
 import { STATUS_CHIP_CONFIG } from '../../../../../utils/statusChipConfig';
+import { useAppSelector } from '../../../../../redux/hooks';
 
 const truncatedCellSx = {
     overflow: 'hidden',
@@ -139,6 +140,7 @@ export const ActionCell = ({
     const { t } = useTranslation();
     const history = useHistory();
     const { hasPermission } = usePermissions();
+    const uniqueRoles = useAppSelector((s: any) => s.adminRoles?.uniqueRoles ?? []);
     const partyDetail = params.row;
     const hasMoreThanOneInteropEnv = true;
 
@@ -173,7 +175,10 @@ export const ActionCell = ({
                     component="button"
                     endIcon={<ArrowForward />}
                     onClick={() => {
-                        trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', { product_id: productId });
+                        trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
+                          product_id: productId,
+                          product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
+                        });
                         if (isProductAllowed(productId)) {
                             const productFromConfiguration = products.find((p) => p.id === productId);
                             if (productFromConfiguration) {

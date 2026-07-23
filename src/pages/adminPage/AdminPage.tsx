@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SearchServiceInstitution } from '../../api/generated/party-registry-proxy/SearchServiceInstitution';
+import { useAppSelector } from '../../redux/hooks';
 import { searchInstitutionsService } from '../../services/partyRegistryProxyService';
 import { ENV } from '../../utils/env';
 import { buildUrlLog } from '../../utils/helper';
@@ -26,12 +27,18 @@ const AdminPage = () => {
   const addError = useErrorDispatcher();
   const addErrorRef = useRef(addError);
   const history = useHistory();
+  const uniqueRoles = useAppSelector((s: any) => s.adminRoles?.uniqueRoles ?? []);
 
   addErrorRef.current = addError;
 
   useEffect(() => {
-    trackEvent('BACKSTAGE_DASHBOARD');
-  }, []);
+    if (uniqueRoles.length > 0) {
+      trackEvent('BACKSTAGE_DASHBOARD', {
+        product_role: uniqueRoles.join(',')
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uniqueRoles]);
 
   useEffect(() => {
     const searchInstitutions = (searchText: string) => {
@@ -112,6 +119,7 @@ const AdminPage = () => {
           onChange={(_, newValue) => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
+              product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
             });
             setOpen(false);
             if (newValue) {

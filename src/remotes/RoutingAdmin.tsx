@@ -15,7 +15,7 @@ const RoutingAdmin = ({
   CONFIG,
 }: DashboardMicrofrontendPageProps) => (
   <RemotePage store={store} history={history} i18n={i18n} theme={theme} CONFIG={CONFIG}>
-    <Switch>{buildRoutes(decorators, DASHBOARD_ADMIN_ROUTES.DASHBOARD_ADMIN.subRoutes)}</Switch>
+    <Switch>{buildRoutes(decorators, DASHBOARD_ADMIN_ROUTES.DASHBOARD_ADMIN.subRoutes!)}</Switch>
   </RemotePage>
 );
 

@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AvailableDocumentsResource } from '../../api/generated/onboarding/AvailableDocumentsResource';
-import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { OnboardingRequestResource } from '../../model/OnboardingRequestResource';
 import {
   downloadOnboardingRequestAttachment,
@@ -33,7 +32,6 @@ export default function DashboardRequest() {
   const addError = useErrorDispatcher();
   const history = useHistory();
   const location = useLocation<{ fromDashboard?: boolean }>();
-  useGlobalPermissions();
 
   const [onboardingRequestData, setOnboardingRequestData] = useState<OnboardingRequestResource>();
   const [availableDocuments, setAvailableDocuments] = useState<AvailableDocumentsResource>();

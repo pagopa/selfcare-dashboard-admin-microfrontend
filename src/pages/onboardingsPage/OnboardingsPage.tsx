@@ -10,12 +10,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
 import { useFetchProducts } from '../../hooks/useFetchProducts';
-import { useGlobalPermissions } from '../../hooks/useGlobalPermissions';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
 import { FilterDrawer } from './components/FiltersBar/FilterDrawer';
 import { parseFilters, serializeFilters, toApiDateTime } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/columns/tableConfig';
+
+import { useAppSelector } from '../../redux/hooks';
 
 const SORT_FIELD_MAP: Record<string, string> = {
   requestDate: 'createdAt',
@@ -26,9 +27,8 @@ const OnboardingsPage = () => {
   const location = useLocation();
   const history = useHistory();
   const filters = parseFilters(location.search);
-
-  useGlobalPermissions();
   const { products } = useFetchProducts();
+  const uniqueRoles = useAppSelector((s: any) => s.adminRoles?.uniqueRoles ?? []);
 
   const [rows, setRows] = useState<Array<OnboardingIndexResource>>([]);
   const [totalRows, setTotalRows] = useState(0);
@@ -37,8 +37,12 @@ const OnboardingsPage = () => {
   const [backofficeModalRow, setBackofficeModalRow] = useState<OnboardingIndexResource | null>(null);
 
   useEffect(() => {
-    trackEvent('BACKSTAGE_ONBOARDINGS');
-  }, []);
+    if (uniqueRoles.length > 0) {
+      trackEvent('BACKSTAGE_ONBOARDINGS', {
+        product_role: uniqueRoles.join(',')
+      });
+    }
+  }, [uniqueRoles]);
 
   const { hasPermission } = usePermissions();
 
