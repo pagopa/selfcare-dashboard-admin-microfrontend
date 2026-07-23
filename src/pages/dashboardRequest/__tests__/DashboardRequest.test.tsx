@@ -6,6 +6,7 @@ import { OnboardingApi } from '../../../api/OnboardingApiClient';
 import { createStore } from '../../../redux/store';
 import { mockedOnboardingRequests } from '../../../services/__mocks__/onboardingRequestService';
 import { renderWithProviders } from '../../../utils/test-utils';
+import { STATUS_CHIP_CONFIG } from '../../../utils/statusChipConfig';
 import DashboardRequest from '../DashboardRequest';
 
 // ── window.location setup ────────────────────────────────────────────────────
@@ -91,18 +92,16 @@ describe('DashboardRequest — TOBEVALIDATED (PSP)', () => {
     fetchSpy.mockResolvedValueOnce(tobeValidatedRequest);
   });
 
-  // TODO: da riabilitare — l'alert TOBEVALIDATED non viene trovato (role="alert")
-  test.skip('renders the page title and the "TOBEVALIDATED" chip label', async () => {
+  test('renders the page title and the "TOBEVALIDATED" chip label', async () => {
     await renderWithProviders(<DashboardRequest />);
 
     await waitFor(() =>
       expect(screen.getByText(/Dettaglio adesione/i)).toBeInTheDocument()
     );
 
-    // info-alert only shown for TOBEVALIDATED status
-    await waitFor(() =>
-      expect(screen.getByRole('alert')).toBeInTheDocument()
-    );
+    expect(screen.getByText(STATUS_CHIP_CONFIG.TOBEVALIDATED.label)).toBeInTheDocument();
+    // the only Alert on the page is the REJECTED one
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
 });
