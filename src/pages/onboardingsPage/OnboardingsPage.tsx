@@ -37,9 +37,11 @@ const OnboardingsPage = () => {
   const [backofficeModalRow, setBackofficeModalRow] = useState<OnboardingIndexResource | null>(null);
 
   useEffect(() => {
-    trackEvent('BACKSTAGE_ONBOARDINGS', {
-      product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
-    });
+    if (uniqueRoles.length > 0) {
+      trackEvent('BACKSTAGE_ONBOARDINGS', {
+        product_role: uniqueRoles.join(',')
+      });
+    }
   }, [uniqueRoles]);
 
   const { hasPermission } = usePermissions();
