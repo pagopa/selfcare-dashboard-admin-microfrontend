@@ -85,28 +85,9 @@ export default function DashboardRequest() {
     return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
   };
 
-  const fileFromReader = async (
-    reader: ReadableStreamDefaultReader<Uint8Array> | undefined
-  ): Promise<string> => {
-    const stream = new ReadableStream({
-      start(controller) {
-        return pump();
-        function pump(): Promise<any> | undefined {
-          return reader?.read().then(({ done, value }) => {
-            if (done) {
-              controller.close();
-              return;
-            }
-            controller.enqueue(value);
-            return pump();
-          });
-        }
-      },
-    });
-    const response = new Response(stream);
-
+  const objectUrlFromResponse = async (response: Response): Promise<string> => {
     const blob = await response.blob();
-    return URL.createObjectURL(blob);
+    return URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
   };
 
   const parseFilename = (header: string | null): string | undefined => {
@@ -141,17 +122,14 @@ export default function DashboardRequest() {
             parseFilename(response.headers.get('content-disposition')) ??
             attatchmentName ??
             'documento_di_adesione.pdf';
-          return response.blob().then((blob) => {
-            const reader = blob.stream().getReader();
-            void fileFromReader(reader).then((url) => {
-              const link = document.createElement('a');
-              // eslint-disable-next-line functional/immutable-data
-              link.href = url;
-              // eslint-disable-next-line functional/immutable-data
-              link.download = fileName;
-              document.body.appendChild(link);
-              link.click();
-            });
+          return objectUrlFromResponse(response).then((url) => {
+            const link = document.createElement('a');
+            // eslint-disable-next-line functional/immutable-data
+            link.href = url;
+            // eslint-disable-next-line functional/immutable-data
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
           });
         })
         // eslint-disable-next-line sonarjs/no-identical-functions
@@ -166,6 +144,38 @@ export default function DashboardRequest() {
         })
         .finally(() => setLoadingRetrieveOnboardingRequest(false));
     }
+  };
+
+  const openAttachment = (attatchmentName: string, documentType: string) => {
+    if (!retrieveTokenIdFromUrl) {
+      return;
+    }
+    
+    const newTab = window.open('', '_blank');
+
+    downloadOnboardingRequestAttachment(retrieveTokenIdFromUrl, documentType, attatchmentName)
+      .then((response) =>
+        objectUrlFromResponse(response).then((url) => {
+          if (newTab) {
+            // eslint-disable-next-line functional/immutable-data
+            newTab.location.href = url;
+          } else {
+            window.open(url, '_blank', 'noopener');
+          }
+          window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+        })
+      )
+      .catch(() => {
+        newTab?.close();
+        addError({
+          id: `Onboarding request with tokenId: ${retrieveTokenIdFromUrl} not approved`,
+          blocking: false,
+          techDescription: '',
+          toNotify: false,
+          error: new Error('INVALID_TOKEN_ID'),
+        });
+      })
+      .finally(() => setLoadingRetrieveOnboardingRequest(false));
   };
 
   const goBack = () => {
@@ -291,16 +301,7 @@ export default function DashboardRequest() {
             showAvailableDocuments={showDocumentsSection}
             isPSP={isPSP}
             fromISO2ITA={fromISO2ITA}
-            onDownloadDocument={(attachmentName, documentType) =>
-              downloadAttachment(
-                setLoadingRetrieveOnboardingRequest,
-                addError,
-                undefined,
-                retrieveTokenIdFromUrl,
-                attachmentName,
-                documentType
-              )
-            }
+            onDownloadDocument={openAttachment}
           />
           <DashboardRequestActions
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}

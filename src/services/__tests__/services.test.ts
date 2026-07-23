@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ── Mock API clients ──────────────────────────────────────────────────────────
 vi.mock('../../api/DashboardApiClient', () => ({
@@ -26,10 +26,21 @@ vi.mock('@pagopa/selfcare-common-frontend/lib/utils/storage', () => ({
   isPagoPaUser: vi.fn(),
 }));
 
+import { isPagoPaUser } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { DashboardApi } from '../../api/DashboardApiClient';
 import { OnboardingApi } from '../../api/OnboardingApiClient';
 import { PartyRegisrtyApi } from '../../api/PartyRegistryProxyApiClient';
-import { isPagoPaUser } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import {
+  fetchPartyDetailsService,
+  getTokenExchangeAdminService
+} from '../dashboardService';
+import {
+  approveOnboardingPspRequest,
+  fetchOnboardingRequest,
+  rejectOnboardingRequest,
+} from '../onboardingRequestService';
+import { searchInstitutionsService, searchOnboardingsService } from '../partyRegistryProxyService';
+import { fetchProducts } from '../productService';
 
 const mockIsPagoPaUser = isPagoPaUser as ReturnType<typeof vi.fn>;
 const mockGetInstitution = DashboardApi.getInstitution as ReturnType<typeof vi.fn>;
@@ -53,9 +64,7 @@ beforeEach(() => {
 // ── dashboardService ──────────────────────────────────────────────────────────
 describe('dashboardService', () => {
   describe('fetchPartyDetailsService', () => {
-    // TODO: da riabilitare — va in timeout a 5000ms
-    it.skip('calls getInstitution and maps result when not PagoPa user and not mock mode', async () => {
-      const { fetchPartyDetailsService } = await import('../dashboardService');
+    it('calls getInstitution and maps result when not PagoPa user and not mock mode', async () => {
       const mockInstitution = { id: 'inst-1', description: 'Test Inst' };
       mockGetInstitution.mockResolvedValue(mockInstitution);
 
@@ -66,7 +75,6 @@ describe('dashboardService', () => {
     });
 
     it('calls getAllInstituionById when isPagoPaUser is true', async () => {
-      const { fetchPartyDetailsService } = await import('../dashboardService');
       mockIsPagoPaUser.mockReturnValue(true);
       mockGetAllInstituionById.mockResolvedValue(null);
 
@@ -78,7 +86,6 @@ describe('dashboardService', () => {
 
     it('returns mock party in mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'true');
-      const { fetchPartyDetailsService } = await import('../dashboardService');
 
       const result = await fetchPartyDetailsService('any-id');
 
@@ -90,7 +97,6 @@ describe('dashboardService', () => {
   describe('getTokenExchangeAdminService', () => {
     it('delegates to DashboardApi.tokenExchangeAdmin in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { getTokenExchangeAdminService } = await import('../dashboardService');
       mockTokenExchangeAdmin.mockResolvedValue('https://bo.example.com');
 
       const result = await getTokenExchangeAdminService('inst-1', 'prod-1', 'test', 'it');
@@ -101,7 +107,6 @@ describe('dashboardService', () => {
 
     it('returns mocked token in mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'true');
-      const { getTokenExchangeAdminService } = await import('../dashboardService');
 
       const result = await getTokenExchangeAdminService('inst-1', 'prod-1');
 
@@ -116,7 +121,6 @@ describe('onboardingRequestService', () => {
   describe('fetchOnboardingRequest', () => {
     it('calls OnboardingApi in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { fetchOnboardingRequest } = await import('../onboardingRequestService');
       const mockResp = { tokenId: 'tok-1' };
       mockFetchOnboarding.mockResolvedValue(mockResp);
 
@@ -130,7 +134,6 @@ describe('onboardingRequestService', () => {
   describe('rejectOnboardingRequest', () => {
     it('calls OnboardingApi in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { rejectOnboardingRequest } = await import('../onboardingRequestService');
       const mockResp = { tokenId: 'tok-1' };
       mockRejectOnboarding.mockResolvedValue(mockResp);
 
@@ -144,7 +147,6 @@ describe('onboardingRequestService', () => {
   describe('approveOnboardingPspRequest', () => {
     it('calls OnboardingApi in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { approveOnboardingPspRequest } = await import('../onboardingRequestService');
       const mockResp = { tokenId: 'tok-2' };
       mockApproveOnboarding.mockResolvedValue(mockResp);
 
@@ -161,7 +163,6 @@ describe('partyRegistryProxyService', () => {
   describe('searchInstitutionsService', () => {
     it('delegates to PartyRegisrtyApi in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { searchInstitutionsService } = await import('../partyRegistryProxyService');
       const mockResp = [{ id: 'inst-1' }];
       mockSearchInstitutions.mockResolvedValue(mockResp);
 
@@ -173,7 +174,6 @@ describe('partyRegistryProxyService', () => {
 
     it('returns mock data in mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'true');
-      const { searchInstitutionsService } = await import('../partyRegistryProxyService');
 
       const result = await searchInstitutionsService('anything');
 
@@ -185,13 +185,25 @@ describe('partyRegistryProxyService', () => {
   describe('searchOnboardingsService', () => {
     it('delegates to PartyRegisrtyApi in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_REQUEST_DATA', 'false');
-      const { searchOnboardingsService } = await import('../partyRegistryProxyService');
       const mockResp = { items: [], total: 0 };
       mockSearchOnboardings.mockResolvedValue(mockResp);
 
       const result = await searchOnboardingsService('q', ['prod-1'], ['PA'], ['ACTIVE'], 0, 10);
 
-      expect(mockSearchOnboardings).toHaveBeenCalledWith('q', ['prod-1'], ['PA'], ['ACTIVE'], 0, 10, undefined, undefined, undefined, undefined, undefined, undefined);
+      expect(mockSearchOnboardings).toHaveBeenCalledWith(
+        'q',
+        ['prod-1'],
+        ['PA'],
+        ['ACTIVE'],
+        0,
+        10,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined
+      );
       expect(result).toEqual(mockResp);
     });
   });
@@ -202,7 +214,6 @@ describe('productService', () => {
   describe('fetchProducts', () => {
     it('calls DashboardApi.getProducts and maps result in non-mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_PRODUCTS', 'false');
-      const { fetchProducts } = await import('../productService');
       mockGetProducts.mockResolvedValue([
         {
           id: 'prod-1',
@@ -226,7 +237,6 @@ describe('productService', () => {
 
     it('returns empty array when API returns null', async () => {
       vi.stubEnv('VITE_API_MOCK_PRODUCTS', 'false');
-      const { fetchProducts } = await import('../productService');
       mockGetProducts.mockResolvedValue(null);
 
       const result = await fetchProducts();
@@ -236,7 +246,6 @@ describe('productService', () => {
 
     it('returns mocked products in mock mode', async () => {
       vi.stubEnv('VITE_API_MOCK_PRODUCTS', 'true');
-      const { fetchProducts } = await import('../productService');
 
       const result = await fetchProducts();
 
