@@ -7,7 +7,6 @@ import {
 } from '@pagopa/selfcare-common-frontend/lib';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
 import withLogin from '@pagopa/selfcare-common-frontend/lib/decorators/withLogin';
-import { isEmpty } from 'lodash';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Route, Switch, useHistory, useParams } from 'react-router-dom';
@@ -28,27 +27,6 @@ type UrlParams = {
   partyId: string;
   productId: string;
 };
-
-type RoutesObject = { [key: string]: RouteConfig };
-
-type RouteConfig = {
-  path: string;
-  exact?: boolean;
-  subRoutes?: RoutesObject;
-  component?: React.ComponentType<any>;
-  withProductRolesMap?: boolean;
-  withSelectedProduct?: boolean;
-  withSelectedProductRoles?: boolean;
-};
-
-const reduceRouteConfig = (key: string, routes: RoutesObject): any =>
-  Object.entries(routes).map(([innerkey, route]) =>
-    innerkey === 'SUBPATH_DEFAULT'
-      ? undefined
-      : route.subRoutes && !isEmpty(route.subRoutes)
-        ? reduceRouteConfig(`${key}${innerkey}.`, route.subRoutes)
-        : { [`${key}${innerkey}`]: route.path }
-  );
 
 const App = ({
   AppRouting,

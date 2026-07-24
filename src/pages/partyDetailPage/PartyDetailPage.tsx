@@ -1,6 +1,4 @@
-import { ArrowForward } from '@mui/icons-material';
 import {
-  Chip,
   Divider,
   Grid,
   Table,
@@ -10,35 +8,26 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
 import { useErrorDispatcher, usePermissions } from '@pagopa/selfcare-common-frontend';
 import NavigationBar, {
   NavigationPath,
 } from '@pagopa/selfcare-common-frontend/lib/components/NavigationBar';
 import { setProductPermissions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/permissionsSlice';
-import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
-import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
-import { Fragment } from 'react/jsx-runtime';
-import { ProductOnBoardingStatusEnum } from '../../api/generated/b4f-dashboard/OnboardedProductResource';
 import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
 import GenericEnvProductModal from '../../components/GenericEnvProductModal';
-import ProductAvatarCell from '../../components/ProductAvatarCell';
 import SessionModalInteropProduct from '../../components/SessionModalInteropProduct';
 import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { Party } from '../../model/Party';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPartyDetailsService } from '../../services/dashboardService';
-import { STATUSES_ALLOWED_TO_SEE_REQUESTS } from '../../utils/constants';
-import { ENV } from '../../utils/env';
 import { useProductFiltering } from '../adminPage/hooks/useProductFiltering';
 import { useProductNavigation } from '../adminPage/hooks/useProductNavigation';
 import { commonStyles } from '../adminPage/utils/styles';
-import { isProductAllowed } from '../adminPage/utils/utils';
 import AdminPartyInfo from './components/AdminPartyInfo';
+import PartyProductRow from './components/PartyProductRow';
 
 const PartyDetailPage = () => {
   const [openBackofficeNotIntegratedModal, setOpenBackofficeNotIntegratedModal] = useState(false);
@@ -152,91 +141,21 @@ const PartyDetailPage = () => {
                       if (!productFromConfiguration) {
                         return null;
                       }
-                      const canAccessBackofficeAdmin = hasPermission(
-                        onboardedProduct.productId || '',
-                        Actions.AccessProductBackofficeAdmin
-                      );
-
-                      const canAccessAccountPage =
-                        hasPermission(onboardedProduct.productId || '', Actions.ViewAccountPage) &&
-                        STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(
-                          onboardedProduct?.productOnBoardingStatus || ''
-                        );
 
                       return (
-                        <Fragment key={onboardedProduct?.productId}>
-                          <TableRow hover>
-                            <TableCell>
-                              <ProductAvatarCell
-                                onboardedProduct={onboardedProduct}
-                                productFromConfiguration={productFromConfiguration}
-                                getActiveSubProduct={getActiveSubProduct}
-                                getProductTitle={getProductTitle}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              {onboardedProduct?.createdAt
-                                ? new Date(onboardedProduct.createdAt).toLocaleDateString()
-                                : '-'}
-                            </TableCell>
-                            <TableCell>
-                              <Chip
-                                label={t('adminPage.selectedPartyDetails.activeStatus')}
-                                size="small"
-                                color="success"
-                                sx={{ backgroundColor: 'success.light', color: 'success.main' }}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              {t(
-                                `common.institutionType.descriptions.${onboardedProduct?.institutionType?.toLowerCase()}`
-                              ) || '-'}
-                            </TableCell>
-                            {onboardedProduct.productOnBoardingStatus ===
-                              ProductOnBoardingStatusEnum.ACTIVE &&
-                              canAccessBackofficeAdmin && (
-                                <TableCell align="right">
-                                  <ButtonNaked
-                                    component="button"
-                                    endIcon={<ArrowForward />}
-                                    onClick={() => {
-                                      trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
-                                        product_id: onboardedProduct.productId || '',
-                                        product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
-                                      });
-                                      if (isProductAllowed(onboardedProduct.productId || '')) {
-                                        handleOnboardedProductClick(productFromConfiguration);
-                                      } else {
-                                        setOpenBackofficeNotIntegratedModal(true);
-                                      }
-                                    }}
-                                    sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                                  >
-                                    {t('adminPage.selectedPartyDetails.backOffice')}
-                                  </ButtonNaked>
-                                </TableCell>
-                              )}
-                            {!canAccessBackofficeAdmin && canAccessAccountPage && (
-                              <TableCell align="right">
-                                <ButtonNaked
-                                  component="button"
-                                  endIcon={<ArrowForward />}
-                                  onClick={() => {
-                                    history.push(
-                                      resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                                        tokenId: onboardedProduct.tokenId || '',
-                                      }),
-                                      { fromDashboard: true }
-                                    );
-                                  }}
-                                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
-                                >
-                                  {t('adminPage.selectedPartyDetails.accountPage')}
-                                </ButtonNaked>
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        </Fragment>
+                        <PartyProductRow
+                          key={onboardedProduct?.productId}
+                          onboardedProduct={onboardedProduct}
+                          productFromConfiguration={productFromConfiguration}
+                          hasPermission={hasPermission}
+                          getActiveSubProduct={getActiveSubProduct}
+                          getProductTitle={getProductTitle}
+                          uniqueRoles={uniqueRoles}
+                          onProductClick={handleOnboardedProductClick}
+                          onBackofficeNotIntegrated={() =>
+                            setOpenBackofficeNotIntegratedModal(true)
+                          }
+                        />
                       );
                     })}
                   </TableBody>
