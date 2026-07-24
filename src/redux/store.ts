@@ -7,12 +7,7 @@ import { LOG_REDUX_ACTIONS } from '../utils/constants';
 
 const additionalMiddlewares = [LOG_REDUX_ACTIONS ? logger : undefined];
 
-type AppStoreState = Record<string, unknown>;
-
-export type CreateStore = typeof configureStore;
-
-// Keep returned types explicit so federation dts-plugin can name exports.
-export const createStore = (): CreateStore =>
+export const createStore = () =>
   configureStore({
     reducer: {
       user: userReducer,
@@ -28,6 +23,7 @@ export const createStore = (): CreateStore =>
 
 export const store = createStore();
 
-// Avoid exporting non-portable inferred types for federation dts generation.
-export type RootState = AppStoreState;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
