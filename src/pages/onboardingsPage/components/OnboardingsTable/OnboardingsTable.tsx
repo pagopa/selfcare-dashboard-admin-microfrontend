@@ -148,23 +148,24 @@ export const OnboardingsTable = ({
         getRowId={(row) => row.onboardingId}
         paginationMode="server"
         sortingMode="server"
-        page={page}
-        pageSize={pageSize}
+        paginationModel={{ page, pageSize }}
         rowCount={totalRows}
         sortModel={sortModel}
         loading={loading}
-        onPageChange={onPageChange}
+        onPaginationModelChange={(model) => {
+          if (model.page !== page) { onPageChange(model.page); }
+          if (model.pageSize !== pageSize) { onPageSizeChange(model.pageSize); }
+        }}
         onSortModelChange={onSortModelChange}
-        rowsPerPageOptions={[pageSize]}
-        disableSelectionOnClick
+        pageSizeOptions={[pageSize]}
+        disableRowSelectionOnClick
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        // onRowClick={handleRowClick}
-        components={{
-          Row: CustomRow,
-          NoRowsOverlay: RenderNoRowsOverlay,
-          Pagination: () => (
+        slots={{
+          row: CustomRow,
+          noRowsOverlay: RenderNoRowsOverlay,
+          pagination: () => (
             <CustomPagination
               page={pageModel}
               onPageRequest={(req) => onPageChange(req.page)}
