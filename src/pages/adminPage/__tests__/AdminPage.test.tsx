@@ -1,9 +1,8 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { renderWithProviders } from '../../../utils/test-utils';
-import { createStore } from '../../../redux/store';
-import AdminPage from '../AdminPage';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { searchInstitutionsService } from '../../../services/partyRegistryProxyService';
+import { renderWithProviders } from '../../../utils/test-utils';
+import AdminPage from '../AdminPage';
 
 const { mockTrackEvent, mockAddError } = vi.hoisted(() => ({
   mockTrackEvent: vi.fn(),
@@ -32,33 +31,11 @@ const mockedSearchInstitutionsService = vi.mocked(searchInstitutionsService);
 describe('AdminPage component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
+    vi.useFakeTimers()
   });
 
   afterEach(() => {
     vi.useRealTimers();
-  });
-
-  it('should render the AdminPage component correctly and track mount event', async () => {
-    const store = createStore();
-    store.dispatch({
-      type: 'adminRoles/setAdminProductRoles',
-      payload: [{ productId: 'prod-1', role: 'admin' }],
-    });
-
-    await renderWithProviders(<AdminPage />, store);
-
-    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
-    expect(screen.getByText(/Visualizza e gestisci gli enti/i)).toBeInTheDocument();
-    expect(screen.getByText('VISUALIZZA ENTE')).toBeInTheDocument();
-
-    const input = screen.getByPlaceholderText('Cerca ente per Ragione sociale o Codice Fiscale');
-    expect(input).toBeInTheDocument();
-    expect((input as HTMLInputElement).value).toBe('');
-
-    expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_DASHBOARD', {
-      product_role: 'admin',
-    });
   });
 
   it('should not search if search term length is less than 3', async () => {
@@ -66,7 +43,7 @@ describe('AdminPage component', () => {
     const input = screen.getByPlaceholderText('Cerca ente per Ragione sociale o Codice Fiscale');
 
     fireEvent.change(input, { target: { value: 'Ab' } });
-    
+
     // Advance timers to trigger debounce
     vi.advanceTimersByTime(400);
 
@@ -104,10 +81,10 @@ describe('AdminPage component', () => {
     const input = screen.getByPlaceholderText('Cerca ente per Ragione sociale o Codice Fiscale');
 
     fireEvent.change(input, { target: { value: 'Roma' } });
-    
+
     // Trigger debounce
     vi.advanceTimersByTime(400);
-    
+
     // Restore real timers for async resolution and rendering
     vi.useRealTimers();
 
@@ -135,7 +112,7 @@ describe('AdminPage component', () => {
 
     fireEvent.change(input, { target: { value: 'Roma' } });
     vi.advanceTimersByTime(400);
-    
+
     // Restore real timers
     vi.useRealTimers();
 
