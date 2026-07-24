@@ -49,9 +49,7 @@ root.render(
             </Route>
             <Route path="*">
               <Redirect
-                to={resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                  tokenId: 'tokenId01',
-                })}
+                to={ENV.ROUTES.ADMIN_SEARCH}
               />
             </Route>
           </Switch>
