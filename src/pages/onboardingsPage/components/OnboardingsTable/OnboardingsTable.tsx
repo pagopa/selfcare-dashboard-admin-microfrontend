@@ -5,7 +5,7 @@ import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { RenderNoRowsOverlay } from './columns/cellsRender';
 
-const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
+const CustomRow = (props: GridRowProps) => <GridRow {...props} />;
 
 const CustomDataGrid = styled(DataGrid)({
   border: 'none !important',
