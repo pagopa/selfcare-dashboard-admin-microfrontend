@@ -11,12 +11,12 @@ import { OnboardingIndexResource } from '../../api/generated/party-registry-prox
 import BackofficeNotIntegratedModal from '../../components/BackofficeNotIntegratedModal';
 import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { searchOnboardingsService } from '../../services/partyRegistryProxyService';
+import { useAppSelector } from '../../redux/hooks';
 import { FilterDrawer } from './components/FiltersBar/FilterDrawer';
 import { parseFilters, serializeFilters, toApiDateTime } from './components/FiltersBar/filtersUtils';
 import { OnboardingsTable } from './components/OnboardingsTable/OnboardingsTable';
 import { getOnboardingsColumns } from './components/OnboardingsTable/columns/tableConfig';
 
-import { useAppSelector } from '../../redux/hooks';
 
 const SORT_FIELD_MAP: Record<string, string> = {
   requestDate: 'createdAt',

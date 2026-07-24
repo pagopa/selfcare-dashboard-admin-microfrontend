@@ -2,7 +2,6 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import '@pagopa/selfcare-common-frontend/index.css';
 import { CONFIG } from '@pagopa/selfcare-common-frontend/lib/config/env';
-import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -49,9 +48,7 @@ root.render(
             </Route>
             <Route path="*">
               <Redirect
-                to={resolvePathVariables(ENV.ROUTES.ADMIN_REQUEST_DETAIL, {
-                  tokenId: 'tokenId01',
-                })}
+                to={ENV.ROUTES.ADMIN_SEARCH}
               />
             </Route>
           </Switch>

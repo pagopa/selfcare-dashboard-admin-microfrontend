@@ -5,7 +5,7 @@ import { Page } from '@pagopa/selfcare-common-frontend/lib/model/Page';
 import { OnboardingIndexResource } from '../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
 import { RenderNoRowsOverlay } from './columns/cellsRender';
 
-const CustomRow = (props: GridRowProps) => <GridRow {...props} style={{ cursor: 'pointer' }} />;
+const CustomRow = (props: GridRowProps) => <GridRow {...props} />;
 
 const CustomDataGrid = styled(DataGrid)({
   border: 'none !important',
@@ -148,23 +148,24 @@ export const OnboardingsTable = ({
         getRowId={(row) => row.onboardingId}
         paginationMode="server"
         sortingMode="server"
-        page={page}
-        pageSize={pageSize}
+        paginationModel={{ page, pageSize }}
         rowCount={totalRows}
         sortModel={sortModel}
         loading={loading}
-        onPageChange={onPageChange}
+        onPaginationModelChange={(model) => {
+          if (model.page !== page) { onPageChange(model.page); }
+          if (model.pageSize !== pageSize) { onPageSizeChange(model.pageSize); }
+        }}
         onSortModelChange={onSortModelChange}
-        rowsPerPageOptions={[pageSize]}
-        disableSelectionOnClick
+        pageSizeOptions={[pageSize]}
+        disableRowSelectionOnClick
         disableColumnFilter
         disableColumnSelector
         disableColumnMenu
-        // onRowClick={handleRowClick}
-        components={{
-          Row: CustomRow,
-          NoRowsOverlay: RenderNoRowsOverlay,
-          Pagination: () => (
+        slots={{
+          row: CustomRow,
+          noRowsOverlay: RenderNoRowsOverlay,
+          pagination: () => (
             <CustomPagination
               page={pageModel}
               onPageRequest={(req) => onPageChange(req.page)}

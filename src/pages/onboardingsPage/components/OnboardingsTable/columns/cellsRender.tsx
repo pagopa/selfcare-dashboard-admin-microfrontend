@@ -37,8 +37,8 @@ export const renderCellWithTooltip = (params: GridRenderCellParams) => {
     );
 };
 
-export const renderDateCell = (params: GridRenderCellParams<Date>) => {
-    const date = params.value;
+export const renderDateCell = (params: GridRenderCellParams<any>) => {
+    const date = params.value as Date | null | undefined;
     const text = date ? date.toLocaleDateString('it-IT') : '-';
     return (
         <Tooltip title={text} arrow enterDelay={300}>
@@ -47,8 +47,8 @@ export const renderDateCell = (params: GridRenderCellParams<Date>) => {
     );
 };
 
-export const renderStatusCell = (params: GridRenderCellParams<string>) => {
-    const value = params.value ?? '';
+export const renderStatusCell = (params: GridRenderCellParams<any>) => {
+    const value = (params.value ?? '') as string;
     const config = STATUS_CHIP_CONFIG[value] ?? {
         label: value,
         tooltipText: '',
@@ -116,7 +116,7 @@ export const DescriptionCell = ({ params }: { params: GridRenderCellParams<Onboa
                     onClick={() => {
                         history.push(
                             resolvePathVariables(ENV.ROUTES.ADMIN_ONBOARDINGS_DETAIL, {
-                                partyId: params.row.institutionId,
+                                partyId: params.row.institutionId as string,
                             })
                         );
                     }}
@@ -154,7 +154,7 @@ export const ActionCell = ({
     const canAccessAccountPage =
         hasPermission(productId, Actions.ViewAccountPage) ||
         (hasPermission('ALL', Actions.ViewAccountPage) &&
-            STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status));
+            STATUSES_ALLOWED_TO_SEE_REQUESTS.includes(status ?? ''));
 
     const {
         activeProduct,
