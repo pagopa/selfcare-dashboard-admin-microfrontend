@@ -7,6 +7,7 @@ import { usePermissions } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { OnboardingIndexResource } from '../../../../../api/generated/party-registry-proxy/OnboardingIndexResource';
@@ -178,6 +179,7 @@ export const ActionCell = ({
                         trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
                           product_id: productId,
                           product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
+                          userId: storageUserOps.read()?.uid || '',
                         });
                         if (isProductAllowed(productId)) {
                             const productFromConfiguration = products.find((p) => p.id === productId);

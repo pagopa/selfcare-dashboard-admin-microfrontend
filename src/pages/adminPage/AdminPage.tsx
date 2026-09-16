@@ -4,6 +4,7 @@ import { PartyAccountItemButton } from '@pagopa/mui-italia';
 import { TitleBox, useErrorDispatcher } from '@pagopa/selfcare-common-frontend/lib';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { debounce, DebouncedFunc } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +35,8 @@ const AdminPage = () => {
   useEffect(() => {
     if (uniqueRoles.length > 0) {
       trackEvent('BACKSTAGE_DASHBOARD', {
-        product_role: uniqueRoles.join(',')
+        product_role: uniqueRoles.join(','),
+        userId: storageUserOps.read()?.uid || '',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +122,7 @@ const AdminPage = () => {
             trackEvent('BACKSTAGE_PARTY_SELECTION', {
               party_id: newValue?.id || 'id_undefined',
               product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
+              userId: storageUserOps.read()?.uid || '',
             });
             setOpen(false);
             if (newValue) {
