@@ -4,6 +4,7 @@ import { GridSortModel } from '@mui/x-data-grid';
 import { TitleBox, usePermissions } from '@pagopa/selfcare-common-frontend';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -39,7 +40,8 @@ const OnboardingsPage = () => {
   useEffect(() => {
     if (uniqueRoles.length > 0) {
       trackEvent('BACKSTAGE_ONBOARDINGS', {
-        product_role: uniqueRoles.join(',')
+        product_role: uniqueRoles.join(','),
+        userId: storageUserOps.read()?.uid || '',
       });
     }
   }, [uniqueRoles]);

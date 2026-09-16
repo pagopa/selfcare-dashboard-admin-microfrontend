@@ -4,6 +4,7 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { trackEvent } from '@pagopa/selfcare-common-frontend/lib/services/analyticsService';
 import { Actions } from '@pagopa/selfcare-common-frontend/lib/utils/constants';
 import { resolvePathVariables } from '@pagopa/selfcare-common-frontend/lib/utils/routes-utils';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { ProductOnBoardingStatusEnum } from '../../../api/generated/b4f-dashboard/OnboardedProductResource';
@@ -58,6 +59,7 @@ const PartyProductRow: React.FC<PartyProductRowProps> = ({
     trackEvent('BACKSTAGE_BACK_OFFICE_CLICK', {
       product_id: onboardedProduct.productId || '',
       product_role: uniqueRoles.length ? uniqueRoles.join(',') : '',
+      userId: storageUserOps.read()?.uid || '',
     });
     if (isProductAllowed(onboardedProduct.productId || '')) {
       onProductClick(productFromConfiguration);
