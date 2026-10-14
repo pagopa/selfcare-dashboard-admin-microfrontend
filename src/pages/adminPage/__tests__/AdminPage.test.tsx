@@ -127,6 +127,7 @@ describe('AdminPage component', () => {
       expect(mockTrackEvent).toHaveBeenCalledWith('BACKSTAGE_PARTY_SELECTION', {
         party_id: 'inst-1',
         product_role: '',
+        userId: '',
       });
       expect(history.location.pathname).toBe('/dashboard/admin/search/inst-1');
     });
