@@ -47,7 +47,9 @@ export default function DashboardRequest() {
   const isGPU = onboardingRequestData?.institutionInfo.institutionType === 'GPU';
   const productTitle = productId2ProductTitle(onboardingRequestData?.productId ?? '');
   const primaryAttachmentName =
-    availableDocuments?.attachments?.[0] ?? onboardingRequestData?.attachments?.[0] ?? '';
+    availableDocuments?.documents?.find((doc) => doc.type === 'ATTACHMENT')?.name ??
+    onboardingRequestData?.attachments?.[0] ??
+    '';
 
   useEffect(() => {
     if (retrieveTokenIdFromUrl) {
@@ -150,7 +152,6 @@ export default function DashboardRequest() {
     if (!retrieveTokenIdFromUrl) {
       return;
     }
-    
     const newTab = window.open('', '_blank');
 
     downloadOnboardingRequestAttachment(retrieveTokenIdFromUrl, documentType, attatchmentName)

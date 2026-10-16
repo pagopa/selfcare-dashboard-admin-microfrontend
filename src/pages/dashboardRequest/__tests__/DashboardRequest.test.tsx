@@ -57,7 +57,7 @@ const gpuRequest = mockedOnboardingRequests[7];           // tokenId08
 
 // ── fetchOnboardingRequest mock ───────────────────────────────────────────────
 const fetchSpy = vi.spyOn(OnboardingApi, 'fetchOnboardingRequest');
-vi.spyOn(OnboardingApi, 'getAvailableDocuments').mockResolvedValue({ attachments: [] });
+vi.spyOn(OnboardingApi, 'getAvailableDocuments').mockResolvedValue({ documents: [] });
 
 // ── tests ─────────────────────────────────────────────────────────────────────
 

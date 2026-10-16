@@ -14,7 +14,7 @@ import {
   Link,
   Paper,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import { productId2ProductTitle } from '@pagopa/selfcare-common-frontend/lib/utils/productId2ProductTitle';
@@ -192,8 +192,13 @@ export default function DashboardRequestFields({
       `onboardingRequestPage.summaryStepSection.additionalInfoSummarySection.additionalInfoSummary.${field}`
     );
 
-  const attachments = availableDocuments?.attachments ?? onboardingRequestData?.attachments ?? [];
-  const signedContractFilename = availableDocuments?.contractFilename;
+  const attachmentNames = availableDocuments?.documents
+    ?.filter((doc) => doc.type === 'ATTACHMENT' && doc.name)
+    .map((doc) => doc.name as string);
+  const attachments = attachmentNames ?? onboardingRequestData?.attachments ?? [];
+  const signedContractFilename = availableDocuments?.documents?.find(
+    (doc) => doc.type === 'INSTITUTION'
+  )?.name;
 
   const statusConfig = onboardingRequestData?.status
     ? STATUS_CHIP_CONFIG[onboardingRequestData.status]
