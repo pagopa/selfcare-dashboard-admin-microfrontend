@@ -392,9 +392,7 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
     createdAt: '2025-06-25T09:00:00.000',
     updatedAt: '2025-06-25T09:00:00.000',
     expiringDate: '2025-08-25T09:00:00.000',
-    attachments: [
-      'dummy.pdf'
-    ],
+    attachments: ['dummy.pdf'],
     institutionInfo: {
       id: 'institutionId3',
       name: 'Comune di Torino',
@@ -524,8 +522,20 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
 ];
 
 export const mockedAvailableDocuments: AvailableDocumentsResource = {
-  attachments: ['dummy.pdf'],
-  contractFilename: 'contratto_adesione.pdf',
+  documents: [
+    {
+      name: 'dummy.pdf',
+      type: 'ATTACHMENT',
+      onboardingId: 'XX',
+      rootOnboardingId: 'XX',
+    },
+    {
+      name: 'contratto_adesione.pdf',
+      type: 'INSTITUTION',
+      onboardingId: 'XX',
+      rootOnboardingId: 'XX',
+    },
+  ],
 };
 
 export const fetchOnboardingPspRequest = (tokenId: string): Promise<OnboardingRequestResource> => {

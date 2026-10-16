@@ -30,7 +30,7 @@ export const rejectOnboardingRequest = (
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));
     } else {
-      console.log("reason", reason);
+      console.log('reason', reason);
       return Promise.reject('Onboarding request not found!');
     }
   } else {
@@ -62,9 +62,27 @@ export const getAvailableDocuments = (tokenId: string): Promise<AvailableDocumen
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       const isCompleted = selectedOnboardingRequest.status === 'COMPLETED';
+      const attachmentNames = selectedOnboardingRequest.attachments ?? [];
       return Promise.resolve({
-        attachments: selectedOnboardingRequest.attachments ?? mockedAvailableDocuments.attachments,
-        contractFilename: isCompleted ? mockedAvailableDocuments.contractFilename : undefined,
+        documents: [
+          ...attachmentNames.map((name) => ({
+            name,
+            type: 'ATTACHMENT',
+            onboardingId: tokenId,
+            rootOnboardingId: tokenId,
+          })),
+          ...(isCompleted
+            ? [
+                {
+                  name: mockedAvailableDocuments.documents?.find((d) => d.type === 'INSTITUTION')
+                    ?.name,
+                  type: 'INSTITUTION',
+                  onboardingId: tokenId,
+                  rootOnboardingId: tokenId,
+                },
+              ]
+            : []),
+        ],
       });
     } else {
       return Promise.reject('Onboarding request not found!');

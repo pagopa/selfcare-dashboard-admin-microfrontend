@@ -32,7 +32,7 @@
     "/v2/institutions/{onboardingId}": {
       "put": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "Trigger onboarding request",
         "description": "Idempotent trigger invoked after each document upload. If all mandatory documents are present, triggers orchestration to advance the onboarding from REQUEST to PENDING.",
@@ -41,6 +41,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "The onboarding id",
             "required": true,
             "schema": {
               "type": "string"
@@ -108,7 +109,7 @@
     "/v2/tokens/{onboardingId}/verify": {
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Verify if the token is already consumed",
         "description": "Verify if the token is already consumed",
@@ -117,6 +118,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -191,7 +193,7 @@
     "/v2/tokens/{onboardingId}/reject": {
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to reject a specific onboarding request",
         "description": "Service to reject a specific onboarding request",
@@ -200,6 +202,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -277,7 +280,7 @@
     "/v2/tokens/{onboardingId}/complete": {
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Complete an onboarding request",
         "description": "Complete an onboarding request",
@@ -286,6 +289,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -369,7 +373,7 @@
       },
       "delete": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Complete an onboarding request",
         "description": "Complete an onboarding request",
@@ -378,6 +382,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Contract's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -445,7 +450,7 @@
     "/v2/tokens/{onboardingId}/complete-onboarding-users": {
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Complete an onboarding users request",
         "description": "Complete an onboarding users request",
@@ -454,6 +459,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -539,7 +545,7 @@
     "/v2/tokens/{onboardingId}/attachment": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to download a specific onboarding attachment",
         "description": "Service to download a specific onboarding attachment",
@@ -548,6 +554,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -556,6 +563,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Onboarding's attachment name",
             "required": true,
             "schema": {
               "type": "string"
@@ -632,7 +640,7 @@
       },
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Upload a signed attachment",
         "description": "Upload a signed attachment",
@@ -641,6 +649,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -740,7 +749,7 @@
     "/v2/tokens/{onboardingId}/approve": {
       "post": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to approve a specific onboarding request",
         "description": "Service to approve a specific onboarding request",
@@ -749,6 +758,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -816,7 +826,7 @@
     "/v2/institutions/onboarding": {
       "post": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a subunit of an Institution",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
@@ -912,7 +922,7 @@
     "/v2/institutions/onboarding/users/pg": {
       "post": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a PG Institution",
         "description": "The service allows the onboarding of Users to a PG Institution",
@@ -987,7 +997,7 @@
     "/v2/institutions/onboarding/aggregation/verification": {
       "post": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows to verify if the given csv contains valid aggregate institutions",
         "description": "The service allows to verify if the given csv contains valid aggregate institutions",
@@ -1096,7 +1106,7 @@
     "/v2/institutions/company/verify-manager": {
       "post": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows to verify the legal representative on external registries and retrieve the company name",
         "description": "The service allows to verify the legal representative on external registries and retrieve the company name",
@@ -1179,7 +1189,7 @@
     "/v2/institutions/company/onboarding": {
       "post": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a subunit of an Institution",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
@@ -1265,7 +1275,7 @@
     "/v1/users/validate": {
       "post": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "Check if requested user data are valid",
         "description": "Check if requested user data are valid",
@@ -1351,7 +1361,7 @@
     "/v1/users/search-user": {
       "post": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "Returns uuid of specific user from PDV",
         "description": "Returns uuid of specific user from PDV",
@@ -1444,7 +1454,7 @@
     "/v1/users/onboarding": {
       "post": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "The service allows the onboarding of Users",
         "description": "The service allows the onboarding of Users",
@@ -1530,7 +1540,7 @@
     "/v1/users/onboarding/aggregator": {
       "post": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "The service allows the onboarding of Users for aggregators",
         "description": "The service allows the onboarding of Users for aggregators",
@@ -1616,7 +1626,7 @@
     "/v1/users/check-manager": {
       "post": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "Returns true if current manager and previous one are the same",
         "description": "Returns true if current manager and previous one are the same",
@@ -1709,7 +1719,7 @@
     "/v1/institutions/verification/match": {
       "post": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "MatchLegal Representative and inserted Institution by querying on Agenzia delle Entrate",
         "description": "MatchLegal Representative and inserted Institution by querying on Agenzia delle Entrate",
@@ -1792,7 +1802,7 @@
     "/v1/institutions/verification/legal-address": {
       "post": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "Get legal address by business tax id",
         "description": "Get legal address by business tax id",
@@ -1875,7 +1885,7 @@
     "/v1/institutions/onboarding": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service retrieves the institutions Manager and institution informations",
         "description": "The service retrieves the institutions Manager and institution informations",
@@ -1884,6 +1894,7 @@
           {
             "name": "institutionId",
             "in": "query",
+            "description": "Institution's unique internal Id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1892,6 +1903,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -1964,7 +1976,7 @@
       },
       "post": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a subunit of an Institution",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
@@ -2048,7 +2060,7 @@
       },
       "head": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "Checks if the specified institution has been onboarded on the specified product.",
         "description": "Checks if the specified institution has been onboarded on the specified product.",
@@ -2057,6 +2069,7 @@
           {
             "name": "taxCode",
             "in": "query",
+            "description": "Institution's taxCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -2065,6 +2078,7 @@
           {
             "name": "subunitCode",
             "in": "query",
+            "description": "Institution's subunitCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -2073,6 +2087,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2081,6 +2096,7 @@
           {
             "name": "origin",
             "in": "query",
+            "description": "Institution data origin",
             "required": false,
             "schema": {
               "type": "string"
@@ -2089,6 +2105,7 @@
           {
             "name": "originId",
             "in": "query",
+            "description": "Institution's details origin Id",
             "required": false,
             "schema": {
               "type": "string"
@@ -2097,6 +2114,7 @@
           {
             "name": "vatNumber",
             "in": "query",
+            "description": "Institution's VAT number",
             "required": false,
             "schema": {
               "type": "string"
@@ -2105,6 +2123,7 @@
           {
             "name": "institutionType",
             "in": "query",
+            "description": "Institution's type",
             "required": false,
             "schema": {
               "type": "string"
@@ -2113,6 +2132,7 @@
           {
             "name": "verifyType",
             "in": "query",
+            "description": "Onboarding verification method type",
             "required": false,
             "schema": {
               "type": "string",
@@ -2194,7 +2214,7 @@
     "/v1/institutions/company/onboarding": {
       "post": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a subunit of an Institution",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
@@ -2280,7 +2300,7 @@
     "/v2/tokens/{onboardingId}/attachment/status": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to check the existence of a specific onboarding attachment",
         "description": "Service to check the existence of a specific onboarding attachment",
@@ -2289,6 +2309,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2362,7 +2383,7 @@
       },
       "head": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to check the existence of a specific onboarding attachment",
         "description": "Service to check the existence of a specific onboarding attachment",
@@ -2371,6 +2392,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2446,7 +2468,7 @@
     "/v1/institutions/{externalInstitutionId}/products/{productId}": {
       "head": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "Checks if the specified institution has been onboarded on the specified product.",
         "description": "Checks if the specified institution has been onboarded on the specified product.",
@@ -2455,6 +2477,7 @@
           {
             "name": "externalInstitutionId",
             "in": "path",
+            "description": "Institution's unique external identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2463,6 +2486,7 @@
           {
             "name": "productId",
             "in": "path",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2540,7 +2564,7 @@
     "/v2/tokens/{onboardingId}": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to retrieve a specific onboarding request",
         "description": "Service to retrieve a specific onboarding request",
@@ -2549,6 +2573,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2623,7 +2648,7 @@
     "/v2/tokens/{onboardingId}/template-attachment": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to download a specific template attachment",
         "description": "Service to download a specific template attachment",
@@ -2632,6 +2657,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2640,6 +2666,7 @@
           {
             "name": "attachmentName",
             "in": "query",
+            "description": "Onboarding's attachment name",
             "required": true,
             "schema": {
               "type": "string"
@@ -2718,7 +2745,7 @@
     "/v2/tokens/{onboardingId}/products/{productId}/aggregates-csv": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to download a specific onboarding aggregates csv",
         "description": "Service to download a specific onboarding aggregates csv",
@@ -2727,6 +2754,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2735,6 +2763,7 @@
           {
             "name": "productId",
             "in": "path",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2742,6 +2771,20 @@
           }
         ],
         "responses": {
+          "403": {
+            "description": "Forbidden - user does not have permission to view account documents",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
           "200": {
             "description": "OK",
             "content": {
@@ -2813,7 +2856,7 @@
     "/v2/tokens/{onboardingId}/download": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Download a document (signed contract or attachment) for the given onboarding",
         "description": "When type=CONTRACT_SIGNED downloads the signed contract; when type=ATTACHMENT the 'name' query parameter is required.",
@@ -2822,6 +2865,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -2830,6 +2874,7 @@
           {
             "name": "type",
             "in": "query",
+            "description": "Type of document to download",
             "required": true,
             "schema": {
               "type": "string",
@@ -2843,6 +2888,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Name of the attachment. Required when type=ATTACHMENT, ignored otherwise.",
             "required": false,
             "schema": {
               "type": "string"
@@ -2935,7 +2981,7 @@
     "/v2/tokens/{onboardingId}/contract": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Service to download a specific onboarding contract",
         "description": "Service to download a specific onboarding contract",
@@ -2944,6 +2990,7 @@
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -3019,18 +3066,121 @@
         ]
       }
     },
+    "/v2/tokens/{onboardingId}/backstage/contract": {
+      "get": {
+        "tags": [
+          "tokens"
+        ],
+        "summary": "Service to download a specific onboarding contract from the backstage (IAM protected)",
+        "description": "Service to download a specific onboarding contract from the backstage (IAM protected)",
+        "operationId": "getContractBackstageUsingGET",
+        "parameters": [
+          {
+            "name": "onboardingId",
+            "in": "path",
+            "description": "Onboarding's unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden - user does not have permission to view account documents",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/v2/tokens/{onboardingId}/available-documents": {
       "get": {
         "tags": [
-          "token-v-2-controller"
+          "tokens"
         ],
         "summary": "Retrieve the list of documents available for download for the given onboarding",
-        "description": "Returns the list of attachment names and, if present, the filename of the signed contract associated with the onboarding.",
+        "description": "Returns the documents of the onboarding dossier available for download (name, type, onboardingId, rootOnboardingId): for an institution onboarding its signed contract, the signed contracts of the update onboardings, the attachments and the signed USER contracts linked to it; for a USER onboarding only its signed contract.",
         "operationId": "getAvailableDocumentsUsingGET",
         "parameters": [
           {
             "name": "onboardingId",
             "in": "path",
+            "description": "Onboarding's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -3115,7 +3265,7 @@
     "/v2/product": {
       "get": {
         "tags": [
-          "product-v-2-controller"
+          "product-ms"
         ],
         "summary": "Get product origins by productId",
         "description": "Retrieve the list of institution origins for the given product.",
@@ -3124,6 +3274,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "Institution's type",
             "required": true,
             "schema": {
               "type": "string"
@@ -3198,7 +3349,7 @@
     "/v2/product/{productId}/required-documents": {
       "get": {
         "tags": [
-          "product-v-2-controller"
+          "product-ms"
         ],
         "summary": "Get required documents for a product",
         "description": "Returns the list of required documents for the given product, institutionType and origin.",
@@ -3207,6 +3358,7 @@
           {
             "name": "productId",
             "in": "path",
+            "description": "The product id",
             "required": true,
             "schema": {
               "type": "string"
@@ -3300,7 +3452,7 @@
     "/v2/product/{productId}/required-documents/enabled": {
       "get": {
         "tags": [
-          "product-v-2-controller"
+          "product-ms"
         ],
         "summary": "Check if required documents are enabled for a product",
         "description": "Returns an object with the boolean flag requiredDocumentsEnabled = true when required documents are configured for the given product, institutionType and origin.",
@@ -3309,6 +3461,7 @@
           {
             "name": "productId",
             "in": "path",
+            "description": "The product id",
             "required": true,
             "schema": {
               "type": "string"
@@ -3399,7 +3552,7 @@
     "/v2/institutions": {
       "get": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows the onboarding of Users to a subunit of an Institution",
         "description": "The service allows the onboarding of Users to a subunit of an Institution",
@@ -3408,6 +3561,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "A product to filter the institutions based on whether the institution has an ACTIVE onboarding on the specified product.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3416,6 +3570,7 @@
           {
             "name": "taxCode",
             "in": "query",
+            "description": "Institution's taxCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -3424,6 +3579,7 @@
           {
             "name": "origin",
             "in": "query",
+            "description": "Institution data origin",
             "required": false,
             "schema": {
               "type": "string"
@@ -3432,6 +3588,7 @@
           {
             "name": "originId",
             "in": "query",
+            "description": "Institution's details origin Id",
             "required": false,
             "schema": {
               "type": "string"
@@ -3440,6 +3597,7 @@
           {
             "name": "subunitCode",
             "in": "query",
+            "description": "Institution's subunitCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -3527,7 +3685,7 @@
     "/v2/institutions/onboardings": {
       "get": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "Retrieve onboarding information for an institution filtered by tax code and status",
         "description": "Returns a list of onboarding processes associated with the institution identified by the provided tax code. The results can be filtered by the onboarding status. Each item in the response contains key details such as the onboarding ID, related product, and current status.",
@@ -3621,7 +3779,7 @@
     "/v2/institutions/onboarding/recipient-code/verification": {
       "get": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service allows to verify if recipientCode is valid or not",
         "description": "The service allows to verify if recipientCode is valid or not",
@@ -3717,7 +3875,7 @@
     "/v2/institutions/onboarding/active": {
       "get": {
         "tags": [
-          "institution-v-2-controller"
+          "institutions"
         ],
         "summary": "The service retrieves the active onboarding information for a given tax code and product ID",
         "description": "The service retrieves the active onboarding information for a given tax code and product ID",
@@ -3816,10 +3974,215 @@
         ]
       }
     },
+    "/v2/institutions/ipa": {
+      "get": {
+        "tags": [
+          "institutions"
+        ],
+        "summary": "Search IPA institutions",
+        "description": "Searches IPA institutions indexed by the registry proxy. category accepts a comma-separated list of IPA category codes.",
+        "operationId": "searchIpaInstitutionsUsingGET",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "*"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "One IPA category code or a comma-separated list of IPA category codes.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpaInstitutionsSearchResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v2/institutions/ipa/{taxCode}": {
+      "get": {
+        "tags": [
+          "institutions"
+        ],
+        "summary": "Find IPA institution by tax code",
+        "description": "Returns the IPA institution with the exact tax code. category optionally accepts a comma-separated list of IPA category codes.",
+        "operationId": "findIpaInstitutionByTaxCodeUsingGET",
+        "parameters": [
+          {
+            "name": "taxCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "One IPA category code or a comma-separated list of IPA category codes.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpaInstitutionResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Generic problem response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/v1/users/onboarding/{onboardingId}/manager": {
       "get": {
         "tags": [
-          "user-controller"
+          "user"
         ],
         "summary": "Returns true if current manager and previous one are the same",
         "description": "Returns true if current manager and previous one are the same",
@@ -3912,7 +4275,7 @@
     "/v1/products": {
       "get": {
         "tags": [
-          "product-v-1-controller"
+          "product"
         ],
         "summary": "The service retrieves all products",
         "description": "The service retrieves all products",
@@ -3988,7 +4351,7 @@
     "/v1/products/admin": {
       "get": {
         "tags": [
-          "product-v-1-controller"
+          "product"
         ],
         "summary": "The service retrieves all products for the addition administration functionality",
         "description": "The service retrieves all products for the addition administration functionality",
@@ -4064,7 +4427,7 @@
     "/v1/product/{id}": {
       "get": {
         "tags": [
-          "product-v-1-controller"
+          "product"
         ],
         "summary": "The service retrieves the product given its internal id",
         "description": "The service retrieves the product given its internal id",
@@ -4073,6 +4436,7 @@
           {
             "name": "id",
             "in": "path",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -4081,6 +4445,7 @@
           {
             "name": "institutionType",
             "in": "query",
+            "description": "Institution's type",
             "required": false,
             "schema": {
               "type": "string",
@@ -4171,7 +4536,7 @@
     "/v1/institutions": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.",
         "description": "The service retrieves all the onboarded institutions related to the logged user and product's identifier.",
@@ -4180,6 +4545,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "A product to filter the institutions based on whether the institution has an ACTIVE onboarding on the specified product.",
             "required": false,
             "schema": {
               "type": "string"
@@ -4257,7 +4623,7 @@
     "/v1/institutions/{externalInstitutionId}/geographic-taxonomy": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service retrieve the institution's geographic taxonomy",
         "description": "The service retrieve the institution's geographic taxonomy",
@@ -4266,6 +4632,7 @@
           {
             "name": "externalInstitutionId",
             "in": "path",
+            "description": "Institution's unique external identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -4343,7 +4710,7 @@
     "/v1/institutions/onboarding/verify": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "Checks if the specified institution has been onboarded on the specified product.",
         "description": "Checks if the specified institution has been onboarded on the specified product.",
@@ -4352,6 +4719,7 @@
           {
             "name": "taxCode",
             "in": "query",
+            "description": "Institution's taxCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -4360,6 +4728,7 @@
           {
             "name": "subunitCode",
             "in": "query",
+            "description": "Institution's subunitCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -4368,6 +4737,7 @@
           {
             "name": "productId",
             "in": "query",
+            "description": "Product's unique identifier",
             "required": true,
             "schema": {
               "type": "string"
@@ -4376,6 +4746,7 @@
           {
             "name": "origin",
             "in": "query",
+            "description": "Institution data origin",
             "required": false,
             "schema": {
               "type": "string"
@@ -4384,6 +4755,7 @@
           {
             "name": "originId",
             "in": "query",
+            "description": "Institution's details origin Id",
             "required": false,
             "schema": {
               "type": "string"
@@ -4392,6 +4764,7 @@
           {
             "name": "vatNumber",
             "in": "query",
+            "description": "Institution's VAT number",
             "required": false,
             "schema": {
               "type": "string"
@@ -4400,6 +4773,7 @@
           {
             "name": "institutionType",
             "in": "query",
+            "description": "Institution's type",
             "required": false,
             "schema": {
               "type": "string"
@@ -4408,6 +4782,7 @@
           {
             "name": "verifyType",
             "in": "query",
+            "description": "Onboarding verification method type",
             "required": false,
             "schema": {
               "type": "string",
@@ -4489,7 +4864,7 @@
     "/v1/institutions/geographic-taxonomies": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "The service retrieve the institution's geographic taxonomy",
         "description": "The service retrieve the institution's geographic taxonomy",
@@ -4498,6 +4873,7 @@
           {
             "name": "taxCode",
             "in": "query",
+            "description": "Institution's taxCode",
             "required": true,
             "schema": {
               "type": "string"
@@ -4506,6 +4882,7 @@
           {
             "name": "subunitCode",
             "in": "query",
+            "description": "Institution's subunitCode",
             "required": false,
             "schema": {
               "type": "string"
@@ -4583,7 +4960,7 @@
     "/v1/institutions/from-infocamere/": {
       "get": {
         "tags": [
-          "institution-controller"
+          "institutions"
         ],
         "summary": "Get Legal Representative's PN PG institution List",
         "description": "Get Legal Representative's PN PG institution List",
@@ -4663,13 +5040,16 @@
         "type": "object",
         "properties": {
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "Onboarding request's status"
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "expiringDate": {
             "type": "string",
+            "description": "Onboarding request expiring date",
             "format": "date-time"
           }
         }
@@ -4678,7 +5058,8 @@
         "type": "object",
         "properties": {
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "Rejection reason of an onboarding request"
           }
         }
       },
@@ -4686,33 +5067,43 @@
         "type": "object",
         "properties": {
           "belongRegulatedMarket": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution belongs to a regulated market"
           },
           "regulatedMarketNote": {
-            "type": "string"
+            "type": "string",
+            "description": "regulatedMarket Note"
           },
           "ipa": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is registered on IPA"
           },
           "ipaCode": {
-            "type": "string"
+            "type": "string",
+            "description": "IPA code"
           },
           "establishedByRegulatoryProvision": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is a company established by a regulatory provision"
           },
           "establishedByRegulatoryProvisionNote": {
-            "type": "string"
+            "type": "string",
+            "description": "establishedByRegulatoryProvision Note"
           },
           "agentOfPublicService": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is an agent of a public service"
           },
           "agentOfPublicServiceNote": {
-            "type": "string"
+            "type": "string",
+            "description": "agentOfPublicService Note"
           },
           "otherNote": {
-            "type": "string"
+            "type": "string",
+            "description": "Other note"
           }
-        }
+        },
+        "description": "GSP institution's additional informations"
       },
       "AggregateInstitution": {
         "required": [
@@ -4789,18 +5180,22 @@
           "parentDescription": {
             "type": "string"
           }
-        }
+        },
+        "description": "List of Aggregate Institutions, not empty only if isAggregator field's value is True"
       },
       "AssistanceContactsDto": {
         "type": "object",
         "properties": {
           "supportEmail": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's support email contact"
           },
           "supportPhone": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's support phone contact"
           }
-        }
+        },
+        "description": "Institution's assistance contacts"
       },
       "BillingDataDto": {
         "required": [
@@ -4811,53 +5206,69 @@
         "type": "object",
         "properties": {
           "businessName": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           },
           "registeredOffice": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's physical address"
           },
           "digitalAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's digitalAddress"
           },
           "zipCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's zipCode"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "taxCodeInvoicing": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCodeInvoicing for electronic invoicing"
           },
           "vatNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's VAT number"
           },
           "recipientCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Billing recipient code"
           },
           "publicServices": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Institution's service type"
           },
           "certified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indicates whether the institution values come from INFOCAMERE (true) or MANUAL (false)"
           },
           "legalForm": {
-            "type": "string"
+            "type": "string",
+            "description": "Legal form of the legal representative"
           }
-        }
+        },
+        "description": "Institution's billing information"
       },
       "CompanyInformationsDto": {
         "type": "object",
         "properties": {
           "rea": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's REA"
           },
           "shareCapital": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's share capital value"
           },
           "businessRegisterPlace": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's business register place"
           }
-        }
+        },
+        "description": "GPS, SCP, PT optional data"
       },
       "DpoDataDto": {
         "required": [
@@ -4868,15 +5279,19 @@
         "type": "object",
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's address"
           },
           "pec": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's PEC"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's email"
           }
-        }
+        },
+        "description": "Data Protection Officer (DPO) specific data"
       },
       "GPUData": {
         "type": "object",
@@ -4908,7 +5323,8 @@
           "institutionCourtMeasures": {
             "type": "boolean"
           }
-        }
+        },
+        "description": "Institution's GPU data"
       },
       "GeographicTaxonomyDto": {
         "required": [
@@ -4918,10 +5334,12 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's geographic taxonomy ISTAT code"
           },
           "desc": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's geographic taxonomy extended name"
           }
         }
       },
@@ -4929,15 +5347,19 @@
         "type": "object",
         "properties": {
           "city": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's city"
           },
           "county": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's county"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's country"
           }
-        }
+        },
+        "description": "Institution's location data, city, county, country information"
       },
       "OnboardingProductDto": {
         "required": [
@@ -4949,6 +5371,7 @@
         "properties": {
           "users": {
             "type": "array",
+            "description": "List of onboarding users",
             "items": {
               "$ref": "#/components/schemas/UserDto"
             }
@@ -4961,6 +5384,7 @@
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -4979,19 +5403,23 @@
             ]
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "originId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's details origin Id"
           },
           "pricingPlan": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's pricing plan"
           },
           "pspData": {
             "$ref": "#/components/schemas/PspDataDto"
           },
           "geographicTaxonomies": {
             "type": "array",
+            "description": "List of geographic Taxonomies",
             "items": {
               "$ref": "#/components/schemas/GeographicTaxonomyDto"
             }
@@ -5003,25 +5431,31 @@
             "$ref": "#/components/schemas/AssistanceContactsDto"
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "subunitCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's subunitCode"
           },
           "subunitType": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's subunitType"
           },
           "additionalInformations": {
             "$ref": "#/components/schemas/AdditionalInformationsDto"
           },
           "isAggregator": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "specified if given institution is an Aggregator"
           },
           "aggregates": {
             "type": "array",
+            "description": "List of Aggregate Institutions, not empty only if isAggregator field's value is True",
             "items": {
               "$ref": "#/components/schemas/AggregateInstitution"
             }
@@ -5030,30 +5464,19 @@
             "$ref": "#/components/schemas/GPUData"
           },
           "istatCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's istat code"
           },
           "atecoCodes": {
             "type": "array",
+            "description": "Institution's ateco codes",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Institution's ateco codes"
             }
-          },
-          "payment": {
-            "$ref": "#/components/schemas/PaymentDto"
           },
           "userRequester": {
             "$ref": "#/components/schemas/UserRequestDto"
-          }
-        }
-      },
-      "PaymentDto": {
-        "type": "object",
-        "properties": {
-          "iban": {
-            "type": "string"
-          },
-          "holder": {
-            "type": "string"
           }
         }
       },
@@ -5069,24 +5492,30 @@
         "type": "object",
         "properties": {
           "businessRegisterNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's Business Register number"
           },
           "legalRegisterName": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's legal register name"
           },
           "legalRegisterNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's legal register number"
           },
           "abiCode": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's ABI code"
           },
           "vatNumberGroup": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "PSP's Vat Number group"
           },
           "dpoData": {
             "$ref": "#/components/schemas/DpoDataDto"
           }
-        }
+        },
+        "description": "Payment Service Provider (PSP) specific data"
       },
       "UserDto": {
         "required": [
@@ -5098,16 +5527,20 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "User's fiscal code"
           },
           "role": {
             "type": "string",
+            "description": "User's role",
             "enum": [
               "MANAGER",
               "DELEGATE",
@@ -5117,10 +5550,8 @@
             ]
           },
           "email": {
-            "type": "string"
-          },
-          "productRole": {
-            "type": "string"
+            "type": "string",
+            "description": "User's email"
           }
         }
       },
@@ -5133,13 +5564,16 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "User's email"
           }
         }
       },
@@ -5151,12 +5585,15 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Invalid parameter name."
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "Invalid parameter reason."
           }
-        }
+        },
+        "description": "A list of invalid parameters details."
       },
       "Problem": {
         "type": "object",
@@ -5174,12 +5611,14 @@
         "properties": {
           "users": {
             "type": "array",
+            "description": "List of onboarding users",
             "items": {
               "$ref": "#/components/schemas/CompanyUserDto"
             }
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -5198,13 +5637,16 @@
             ]
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "certified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indicates whether the institution values come from INFOCAMERE (true) or MANUAL (false)"
           }
         }
       },
@@ -5218,19 +5660,24 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "User's email"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "User's fiscal code"
           },
           "role": {
             "type": "string",
+            "description": "User's role",
             "enum": [
               "MANAGER",
               "DELEGATE",
@@ -5238,11 +5685,9 @@
               "OPERATOR",
               "ADMIN_EA"
             ]
-          },
-          "productRole": {
-            "type": "string"
           }
-        }
+        },
+        "description": "List of onboarding users"
       },
       "AggregateResult": {
         "type": "object",
@@ -5359,7 +5804,8 @@
         "type": "object",
         "properties": {
           "companyTaxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           }
         }
       },
@@ -5367,10 +5813,12 @@
         "type": "object",
         "properties": {
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           }
         }
       },
@@ -5383,18 +5831,23 @@
         "type": "object",
         "properties": {
           "businessName": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "certified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indicates whether the institution values come from INFOCAMERE (true) or MANUAL (false)"
           },
           "digitalAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's digitalAddress"
           }
-        }
+        },
+        "description": "Institution's billing information"
       },
       "CompanyOnboardingDto": {
         "required": [
@@ -5408,6 +5861,7 @@
         "properties": {
           "users": {
             "type": "array",
+            "description": "List of onboarding users",
             "items": {
               "$ref": "#/components/schemas/CompanyUserDto"
             }
@@ -5417,6 +5871,7 @@
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -5435,10 +5890,12 @@
             ]
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           }
         }
       },
@@ -5449,13 +5906,16 @@
         "type": "object",
         "properties": {
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "User's fiscal code"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           }
         }
       },
@@ -5466,7 +5926,8 @@
         "type": "object",
         "properties": {
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "User's fiscal code"
           }
         }
       },
@@ -5491,12 +5952,14 @@
         "properties": {
           "users": {
             "type": "array",
+            "description": "List of onboarding users",
             "items": {
               "$ref": "#/components/schemas/UserDto"
             }
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -5515,22 +5978,28 @@
             ]
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "originId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's details origin Id"
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "subunitCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's subunitCode"
           },
           "toAddOnAggregates": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "specified if should be added on aggregates"
           }
         }
       },
@@ -5543,10 +6012,12 @@
         "properties": {
           "userId": {
             "type": "string",
+            "description": "User's id",
             "format": "uuid"
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -5565,19 +6036,24 @@
             ]
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "originId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's details origin Id"
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "subunitCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's subunitCode"
           }
         }
       },
@@ -5588,7 +6064,8 @@
         "type": "object",
         "properties": {
           "result": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Is the given user manager of the institution"
           }
         }
       },
@@ -5611,7 +6088,8 @@
         "type": "object",
         "properties": {
           "verificationResult": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Legal Representative and Institution match result on Agenzia delle Entrate"
           }
         }
       },
@@ -5630,10 +6108,12 @@
         "type": "object",
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's physical address"
           },
           "zipCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's zipCode"
           }
         }
       },
@@ -5641,33 +6121,43 @@
         "type": "object",
         "properties": {
           "belongRegulatedMarket": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution belongs to a regulated market"
           },
           "regulatedMarketNote": {
-            "type": "string"
+            "type": "string",
+            "description": "regulatedMarket Note"
           },
           "ipa": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is registered on IPA"
           },
           "ipaCode": {
-            "type": "string"
+            "type": "string",
+            "description": "IPA code"
           },
           "establishedByRegulatoryProvision": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is a company established by a regulatory provision"
           },
           "establishedByRegulatoryProvisionNote": {
-            "type": "string"
+            "type": "string",
+            "description": "establishedByRegulatoryProvision Note"
           },
           "agentOfPublicService": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "The institution is an agent of a public service"
           },
           "agentOfPublicServiceNote": {
-            "type": "string"
+            "type": "string",
+            "description": "agentOfPublicService Note"
           },
           "otherNote": {
-            "type": "string"
+            "type": "string",
+            "description": "Other note"
           }
-        }
+        },
+        "description": "GSP institution's additional informations"
       },
       "DpoData": {
         "required": [
@@ -5678,15 +6168,19 @@
         "type": "object",
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's address"
           },
           "pec": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's PEC"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "DPO's email"
           }
-        }
+        },
+        "description": "Data Protection Officer (DPO) specific data"
       },
       "InstitutionInfo": {
         "required": [
@@ -5695,48 +6189,62 @@
           "institutionType",
           "mailAddress",
           "name",
+          "vatNumber",
           "zipCode"
         ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's unique internal Id"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           },
           "institutionType": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's type"
           },
           "address": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's physical address"
           },
           "zipCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's zipCode"
           },
           "city": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's city"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's country"
           },
           "county": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's county"
           },
           "mailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's digitalAddress"
           },
           "fiscalCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "taxCodeInvoicing": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCodeInvoicing for electronic invoicing"
           },
           "vatNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's VAT number"
           },
           "recipientCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Billing recipient code"
           },
           "pspData": {
             "$ref": "#/components/schemas/PspData"
@@ -5747,7 +6255,8 @@
           "additionalInformations": {
             "$ref": "#/components/schemas/AdditionalInformations"
           }
-        }
+        },
+        "description": "Institution specific data"
       },
       "OnboardingRequestResource": {
         "required": [
@@ -5757,7 +6266,8 @@
         "type": "object",
         "properties": {
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "Onboarding request's status"
           },
           "institutionInfo": {
             "$ref": "#/components/schemas/InstitutionInfo"
@@ -5767,28 +6277,35 @@
           },
           "admins": {
             "type": "array",
+            "description": "Administrators specific data",
             "items": {
               "$ref": "#/components/schemas/UserInfo"
             }
           },
           "productId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "updatedAt": {
             "type": "string",
+            "description": "Onboarding request update date",
             "format": "date-time"
           },
           "expiringDate": {
             "type": "string",
+            "description": "Onboarding request expiring date",
             "format": "date-time"
           },
           "reasonForReject": {
-            "type": "string"
+            "type": "string",
+            "description": "Onboarding request rejection reason"
           },
           "attachments": {
             "type": "array",
+            "description": "Onboarding's attachments",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Onboarding's attachments"
             }
           }
         }
@@ -5804,21 +6321,27 @@
         "type": "object",
         "properties": {
           "businessRegisterNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's Business Register number"
           },
           "legalRegisterName": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's legal register name"
           },
           "legalRegisterNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's legal register number"
           },
           "abiCode": {
-            "type": "string"
+            "type": "string",
+            "description": "PSP's ABI code"
           },
           "vatNumberGroup": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "PSP's Vat Number group"
           }
-        }
+        },
+        "description": "Payment Service Provider (PSP) specific data"
       },
       "UserInfo": {
         "required": [
@@ -5832,36 +6355,59 @@
         "properties": {
           "id": {
             "type": "string",
+            "description": "User's unique identifier",
             "format": "uuid"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "User's institutional email"
           },
           "fiscalCode": {
-            "type": "string"
+            "type": "string",
+            "description": "User's fiscal code"
           }
-        }
+        },
+        "description": "Administrators specific data"
+      },
+      "AvailableDocumentResource": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Document name: contractFilename for INSTITUTION/USER documents, attachmentName for ATTACHMENT documents."
+          },
+          "type": {
+            "type": "string",
+            "description": "Document type (INSTITUTION, USER, ATTACHMENT)."
+          },
+          "onboardingId": {
+            "type": "string",
+            "description": "Identifier of the onboarding the document belongs to."
+          },
+          "rootOnboardingId": {
+            "type": "string",
+            "description": "Identifier of the root onboarding (institution adhesion) of the document dossier."
+          }
+        },
+        "description": "Document of the onboarding dossier available for download."
       },
       "AvailableDocumentsResource": {
         "type": "object",
         "properties": {
-          "attachments": {
+          "documents": {
             "type": "array",
-            "description": "Names of the attachments available for the onboarding. Empty list if none.",
+            "description": "Documents of the dossier available for download. For an institution onboarding: its signed contract, the signed contracts of the update onboardings, the attachments and the signed USER contracts linked to it. For a USER onboarding: only its signed contract.",
             "items": {
-              "type": "string",
-              "description": "Names of the attachments available for the onboarding. Empty list if none."
+              "$ref": "#/components/schemas/AvailableDocumentResource"
             }
-          },
-          "contractFilename": {
-            "type": "string",
-            "description": "Filename of the signed contract available for download. Null when the onboarding has no signed contract yet (e.g. state TOBEVALIDATED)."
           }
         },
         "description": "Aggregated list of documents available for download for a given onboarding."
@@ -5906,13 +6452,15 @@
           "labelKey": {
             "type": "string"
           }
-        }
+        },
+        "description": "Origin's unique identifier"
       },
       "OriginResponse": {
         "type": "object",
         "properties": {
           "origins": {
             "type": "array",
+            "description": "Origin's unique identifier",
             "items": {
               "$ref": "#/components/schemas/OriginEntry"
             }
@@ -5954,7 +6502,8 @@
         "type": "object",
         "properties": {
           "requiredDocumentsEnabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the (productId, institutionType, origin) triplet has required-documents configured on product-ms, false otherwise."
           }
         }
       },
@@ -5963,49 +6512,64 @@
         "properties": {
           "id": {
             "type": "string",
+            "description": "Institution's unique internal Id",
             "format": "uuid"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           },
           "parentDescription": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's parent description"
           },
           "externalId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's unique external identifier"
           },
           "originId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's details origin Id"
           },
           "institutionType": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's type"
           },
           "digitalAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's digitalAddress"
           },
           "address": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's physical address"
           },
           "zipCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's zipCode"
           },
           "city": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's city"
           },
           "county": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's county"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's country"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "userRole": {
             "type": "string",
+            "description": "Logged user's role",
             "enum": [
               "ADMIN",
               "LIMITED",
@@ -6097,14 +6661,79 @@
           }
         }
       },
+      "IpaInstitutionResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "originId": {
+            "type": "string"
+          },
+          "o": {
+            "type": "string"
+          },
+          "ou": {
+            "type": "string"
+          },
+          "aoo": {
+            "type": "string"
+          },
+          "taxCode": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "digitalAddress": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "zipCode": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "istatCode": {
+            "type": "string"
+          }
+        }
+      },
+      "IpaInstitutionsSearchResource": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IpaInstitutionResource"
+            }
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "ManagerInfoResponse": {
+        "required": [
+          "name",
+          "surname"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "User's name"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "User's surname"
           }
         }
       },
@@ -6112,16 +6741,20 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's unique identifier"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's title"
           },
           "parentId": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's parent's Id"
           },
           "status": {
             "type": "string",
+            "description": "Product's status",
             "enum": [
               "ACTIVE",
               "TESTING",
@@ -6130,10 +6763,12 @@
             ]
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Product's logo"
           },
           "logoBgColor": {
-            "type": "string"
+            "type": "string",
+            "description": "Product logo's background color"
           }
         }
       },
@@ -6141,10 +6776,12 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's geographic taxonomy ISTAT code"
           },
           "desc": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's geographic taxonomy extended name"
           }
         }
       },
@@ -6152,58 +6789,75 @@
         "type": "object",
         "properties": {
           "supportEmail": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's support email contact"
           },
           "supportPhone": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's support phone contact"
           }
-        }
+        },
+        "description": "Institution's assistance contacts"
       },
       "BillingDataResponseDto": {
         "type": "object",
         "properties": {
           "businessName": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's legal name"
           },
           "registeredOffice": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's physical address"
           },
           "digitalAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's digitalAddress"
           },
           "zipCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's zipCode"
           },
           "taxCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's taxCode"
           },
           "vatNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's VAT number"
           },
           "recipientCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Billing recipient code"
           },
           "publicServices": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Institution's service type"
           },
           "certified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indicates whether the institution values come from INFOCAMERE (true) or MANUAL (false)"
           }
-        }
+        },
+        "description": "Institution's billing information"
       },
       "CompanyInformationsResource": {
         "type": "object",
         "properties": {
           "rea": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's REA"
           },
           "shareCapital": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's share capital value"
           },
           "businessRegisterPlace": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's business register place"
           }
-        }
+        },
+        "description": "GPS, SCP, PT optional data"
       },
       "DataProtectionOfficer": {
         "type": "object",
@@ -6217,16 +6871,19 @@
           "pec": {
             "type": "string"
           }
-        }
+        },
+        "description": "Data protection officer"
       },
       "InstitutionData": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's unique internal Id"
           },
           "institutionType": {
             "type": "string",
+            "description": "Institution's type",
             "enum": [
               "PA",
               "PG",
@@ -6248,19 +6905,24 @@
             "$ref": "#/components/schemas/BillingDataResponseDto"
           },
           "city": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's city"
           },
           "county": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's county"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's country"
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution data origin"
           },
           "originId": {
-            "type": "string"
+            "type": "string",
+            "description": "Institution's details origin Id"
           },
           "paymentServiceProvider": {
             "$ref": "#/components/schemas/PaymentServiceProvider"
@@ -6277,7 +6939,8 @@
           "assistanceContacts": {
             "$ref": "#/components/schemas/AssistanceContactsResource"
           }
-        }
+        },
+        "description": "Institution's billing and type information"
       },
       "InstitutionOnboardingInfoResource": {
         "type": "object",
@@ -6287,6 +6950,7 @@
           },
           "geographicTaxonomies": {
             "type": "array",
+            "description": "Institution's geographic taxonomy",
             "items": {
               "$ref": "#/components/schemas/GeographicTaxonomyResource"
             }
@@ -6314,30 +6978,37 @@
           "vatNumberGroup": {
             "type": "boolean"
           }
-        }
+        },
+        "description": "Payment service provider"
       },
       "BusinessResourceIC": {
         "type": "object",
         "properties": {
           "businessName": {
-            "type": "string"
+            "type": "string",
+            "description": "Legal Representative's institutions name"
           },
           "businessTaxId": {
-            "type": "string"
+            "type": "string",
+            "description": "Legal Representative's institutions tax ID"
           }
-        }
+        },
+        "description": "Legal Representative's institutions list"
       },
       "InstitutionResourceIC": {
         "type": "object",
         "properties": {
           "legalTaxId": {
-            "type": "string"
+            "type": "string",
+            "description": "Legal Representative's tax ID"
           },
           "requestDateTime": {
-            "type": "string"
+            "type": "string",
+            "description": "Timestamp request institutions PNPG list"
           },
           "businesses": {
             "type": "array",
+            "description": "Legal Representative's institutions list",
             "items": {
               "$ref": "#/components/schemas/BusinessResourceIC"
             }
