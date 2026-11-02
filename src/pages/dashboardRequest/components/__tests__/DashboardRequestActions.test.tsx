@@ -29,23 +29,62 @@ afterEach(() => {
   global.fetch = originalFetch;
 });
 
-const renderWithPermissions = async (component: React.ReactElement) => {
+const renderWithPermissions = async (
+  component: React.ReactElement,
+  permittedProductId = 'prod-pagopa',
+  actions: Array<string> = [Actions.ManageAccountPage]
+) => {
   const store = createStore();
   store.dispatch(
     setProductPermissions([
       {
-        productId: 'prod-io',
-        actions: [Actions.ManageAccountPage],
+        productId: permittedProductId,
+        actions,
       },
     ])
   );
   return renderWithProviders(component, store);
 };
 
+describe.each(['top', 'bottom'] as const)('Product permissions (%s action bar)', (variant) => {
+  test.each([
+    ['prod-pagopa', [Actions.ManageAccountPage], true],
+    ['prod-io', [Actions.ManageAccountPage], false],
+    ['prod-pagopa', [Actions.ViewAccountPage], false],
+    ['prod-pagopa', [], false],
+  ])(
+    'checks management permission for the request product: %s, %j',
+    async (permittedProductId, actions, canManage) => {
+      await renderWithPermissions(
+        <DashboardRequestActions
+          productId="prod-pagopa"
+          variant={variant}
+          setShowConfirmPage={vi.fn()}
+          setShowRejectPage={vi.fn()}
+          isToBeValidatedRequest={true}
+          isGPU={true}
+        />,
+        permittedProductId,
+        actions
+      );
+
+      for (const name of ['Approva', 'Rifiuta', 'Scarica']) {
+        const button = screen.queryByRole('button', { name });
+        if (canManage) {
+          expect(button).toBeInTheDocument();
+        } else {
+          expect(button).not.toBeInTheDocument();
+        }
+      }
+    }
+  );
+});
+
 test('Test: Landing in an APPROVED onboarding request and click the close button', async () => {
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[1].tokenId}
+      productId={mockedOnboardingRequests[1].productId}
       partyName={mockedOnboardingRequests[1].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[1].productId)}
       setShowConfirmPage={() => {}}
@@ -70,6 +109,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
+      productId={mockedOnboardingRequests[0].productId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={setShowConfirmPage}
@@ -97,6 +137,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and APPRO
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
+      productId={mockedOnboardingRequests[0].productId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={setShowConfirmPage}
@@ -123,6 +164,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
+      productId={mockedOnboardingRequests[0].productId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={() => {}}
@@ -174,6 +216,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[0].tokenId}
+      productId={mockedOnboardingRequests[0].productId}
       partyName={mockedOnboardingRequests[0].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[0].productId)}
       setShowConfirmPage={() => {}}
@@ -203,6 +246,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and DOWNL
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
+      productId={mockedOnboardingRequests[7].productId}
       partyName={mockedOnboardingRequests[7].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[7].productId)}
       setShowConfirmPage={() => {}}
@@ -235,6 +279,7 @@ test('Test: Landing in an onboarding request with status TOBEVALIDATED and REJEC
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={mockedOnboardingRequests[7].tokenId}
+      productId={mockedOnboardingRequests[7].productId}
       partyName={mockedOnboardingRequests[7].institutionInfo.name}
       productTitle={productId2ProductTitle(mockedOnboardingRequests[7].productId)}
       setShowConfirmPage={() => {}}
@@ -259,6 +304,7 @@ test('Test: Onboarding request with not found token scenario', async () => {
   await renderWithPermissions(
     <DashboardRequestActions
       retrieveTokenIdFromUrl={'wrongTokenId'}
+      productId="prod-pagopa"
       setShowConfirmPage={() => {}}
       setShowRejectPage={() => {}}
       isToBeValidatedRequest={false}
