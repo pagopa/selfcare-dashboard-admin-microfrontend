@@ -14,6 +14,12 @@ It will configure the routing to serve all the pages related to the selfcare adm
 
 This component requires the props described into [selfcare-dashboard-frontend](https://github.com/pagopa/selfcare-dashboard-frontend#props-to-configure-dashboard-micro-frontends-pages)
 
+## Onboarding request permissions
+
+For requests awaiting validation, management actions require `Selc:ManageAccountPage`
+for the request's product or the wildcard product `ALL`. Permissions for unrelated
+products and view-only permissions do not enable these actions.
+
 ## To configure the workspace execute the following commands
 
 - yarn install
