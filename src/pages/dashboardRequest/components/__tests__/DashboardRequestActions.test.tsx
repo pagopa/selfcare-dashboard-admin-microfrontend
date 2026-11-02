@@ -52,6 +52,9 @@ describe.each(['top', 'bottom'] as const)('Product permissions (%s action bar)',
     ['prod-io', [Actions.ManageAccountPage], false],
     ['prod-pagopa', [Actions.ViewAccountPage], false],
     ['prod-pagopa', [], false],
+    ['ALL', [Actions.ManageAccountPage], true],
+    ['ALL', [Actions.ViewAccountPage], false],
+    ['ALL', [], false],
   ])(
     'checks management permission for the request product: %s, %j',
     async (permittedProductId, actions, canManage) => {
@@ -78,6 +81,24 @@ describe.each(['top', 'bottom'] as const)('Product permissions (%s action bar)',
       }
     }
   );
+
+  test('ALL management permission does not expose actions for requests not awaiting validation', async () => {
+    await renderWithPermissions(
+      <DashboardRequestActions
+        productId="prod-pagopa"
+        variant={variant}
+        setShowConfirmPage={vi.fn()}
+        setShowRejectPage={vi.fn()}
+        isToBeValidatedRequest={false}
+        isGPU={true}
+      />,
+      'ALL'
+    );
+
+    for (const name of ['Approva', 'Rifiuta', 'Scarica']) {
+      expect(screen.queryByRole('button', { name })).not.toBeInTheDocument();
+    }
+  });
 });
 
 test('Test: Landing in an APPROVED onboarding request and click the close button', async () => {

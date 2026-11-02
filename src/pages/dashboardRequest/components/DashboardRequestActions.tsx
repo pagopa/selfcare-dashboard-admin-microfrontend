@@ -97,7 +97,9 @@ export default function DashboardRequestActions({
     }
   };
 
-  const isAccountUser = hasPermission(productId, Actions.ManageAccountPage);
+  const canUpdateOnbordingRequest =
+    hasPermission(productId, Actions.ManageAccountPage) ||
+    hasPermission('ALL', Actions.ManageAccountPage);
 
   const actionButtons = (
     <>
@@ -146,7 +148,7 @@ export default function DashboardRequestActions({
   );
 
   if (variant === 'top') {
-    return isToBeValidatedRequest && isAccountUser ? (
+    return isToBeValidatedRequest && canUpdateOnbordingRequest ? (
       <Stack direction="row" justifyContent="flex-end" alignItems="center">
         {actionButtons}
       </Stack>
@@ -155,7 +157,7 @@ export default function DashboardRequestActions({
 
   return (
     <>
-      {isToBeValidatedRequest && isAccountUser && (
+      {isToBeValidatedRequest && canUpdateOnbordingRequest && (
         <Stack direction="row" justifyContent="flex-end" alignItems="center" py={4}>
           {actionButtons}
         </Stack>
