@@ -240,6 +240,7 @@ export default function DashboardRequest() {
               )}
               <DashboardRequestActions
                 variant="top"
+                productId={onboardingRequestData.productId}
                 retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
                 partyName={onboardingRequestData?.institutionInfo.name}
                 productTitle={productTitle}
@@ -305,6 +306,7 @@ export default function DashboardRequest() {
             onDownloadDocument={openAttachment}
           />
           <DashboardRequestActions
+            productId={onboardingRequestData.productId}
             retrieveTokenIdFromUrl={retrieveTokenIdFromUrl}
             partyName={onboardingRequestData?.institutionInfo.name}
             productTitle={productTitle}

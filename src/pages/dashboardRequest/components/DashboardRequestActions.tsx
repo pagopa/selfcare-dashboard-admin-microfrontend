@@ -22,6 +22,7 @@ type Props = {
   setShowConfirmPage: Dispatch<SetStateAction<boolean | undefined>>;
   isToBeValidatedRequest: boolean;
   isGPU: boolean;
+  productId: string;
   downloadAttachment?: (
     setLoadingRetrieveOnboardingRequest: (loading: boolean) => void,
     addError: (error: AppError) => void,
@@ -41,6 +42,7 @@ export default function DashboardRequestActions({
   setShowConfirmPage,
   isToBeValidatedRequest,
   isGPU,
+  productId,
   downloadAttachment,
   retrieveTokenIdFromUrl,
   partyName,
@@ -51,7 +53,7 @@ export default function DashboardRequestActions({
   const { t } = useTranslation();
   const addError = useErrorDispatcher();
   const setLoadingRetrieveOnboardingRequest = useLoading(LOADING_RETRIEVE_ONBOARDING_REQUEST);
-  const { getAllProductsWithPermission } = usePermissions();
+  const { hasPermission } = usePermissions();
 
   const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
@@ -95,7 +97,7 @@ export default function DashboardRequestActions({
     }
   };
 
-  const isAccountUser = getAllProductsWithPermission(Actions.ManageAccountPage).length > 0;
+  const isAccountUser = hasPermission(productId, Actions.ManageAccountPage);
 
   const actionButtons = (
     <>
