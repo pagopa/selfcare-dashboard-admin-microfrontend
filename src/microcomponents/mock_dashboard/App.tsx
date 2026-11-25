@@ -13,7 +13,10 @@ import { Link, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { Product } from '../../model/Product';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
 import { createStore } from '../../redux/store';
-import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
+import {
+  mockedErrorTokens,
+  mockedOnboardingRequests,
+} from '../../services/__mocks__/onboardingRequestService';
 import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
@@ -27,6 +30,9 @@ type UrlParams = {
   partyId: string;
   productId: string;
 };
+
+const isKnownToken = (tokenId?: string, request?: unknown): boolean =>
+  Boolean(tokenId) && (Boolean(request) || (tokenId as string) in mockedErrorTokens);
 
 const App = ({
   AppRouting,
@@ -53,7 +59,10 @@ const App = ({
     }, {} as ProductsRolesMap)
     : undefined;
 
-  const availableTokenIds = mockedOnboardingRequests.map((r) => r.tokenId).join(', ');
+  const availableTokenIds = [
+    ...mockedOnboardingRequests.map((r) => r.tokenId),
+    ...Object.keys(mockedErrorTokens),
+  ].join(', ');
   const availableProducts = mockedPartyProducts.map((p) => p.id).join(', ');
 
   const availableRoutesBody = Object.keys(
@@ -110,7 +119,7 @@ const App = ({
     },
   };
 
-  return tokenId && onboardingRequest && onboardingRequests ? (
+  return isKnownToken(tokenId, onboardingRequest) && onboardingRequests ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />
@@ -122,7 +131,7 @@ const App = ({
             item
             xs={12}
             display="flex"
-            pb={onboardingRequest.status === 'TOBEVALIDATED' ? 14 : 18}
+            pb={onboardingRequest?.status === 'TOBEVALIDATED' ? 14 : 18}
           >
             <Switch>
               {AppRouting({

@@ -62,16 +62,45 @@ vi.spyOn(OnboardingApi, 'getAvailableDocuments').mockResolvedValue({ documents: 
 // ── tests ─────────────────────────────────────────────────────────────────────
 
 describe('DashboardRequest — error / loading states', () => {
-  test('shows the error page (JwtInvalidPage) when the service rejects', async () => {
+  test('shows the invalid request page only when the request is not found (404)', async () => {
     setPathname('badToken');
-    fetchSpy.mockRejectedValueOnce(new Error('not found'));
+    fetchSpy.mockRejectedValueOnce(Object.assign(new Error('not found'), { httpStatus: 404 }));
 
     await renderWithProviders(<DashboardRequest />);
 
     await waitFor(() =>
-      expect(
-        screen.getByText(/Richiesta di adesione non più/i)
-      ).toBeInTheDocument()
+      expect(screen.getByText(/Richiesta di adesione non più/i)).toBeInTheDocument()
+    );
+  });
+
+  test('shows the forbidden page when the service answers 403', async () => {
+    setPathname('badToken');
+    fetchSpy.mockRejectedValueOnce(Object.assign(new Error('forbidden'), { httpStatus: 403 }));
+
+    await renderWithProviders(<DashboardRequest />);
+
+    await waitFor(() =>
+      expect(screen.getByText('Non hai i permessi per vedere questa richiesta')).toBeInTheDocument()
+    );
+    expect(screen.queryByText(/Richiesta di adesione non più/i)).not.toBeInTheDocument();
+  });
+
+  test('shows a generic error with retry for technical errors and reloads on retry', async () => {
+    setPathname(tobeValidatedRequest.tokenId);
+    fetchSpy.mockClear();
+    fetchSpy.mockRejectedValueOnce(new Error('Decoding failed'));
+    fetchSpy.mockResolvedValueOnce(tobeValidatedRequest);
+
+    await renderWithProviders(<DashboardRequest />);
+
+    await waitFor(() => expect(screen.getByText('Qualcosa è andato storto')).toBeInTheDocument());
+    expect(screen.queryByText(/Richiesta di adesione non più/i)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Riprova' }));
+
+    await waitFor(() => expect(fetchSpy).toHaveBeenCalledTimes(2));
+    await waitFor(() =>
+      expect(screen.queryByText('Qualcosa è andato storto')).not.toBeInTheDocument()
     );
   });
 

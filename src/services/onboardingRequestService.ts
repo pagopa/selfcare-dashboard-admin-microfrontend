@@ -3,12 +3,20 @@ import { OnboardingApi } from '../api/OnboardingApiClient';
 import { OnboardingRequestResource } from '../model/OnboardingRequestResource';
 import {
   mockedAvailableDocuments,
+  mockedErrorTokens,
   mockedOnboardingRequests,
 } from './__mocks__/onboardingRequestService';
 
 export const fetchOnboardingRequest = (tokenId: string): Promise<OnboardingRequestResource> => {
   /* istanbul ignore if */
   if (process.env.VITE_API_MOCK_REQUEST_DATA === 'true') {
+    if (tokenId in mockedErrorTokens) {
+      return Promise.reject(
+        Object.assign(new Error(`Mocked error for ${tokenId}`), {
+          httpStatus: mockedErrorTokens[tokenId],
+        })
+      );
+    }
     const selectedOnboardingRequest = mockedOnboardingRequests.find((r) => r.tokenId === tokenId);
     if (selectedOnboardingRequest) {
       return new Promise((resolve) => resolve(selectedOnboardingRequest));

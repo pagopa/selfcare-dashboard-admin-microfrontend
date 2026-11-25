@@ -22,8 +22,18 @@ import { ENV } from '../../utils/env';
 import ConfirmPage from '../confirmPage/ConfirmPage';
 import RejectPage from '../rejectedPage/RejectPage';
 import RetrieveTokenErrorPage from './JwtInvalidPage';
+import RequestErrorPage from './RequestErrorPage';
 import DashboardRequestActions from './components/DashboardRequestActions';
 import DashboardRequestFields from './components/DashboardRequestFields';
+
+type RequestErrorKind = 'notFound' | 'forbidden' | 'generic';
+
+const getErrorKind = (httpStatus?: number): RequestErrorKind => {
+  if (httpStatus === 404) {
+    return 'notFound';
+  }
+  return httpStatus === 403 ? 'forbidden' : 'generic';
+};
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function DashboardRequest() {
@@ -38,7 +48,7 @@ export default function DashboardRequest() {
   const [showDocumentsSection, setShowDocumentsSection] = useState<boolean>(false);
   const [showRejectPage, setShowRejectPage] = useState<boolean>();
   const [showConfirmPage, setShowConfirmPage] = useState<boolean>();
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<RequestErrorKind>();
 
   // eslint-disable-next-line functional/immutable-data
   const retrieveTokenIdFromUrl = window.location.pathname.split('/').pop();
@@ -72,10 +82,24 @@ export default function DashboardRequest() {
             setShowDocumentsSection(false);
           });
       })
-      .catch(() => {
-        setError(true);
+      .catch((e) => {
+        const httpStatus = (e as { httpStatus?: number } | undefined)?.httpStatus;
+        console.error(
+          `Unable to retrieve onboarding request ${retrieveTokenIdFromUrl} (status: ${
+            httpStatus ?? 'n/a'
+          })`,
+          e
+        );
+        setError(getErrorKind(httpStatus));
       })
       .finally(() => setLoadingRetrieveOnboardingRequest(false));
+  };
+
+  const retry = () => {
+    if (retrieveTokenIdFromUrl) {
+      setError(undefined);
+      retrieveOnboardingRequest(retrieveTokenIdFromUrl);
+    }
   };
 
   const fromISO2ITA = (date?: string) => {
@@ -193,8 +217,10 @@ export default function DashboardRequest() {
     <RejectPage onboardingRequestData={onboardingRequestData} />
   ) : showConfirmPage ? (
     <ConfirmPage onboardingRequestData={onboardingRequestData} />
-  ) : error ? (
+  ) : error === 'notFound' ? (
     <RetrieveTokenErrorPage />
+  ) : error ? (
+    <RequestErrorPage variant={error} onRetry={retry} />
   ) : onboardingRequestData ? (
     <Grid container justifyContent="center">
       <Grid container sx={{ width: '920px' }}>
