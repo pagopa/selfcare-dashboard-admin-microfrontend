@@ -31,6 +31,9 @@ type UrlParams = {
   productId: string;
 };
 
+const isKnownToken = (tokenId?: string, request?: unknown): boolean =>
+  Boolean(tokenId) && (Boolean(request) || (tokenId as string) in mockedErrorTokens);
+
 const App = ({
   AppRouting,
   store,
@@ -116,7 +119,7 @@ const App = ({
     },
   };
 
-  return tokenId && onboardingRequests && (onboardingRequest || tokenId in mockedErrorTokens) ? (
+  return isKnownToken(tokenId, onboardingRequest) && onboardingRequests ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />
@@ -128,7 +131,7 @@ const App = ({
             item
             xs={12}
             display="flex"
-            pb={onboardingRequest.status === 'TOBEVALIDATED' ? 14 : 18}
+            pb={onboardingRequest?.status === 'TOBEVALIDATED' ? 14 : 18}
           >
             <Switch>
               {AppRouting({
