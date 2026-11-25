@@ -13,7 +13,10 @@ import { Link, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { Product } from '../../model/Product';
 import { productRoles2ProductRolesList, ProductsRolesMap } from '../../model/ProductRole';
 import { createStore } from '../../redux/store';
-import { mockedOnboardingRequests } from '../../services/__mocks__/onboardingRequestService';
+import {
+  mockedErrorTokens,
+  mockedOnboardingRequests,
+} from '../../services/__mocks__/onboardingRequestService';
 import {
   DashboardDecoratorsType,
   DashboardMicrofrontendPageProps,
@@ -53,7 +56,10 @@ const App = ({
     }, {} as ProductsRolesMap)
     : undefined;
 
-  const availableTokenIds = mockedOnboardingRequests.map((r) => r.tokenId).join(', ');
+  const availableTokenIds = [
+    ...mockedOnboardingRequests.map((r) => r.tokenId),
+    ...Object.keys(mockedErrorTokens),
+  ].join(', ');
   const availableProducts = mockedPartyProducts.map((p) => p.id).join(', ');
 
   const availableRoutesBody = Object.keys(
@@ -110,7 +116,7 @@ const App = ({
     },
   };
 
-  return tokenId && onboardingRequest && onboardingRequests ? (
+  return tokenId && onboardingRequests && (onboardingRequest || tokenId in mockedErrorTokens) ? (
     <ErrorBoundary>
       <Layout>
         <LoadingOverlay />

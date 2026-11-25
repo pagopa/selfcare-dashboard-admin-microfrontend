@@ -521,6 +521,14 @@ export const mockedOnboardingRequests: Array<OnboardingRequestResource> = [
   },
 ];
 
+// Token ids that simulate a failing GET of the onboarding request (httpStatus undefined = decoding/network error)
+export const mockedErrorTokens: Record<string, number | undefined> = {
+  tokenError404: 404,
+  tokenError403: 403,
+  tokenError500: 500,
+  tokenErrorDecoding: undefined,
+};
+
 export const mockedAvailableDocuments: AvailableDocumentsResource = {
   documents: [
     {
