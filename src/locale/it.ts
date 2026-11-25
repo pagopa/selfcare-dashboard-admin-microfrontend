@@ -217,6 +217,18 @@ export default {
     subtitle: 'Questa richiesta è stata accolta, annullata o è scaduta.',
     backActionLabel: 'Torna alla home',
   },
+  requestErrorPage: {
+    forbidden: {
+      title: 'Non hai i permessi per vedere questa richiesta',
+      subtitle: 'Verifica di aver effettuato l’accesso con un utente autorizzato.',
+    },
+    generic: {
+      title: 'Qualcosa è andato storto',
+      subtitle: 'Non è stato possibile caricare la richiesta di adesione. Riprova più tardi.',
+    },
+    retryLabel: 'Riprova',
+    backLabel: 'Torna alla home',
+  },
   confirmPage: {
     title: 'Adesione approvata',
     description: `L’adesione di <1>{{ente}}</1> è stata approvata. Invieremo all’indirizzo PEC indicato un’email con le istruzioni per completare l'adesione.`,
